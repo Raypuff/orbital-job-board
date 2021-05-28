@@ -1,6 +1,4 @@
-# Name
-
-CCSGP Volunteer Job Board
+# CCSGP Volunteer Job Board
 
 ## Background
 
