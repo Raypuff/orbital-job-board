@@ -1,70 +1,57 @@
-# Getting Started with Create React App
+# Name
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+CCSGP Volunteer Job Board
 
-## Available Scripts
+## Background
 
-In the project directory, you can run:
+We are Raypuff (Rayner) and ZechAJW (Zech) and we are Year 1 Computer Science Students from NUS. This project was developed for CP2106 (Orbital) 2021.
 
-### `yarn start`
+## Aim
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Our aim is to develop a web application to link organizations looking to recruit volunteers to NUS students. End users will be able to easily look for suitable volunteer opportunities on the website, and apply directly to the job-poster through our platform. Administrators from CCSGP would also be able to moderate job postings and decide what jobs are available to students.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Link to Website
 
-### `yarn test`
+Currently we are hosting our website on vercel at the following link:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Motivation
 
-### `yarn build`
+As Year 1 NUS students ourselves, we are not unfamiliar with the problems that students typically face when looking for volunteering opportunities to join. When Prof Ben Leong proposed this Orbital project idea, we leapt at the opportunity to sign up recognizing that there remains a sizable gap in communication with organizations looking to recruit NUS Computing students for volunteer opportunities.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Personally, our volunteering experience with SOC has been rather short-lived, as the opportunity I signed up for, a volunteer opportunity looking to introduce seniors from CareCorner Senior Activity Centre to IT, was cancelled due to insufficient volunteers and lack of proper publicity within NUS Computing. Furthermore, finding volunteer experiences relevant to my technical skill-set remains difficult, as there is no consolidated avenue to look for volunteer requests suitable for me. By the time I became aware of Code in the Community, an initiative to introduce underprivileged children to coding, the sign up period had lapsed and I missed yet another volunteering opportunity. As a result, we recognize the impact that a dedicated job board would have for the volunteering scene in NUS Computing.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Features still being developed
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Students:
 
-### `yarn eject`
+- Browse available jobs anonymously
+- Filter jobs based on personal preferences
+- Login with NUS student account
+- Send in job applications for available jobs
+- Check status of applications (accepted/rejected)
+- Be contacted when application is successful
+- Subscribe to email notifications to receive updates on new volunteer opportunities
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Organizations:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Create an account with email confirmation
+- Post job listings
+- Browse applicants for jobs listings
+- Accept or reject applicants and automatically notify them
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### CCSGP Admins:
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- Login with NUS staff account to access administrative privileges
+- View all pending job postings by organizations
+- Accept or reject job postings
 
-## Learn More
+## Tech Stack:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Currently we are utilizing
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- ReactJS
+  - React Router
+  - Bootstrap 4
+- Firestore (temporarily)
+- Golang (we are planning to migrate to Golang and MongoDB through June)
+- MongoDB
