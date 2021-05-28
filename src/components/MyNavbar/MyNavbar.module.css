@@ -1,9 +1,3 @@
-.navBar {
-  background-color: #f8f8f8;
-  height: 50px;
-  width: 100vw;
-}
-
-.signIn {
-  padding-right: 20px;
+.justify-content-end {
+  margin-right: 100px;
 }

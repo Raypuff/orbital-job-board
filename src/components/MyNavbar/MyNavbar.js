@@ -1,25 +1,30 @@
-import { Navbar } from "react-bootstrap";
+import { Navbar, Nav, NavDropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import styles from "./MyNavbar.module.css";
+// import styles from "./MyNavbar.module.css";
 
 const MyNavbar = () => {
   return (
-    <Navbar className={styles.navBar}>
-      <Navbar.Collapse className="justify-content-start">
-        <Navbar.Text>
-          <Link className={styles.signIn} to="/">
-            Home
-          </Link>
-        </Navbar.Text>
-      </Navbar.Collapse>
-
-      <Navbar.Toggle />
+    <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
+      <Navbar.Brand>
+        <Link to="/">Home</Link>
+      </Navbar.Brand>
+      <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse className="justify-content-end">
-        <Navbar.Text>
-          <Link className={styles.signIn} to="sign_in">
-            Sign in
-          </Link>
-        </Navbar.Text>
+        <Nav className="mr-auto">
+          <NavDropdown title="Sign in" id="collasible-nav-dropdown">
+            <NavDropdown.Item>
+              <Link to="linktoNUSauthpage">Sign in as NUS Student</Link>
+            </NavDropdown.Item>
+            <NavDropdown.Item>
+              <Link to="/sign_in">Sign in as Organization</Link>
+            </NavDropdown.Item>
+          </NavDropdown>
+        </Nav>
+        <Nav>
+          <Nav.Link eventKey={2} href="job_board">
+            Post A Job
+          </Nav.Link>
+        </Nav>
       </Navbar.Collapse>
     </Navbar>
   );

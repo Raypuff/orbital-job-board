@@ -1,10 +1,16 @@
 import { Form, Button } from "react-bootstrap";
 import styles from "./LoginForm.module.css";
 
+function loginOrg(event) {
+  event.preventDefault();
+  console.log("Email: " + event.target[0].value);
+  console.log("Password: " + event.target[1].value);
+}
+
 const LoginForm = () => {
   return (
     <div className={styles.formPage}>
-      <Form>
+      <Form onSubmit={loginOrg}>
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Organization email address</Form.Label>
           <Form.Control type="email" placeholder="Enter email" />
