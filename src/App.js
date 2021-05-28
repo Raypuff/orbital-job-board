@@ -1,5 +1,6 @@
 import LandingPage from "./pages/LandingPage";
 import SignInPage from "./pages/SignInPage";
+import SignUpPage from "./pages/SignUpPage";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 function App() {
@@ -9,8 +10,11 @@ function App() {
         <Route path="/sign_in">
           <SignInPage />
         </Route>
-        <Route path="/">
+        <Route exact path="/">
           <LandingPage />
+        </Route>
+        <Route path="/register">
+          <SignUpPage />
         </Route>
       </Switch>
     </Router>

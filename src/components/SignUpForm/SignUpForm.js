@@ -1,21 +1,22 @@
 import React, { useRef } from "react";
 import { Form, Button } from "react-bootstrap";
-import styles from "./LoginForm.module.css";
-import { Link } from 'react-router-dom';
+import styles from "./SignUpForm.module.css";
 
-function loginOrg(event) {
+function SignUpOrg(event) {
   event.preventDefault();
-  console.log("Email: " + event.target[1].value);
+  console.log("Email: " + event.target[0].value);
   console.log("Password: " + event.target[1].value);
+  console.log("Password Confirmation: " + event.target[2].value)
 }
 
-const LoginForm = () => {
+const SignUpForm = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
+  const passwordConfirmRef = useRef();
 
   return (
     <div className={styles.formPage}>
-      <Form onSubmit={loginOrg}>
+      <Form onSubmit={SignUpOrg}>
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Organization email address</Form.Label>
           <Form.Control type="email" placeholder="Enter email" ref={emailRef} required/>
@@ -28,6 +29,10 @@ const LoginForm = () => {
           <Form.Label>Password</Form.Label>
           <Form.Control type="password" placeholder="Password" ref={passwordRef} required/>
         </Form.Group>
+        <Form.Group controlId="formBasicPassword">
+          <Form.Label>Confirm Password</Form.Label>
+          <Form.Control type="password" placeholder="Password" ref={passwordConfirmRef} required/>
+        </Form.Group>
         {/* <Form.Group controlId="formBasicCheckbox">
           <Form.Check type="checkbox" label="Check me out" />
         </Form.Group> */}
@@ -35,11 +40,8 @@ const LoginForm = () => {
           Submit
         </Button>
       </Form>
-      <div className="w-100 text-centre mt-2">
-        Need an account? <Link to="/register">Sign Up</Link>
-      </div>
     </div>
   );
 };
 
-export default LoginForm;
+export default SignUpForm;
