@@ -1,0 +1,52 @@
+footer {
+  width: 100vw;
+  display: grid;
+  grid-template-rows: repeat(3, auto);
+  bottom: 0;
+  left: 0;
+}
+
+.breadcrumb {
+  height: 46px;
+  background-color: #002449;
+}
+
+.addressPanel {
+  height: 413px;
+  background-color: #003062;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.addressHeader {
+  font-size: 18px;
+  color: #fff;
+}
+
+.addressLink {
+  font-size: 12px;
+  color: #868c92;
+  margin-left: 10px;
+}
+
+.copyrightBox {
+  height: 122px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: #003062;
+  color: #868c92;
+  font-size: 12px;
+}
+
+.copyrightLinks {
+  display: flex;
+  justify-content: center;
+}
+
+.dot {
+  padding: 0 5px;
+}
