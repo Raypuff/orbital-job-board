@@ -1,21 +1,40 @@
-import React, { useRef } from "react";
-import { Form, Button } from "react-bootstrap";
+import React, { useRef, useState } from "react";
+import { Form, Button, Alert } from "react-bootstrap";
 import styles from "./LoginForm.module.css";
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import { useAuth } from "../../contexts/AuthContext";
 
-function loginOrg(event) {
-  event.preventDefault();
-  console.log("Email: " + event.target[1].value);
-  console.log("Password: " + event.target[1].value);
-}
+
 
 const LoginForm = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
+  const {login, currentUser} = useAuth();
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const history = useHistory();
+
+  async function handleSubmit(event) {
+
+    event.preventDefault();
+  
+    try {
+      setError("");
+      setLoading(true);
+      await login(emailRef.current.value, passwordRef.current.value)
+      history.push("/")
+      console.log(currentUser)
+    } catch {
+      setError("Failed to sign in")
+    }
+    setLoading(false)
+  
+  }
 
   return (
     <div className={styles.formPage}>
-      <Form onSubmit={loginOrg}>
+      {error && <Alert variant="danger">{error}</Alert>}
+      <Form onSubmit={handleSubmit}>
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Organization email address</Form.Label>
           <Form.Control type="email" placeholder="Enter email" ref={emailRef} required/>
@@ -32,10 +51,10 @@ const LoginForm = () => {
           <Form.Check type="checkbox" label="Check me out" />
         </Form.Group> */}
         <Button variant="primary" type="submit">
-          Submit
+          Login
         </Button>
       </Form>
-      <div className="w-100 text-centre mt-2">
+      <div className="w-100 text-center mt-2">
         Need an account? <Link to="/register">Sign Up</Link>
       </div>
     </div>

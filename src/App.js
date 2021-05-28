@@ -2,10 +2,12 @@ import LandingPage from "./pages/LandingPage";
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { AuthProvider } from "./contexts/AuthContext"
 
 function App() {
   return (
-    <Router>
+    <AuthProvider>
+      <Router>
       <Switch>
         <Route path="/sign_in">
           <SignInPage />
@@ -17,7 +19,8 @@ function App() {
           <SignUpPage />
         </Route>
       </Switch>
-    </Router>
+      </Router>
+    </AuthProvider>
   );
 }
 
