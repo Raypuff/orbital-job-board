@@ -11,6 +11,7 @@ Our aim is to develop a web application to link organizations looking to recruit
 ## Link to Website
 
 Currently we are hosting our website on vercel at the following link:
+https://orbital-job-board.vercel.app/
 
 ## Motivation
 
