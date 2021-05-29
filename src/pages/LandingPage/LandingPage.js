@@ -26,7 +26,7 @@ const LandingPage = () => {
           <span className={styles.yourself}>It's time to get yourself </span>
           <span className={styles.involved}>involved.</span>
         </h1>
-        <Link to="/jobboard">
+        <Link to="/job_board">
           <Button variant="warning">Volunteer Now!</Button>
         </Link>
       </div>

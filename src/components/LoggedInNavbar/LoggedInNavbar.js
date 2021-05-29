@@ -57,7 +57,7 @@ const LoggedInNavbar = () => {
             </>
           </Nav>
           <Nav>
-            <Nav.Link eventKey={2} href="job_board">
+            <Nav.Link eventKey={2} href="post_a_job">
               Post A Job
             </Nav.Link>
           </Nav>
