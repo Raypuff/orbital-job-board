@@ -1,0 +1,7 @@
+.jobContainer {
+  display: flex;
+  flex-direction: column;
+  width: 45vw;
+  height: 80vh;
+  margin-top: 20px;
+}

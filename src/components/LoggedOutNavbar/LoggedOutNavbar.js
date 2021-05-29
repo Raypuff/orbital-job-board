@@ -8,9 +8,6 @@ const LoggedOutNavbar = () => {
   return (
     <>
       <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
-        <Navbar.Brand>
-          <Link to="/">Home</Link>
-        </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse className="justify-content-end">
           <Nav className="mr-auto">
