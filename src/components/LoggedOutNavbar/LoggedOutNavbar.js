@@ -2,9 +2,9 @@ import React from "react";
 import { Navbar, Nav, NavDropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-// import styles from "./MyNavbar.module.css";
+// import styles from "./LoggedOutNavbar.module.css";
 
-const MyNavbar = () => {
+const LoggedOutNavbar = () => {
   return (
     <>
       <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
@@ -34,4 +34,4 @@ const MyNavbar = () => {
   );
 };
 
-export default MyNavbar;
+export default LoggedOutNavbar;
