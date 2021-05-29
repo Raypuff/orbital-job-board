@@ -1,7 +1,7 @@
 import styles from "./Footer.module.css";
-import address from "../../assets/location-arrow-solid.svg";
-import phone from "../../assets/phone-alt-solid.svg";
-import email from "../../assets/envelope-solid.svg";
+// import address from "../../assets/location-arrow-solid.svg";
+// import phone from "../../assets/phone-alt-solid.svg";
+// import email from "../../assets/envelope-solid.svg";
 
 const Footer = () => {
   return (
