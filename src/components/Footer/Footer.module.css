@@ -4,39 +4,123 @@ footer {
   grid-template-rows: repeat(3, auto);
   bottom: 0;
   left: 0;
+  font-size: 0.9rem;
 }
 
-.breadcrumb {
-  height: 46px;
+.breadcrumbs {
   background-color: #002449;
+  border-top: 1px solid #003d7c;
+  padding: 13px 0;
+}
+.breadcrumbs ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.breadcrumbs ul > li {
+  display: inline-block;
+  color: #999;
+  margin-right: 5px;
+}
+.breadcrumbs ul > li .icon {
+  padding-right: 10px;
+  color: #ef7c00;
+}
+.breadcrumbs ul > li a {
+  color: #555;
+}
+.breadcrumbs ul > li a:hover {
+  color: #fff;
+  text-decoration: none;
+}
+.breadcrumbs ul > li + li:before {
+  content: " / ";
+  margin-right: 5px;
 }
 
-.addressPanel {
+.footer {
+  background: #003062;
+  border-top: 1px solid #003d7c;
+  color: #999;
+  font-weight: 300;
+  display: grid;
+  place-items: center;
+}
+.footer a {
+  color: #999;
+}
+.footer a:hover,
+.footer a:focus {
+  color: #fff;
+  text-decoration: none;
+}
+.footer ul {
+  margin: 0;
+  padding: 0;
+}
+.footer ul li {
+  list-style: none;
+  line-height: 24px;
+}
+
+.footer .addressPanel {
+  /* container */
+  max-width: 1170px;
+  /* row wrapper navigator */
+  padding: 120px 0;
+  /* nus-social-box */
+  display: grid;
+  place-items: center;
+  margin: 0 auto;
+  text-align: center;
+  border: none;
+  padding: 0;
+  height: 15vh;
+}
+.footer .addressHeader {
+  margin-top: 20px;
+  color: #fff;
+  font-size: 18px;
+}
+.footer .addressLink {
+  display: inline-block;
+  text-align: left;
+}
+.footer ul.addressLink li {
+  position: relative;
+}
+.footer ul.addressLink .icon {
+  display: block;
+  position: absolute;
+  left: 0;
+  color: #fff;
+  top: 2px;
+}
+/* .addressIcon {
+  display: block;
+  position: absolute;
+  left: 0;
+  color: #fff;
+  height: 16px;
+  width: 16px;
+} */
+
+/* .addressPanel {
   height: 413px;
   background-color: #003062;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-.addressHeader {
-  font-size: 18px;
-  color: #fff;
-}
-
-.addressLink {
-  font-size: 12px;
-  color: #868c92;
-  margin-left: 10px;
-}
+} */
 
 .copyrightBox {
   height: 122px;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  place-items: center;
+  /* flex-direction: column;
   justify-content: space-evenly;
-  align-items: center;
+  align-items: center; */
   background-color: #003062;
   color: #868c92;
   font-size: 12px;
