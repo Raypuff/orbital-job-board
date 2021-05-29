@@ -4,14 +4,12 @@ import styles from "./LoginForm.module.css";
 import { Link, useHistory } from 'react-router-dom';
 import { useAuth } from "../../contexts/AuthContext";
 
-
-
 const LoginForm = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const {login, currentUser} = useAuth();
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading ,setLoading] = useState(false);
   const history = useHistory();
 
   async function handleSubmit(event) {
@@ -27,7 +25,7 @@ const LoginForm = () => {
     } catch {
       setError("Failed to sign in")
     }
-    setLoading(false)
+    setLoading(false);
   
   }
 
@@ -50,7 +48,7 @@ const LoginForm = () => {
         {/* <Form.Group controlId="formBasicCheckbox">
           <Form.Check type="checkbox" label="Check me out" />
         </Form.Group> */}
-        <Button variant="primary" type="submit">
+        <Button disabled={loading} variant="primary" type="submit">
           Login
         </Button>
       </Form>
