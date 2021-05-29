@@ -1,6 +1,7 @@
 import LandingPage from "./pages/LandingPage";
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 
@@ -14,6 +15,9 @@ function App() {
           </Route>
           <Route path="/register">
             <SignUpPage />
+          </Route>
+          <Route path="/forgot_password">
+            <ForgotPasswordPage />
           </Route>
           <Route path="/">
             <LandingPage />
