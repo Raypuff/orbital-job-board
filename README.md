@@ -157,6 +157,7 @@ Development Plan
   - We used Git throughout our [entire development process]
   - We utilized branching and merging to efficiently push out new features at the same time
   - Documented the development of all the features and bug fixes through commit messages
+  - You can view all our commits history on our GitHub page
 
 [site flow]: https://drive.google.com/file/d/1hSdXyB1xFKmg6QlgVsGBnoERXTWEKx4g/view?usp=sharing
 [mockup]: https://drive.google.com/file/d/1GWElwW_TpZHDBW_2tFEk45t8m7Xg8y36/view?usp=sharing
