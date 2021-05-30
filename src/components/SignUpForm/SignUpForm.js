@@ -8,7 +8,7 @@ const SignUpForm = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
-  const { signup } = useAuth();
+  const { signup, logout, sendEmailVerification } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -25,14 +25,18 @@ const SignUpForm = () => {
       setError("");
       setLoading(true);
       await signup(emailRef.current.value, passwordRef.current.value);
+      await sendEmailVerification();
+      await logout();
+      setMessage(
+        "Signed up successfully. Please check your email for a verification message."
+      );
     } catch (err) {
-      setError("Failed to create an account");
-      console.log(err);
+      if (err.code === "auth/email-already-in-use") {
+        setError("Email already in use");
+      }
+      console.log(err.code);
     }
     setLoading(false);
-    setMessage(
-      "Signed up successfully. Please check your email for a verification message."
-    );
   }
 
   return (
