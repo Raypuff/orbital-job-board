@@ -13,10 +13,15 @@ The **CCSGP Volunteer Job Board** has the primary purpose of connecting _interes
 ## Try it out!
 
 [Our website](https://orbital-job-board.vercel.app/ "Website")
+
 [Our GitHub Repo](https://github.com/Raypuff/orbital-job-board "GitHub Repo")
+
 [Our poster](https://drive.google.com/file/d/1VpWt9sQ8y1BvlT-0KUxB0YvH7ItnztyU/view?usp=sharing "Poster")
+
 [Our demo video](link "Demo Video")
+
 [Our project logbook](https://docs.google.com/spreadsheets/d/1HsLfNHxZ4fMQSNBybzluq1HdkAFYvASxaa2HC9JAglQ/edit?usp=sharing "Project Logbook")
+
 [Our proposal](https://docs.google.com/document/d/1h0JwCsjwX3XLwYS6BjNqg9NluY7D2T5eR8hlQdbZxw0/edit?usp=sharing "Proposal")
 
 ---
@@ -54,6 +59,8 @@ Personally, our volunteering experience with SOC has been rather short-lived, as
 
 - When CCSGP opens, they would definitely receive requests from charities and NGOs to recruit SoC students as volunteers
 - CCSGP Staff would have to manually process these requests by: asking for specific details, gaining approval, emailing students, link students up with charities and NGOs
+
+---
 
 ## Features (User Stories)
 
@@ -102,6 +109,8 @@ Personally, our volunteering experience with SOC has been rather short-lived, as
 - As a CCSGP admin, I want to
   - **contact an organization** so that I can discuss their job listings with them
   - **view the details of all job listings** so that I can check the status of the job
+
+---
 
 ## Technologies and Practices
 
