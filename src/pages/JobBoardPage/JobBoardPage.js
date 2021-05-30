@@ -6,7 +6,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import styles from "./JobBoardPage.module.css";
 
 const JobBoardPage = () => {
-  const currentUser = useAuth();
+  const { currentUser } = useAuth();
 
   return (
     <>
