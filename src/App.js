@@ -3,6 +3,7 @@ import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import JobBoardPage from "./pages/JobBoardPage";
+import PostAJobPage from "./pages/PostAJobPage";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 
@@ -22,6 +23,9 @@ function App() {
           </Route>
           <Route path="/job_board">
             <JobBoardPage />
+          </Route>
+          <Route path="/post_a_job">
+            <PostAJobPage />
           </Route>
           <Route path="/">
             <LandingPage />
