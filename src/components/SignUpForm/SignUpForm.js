@@ -11,9 +11,11 @@ const SignUpForm = () => {
   const { signup } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
   async function handleSubmit(event) {
     event.preventDefault();
+    setMessage("");
 
     if (passwordRef.current.value !== passwordConfirmRef.current.value) {
       return setError("Passwords do not match");
@@ -28,11 +30,15 @@ const SignUpForm = () => {
       console.log(err);
     }
     setLoading(false);
+    setMessage(
+      "Signed up successfully. Please check your email for a verification message."
+    );
   }
 
   return (
     <div className={styles.formPage}>
       {error && <Alert variant="danger">{error}</Alert>}
+      {message && <Alert variant="success">{message}</Alert>}
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Organization email address</Form.Label>
