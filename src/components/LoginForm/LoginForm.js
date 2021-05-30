@@ -21,8 +21,14 @@ const LoginForm = () => {
       await login(emailRef.current.value, passwordRef.current.value);
       history.push("/");
       console.log(currentUser);
-    } catch {
-      setError("Failed to sign in");
+    } catch (err) {
+      if (err.code === "auth/wrong-password") {
+        setError("Incorrect password");
+      } else if (err.code === "auth/user-not-found") {
+        setError("There is no account associated with this email.");
+      } else {
+        setError("Failed to sign in");
+      }
     }
     setLoading(false);
   }
