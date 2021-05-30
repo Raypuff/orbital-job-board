@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Navbar, Nav, OverlayTrigger, Popover, Button } from "react-bootstrap";
+import { Navbar, Nav, NavDropdown } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import PostAJobButton from "../PostAJobButton";
 
 // import styles from "./MyNavbar.module.css";
 
@@ -15,7 +16,8 @@ const LoggedInNavbar = () => {
 
     try {
       await logout();
-      history.push("/sign_in");
+      history.push("/");
+      alert("Logged out successfully");
     } catch {
       setError("Failed to log out");
       console.log(error);
@@ -28,7 +30,19 @@ const LoggedInNavbar = () => {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse className="justify-content-end">
           <Nav>
-            <>
+            <NavDropdown
+              title="Profile"
+              id="collasible-nav-dropdown"
+              alignRight
+            >
+              <NavDropdown.Header>{currentUser.email}</NavDropdown.Header>
+              <NavDropdown.Divider />
+              <NavDropdown.Item>
+                <Nav.Link onClick={handleLogout}>Log out</Nav.Link>
+              </NavDropdown.Item>
+            </NavDropdown>
+
+            {/* <>
               {["bottom"].map((placement) => (
                 <OverlayTrigger
                   trigger="click"
@@ -51,13 +65,9 @@ const LoggedInNavbar = () => {
                   <Button variant="secondary">Profile</Button>
                 </OverlayTrigger>
               ))}
-            </>
+            </> */}
           </Nav>
-          <Nav>
-            <Nav.Link eventKey={2} href="post_a_job">
-              Post A Job
-            </Nav.Link>
-          </Nav>
+          <PostAJobButton />
         </Navbar.Collapse>
       </Navbar>
     </>
