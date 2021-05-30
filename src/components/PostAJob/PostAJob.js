@@ -1,108 +1,189 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
-import { Form, Button, Modal } from "react-bootstrap";
+import { Form, Button, Modal, Alert } from "react-bootstrap";
 import styles from "./PostAJob.module.css";
+import { useAuth } from "../../contexts/AuthContext";
+import { useStore } from "../../contexts/StoreContext";
 
 const PostAJob = () => {
+  const { addJob } = useStore();
+  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [message, setMessage] = useState("");
+  const [successful, setSuccessful] = useState(false);
+
+  //finding currentUser that is logged in
+  const { currentUser } = useAuth();
+
+  //references to data in the form
+  const nameRef = useRef();
+  const phoneNumberRef = useRef();
+  const userEmail = currentUser.email;
+  const jobTitleRef = useRef();
+  const purposeRef = useRef();
+  const targetBeneficiaryRef = useRef();
+  const skillsRequiredRef = useRef();
+  const durationRef = useRef();
+  const nameOfStudentOrganizationRef = useRef();
+  const nameOfOrganizationRef = useRef();
+  const UENRef = useRef();
+
+  //obtaining conditional values
+
   const [show, setShow] = useState(false);
   const [org, setOrg] = useState("");
+  const [error, setError] = useState("");
+
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    //creating the job to be posted from the refs
+    const newJob = {
+      name_of_contact: nameRef.current.value,
+      phone_number: phoneNumberRef.current.value,
+      user_email: userEmail,
+      job_title: jobTitleRef.current.value,
+      desc: purposeRef.current.value,
+      target_beneficiary: targetBeneficiaryRef.current.value,
+      skills_required: skillsRequiredRef.current.value,
+      duration: durationRef.current.value,
+      /*organization_name: organizationName,
+      UEN_number: UENnumber,
+      student_organization_name: studentOrganizationName, */
+    };
+
+    try {
+      setSuccessful(false);
+      setMessage("");
+      setSubmitted(true);
+      setError("");
+      setLoading(true);
+      addJob(newJob);
+      setSuccessful(true);
+      console.log(newJob);
+    } catch (err) {
+      setError("Failed to post a job");
+      console.log(err);
+    }
+    setLoading(false);
+    setMessage("Job Posted! Thank you for using our service");
+  }
+
+  const OrgRender = ({ org }) => {
+    if (org === "NUS Organization") {
+      return (
+        <Form.Group controlId="formNUSOrg">
+          <Form.Label>Name of Student Organization</Form.Label>
+          <Form.Control
+            placeholder="NUS Hackers"
+            ref={nameOfStudentOrganizationRef}
+          ></Form.Control>
+        </Form.Group>
+      );
+    } else if (org === "Non-NUS Organization") {
+      return (
+        <>
+          <Form.Group controlId="formNonNUSOrg">
+            <Form.Label>Name of Organization</Form.Label>
+            <Form.Control
+              placeholder="Saturday Kids"
+              ref={nameOfOrganizationRef}
+            ></Form.Control>
+          </Form.Group>
+          <Form.Group controlId="formNonNUSOrgUEN">
+            <Form.Label>
+              UEN, Charity registration number or Society registration number
+            </Form.Label>
+            <Form.Control placeholder="TyyCCnnnnX" ref={UENRef}></Form.Control>
+          </Form.Group>
+        </>
+      );
+    } else {
+      return <div></div>;
+    }
+  };
 
   return (
-    <Form className={styles.formContainer}>
-      <Form.Group controlId="formOrganization">
-        <Form.Label>Organization Type</Form.Label>
-        <Form.Control
-          as="select"
-          onChange={(event) => setOrg(event.target.value)}
-        >
-          <option>NUS Organization</option>
-          <option>Non-NUS Organization</option>
-        </Form.Control>
-      </Form.Group>
-      <OrgRender org={org} />
-      {/* conditional rendering of {name of group} or {name of org + uen} */}
-      <Form.Group controlId="formName">
-        <Form.Label>Name of contact person</Form.Label>
-        <Form.Control placeholder="John Doe" />
-      </Form.Group>
-      <Form.Group controlId="formMobileNumber">
-        <Form.Label>Mobile number of contact person</Form.Label>
-        <Form.Control placeholder="9123 4567" />
-      </Form.Group>
-      <Form.Group controlId="formEmail">
-        <Form.Label>Email address of contact person</Form.Label>
-        <Form.Control type="email" placeholder="john_doe@organization.com" />
-      </Form.Group>
-      <Form.Group controlId="formTitle">
-        <Form.Label>Title of volunteer work</Form.Label>
-        <Form.Control placeholder="Python instructor" />
-      </Form.Group>
-      <Form.Group controlId="formPurpose">
-        <Form.Label>Purpose of volunteer work</Form.Label>
-        <Form.Control
-          as="textarea"
-          rows={2}
-          placeholder="Teach children basic programming skills (elaborate on how students can benefit from volunteering)"
-        />
-      </Form.Group>
-      <Form.Group controlId="formBeneficiary">
-        <Form.Label>Target profile of beneficiary</Form.Label>
-        <Form.Control placeholder="Children from disadvantaged backgrounds" />
-      </Form.Group>
-      <Form.Group controlId="formSkills">
-        <Form.Label>Skills required</Form.Label>
-        <Form.Control placeholder="Intermediate Python programming skills" />
-      </Form.Group>
-      <Form.Group controlId="formDuration">
-        <Form.Label>Duration of volunteer work</Form.Label>
-        <Form.Control placeholder="2 months" />
-      </Form.Group>
-      <Link onClick={() => setShow(true)}>Terms and Conditions of Use</Link>
-      <Form.Group controlId="formTerms">
-        <Form.Check
-          required
-          type="checkbox"
-          label="I agree with the Terms and Conditions of Use"
-          feedback="You must agree with the Terms and Conditions of Use before you can post a job"
-        />
-      </Form.Group>
-      <Button variant="primary" type="submit">
-        Post job
-      </Button>
-      <TermsModal show={show} onHide={() => setShow(false)} />
-    </Form>
+    <>
+      {error && <Alert variant="danger">{error}</Alert>}
+      {loading && <Alert variant="primary">Posting your job...</Alert>}
+      {successful && <Alert variant="success">{message}</Alert>}
+      {}
+      <Form onSubmit={handleSubmit} className={styles.formContainer}>
+        <Form.Group controlId="formOrganization">
+          <Form.Label>Organization Type</Form.Label>
+          <Form.Control
+            as="select"
+            onChange={(event) => setOrg(event.target.value)}
+          >
+            <option>NUS Organization</option>
+            <option>Non-NUS Organization</option>
+          </Form.Control>
+        </Form.Group>
+        <OrgRender org={org} />
+        {/* conditional rendering of {name of group} or {name of org + uen} */}
+        <Form.Group controlId="formName">
+          <Form.Label>Name of contact person</Form.Label>
+          <Form.Control placeholder="John Doe" ref={nameRef} />
+        </Form.Group>
+        <Form.Group controlId="formMobileNumber">
+          <Form.Label>Mobile number of contact person</Form.Label>
+          <Form.Control placeholder="9123 4567" ref={phoneNumberRef} />
+        </Form.Group>
+        <Form.Group controlId="formEmail">
+          <Form.Label>Email address of contact person</Form.Label>
+          <Form.Control type="email" placeholder={userEmail} disabled />
+        </Form.Group>
+        <Form.Group controlId="formTitle">
+          <Form.Label>Title of volunteer work</Form.Label>
+          <Form.Control placeholder="Python instructor" ref={jobTitleRef} />
+        </Form.Group>
+        <Form.Group controlId="formPurpose">
+          <Form.Label>Purpose of volunteer work</Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={2}
+            placeholder="Teach children basic programming skills (elaborate on how students can benefit from volunteering)"
+            ref={purposeRef}
+          />
+        </Form.Group>
+        <Form.Group controlId="formBeneficiary">
+          <Form.Label>Target profile of beneficiary</Form.Label>
+          <Form.Control
+            placeholder="Children from disadvantaged backgrounds"
+            ref={targetBeneficiaryRef}
+          />
+        </Form.Group>
+        <Form.Group controlId="formSkills">
+          <Form.Label>Skills required</Form.Label>
+          <Form.Control
+            placeholder="Intermediate Python programming skills"
+            ref={skillsRequiredRef}
+          />
+        </Form.Group>
+        <Form.Group controlId="formDuration">
+          <Form.Label>Duration of volunteer work</Form.Label>
+          <Form.Control placeholder="2 months" ref={durationRef} />
+        </Form.Group>
+        <Link onClick={() => setShow(true)}>Terms and Conditions of Use</Link>
+        <Form.Group controlId="formTerms">
+          <Form.Check
+            required
+            type="checkbox"
+            label="I agree with the Terms and Conditions of Use"
+            feedback="You must agree with the Terms and Conditions of Use before you can post a job"
+          />
+        </Form.Group>
+        <Button disabled={submitted} variant="primary" type="submit">
+          Post job
+        </Button>
+        <TermsModal show={show} onHide={() => setShow(false)} />
+      </Form>
+    </>
   );
 };
 
 export default PostAJob;
-
-const OrgRender = ({ org }) => {
-  if (org === "NUS Organization") {
-    return (
-      <Form.Group controlId="formNUSOrg">
-        <Form.Label>Name of Student Organization</Form.Label>
-        <Form.Control placeholder="NUS Hackers"></Form.Control>
-      </Form.Group>
-    );
-  } else if (org === "Non-NUS Organization") {
-    return (
-      <>
-        <Form.Group controlId="formNonNUSOrg">
-          <Form.Label>Name of Organization</Form.Label>
-          <Form.Control placeholder="Saturday Kids"></Form.Control>
-        </Form.Group>
-        <Form.Group controlId="formNonNUSOrgUEN">
-          <Form.Label>
-            UEN, Charity registration number or Society registration number
-          </Form.Label>
-          <Form.Control placeholder="TyyCCnnnnX"></Form.Control>
-        </Form.Group>
-      </>
-    );
-  } else {
-    return <div></div>;
-  }
-};
 
 const TermsModal = (props) => {
   return (
