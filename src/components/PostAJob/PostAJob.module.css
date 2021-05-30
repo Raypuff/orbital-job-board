@@ -1,0 +1,8 @@
+.formContainer {
+  margin: 3vh 10vw;
+  width: 80vw;
+}
+
+ol > li {
+  font-weight: bold;
+}
