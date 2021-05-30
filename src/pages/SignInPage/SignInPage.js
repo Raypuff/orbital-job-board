@@ -1,5 +1,5 @@
 import Header from "../../components/Header";
-import LoggedOutNavbar from "../../components/LoggedOutNavbar";
+import LoggedOutNavbar from "../../components/NAVBAR/LoggedOutNavbar";
 import LoginForm from "../../components/LoginForm";
 import Footer from "../../components/Footer";
 // import styles from "./SignInPage.module.css";

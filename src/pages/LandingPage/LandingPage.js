@@ -1,6 +1,6 @@
 import { Button } from "react-bootstrap";
 import Header from "../../components/Header";
-import MyNavbar from "../../components/MyNavbar";
+import MyNavbar from "../../components/NAVBAR/MyNavbar";
 import Footer from "../../components/Footer";
 import { Link } from "react-router-dom";
 import styles from "./LandingPage.module.css";
