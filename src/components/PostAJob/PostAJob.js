@@ -27,8 +27,16 @@ const PostAJob = () => {
   const nameOfStudentOrganizationRef = useRef();
   const nameOfOrganizationRef = useRef();
   const UENRef = useRef();
+  var organization_name = "";
+  var UEN_number = "";
 
   //obtaining conditional values
+  if (nameOfStudentOrganizationRef === true) {
+    organization_name = nameOfStudentOrganizationRef.current.value();
+  } else if (nameOfOrganizationRef === true) {
+    organization_name = nameOfOrganizationRef.current.value();
+    UEN_number = UENRef.current.value();
+  }
 
   const [show, setShow] = useState(false);
   const [org, setOrg] = useState("");
@@ -36,6 +44,7 @@ const PostAJob = () => {
 
   function handleSubmit(event) {
     event.preventDefault();
+    console.log(nameOfOrganizationRef === false);
 
     //creating the job to be posted from the refs
     const newJob = {
@@ -47,9 +56,8 @@ const PostAJob = () => {
       target_beneficiary: targetBeneficiaryRef.current.value,
       skills_required: skillsRequiredRef.current.value,
       duration: durationRef.current.value,
-      /*organization_name: organizationName,
-      UEN_number: UENnumber,
-      student_organization_name: studentOrganizationName, */
+      organization_name: organization_name,
+      UEN_number: UEN_number,
     };
 
     try {
@@ -165,7 +173,9 @@ const PostAJob = () => {
           <Form.Label>Duration of volunteer work</Form.Label>
           <Form.Control placeholder="2 months" ref={durationRef} />
         </Form.Group>
-        <Link onClick={() => setShow(true)}>Terms and Conditions of Use</Link>
+        <Link to="/post_a_job" onClick={() => setShow(true)}>
+          Terms and Conditions of Use
+        </Link>
         <Form.Group controlId="formTerms">
           <Form.Check
             required

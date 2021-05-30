@@ -16,7 +16,7 @@ const JobBoard = () => {
         <JobCard
           id={job.job_title}
           title={job.job_title}
-          org_name={job.name_of_organization}
+          org_name={job.organization_name}
           beneficiary={job.target_beneficiary}
           duration={job.duration}
           writeup={job.desc}
