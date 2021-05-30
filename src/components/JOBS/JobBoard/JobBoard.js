@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import JobCard from "../JobCard";
 import styles from "./JobBoard.module.css";
-import app from "../../firebase";
+import app from "../../../firebase";
 
 const JobBoard = () => {
   const [jobs, setJobs] = useState([]);
