@@ -12,7 +12,7 @@ The **CCSGP Volunteer Job Board** has the primary purpose of connecting _interes
 
 ## Try it out!
 
-[Our website](https://orbital-job-board.vercel.app/ "Website")
+[Our website](https://volunteer-ccsgp.vercel.app/ "Website")
 
 [Our GitHub Repo](https://github.com/Raypuff/orbital-job-board "GitHub Repo")
 
