@@ -103,7 +103,9 @@ Personally, our volunteering experience with SOC has been rather short-lived, as
   - **contact an organization** so that I can discuss their job listings with them
   - **view the details of all job listings** so that I can check the status of the job
 
-## Technologies/ Tech Stack
+## Technologies and Practices
+
+### Tech Stack
 
 - ReactJS
   - React Router
@@ -117,3 +119,37 @@ Future plans to migrate the database to
 
 - Golang
 - MongoDB
+
+### Software Engineering Practices
+
+Development Plan
+
+- UX Research
+  - Upon our request to contact Charities and NGOs to conduct UX research, Sharon from CCSGP sent us resources from NVPC and Volunteer.gov to better understand the [factors that would increase the number of students who volunteer]
+    - Convenient location, Aligned with hobbies and interests, Learn a new skill, Can be done in a short period of time remotely, etc.
+  - We also setup a call with the Director and Vice Director of Community Service Cell from the Computing Club's 23rd Management Committee to find our about their experiences with recruiting volunteers for CIPs in SoC
+    - We found out that some reasons why students don't volunteer is because of their tight schedules, obscurity of the recruitment efforts as well as the lack of understanding of how volunteering would benefit them.
+- User stories
+  - We conceived four different epics that encapsulate the aim of our entire project with multiple user stories under each epic ensuring that the development of our project is user centric
+  - We utilized the INVEST (independent, negotiable, valuable, estimable, small, testable) framework to ensure that our user stories were appropriate to support our development journey
+- Site flow
+  - Developed a [site flow] with circles, squares and arrows on Figma Jam so that we have a better understanding of how a user's experience on our site will be like before actually drawing up any wireframes
+- Wireframe
+  - Crafted an interactive wireframe with Figma to simulate how the user interface will operate and how the site will flow
+- Mockups
+  - We then included logos, colour schemes, styled buttons, styled text and content on our [mockup] to better visualize the user experience on our website
+  ##### (The mockup link is just a PDF export and doesn't display the interactive capabilities that Figma provides)
+- Agile development framework
+  - Our mentor (Mr Ng Chee Chiu from Websparks) introduced us to the Agile development framework, a commonly adapted practice in the software development industry
+  - We adopted week long sprints where we select user stories to complete over the sprint duration
+  - We have daily standup meetings to discuss: what we did yesterday, what we're going to today, what obstacles did we encounter?
+  - Weekly sprint reviews and retrospectives with our scrum master (mentor) to gauge our completion date as well as how we can improve our sprint workflow
+- Version Control System with Git
+  - We used Git throughout our [entire development process]
+  - We utilized branching and merging to efficiently push out new features at the same time
+  - Documented the development of all the features and bug fixes through commit messages
+
+[site flow]: https://drive.google.com/file/d/1hSdXyB1xFKmg6QlgVsGBnoERXTWEKx4g/view?usp=sharing
+[mockup]: https://drive.google.com/file/d/1GWElwW_TpZHDBW_2tFEk45t8m7Xg8y36/view?usp=sharing
+[factors that would increase the number of students who volunteer]: https://drive.google.com/file/d/11drWXDgHnCVS_HWrWJEo9_XPGcHyMy9K/view?usp=sharing
+[entire development process]: https://github.com/Raypuff/orbital-job-board
