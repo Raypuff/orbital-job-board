@@ -1,32 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import JobCard from "../JobCard";
 import styles from "./JobBoard.module.css";
-import app from "../../../firebase";
+import { useStore } from "../../../contexts/StoreContext";
 
 const JobBoard = () => {
-  const [jobs, setJobs] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  const ref = app.firestore().collection("jobs");
-
-  function getJobs() {
-    setLoading(true);
-    ref.onSnapshot((querySnapshot) => {
-      const items = [];
-      querySnapshot.forEach((doc) => {
-        items.push(doc.data());
-      });
-      setJobs(items);
-      setLoading(false);
-    });
-  }
-
-  useEffect(() => {
-    getJobs();
-  }, []);
+  const { jobs, loading } = useStore();
 
   if (loading) {
-    return <h1>Loading...</h1>;
+    return <h1>Loading.....</h1>;
   }
 
   return (
@@ -35,7 +16,7 @@ const JobBoard = () => {
         <JobCard
           id={job.job_title}
           title={job.job_title}
-          org_name={job.organization_name}
+          org_name={job.name_of_organization}
           beneficiary={job.target_beneficiary}
           duration={job.duration}
           writeup={job.desc}
