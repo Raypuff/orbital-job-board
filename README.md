@@ -2,55 +2,118 @@
 
 ## Background
 
-We are Raypuff (Rayner) and ZechAJW (Zech) and we are Year 1 Computer Science Students from NUS. This project was developed for CP2106 (Orbital) 2021.
+We are Raypuff (Rayner) and ZechAJW (Zech) and we are Year 1 Computer Science Students from NUS. This project was developed for **CP2106 (Orbital) 2021**.
 
-## Aim
+## Purpose and Background
 
-Our aim is to develop a web application to link organizations looking to recruit volunteers to NUS students. End users will be able to easily look for suitable volunteer opportunities on the website, and apply directly to the job-poster through our platform. Administrators from CCSGP would also be able to moderate job postings and decide what jobs are available to students.
+The Centre for Computing for Social Good & Philanthropy (CCSGP) is a new centre set up in NUS School of Computing (SoC) since March 2021. The goal of CCSGP is to complement the techical training provided by the School of Computing by cultivating future technology leaders who have the ethos of service and giving back to society.
 
-## Link to Website
+The **CCSGP Volunteer Job Board** has the primary purpose of connecting _interested volunteers_ from SoC with _charities/non-governmental organizations_ (NGOs) to work on community involvement projects (CIPs) to contribute to society. Through this web application, we hope that these organizations would be able to more easily recruit volunteers. Interested students will also be able to search for volunteer opportunities on a consolidated platform that provides comprehensive information so that applying for these roles become a breeze.
 
-Currently we are hosting our website on vercel at the following link:
-https://orbital-job-board.vercel.app/
+## Try it out!
+
+[Our website](https://orbital-job-board.vercel.app/ "Website")
+[Our GitHub Repo](https://github.com/Raypuff/orbital-job-board "GitHub Repo")
+[Our poster](https://drive.google.com/file/d/1VpWt9sQ8y1BvlT-0KUxB0YvH7ItnztyU/view?usp=sharing "Poster")
+[Our demo video](link "Demo Video")
+[Our project logbook](https://docs.google.com/spreadsheets/d/1HsLfNHxZ4fMQSNBybzluq1HdkAFYvASxaa2HC9JAglQ/edit?usp=sharing "Project Logbook")
+[Our proposal](https://docs.google.com/document/d/1h0JwCsjwX3XLwYS6BjNqg9NluY7D2T5eR8hlQdbZxw0/edit?usp=sharing "Proposal")
+
+---
+
+# Details
 
 ## Motivation
 
-As Year 1 NUS students ourselves, we are not unfamiliar with the problems that students typically face when looking for volunteering opportunities to join. When Prof Ben Leong proposed this Orbital project idea, we leapt at the opportunity to sign up recognizing that there remains a sizable gap in communication with organizations looking to recruit NUS Computing students for volunteer opportunities.
+As Year 1 NUS students ourselves, we are not unfamiliar with the problems that students typically face when looking for volunteering opportunities to join. When Professor Ben Leong proposed this Orbital project idea, we leapt at the opportunity to sign up recognizing that there remains a sizable gap in communication with organizations looking to recruit NUS Computing students for volunteer opportunities.
 
 Personally, our volunteering experience with SOC has been rather short-lived, as the opportunity I signed up for, a volunteer opportunity looking to introduce seniors from CareCorner Senior Activity Centre to IT, was cancelled due to insufficient volunteers and lack of proper publicity within NUS Computing. Furthermore, finding volunteer experiences relevant to my technical skill-set remains difficult, as there is no consolidated avenue to look for volunteer requests suitable for me. By the time I became aware of Code in the Community, an initiative to introduce underprivileged children to coding, the sign up period had lapsed and I missed yet another volunteering opportunity. As a result, we recognize the impact that a dedicated job board would have for the volunteering scene in NUS Computing.
 
-## Features still being developed
+## Target Audience
 
-### Students:
+- Charities and NGOs looking to recruit volunteers from NUS SoC
+- NUS SoC students interested in using their technical skills to make a positive impact on society through volunteer opportunities
 
-- Browse available jobs anonymously
-- Filter jobs based on personal preferences
-- Login with NUS student account
-- Send in job applications for available jobs
-- Check status of applications (accepted/rejected)
-- Be contacted when application is successful
-- Subscribe to email notifications to receive updates on new volunteer opportunities
+## Needs
 
-### Organizations:
+### Charities and NGOs
 
-- Create an account with email confirmation
-- Post job listings
-- Browse applicants for jobs listings
-- Accept or reject applicants and automatically notify them
+- Charities and NGOs often struggle to recruit sufficient volunteers for CIPs
+- These are some of the reasons why
+  - The portal or platform used to recruit volunteers is obscure
+  - The duration of the CIP is incompatible with students' busy schedules
+  - The processing of volunteers is manual and tedious
+  - Students do not see any personal benefit from volunteering
 
-### CCSGP Admins:
+### NUS SoC students
 
-- Login with NUS staff account to access administrative privileges
-- View all pending job postings by organizations
-- Accept or reject job postings
+- Students that are interested in volunteering do not know where to look for opportunities (especially opportunities that can make use of their technical abilities)
+- The application process is long and unclear
 
-## Tech Stack:
+### NUS Staff in CCSGP
 
-Currently we are utilizing
+- When CCSGP opens, they would definitely receive requests from charities and NGOs to recruit SoC students as volunteers
+- CCSGP Staff would have to manually process these requests by: asking for specific details, gaining approval, emailing students, link students up with charities and NGOs
+
+## Features (User Stories)
+
+### ~~Features to be completed by end of May~~ **Completed**
+
+- As a site user (logged out or logged in), I want to
+  - **browse available jobs** so that I can decide which job(s) to apply for
+- As a volunteer recruiter, I want to
+  - **create an account** so that I can login to post a job listing
+
+### Features to be completed by mid of June
+
+- As a student from NUS, I want to
+  - **send in job applications** so that I can notify organizations of my interest in volunteering for their CIP
+  - **be contacted when my application is successful** so that I can appropriately accommodate and prepare for it
+- As a volunteer recruiter, I want to
+  - **post a job listing** so that potential volunteers can view them and apply for it
+  - **view applicants for my job listings** so that I follow up appropriately
+- As a CCSGP admin, I want to
+  - **login with my NUS staff account** so that I can access administrative privileges
+  - **view all pending job listings** so that I can deem if they are appropriate to be uploaded on the platform
+  - **accept or reject job listings** so that I can ensure only approved listings are published on the job board
+
+### Features to be completed by end of June
+
+- As a student from NUS, I want to
+  - **login with my NUS student account** so that I can easily volunteer my services
+  - **filter jobs** so that I can quickly browse jobs that are more relevant to me
+  - **check the status of my applications** so that I can know if I have been accepted or rejected
+- As a volunteer recruiter, I want to
+  - **accept or reject applicants** so that I can choose which volunteers to take on
+- As a CCSGP admin, I want to
+  - **be able to take down job listings** so that I can remove any inappropriate content
+
+### Features to be completed by mid of July
+
+- As a student from NUS, I want to
+  - **ask organization questions** so that I can clear up any queries I have
+  - **subsribe to email notification** so that I can receive email updates if there are new volunteer opportunities
+  - **unsubscribe from email notifications** so that I can ensure that I only receive emails I am interested in
+  - **select which kinds of jobs I will be notified of** so that I only receive relevant updates in my inbox
+- As a volunteer recruiter, I want to
+  - **edit my job listings** so that I can reflect any real time changes to my CIP
+  - **contact job applicants** so that I can clarify any questions about their application
+  - **edit my profile details** so that I can still be contacted if my details were to change
+- As a CCSGP admin, I want to
+  - **contact an organization** so that I can discuss their job listings with them
+  - **view the details of all job listings** so that I can check the status of the job
+
+## Technologies/ Tech Stack
 
 - ReactJS
   - React Router
   - Bootstrap 4
-- Firestore (temporarily)
-- Golang (we are planning to migrate to Golang and MongoDB through June)
+- Firebase by Google
+  - Firebase Authentication
+  - Firestore (temporarily)
+- Vercel
+
+Future plans to migrate the database to
+
+- Golang
 - MongoDB
