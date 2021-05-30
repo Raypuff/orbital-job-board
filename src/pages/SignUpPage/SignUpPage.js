@@ -1,14 +1,16 @@
 import Header from "../../components/Header";
-import LoggedOutNavbar from "../../components/NAVBAR/LoggedOutNavbar";
+import MyNavbar from "../../components/NAVBAR/MyNavbar";
+import { useAuth } from "../../contexts/AuthContext";
 import SignUpForm from "../../components/SignUpForm";
 import Footer from "../../components/Footer";
 // import styles from "./SignUpPage.module.css";
 
 const SignUpPage = () => {
+  const { currentUser } = useAuth();
   return (
     <div>
       <Header />
-      <LoggedOutNavbar />
+      <MyNavbar isLoggedIn={currentUser} />
       <SignUpForm />
       <Footer />
     </div>
