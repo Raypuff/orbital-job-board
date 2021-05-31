@@ -18,7 +18,7 @@ The **CCSGP Volunteer Job Board** has the primary purpose of connecting _interes
 
 [Our poster](https://drive.google.com/file/d/1nsecsyOWpjNYWjVU8bYa7FxjphBxLOKh/view?usp=sharing "Poster")
 
-[Our demo video](link "Demo Video")
+[Our demo video](https://drive.google.com/file/d/1KUSu9Xx-kPYpAYzoeOspLDN17fMOd1UD/view?usp=sharing "Demo Video")
 
 [Our project logbook](https://docs.google.com/spreadsheets/d/1HsLfNHxZ4fMQSNBybzluq1HdkAFYvASxaa2HC9JAglQ/edit?usp=sharing "Project Logbook")
 
