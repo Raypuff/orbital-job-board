@@ -68,7 +68,6 @@ const PostAJob = () => {
       setLoading(true);
       addJob(newJob);
       setSuccessful(true);
-      console.log(newJob);
     } catch (err) {
       setError("Failed to post a job");
       console.log(err);
