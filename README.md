@@ -155,7 +155,7 @@ Development Plan
   - Weekly sprint reviews and retrospectives with our scrum master (mentor) to gauge our completion date as well as how we can improve our sprint workflow
 - Version Control System with Git
   - We used Git throughout our [entire development process]
-  - We utilized branching and merging to efficiently push out new features at the same time
+  - We utilized branching and merging to efficiently develop new features at the same time
   - Documented the development of all the features and bug fixes through commit messages
   - You can view all our commits history on our GitHub page
 
