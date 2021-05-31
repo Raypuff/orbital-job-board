@@ -30,7 +30,7 @@ The **CCSGP Volunteer Job Board** has the primary purpose of connecting _interes
 
 ## Motivation
 
-As Year 1 NUS students ourselves, we are not unfamiliar with the problems that students typically face when looking for volunteering opportunities to join. When Professor Ben Leong proposed this Orbital project idea, we leapt at the opportunity to sign up recognizing that there remains a sizable gap in communication with organizations looking to recruit NUS Computing students for volunteer opportunities.
+As Year 1 NUS students ourselves, we are not unfamiliar with the problems that students typically face when looking for volunteering opportunities to join. When Professor Ben Leong proposed this Orbital project idea, we leapt at the opportunity to sign up, recognizing that there remains a sizable gap in communication with organizations looking to recruit NUS Computing students for volunteer opportunities.
 
 Personally, our volunteering experience with SOC has been rather short-lived, as the opportunity I signed up for, a volunteer opportunity looking to introduce seniors from CareCorner Senior Activity Centre to IT, was cancelled due to insufficient volunteers and lack of proper publicity within NUS Computing. Furthermore, finding volunteer experiences relevant to my technical skill-set remains difficult, as there is no consolidated avenue to look for volunteer requests suitable for me. By the time I became aware of Code in the Community, an initiative to introduce underprivileged children to coding, the sign up period had lapsed and I missed yet another volunteering opportunity. As a result, we recognize the impact that a dedicated job board would have for the volunteering scene in NUS Computing.
 
