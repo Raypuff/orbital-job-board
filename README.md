@@ -6,7 +6,7 @@ We are Raypuff (Loh Jia Ming, Rayner) and ZechAJW (Zechary Au Jun Wen) and we ar
 
 ## Purpose and Background
 
-The Centre for Computing for Social Good & Philanthropy (CCSGP) is a new centre set up in NUS School of Computing (SoC) since March 2021. The goal of CCSGP is to complement the techical training provided by the School of Computing by cultivating future technology leaders who have the ethos of service and giving back to society.
+The Centre for Computing for Social Good & Philanthropy (CCSGP) is a new centre set up in NUS School of Computing (SoC) since March 2021. The goal of CCSGP is to complement the technical training provided by the School of Computing by cultivating future technology leaders who have the ethos of service and giving back to society.
 
 The **CCSGP Volunteer Job Board** has the primary purpose of connecting _interested volunteers_ from SoC with _charities/non-governmental organizations_ (NGOs) to work on community involvement projects (CIPs) to contribute to society. Through this web application, we hope that these organizations would be able to more easily recruit volunteers. Interested students will also be able to search for volunteer opportunities on a consolidated platform that provides comprehensive information so that applying for these roles become a breeze.
 
