@@ -16,7 +16,7 @@ The **CCSGP Volunteer Job Board** has the primary purpose of connecting _interes
 
 [Our GitHub Repo](https://github.com/Raypuff/orbital-job-board "GitHub Repo")
 
-[Our poster](https://drive.google.com/file/d/1VpWt9sQ8y1BvlT-0KUxB0YvH7ItnztyU/view?usp=sharing "Poster")
+[Our poster](https://drive.google.com/file/d/1nsecsyOWpjNYWjVU8bYa7FxjphBxLOKh/view?usp=sharing "Poster")
 
 [Our demo video](link "Demo Video")
 
