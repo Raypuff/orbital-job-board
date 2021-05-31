@@ -99,7 +99,7 @@ Personally, our volunteering experience with SOC has been rather short-lived, as
 
 - As a student from NUS, I want to
   - **ask organizations questions** so that I can clear up any queries I have
-  - **subsribe to email notification** so that I can receive email updates if there are new volunteer opportunities
+  - **subscribe to email notification** so that I can receive email updates if there are new volunteer opportunities
   - **unsubscribe from email notifications** so that I can ensure that I only receive emails I am interested in
   - **select which kinds of jobs I will be notified of** so that I only receive relevant updates in my inbox
 - As a volunteer recruiter, I want to
@@ -136,7 +136,7 @@ Development Plan
 - UX Research
   - Upon our request to contact Charities and NGOs to conduct UX research, Sharon from CCSGP sent us resources from NVPC and Volunteer.gov to better understand the [factors that would increase the number of students who volunteer]
     - Convenient location, Aligned with hobbies and interests, Learn a new skill, Can be done in a short period of time remotely, etc.
-  - We also setup a call with the Director and Vice Director of Community Service Cell from the Computing Club's 23rd Management Committee to find our about their experiences with recruiting volunteers for CIPs in SoC
+  - We also set up a call with the Director and Vice Director of Community Service Cell from the Computing Club's 23rd Management Committee to find our about their experiences with recruiting volunteers for CIPs in SoC
     - We found out that some reasons why students don't volunteer is because of their tight schedules, obscurity of the recruitment efforts as well as the lack of understanding of how volunteering would benefit them.
 - User stories
   - We conceived four different epics that encapsulate the aim of our entire project with multiple user stories under each epic ensuring that the development of our project is user centric
