@@ -98,7 +98,7 @@ Personally, our volunteering experience with SOC has been rather short-lived, as
 ### Features to be completed by mid of July
 
 - As a student from NUS, I want to
-  - **ask organization questions** so that I can clear up any queries I have
+  - **ask organizations questions** so that I can clear up any queries I have
   - **subsribe to email notification** so that I can receive email updates if there are new volunteer opportunities
   - **unsubscribe from email notifications** so that I can ensure that I only receive emails I am interested in
   - **select which kinds of jobs I will be notified of** so that I only receive relevant updates in my inbox
