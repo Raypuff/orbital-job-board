@@ -6,3 +6,8 @@
 ol > li {
   font-weight: bold;
 }
+
+.divider {
+  border-top: 3px solid #f8f8f8;
+  margin: 30px 0;
+}
