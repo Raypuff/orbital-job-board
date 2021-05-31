@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 import PostAJobButton from "../PostAJobButton";
 
-// import styles from "./MyNavbar.module.css";
+import styles from "./LoggedInNavbar.module.css";
 
 const LoggedInNavbar = () => {
   const [error, setError] = useState("");
@@ -26,9 +26,9 @@ const LoggedInNavbar = () => {
 
   function isVerified() {
     if (currentUser.emailVerified) {
-      return "User is verified";
+      return "Verified";
     } else {
-      return "User in not verified";
+      return "Please verify your email";
     }
   }
 
@@ -43,9 +43,11 @@ const LoggedInNavbar = () => {
               id="collasible-nav-dropdown"
               alignRight
             >
-              <NavDropdown.Header>{currentUser.email}</NavDropdown.Header>
+              <NavDropdown.Header className={styles.email}>
+                {currentUser.email}
+                <br />({isVerified()})
+              </NavDropdown.Header>
               <NavDropdown.Divider />
-              <Navbar.Text>{isVerified()}</Navbar.Text>
               <NavDropdown.Item>
                 <Nav.Link onClick={handleLogout}>Log out</Nav.Link>
               </NavDropdown.Item>
