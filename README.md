@@ -1,6 +1,6 @@
 # CCSGP Volunteer Job Board
 
-## Background
+## Who are we?
 
 We are Raypuff (Loh Jia Ming, Rayner) and ZechAJW (Zechary Au Jun Wen) and we are Year 1 Computer Science Students from NUS. This project was developed for **CP2106 (Orbital) 2021** under Team NUSGrabYourOwnFood.
 
