@@ -6,7 +6,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useStore } from "../../contexts/StoreContext";
 
 const PostAJob = () => {
-  const { addJob } = useStore();
+  const { addItem } = useStore();
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [message, setMessage] = useState("");
@@ -44,7 +44,6 @@ const PostAJob = () => {
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(nameOfOrganizationRef === false);
 
     //creating the job to be posted from the refs
     const newJob = {
@@ -66,7 +65,7 @@ const PostAJob = () => {
       setSubmitted(true);
       setError("");
       setLoading(true);
-      addJob(newJob);
+      addItem(newJob, "jobs");
       setSuccessful(true);
     } catch (err) {
       setError("Failed to post a job");

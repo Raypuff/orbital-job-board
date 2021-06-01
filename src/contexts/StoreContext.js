@@ -11,9 +11,9 @@ export function StoreProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [jobs, setWork] = useState([]);
 
-  const ref = store.collection("jobs");
-
+  //GET FUNCTION FOR JOB BOARD - FIGURE OUT HOW TO MAKE IT MODULAR IN THE FUTURE
   function getJobs() {
+    const ref = store.collection("jobs");
     setLoading(true);
     ref.onSnapshot((querySnapshot) => {
       const items = [];
@@ -30,20 +30,24 @@ export function StoreProvider({ children }) {
   }, []);
 
   // ADD FUNCTION
-  function addJob(newJob) {
+  function addItem(itemToAdd, collectionType) {
+    const ref = store.collection(collectionType);
+
     ref
       //.doc() use if for some reason you want that firestore generates the id
       .doc()
-      .set(newJob)
+      .set(itemToAdd)
       .catch((err) => {
         console.error(err);
       });
   }
 
   //DELETE FUNCTION
-  function deleteJob(job) {
+  function deleteItem(itemToDelete, collectionType) {
+    const ref = store.collection(collectionType);
+
     ref
-      .doc(job.id)
+      .doc(itemToDelete.id)
       .delete()
       .catch((err) => {
         console.error(err);
@@ -51,11 +55,11 @@ export function StoreProvider({ children }) {
   }
 
   // EDIT FUNCTION
-  function editJob(updatedJob) {
-    setLoading();
+  function editItem(itemToEdit, collectionType) {
+    const ref = store.collection(collectionType);
     ref
-      .doc(updatedJob.id)
-      .update(updatedJob)
+      .doc(itemToEdit.id)
+      .update(itemToEdit)
       .catch((err) => {
         console.error(err);
       });
@@ -64,9 +68,9 @@ export function StoreProvider({ children }) {
   const value = {
     loading,
     jobs,
-    addJob,
-    deleteJob,
-    editJob,
+    addItem,
+    deleteItem,
+    editItem,
     getJobs,
   };
 
