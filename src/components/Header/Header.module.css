@@ -9,18 +9,19 @@ header {
   margin: 0 auto;
 }
 
-img {
+.headerLogo {
   height: 50px;
   margin: 25px 2em;
 }
 
 .rightlogo {
+  composes: headerLogo;
   margin-left: auto;
 }
 
 @media (max-width: 600px) {
   header,
-  img {
+  .headerLogo {
     height: 0px;
   }
 }

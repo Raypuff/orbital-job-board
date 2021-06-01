@@ -1,7 +1,12 @@
+.container {
+  display: grid;
+  place-items: center;
+}
+
 .jobContainer {
   display: flex;
   flex-direction: column;
-  width: 45vw;
+  width: 40em;
   height: auto;
   margin: 20px 0;
 }

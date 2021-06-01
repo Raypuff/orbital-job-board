@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { Navbar, Nav, NavDropdown } from "react-bootstrap";
+import { NavDropdown, Nav } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
-import PostAJobButton from "../PostAJobButton";
 
 import styles from "./LoggedInNavbar.module.css";
 
@@ -33,30 +32,16 @@ const LoggedInNavbar = () => {
   }
 
   return (
-    <>
-      <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse className="justify-content-end">
-          <Nav>
-            <NavDropdown
-              title="Profile"
-              id="collasible-nav-dropdown"
-              alignRight
-            >
-              <NavDropdown.Header className={styles.email}>
-                {currentUser.email}
-                <br />({isVerified()})
-              </NavDropdown.Header>
-              <NavDropdown.Divider />
-              <NavDropdown.Item>
-                <Nav.Link onClick={handleLogout}>Log out</Nav.Link>
-              </NavDropdown.Item>
-            </NavDropdown>
-          </Nav>
-          <PostAJobButton />
-        </Navbar.Collapse>
-      </Navbar>
-    </>
+    <NavDropdown title="Profile" id="collasible-nav-dropdown" alignRight>
+      <NavDropdown.Header className={styles.email}>
+        {currentUser.email}
+        <br />({isVerified()})
+      </NavDropdown.Header>
+      <NavDropdown.Divider />
+      <NavDropdown.Item>
+        <Nav.Link onClick={handleLogout}>Log out</Nav.Link>
+      </NavDropdown.Item>
+    </NavDropdown>
   );
 };
 

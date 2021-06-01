@@ -11,17 +11,19 @@ const JobBoard = () => {
   }
 
   return (
-    <div className={styles.jobContainer}>
-      {jobs.map((job) => (
-        <JobCard
-          id={job.job_title}
-          title={job.job_title}
-          org_name={job.organization_name}
-          beneficiary={job.target_beneficiary}
-          duration={job.duration}
-          writeup={job.desc}
-        />
-      ))}
+    <div className={styles.container}>
+      <div className={styles.jobContainer}>
+        {jobs.map((job) => (
+          <JobCard
+            id={job.job_title}
+            title={job.job_title}
+            org_name={job.organization_name}
+            beneficiary={job.target_beneficiary}
+            duration={job.duration}
+            writeup={job.desc}
+          />
+        ))}
+      </div>
     </div>
   );
 };
