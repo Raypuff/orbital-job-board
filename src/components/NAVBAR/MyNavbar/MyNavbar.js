@@ -1,5 +1,5 @@
 import { Navbar, Nav } from "react-bootstrap";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import LoggedOutNavbar from "../LoggedOutNavbar";
 import LoggedInNavbar from "../LoggedInNavbar";
 import PostAJobButton from "../PostAJobButton";
@@ -19,11 +19,13 @@ const MyNavbar = ({ isLoggedIn }) => {
       <div className={styles.navbar}>
         <Navbar bg="light" variant="light">
           <Navbar.Brand>
-            <img
-              className={styles.navbarLogo}
-              src={nusccsgplogo}
-              alt="NUS CCSGP Logo"
-            />
+            <Link to="/">
+              <img
+                className={styles.navbarLogo}
+                src={nusccsgplogo}
+                alt="NUS CCSGP Logo"
+              />
+            </Link>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse className="justify-content-end">
