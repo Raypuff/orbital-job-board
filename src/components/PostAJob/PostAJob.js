@@ -193,7 +193,6 @@ const PostAJob = () => {
         <Form.Group controlId="formTerms">
           <Form.Check
             required
-            required
             type="checkbox"
             label="I agree with the Terms and Conditions of Use"
             feedback="You must agree with the Terms and Conditions of Use before you can post a job"
