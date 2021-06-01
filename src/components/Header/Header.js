@@ -5,21 +5,18 @@ import nuslogo from "../../assets/nussoc.png";
 
 const Header = () => {
   return (
-    <header className={styles.headerBar}>
-      <Link to="/">
+    <header>
+      <div className={styles.logobox}>
+        <Link to="/">
+          <img src={nuslogo} title="NUS Computing" alt="NUS Computing Logo" />
+        </Link>
         <img
-          className={styles.nusLogo}
-          src={nuslogo}
-          title="NUS Computing"
-          alt="MISSING PNG"
+          className={styles.rightlogo}
+          src={ccsgplogo}
+          title="CCSGP"
+          alt="CCSGP Logo"
         />
-      </Link>
-      <img
-        className={styles.ccsgpLogo}
-        src={ccsgplogo}
-        title="CCSGP"
-        alt="MISSING PNG"
-      />
+      </div>
     </header>
   );
 };
