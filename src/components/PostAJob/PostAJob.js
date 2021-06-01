@@ -39,12 +39,15 @@ const PostAJob = () => {
   }
 
   const [show, setShow] = useState(false);
-  const [org, setOrg] = useState("");
+  const [org, setOrg] = useState("NUS Organization");
   const [error, setError] = useState("");
 
-  function handleSubmit(event) {
+  const handleSubmit = (event) => {
     event.preventDefault();
+<<<<<<< HEAD
 
+=======
+>>>>>>> d28307671eb1401124905a224b0403e62661e20b
     //creating the job to be posted from the refs
     const newJob = {
       name_of_contact: nameRef.current.value,
@@ -73,14 +76,16 @@ const PostAJob = () => {
     }
     setLoading(false);
     setMessage("Job Posted! Thank you for using our service");
-  }
+  };
 
+  // Rendering the corresponding fields depending on type of organization
   const OrgRender = ({ org }) => {
     if (org === "NUS Organization") {
       return (
         <Form.Group controlId="formNUSOrg">
           <Form.Label>Name of Student Organization</Form.Label>
           <Form.Control
+            required
             placeholder="NUS Hackers"
             ref={nameOfStudentOrganizationRef}
           ></Form.Control>
@@ -92,6 +97,7 @@ const PostAJob = () => {
           <Form.Group controlId="formNonNUSOrg">
             <Form.Label>Name of Organization</Form.Label>
             <Form.Control
+              required
               placeholder="Saturday Kids"
               ref={nameOfOrganizationRef}
             ></Form.Control>
@@ -100,7 +106,11 @@ const PostAJob = () => {
             <Form.Label>
               UEN, Charity registration number or Society registration number
             </Form.Label>
-            <Form.Control placeholder="TyyCCnnnnX" ref={UENRef}></Form.Control>
+            <Form.Control
+              required
+              placeholder="TyyCCnnnnX"
+              ref={UENRef}
+            ></Form.Control>
           </Form.Group>
         </>
       );
@@ -119,6 +129,7 @@ const PostAJob = () => {
         <Form.Group controlId="formOrganization">
           <Form.Label>Organization Type</Form.Label>
           <Form.Control
+            required
             as="select"
             onChange={(event) => setOrg(event.target.value)}
           >
@@ -126,36 +137,44 @@ const PostAJob = () => {
             <option>Non-NUS Organization</option>
           </Form.Control>
         </Form.Group>
-        <OrgRender org={org} />
         {/* conditional rendering of {name of group} or {name of org + uen} */}
+        <OrgRender org={org} />
         <Form.Group controlId="formName">
           <Form.Label>Name of contact person</Form.Label>
-          <Form.Control placeholder="John Doe" ref={nameRef} />
+          <Form.Control required placeholder="John Doe" ref={nameRef} />
         </Form.Group>
         <Form.Group controlId="formMobileNumber">
           <Form.Label>Mobile number of contact person</Form.Label>
-          <Form.Control placeholder="9123 4567" ref={phoneNumberRef} />
+          <Form.Control required placeholder="9123 4567" ref={phoneNumberRef} />
         </Form.Group>
         <Form.Group controlId="formEmail">
           <Form.Label>Email address of contact person</Form.Label>
           <Form.Control type="email" placeholder={userEmail} disabled />
         </Form.Group>
+        <hr className={styles.divider} />
         <Form.Group controlId="formTitle">
           <Form.Label>Title of volunteer work</Form.Label>
-          <Form.Control placeholder="Python instructor" ref={jobTitleRef} />
+          <Form.Control
+            required
+            placeholder="Python instructor"
+            ref={jobTitleRef}
+          />
         </Form.Group>
         <Form.Group controlId="formPurpose">
           <Form.Label>Purpose of volunteer work</Form.Label>
           <Form.Control
+            required
             as="textarea"
             rows={2}
-            placeholder="Teach children basic programming skills (elaborate on how students can benefit from volunteering)"
+            placeholder={`Teach children basic programming skills
+(Elaborate on how students can benefit from volunteering)`}
             ref={purposeRef}
           />
         </Form.Group>
         <Form.Group controlId="formBeneficiary">
           <Form.Label>Target profile of beneficiary</Form.Label>
           <Form.Control
+            required
             placeholder="Children from disadvantaged backgrounds"
             ref={targetBeneficiaryRef}
           />
@@ -163,19 +182,21 @@ const PostAJob = () => {
         <Form.Group controlId="formSkills">
           <Form.Label>Skills required</Form.Label>
           <Form.Control
+            required
             placeholder="Intermediate Python programming skills"
             ref={skillsRequiredRef}
           />
         </Form.Group>
         <Form.Group controlId="formDuration">
           <Form.Label>Duration of volunteer work</Form.Label>
-          <Form.Control placeholder="2 months" ref={durationRef} />
+          <Form.Control required placeholder="2 months" ref={durationRef} />
         </Form.Group>
         <Link to="/post_a_job" onClick={() => setShow(true)}>
           Terms and Conditions of Use
         </Link>
         <Form.Group controlId="formTerms">
           <Form.Check
+            required
             required
             type="checkbox"
             label="I agree with the Terms and Conditions of Use"

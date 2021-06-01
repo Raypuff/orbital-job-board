@@ -1,4 +1,5 @@
-.email {
+.signedOut {
   display: grid;
   place-items: center;
+  height: 15vh;
 }

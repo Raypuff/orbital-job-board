@@ -1,12 +1,12 @@
 # CCSGP Volunteer Job Board
 
-## Background
+## Who are we?
 
 We are Raypuff (Loh Jia Ming, Rayner) and ZechAJW (Zechary Au Jun Wen) and we are Year 1 Computer Science Students from NUS. This project was developed for **CP2106 (Orbital) 2021** under Team NUSGrabYourOwnFood.
 
 ## Purpose and Background
 
-The Centre for Computing for Social Good & Philanthropy (CCSGP) is a new centre set up in NUS School of Computing (SoC) since March 2021. The goal of CCSGP is to complement the techical training provided by the School of Computing by cultivating future technology leaders who have the ethos of service and giving back to society.
+The Centre for Computing for Social Good & Philanthropy (CCSGP) is a new centre set up in NUS School of Computing (SoC) since March 2021. The goal of CCSGP is to complement the technical training provided by the School of Computing by cultivating future technology leaders who have the ethos of service and giving back to society.
 
 The **CCSGP Volunteer Job Board** has the primary purpose of connecting _interested volunteers_ from SoC with _charities/non-governmental organizations_ (NGOs) to work on community involvement projects (CIPs) to contribute to society. Through this web application, we hope that these organizations would be able to more easily recruit volunteers. Interested students will also be able to search for volunteer opportunities on a consolidated platform that provides comprehensive information so that applying for these roles become a breeze.
 
@@ -16,9 +16,9 @@ The **CCSGP Volunteer Job Board** has the primary purpose of connecting _interes
 
 [Our GitHub Repo](https://github.com/Raypuff/orbital-job-board "GitHub Repo")
 
-[Our poster](https://drive.google.com/file/d/1VpWt9sQ8y1BvlT-0KUxB0YvH7ItnztyU/view?usp=sharing "Poster")
+[Our poster](https://drive.google.com/file/d/1nsecsyOWpjNYWjVU8bYa7FxjphBxLOKh/view?usp=sharing "Poster")
 
-[Our demo video](link "Demo Video")
+[Our demo video](https://drive.google.com/file/d/1KUSu9Xx-kPYpAYzoeOspLDN17fMOd1UD/view?usp=sharing "Demo Video")
 
 [Our project logbook](https://docs.google.com/spreadsheets/d/1HsLfNHxZ4fMQSNBybzluq1HdkAFYvASxaa2HC9JAglQ/edit?usp=sharing "Project Logbook")
 
@@ -30,7 +30,7 @@ The **CCSGP Volunteer Job Board** has the primary purpose of connecting _interes
 
 ## Motivation
 
-As Year 1 NUS students ourselves, we are not unfamiliar with the problems that students typically face when looking for volunteering opportunities to join. When Professor Ben Leong proposed this Orbital project idea, we leapt at the opportunity to sign up recognizing that there remains a sizable gap in communication with organizations looking to recruit NUS Computing students for volunteer opportunities.
+As Year 1 NUS students ourselves, we are not unfamiliar with the problems that students typically face when looking for volunteering opportunities to join. When Professor Ben Leong proposed this Orbital project idea, we leapt at the opportunity to sign up, recognizing that there remains a sizable gap in communication with organizations looking to recruit NUS Computing students for volunteer opportunities.
 
 Personally, our volunteering experience with SOC has been rather short-lived, as the opportunity I signed up for, a volunteer opportunity looking to introduce seniors from CareCorner Senior Activity Centre to IT, was cancelled due to insufficient volunteers and lack of proper publicity within NUS Computing. Furthermore, finding volunteer experiences relevant to my technical skill-set remains difficult, as there is no consolidated avenue to look for volunteer requests suitable for me. By the time I became aware of Code in the Community, an initiative to introduce underprivileged children to coding, the sign up period had lapsed and I missed yet another volunteering opportunity. As a result, we recognize the impact that a dedicated job board would have for the volunteering scene in NUS Computing.
 
@@ -98,8 +98,8 @@ Personally, our volunteering experience with SOC has been rather short-lived, as
 ### Features to be completed by mid of July
 
 - As a student from NUS, I want to
-  - **ask organization questions** so that I can clear up any queries I have
-  - **subsribe to email notification** so that I can receive email updates if there are new volunteer opportunities
+  - **ask organizations questions** so that I can clear up any queries I have
+  - **subscribe to email notification** so that I can receive email updates if there are new volunteer opportunities
   - **unsubscribe from email notifications** so that I can ensure that I only receive emails I am interested in
   - **select which kinds of jobs I will be notified of** so that I only receive relevant updates in my inbox
 - As a volunteer recruiter, I want to
@@ -136,7 +136,7 @@ Development Plan
 - UX Research
   - Upon our request to contact Charities and NGOs to conduct UX research, Sharon from CCSGP sent us resources from NVPC and Volunteer.gov to better understand the [factors that would increase the number of students who volunteer]
     - Convenient location, Aligned with hobbies and interests, Learn a new skill, Can be done in a short period of time remotely, etc.
-  - We also setup a call with the Director and Vice Director of Community Service Cell from the Computing Club's 23rd Management Committee to find our about their experiences with recruiting volunteers for CIPs in SoC
+  - We also set up a call with the Director and Vice Director of Community Service Cell from the Computing Club's 23rd Management Committee to find our about their experiences with recruiting volunteers for CIPs in SoC
     - We found out that some reasons why students don't volunteer is because of their tight schedules, obscurity of the recruitment efforts as well as the lack of understanding of how volunteering would benefit them.
 - User stories
   - We conceived four different epics that encapsulate the aim of our entire project with multiple user stories under each epic ensuring that the development of our project is user centric
@@ -155,7 +155,7 @@ Development Plan
   - Weekly sprint reviews and retrospectives with our scrum master (mentor) to gauge our completion date as well as how we can improve our sprint workflow
 - Version Control System with Git
   - We used Git throughout our [entire development process]
-  - We utilized branching and merging to efficiently push out new features at the same time
+  - We utilized branching and merging to efficiently develop new features at the same time
   - Documented the development of all the features and bug fixes through commit messages
   - You can view all our commits history on our GitHub page
 

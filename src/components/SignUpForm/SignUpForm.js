@@ -65,6 +65,9 @@ const SignUpForm = () => {
             ref={passwordRef}
             required
           />
+          <Form.Text id="passwordReq" muted>
+            Your password must be at least 6 characters long.
+          </Form.Text>
         </Form.Group>
         <Form.Group controlId="formBasicPassword">
           <Form.Label>Confirm Password</Form.Label>

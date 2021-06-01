@@ -4,6 +4,7 @@ import Footer from "../../components/Footer";
 import PostAJob from "../../components/PostAJob";
 import { useAuth } from "../../contexts/AuthContext";
 import { Link } from "react-router-dom";
+import styles from "./PostAJobPage.module.css";
 
 const PostAJobPage = () => {
   const { currentUser } = useAuth();
@@ -13,9 +14,11 @@ const PostAJobPage = () => {
       return <PostAJob />;
     } else {
       return (
-        <div>
-          Please <Link to="/sign_in">sign in as organization</Link> to post a
-          job!
+        <div className={styles.signedOut}>
+          <p>
+            Please <Link to="/sign_in">sign in as organization</Link> to post a
+            job!
+          </p>
         </div>
       );
     }
