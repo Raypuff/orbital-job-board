@@ -44,10 +44,7 @@ const PostAJob = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-<<<<<<< HEAD
 
-=======
->>>>>>> d28307671eb1401124905a224b0403e62661e20b
     //creating the job to be posted from the refs
     const newJob = {
       name_of_contact: nameRef.current.value,
@@ -68,14 +65,22 @@ const PostAJob = () => {
       setSubmitted(true);
       setError("");
       setLoading(true);
-      addItem(newJob, "jobs");
-      setSuccessful(true);
+
+      if (!currentUser.emailVerified) {
+        setError(
+          "User is not verified. Please verify your account before posting a job."
+        );
+      } else {
+        addItem(newJob, "jobs");
+        setSuccessful(true);
+        setMessage("Job Posted! Thank you for using our service");
+      }
     } catch (err) {
       setError("Failed to post a job");
       console.log(err);
     }
     setLoading(false);
-    setMessage("Job Posted! Thank you for using our service");
+    setSubmitted(false);
   };
 
   // Rendering the corresponding fields depending on type of organization
@@ -196,7 +201,6 @@ const PostAJob = () => {
         </Link>
         <Form.Group controlId="formTerms">
           <Form.Check
-            required
             required
             type="checkbox"
             label="I agree with the Terms and Conditions of Use"

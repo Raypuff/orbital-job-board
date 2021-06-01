@@ -9,7 +9,7 @@ export function useStore() {
 
 export function StoreProvider({ children }) {
   const [loading, setLoading] = useState(true);
-  const [jobs, setWork] = useState([]);
+  const [jobs, setJobs] = useState([]);
 
   //GET FUNCTION FOR JOB BOARD - FIGURE OUT HOW TO MAKE IT MODULAR IN THE FUTURE
   function getJobs() {
@@ -20,7 +20,7 @@ export function StoreProvider({ children }) {
       querySnapshot.forEach((doc) => {
         items.push(doc.data());
       });
-      setWork(items);
+      setJobs(items);
       setLoading(false);
     });
   }
