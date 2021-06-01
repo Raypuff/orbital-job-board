@@ -1,18 +1,26 @@
-.headerBar {
+header {
   height: 100px;
-  width: 100vw;
   background-color: #fff;
+}
+
+.logobox {
   display: flex;
-  align-items: center;
+  max-width: 75em;
+  margin: 0 auto;
 }
 
-.nusLogo {
+img {
   height: 50px;
-  padding: 0px 40px;
+  margin: 25px 2em;
 }
 
-.ccsgpLogo {
-  height: 100px;
-  padding: 0px 40px;
+.rightlogo {
   margin-left: auto;
+}
+
+@media (max-width: 600px) {
+  header,
+  img {
+    height: 0px;
+  }
 }

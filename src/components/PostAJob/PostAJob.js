@@ -6,7 +6,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useStore } from "../../contexts/StoreContext";
 
 const PostAJob = () => {
-  const { addJob } = useStore();
+  const { addItem } = useStore();
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [message, setMessage] = useState("");
@@ -44,6 +44,7 @@ const PostAJob = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
     //creating the job to be posted from the refs
     const newJob = {
       name_of_contact: nameRef.current.value,
@@ -64,14 +65,22 @@ const PostAJob = () => {
       setSubmitted(true);
       setError("");
       setLoading(true);
-      addJob(newJob);
-      setSuccessful(true);
+
+      if (!currentUser.emailVerified) {
+        setError(
+          "User is not verified. Please verify your account before posting a job."
+        );
+      } else {
+        addItem(newJob, "jobs");
+        setSuccessful(true);
+        setMessage("Job Posted! Thank you for using our service");
+      }
     } catch (err) {
       setError("Failed to post a job");
       console.log(err);
     }
     setLoading(false);
-    setMessage("Job Posted! Thank you for using our service");
+    setSubmitted(false);
   };
 
   // Rendering the corresponding fields depending on type of organization
