@@ -5,7 +5,7 @@ import LoggedInNavbar from "../LoggedInNavbar";
 import PostAJobButton from "../PostAJobButton";
 
 const MyNavbar = ({ isLoggedIn }) => {
-  const LoginButton = (isLoggedIn) => {
+  const LoginButton = ({ isLoggedIn }) => {
     if (isLoggedIn != null) {
       return <LoggedInNavbar />;
     }
