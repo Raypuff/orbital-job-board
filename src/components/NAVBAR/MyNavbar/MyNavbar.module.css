@@ -1,0 +1,18 @@
+.navback {
+  background-color: #f8f8f8;
+}
+
+.navbar {
+  max-width: 75em;
+  margin: auto;
+}
+
+.navbarLogo {
+  height: 0;
+}
+
+@media (max-width: 600px) {
+  .navbarLogo {
+    height: 2em;
+  }
+}

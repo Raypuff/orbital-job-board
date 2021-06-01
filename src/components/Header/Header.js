@@ -8,7 +8,12 @@ const Header = () => {
     <header>
       <div className={styles.logobox}>
         <Link to="/">
-          <img src={nuslogo} title="NUS Computing" alt="NUS Computing Logo" />
+          <img
+            className={styles.headerLogo}
+            src={nuslogo}
+            title="NUS Computing"
+            alt="NUS Computing Logo"
+          />
         </Link>
         <img
           className={styles.rightlogo}

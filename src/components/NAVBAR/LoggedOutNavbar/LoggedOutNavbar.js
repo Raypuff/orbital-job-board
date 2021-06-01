@@ -8,10 +8,12 @@ const LoggedOutNavbar = () => {
   return (
     <NavDropdown title="Sign in" id="collasible-nav-dropdown" alignRight>
       <NavDropdown.Item>
-        <Nav.Link to="linktoNUSauthpage">Sign in as NUS Student</Nav.Link>
+        <Nav.Link href="/linktoNUSauthpage">Sign in as NUS Student</Nav.Link>
+        {/* <Link href="/linktoNUSauthpage">Sign in as NUS Student</Link> */}
       </NavDropdown.Item>
       <NavDropdown.Item>
-        <Nav.Link to="/sign_in">Sign in as Organization</Nav.Link>
+        <Nav.Link href="/sign_in">Sign in as Organization</Nav.Link>
+        {/* <Link href="/sign_in">Sign in as Organization</Link> */}
       </NavDropdown.Item>
     </NavDropdown>
   );

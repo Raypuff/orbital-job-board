@@ -2,11 +2,7 @@ import React, { useState } from "react";
 import { NavDropdown, Nav } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
-<<<<<<< HEAD
-=======
-import PostAJobButton from "../PostAJobButton";
 
->>>>>>> main
 import styles from "./LoggedInNavbar.module.css";
 
 const LoggedInNavbar = () => {
