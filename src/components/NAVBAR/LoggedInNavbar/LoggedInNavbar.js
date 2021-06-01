@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 import PostAJobButton from "../PostAJobButton";
 
-import styles from "./LoggedinNavbar.module.css";
+import styles from "./LoggedInNavbar.module.css";
 
 const LoggedInNavbar = () => {
   const [error, setError] = useState("");
