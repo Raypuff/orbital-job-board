@@ -1,4 +1,4 @@
-import { Navbar, Nav } from "react-bootstrap";
+import { Container, Navbar, Nav } from "react-bootstrap";
 
 import LoggedOutNavbar from "../LoggedOutNavbar";
 import LoggedInNavbar from "../LoggedInNavbar";
@@ -13,8 +13,8 @@ const MyNavbar = ({ isLoggedIn }) => {
   };
 
   return (
-    <>
-      <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
+    <div>
+      <Navbar bg="light" variant="light">
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse className="justify-content-end">
           <Nav>
@@ -23,7 +23,7 @@ const MyNavbar = ({ isLoggedIn }) => {
           <PostAJobButton />
         </Navbar.Collapse>
       </Navbar>
-    </>
+    </div>
   );
 };
 
