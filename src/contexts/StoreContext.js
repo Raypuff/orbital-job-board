@@ -30,12 +30,12 @@ export function StoreProvider({ children }) {
   }, []);
 
   // ADD FUNCTION
-  function addItem(itemToAdd, collectionType) {
+  function addItem(itemToAdd, collectionType, itemID) {
     const ref = store.collection(collectionType);
 
     ref
       //.doc() use if for some reason you want that firestore generates the id
-      .doc()
+      .doc(itemID)
       .set(itemToAdd)
       .catch((err) => {
         console.error(err);

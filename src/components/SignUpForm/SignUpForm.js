@@ -3,15 +3,17 @@ import { Form, Button, Alert } from "react-bootstrap";
 import styles from "./SignUpForm.module.css";
 import { useAuth } from "../../contexts/AuthContext";
 import { Link } from "react-router-dom";
+import { useStore } from "../../contexts/StoreContext";
 
 const SignUpForm = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
-  const { signup, logout, sendEmailVerification } = useAuth();
+  const { currentUser, signup, logout, sendEmailVerification } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const { addItem } = useStore();
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -29,6 +31,13 @@ const SignUpForm = () => {
       await logout();
       setMessage(
         "Signed up successfully. Please check your email for a verification message."
+      );
+      await addItem(
+        {
+          dateCreated: new Date().toDateString(),
+        },
+        "organization_accounts",
+        emailRef.current.value
       );
     } catch (err) {
       if (err.code === "auth/email-already-in-use") {
@@ -69,11 +78,11 @@ const SignUpForm = () => {
             Your password must be at least 6 characters long.
           </Form.Text>
         </Form.Group>
-        <Form.Group controlId="formBasicPassword">
+        <Form.Group controlId="formBasicPasswordConfirmation">
           <Form.Label>Confirm Password</Form.Label>
           <Form.Control
             type="password"
-            placeholder="Password"
+            placeholder="Password Confirmation"
             ref={passwordConfirmRef}
             required
           />
