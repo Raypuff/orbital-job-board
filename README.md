@@ -158,8 +158,10 @@ Development Plan
   - We utilized branching and merging to efficiently develop new features at the same time
   - Documented the development of all the features and bug fixes through commit messages
   - You can view all our commits history on our GitHub page
+  - We also begun utilizing our own [Feature/Bug tracking system] so we can closely document all our changes and how they relate to our user stories
 
 [site flow]: https://drive.google.com/file/d/1hSdXyB1xFKmg6QlgVsGBnoERXTWEKx4g/view?usp=sharing
 [mockup]: https://drive.google.com/file/d/1GWElwW_TpZHDBW_2tFEk45t8m7Xg8y36/view?usp=sharing
 [factors that would increase the number of students who volunteer]: https://drive.google.com/file/d/11drWXDgHnCVS_HWrWJEo9_XPGcHyMy9K/view?usp=sharing
 [entire development process]: https://github.com/Raypuff/orbital-job-board
+[Feature/Bug tracking system]: https://docs.google.com/spreadsheets/d/14P5sG-DUtl7x0qW9U2vxdqsYJShfEl3tvCG6gyLderE/edit?usp=sharing
