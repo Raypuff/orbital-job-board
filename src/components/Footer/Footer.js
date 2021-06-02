@@ -1,45 +1,145 @@
 import styles from "./Footer.module.css";
-// import address from "../../assets/location-arrow-solid.svg";
-// import phone from "../../assets/phone-alt-solid.svg";
-// import email from "../../assets/envelope-solid.svg";
+import address from "../../assets/icons/location-arrow-solid.svg";
+import phone from "../../assets/icons/phone-alt-solid.svg";
+import email from "../../assets/icons/envelope-solid.svg";
+import gps from "../../assets/icons/gps.png";
+import facebook from "../../assets/icons/facebook.png";
+import twitter from "../../assets/icons/twitter.png";
+import instagram from "../../assets/icons/instagram.png";
+import youtube from "../../assets/icons/youtube.png";
+import linkedin from "../../assets/icons/linkedin.png";
+import blog from "../../assets/icons/blog.png";
+import blank from "../../assets/icons/blank.svg";
 
 const Footer = () => {
   return (
     <footer>
-      <div className={styles.breadcrumbs}>
-        <div className={styles.container}>
+      <div className={styles.linkBack}>
+        <div className={styles.addContainer}>
+          <h4>NUS School of Computing</h4>
           <ul>
-            <li> </li>
+            <li>
+              <img className={styles.addSvg} src={address} alt="address svg" />
+              Computing 1<br />
+              <img className={styles.addSvg2} src={blank} alt="blank" />
+              13 Computing Drive
+              <br />
+              <img className={styles.addSvg2} src={blank} alt="blank" />
+              Singapore 117417
+            </li>
+            <li>
+              <img className={styles.addSvg} src={phone} alt="phone svg" />
+              +65 6516 2727
+            </li>
+            <li>
+              <img className={styles.addSvg} src={email} alt="email svg" />
+              <a href="mailto:ccsgp@nus.edu.sg">Contact Us</a>
+            </li>
+            <br />
+            <li>
+              <img className={styles.gpsSvg} src={gps} alt="gps svg" />
+              <a href="https://www.comp.nus.edu.sg/maps/getting-here">
+                Directions
+              </a>
+            </li>
           </ul>
-        </div>
-      </div>
-      <div className={styles.footer}>
-        <div className={styles.addressPanel}>
-          <div>
-            <h3 className={styles.addressHeader}>
-              National University of Singapore
-            </h3>
-            <ul className={styles.addressLink}>
-              <li>
-                21 Lower Kent Ridge Road
-                <br />
-                Singapore 119077
-              </li>
-              <li>+65 6516 6666</li>
-              <li>
-                <a href="mailto:ccsgp@nus.edu.sg">ccsgp@nus.edu.sg</a>
-              </li>
-            </ul>
+          <div className={styles.socialIcons}>
+            <a href="https://www.facebook.com/NusSchoolOfComputing">
+              <img src={facebook} alt="Facebook Icon"></img>
+            </a>
+            <a href="https://twitter.com/nuscomputing">
+              <img src={twitter} alt="Twitter Icon"></img>
+            </a>
+            <a href="https://instagram.com/nuscomputing/">
+              <img src={instagram} alt="Instagram Icon"></img>
+            </a>
+            <a href="https://www.youtube.com/channel/UCVd-qsSFF328UUqcNxudy0w">
+              <img src={youtube} alt="YouTube Icon"></img>
+            </a>
+            <a href="https://www.linkedin.com/company/nuscomputing">
+              <img src={linkedin} alt="LinkedIn Icon"></img>
+            </a>
+            <a href="http://socbytes.blogspot.sg/">
+              <img src={blog} alt="Blog Icon"></img>
+            </a>
           </div>
         </div>
-        <div className={styles.copyrightBox}>
+        <div className={styles.resContainer}>
+          <h4>Organisation</h4>
+          <a href="https://www.comp.nus.edu.sg/about">About</a>
+          <a href="https://www.comp.nus.edu.sg/about/depts/cs">
+            Dept. of Computer Science
+          </a>
+          <a href="https://www.comp.nus.edu.sg/about/depts/disa">
+            Dept. of Information Systems and Analytics
+          </a>
+          <a href="https://www.comp.nus.edu.sg/about/iac">
+            Industry Advisory Committee
+          </a>
+          <a href="https://www.comp.nus.edu.sg/about/mgt">Management</a>
+          <a href="https://www.comp.nus.edu.sg/about/directory">
+            Staff Directory
+          </a>
+          <a href="https://www.comp.nus.edu.sg/about/faculty">
+            Faculty Photo Directory
+          </a>
+          <a
+            className={styles.expandLink}
+            href="https://www.comp.nus.edu.sg/about/admin"
+          >
+            Admin Photo Directory
+          </a>
+          <a
+            className={styles.expandLink}
+            href="https://www.comp.nus.edu.sg/about/expert"
+          >
+            Expert Directory
+          </a>
+          <a href="https://www.comp.nus.edu.sg/about/admin">News</a>
+          <a href="https://www.comp.nus.edu.sg/industry">Industry Relations</a>
+          <a href="https://www.comp.nus.edu.sg/giving">Giving</a>
+          <a href="http://www.comp.nus.edu.sg/careers">Careers</a>
+          <br />
+          <h4>Resources</h4>
+          <a href="https://mysoc.nus.edu.sg/">MySoC</a>
+          <a href="http://exchange.nus.edu.sg/">Email</a>
+          <a href="https://myportal.nus.edu.sg/">Student</a>
+          <a href="http://www.nus.edu.sg/staff">Staff</a>
+          <a href="https://events.comp.nus.edu.sg/">Events Calendar</a>
+          <a href="https://ivle.nus.edu.sg/">IVLE</a>
+          <a href="http://libportal.nus.edu.sg/">Library</a>
+          <a href="http://www.nus.edu.sg/alumnet/">Alumni</a>
+          <a href="https://dochub.comp.nus.edu.sg/">Facilities & Services</a>
+          <a href="https://nusu.sharepoint.com/sites/soc/default.aspx">
+            Student Jobs
+          </a>
+        </div>
+        {/* <div className={styles.expandBox}>
+          <h4>Graduate Programmes</h4>
+          <a>PhD in Computer Science</a>
+          <a>PhD in Information Systems</a>
+        </div>
+        <div className={styles.expandBox}>
+          <h4>Undergraduate Programmes</h4>
+        </div> */}
+      </div>
+      <div className={styles.legalBack}>
+        <div className={styles.legalBox}>
+          <div>© National University of Singapore. All Rights Reserved.</div>
           <div>
-            <p>National University of Singapore. All Rights Reserved.</p>
-            <div className={styles.copyrightLinks}>
-              <p>Legal</p>
-              <p className={styles.dot}>•</p>
-              <p>Branding guidelines</p>
-            </div>
+            <ul className={styles.legalLink}>
+              <li>
+                <a href="https://www.comp.nus.edu.sg/legal">Legal</a>
+              </li>
+              <li>•</li>
+              <li>
+                <a href="http://www.nus.edu.sg/identity">Branding Guidelines</a>
+              </li>
+              <li>•</li>
+              <li>
+                <a href="http://www.nus.edu.sg/contact">Contact us</a>
+              </li>
+            </ul>
           </div>
         </div>
       </div>

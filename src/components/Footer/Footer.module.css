@@ -1,137 +1,134 @@
 footer {
-  width: 100vw;
-  display: grid;
-  grid-template-rows: repeat(3, auto);
-  /* bottom: 0; */
-  /* left: 0; */
   font-size: 0.9rem;
-  margin-top: auto;
-}
-
-.breadcrumbs {
-  background-color: #002449;
-  border-top: 1px solid #003d7c;
-  padding: 13px 0;
-}
-.breadcrumbs ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.breadcrumbs ul > li {
-  display: inline-block;
-  color: #999;
-  margin-right: 5px;
-}
-.breadcrumbs ul > li .icon {
-  padding-right: 10px;
-  color: #ef7c00;
-}
-.breadcrumbs ul > li a {
-  color: #555;
-}
-.breadcrumbs ul > li a:hover {
-  color: #fff;
-  text-decoration: none;
-}
-.breadcrumbs ul > li + li:before {
-  content: " / ";
-  margin-right: 5px;
-}
-
-.footer {
-  background: #003062;
-  border-top: 1px solid #003d7c;
-  color: #999;
-  font-weight: 300;
-  display: grid;
-  place-items: center;
-}
-.footer a {
-  color: #999;
-}
-.footer a:hover,
-.footer a:focus {
-  color: #fff;
-  text-decoration: none;
-}
-.footer ul {
-  margin: 0;
-  padding: 0;
-}
-.footer ul li {
-  list-style: none;
-  line-height: 24px;
-}
-
-.footer .addressPanel {
-  /* container */
-  max-width: 1170px;
-  /* row wrapper navigator */
-  padding: 120px 0;
-  /* nus-social-box */
-  display: grid;
-  place-items: center;
-  margin: 0 auto;
-  text-align: center;
-  border: none;
-  padding: 0;
-  height: 15vh;
-}
-.footer .addressHeader {
-  margin-top: 20px;
-  color: #fff;
-  font-size: 18px;
-}
-.footer .addressLink {
-  display: inline-block;
-  text-align: left;
-}
-.footer ul.addressLink li {
-  position: relative;
-}
-.footer ul.addressLink .icon {
-  display: block;
-  position: absolute;
-  left: 0;
-  color: #fff;
-  top: 2px;
-}
-/* .addressIcon {
-  display: block;
-  position: absolute;
-  left: 0;
-  color: #fff;
-  height: 16px;
-  width: 16px;
-} */
-
-/* .addressPanel {
-  height: 413px;
-  background-color: #003062;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-} */
-
-.copyrightBox {
-  height: 122px;
-  display: grid;
-  place-items: center;
-  /* flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center; */
+  /* margin-top: auto; */
   background-color: #003062;
   color: #868c92;
-  font-size: 12px;
-}
-
-.copyrightLinks {
+  font-size: 14px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  /* align-items: center; */
 }
 
-.dot {
-  padding: 0 5px;
+.linkBack {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1em;
+}
+
+.resContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1.5em;
+  line-height: 2;
+}
+
+.addContainer {
+  composes: resContainer;
+  padding-bottom: 2em;
+  border-bottom: 1px solid #004186;
+  margin-top: 5em;
+}
+
+.addContainer > ul {
+  list-style-type: none;
+  margin-right: 2em;
+}
+
+.addSvg {
+  height: 1em;
+  margin: 0 0.8em;
+}
+
+/* blank svg to ensure spacing of street and postal code is correct */
+.addSvg2 {
+  height: 0;
+  margin: 0;
+}
+
+@media (min-width: 991px) {
+  .addSvg2 {
+    height: 1em;
+    margin: 0 0.8rem;
+  }
+}
+
+.gpsSvg {
+  height: 1.5em;
+  margin: 0 0.8em;
+}
+
+div > h4 {
+  font-size: 18px;
+  color: #fff;
+}
+
+.expandLink {
+  font-size: 0;
+}
+
+.socialIcons {
+  margin-top: 3em;
+}
+
+.socialIcons > a > img {
+  margin: 0 0.25em;
+}
+
+.legalBack {
+  display: grid;
+  place-items: center;
+  border: 1px solid #004186;
+  background-color: #003062;
+}
+
+.legalBox {
+  margin: 1.5em 0;
+}
+
+.legalLink > li {
+  display: inline-block;
+  margin: 0 0.4em;
+  text-decoration: none;
+  color: #868c92;
+}
+
+.resContainer > a,
+li > a {
+  color: #868c92;
+}
+
+.resContainer > a:hover,
+li > a:hover {
+  text-decoration: none;
+  color: #fff;
+}
+
+@media (min-width: 991px) {
+  .linkBack {
+    flex-direction: row-reverse;
+    justify-content: center;
+    /* max-width: 75em; */
+  }
+
+  /* admin photo directory and expert directory don't show on mobile */
+  .expandLink {
+    font-size: 1em;
+  }
+
+  .resContainer {
+    margin-top: 5em;
+    padding: 0 1em;
+    text-align: left;
+  }
+
+  .addContainer {
+    border-left: 1px solid #004186;
+    border-bottom: 0px;
+  }
+
+  .addContainer > ul {
+    padding-left: 0;
+    margin-right: auto;
+  }
 }
