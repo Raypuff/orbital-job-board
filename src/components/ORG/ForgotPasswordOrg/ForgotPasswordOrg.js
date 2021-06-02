@@ -1,10 +1,10 @@
 import React, { useRef, useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
-import styles from "./ForgotPassword.module.css";
 import { Link } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "../../../contexts/AuthContext";
+import styles from "./ForgotPasswordOrg.module.css";
 
-const ForgotPassword = () => {
+const ForgotPasswordOrg = () => {
   const emailRef = useRef();
   const { resetPassword, currentUser } = useAuth();
   const [error, setError] = useState("");
@@ -19,7 +19,9 @@ const ForgotPassword = () => {
       setError("");
       setLoading(true);
       await resetPassword(emailRef.current.value);
-      setMessage("Check your inbox for further instructions");
+      setMessage(
+        "We have sent you an email with instructions on how to reset your password."
+      );
       console.log(currentUser);
     } catch (e) {
       setError("Failed to reset password");
@@ -42,25 +44,22 @@ const ForgotPassword = () => {
             required
           />
           <Form.Text className="text-muted">
-            We'll never share your email with anyone else.
+            Input the email that you used to register your organization account.
           </Form.Text>
         </Form.Group>
 
-        {/* <Form.Group controlId="formBasicCheckbox">
-          <Form.Check type="checkbox" label="Check me out" />
-        </Form.Group> */}
         <Button disabled={loading} variant="primary" type="submit">
           Reset Password
         </Button>
-        <div>
-          <Link to="sign_in">Login</Link>
-        </div>
       </Form>
       <div className="w-100 text-center mt-2">
-        Need an account? <Link to="/register">Sign Up</Link>
+        Representing your organization and interested in posting a volunteer
+        opportunity?
+        <br />
+        <Link to="/sign-up-organization">Sign up here!</Link>
       </div>
     </div>
   );
 };
 
-export default ForgotPassword;
+export default ForgotPasswordOrg;

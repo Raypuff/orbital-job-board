@@ -16,7 +16,7 @@ const LoggedInNavbar = () => {
     try {
       await logout();
       history.push("/");
-      alert("Logged out successfully");
+      alert("Signed out successfully");
     } catch {
       setError("Failed to log out");
       console.log(error);
@@ -39,7 +39,7 @@ const LoggedInNavbar = () => {
       </NavDropdown.Header>
       <NavDropdown.Divider />
       <NavDropdown.Item>
-        <Nav.Link onClick={handleLogout}>Log out</Nav.Link>
+        <Nav.Link onClick={handleLogout}>Sign out</Nav.Link>
       </NavDropdown.Item>
     </NavDropdown>
   );

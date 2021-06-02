@@ -1,21 +1,21 @@
 import Header from "../../components/Header";
 import MyNavbar from "../../components/NAVBAR/MyNavbar";
-import Landing from "../../components/Landing";
+import SignInOrgForm from "../../components/ORG/SignInOrgForm";
 import Footer from "../../components/Footer";
-// import styles from "./LandingPage.module.css";
 import { useAuth } from "../../contexts/AuthContext";
+// import styles from "./SignInOrgPage.module.css";
 
-const LandingPage = () => {
+const SignInOrgPage = () => {
   const { currentUser } = useAuth();
 
   return (
-    <>
+    <div>
       <Header />
       <MyNavbar isLoggedIn={currentUser} />
-      <Landing />
+      <SignInOrgForm />
       <Footer />
-    </>
+    </div>
   );
 };
 
-export default LandingPage;
+export default SignInOrgPage;

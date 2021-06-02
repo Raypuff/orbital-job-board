@@ -1,21 +1,21 @@
 import Header from "../../components/Header";
 import MyNavbar from "../../components/NAVBAR/MyNavbar";
-import LoginForm from "../../components/LoginForm";
+import ForgotPasswordOrg from "../../components/ORG/ForgotPasswordOrg";
 import Footer from "../../components/Footer";
 import { useAuth } from "../../contexts/AuthContext";
-// import styles from "./SignInPage.module.css";
+// import styles from "./ForgotPasswordOrgPage.module.css"
 
-const SignInPage = () => {
+const ForgotPasswordOrgPage = () => {
   const { currentUser } = useAuth();
 
   return (
     <div>
       <Header />
       <MyNavbar isLoggedIn={currentUser} />
-      <LoginForm />
+      <ForgotPasswordOrg />
       <Footer />
     </div>
   );
 };
 
-export default SignInPage;
+export default ForgotPasswordOrgPage;

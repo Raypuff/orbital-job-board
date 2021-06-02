@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const PostAJobButton = () => {
   return (
     <Nav>
-      <Nav.Link as={Link} to="/post_a_job">
+      <Nav.Link as={Link} to="/post-a-job">
         Post A Job
       </Nav.Link>
     </Nav>

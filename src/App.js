@@ -1,7 +1,7 @@
 import LandingPage from "./pages/LandingPage";
-import SignInPage from "./pages/SignInPage";
-import SignUpPage from "./pages/SignUpPage";
-import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import SignInOrgPage from "./pages/SignInOrgPage";
+import SignUpOrgPage from "./pages/SignUpOrgPage";
+import ForgotPasswordPage from "./pages/ForgotPasswordOrgPage";
 import JobBoardPage from "./pages/JobBoardPage";
 import PostAJobPage from "./pages/PostAJobPage";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -14,19 +14,19 @@ function App() {
       <AuthProvider>
         <Router>
           <Switch>
-            <Route path="/sign_in">
-              <SignInPage />
+            <Route path="/sign-in-organization">
+              <SignInOrgPage />
             </Route>
-            <Route path="/register">
-              <SignUpPage />
+            <Route path="/sign-up-organization">
+              <SignUpOrgPage />
             </Route>
-            <Route path="/forgot_password">
+            <Route path="/forgot-password-organization">
               <ForgotPasswordPage />
             </Route>
-            <Route path="/job_board">
+            <Route path="/job-board">
               <JobBoardPage />
             </Route>
-            <Route path="/post_a_job">
+            <Route path="/post-a-job">
               <PostAJobPage />
             </Route>
             <Route path="/">

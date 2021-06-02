@@ -1,10 +1,10 @@
 import React, { useRef, useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
-import styles from "./SignUpForm.module.css";
-import { useAuth } from "../../contexts/AuthContext";
+import styles from "./SignUpOrgForm.module.css";
+import { useAuth } from "../../../contexts/AuthContext";
 import { Link } from "react-router-dom";
 
-const SignUpForm = () => {
+const SignUpOrgForm = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
@@ -78,18 +78,16 @@ const SignUpForm = () => {
             required
           />
         </Form.Group>
-        {/* <Form.Group controlId="formBasicCheckbox">
-          <Form.Check type="checkbox" label="Check me out" />
-        </Form.Group> */}
         <Button disabled={loading} variant="primary" type="submit">
-          Sign Up
+          Sign up
         </Button>
       </Form>
       <div className="w-100 text-center mt-2">
-        Already have an account? <Link to="/sign_in">Log in</Link>
+        Already have an organization account?{" "}
+        <Link to="/sign-in-organization">Sign in</Link>
       </div>
     </div>
   );
 };
 
-export default SignUpForm;
+export default SignUpOrgForm;

@@ -1,20 +1,20 @@
 import Header from "../../components/Header";
 import MyNavbar from "../../components/NAVBAR/MyNavbar";
 import { useAuth } from "../../contexts/AuthContext";
-import SignUpForm from "../../components/SignUpForm";
+import SignUpOrgForm from "../../components/ORG/SignUpOrgForm";
 import Footer from "../../components/Footer";
-// import styles from "./SignUpPage.module.css";
+// import styles from "./SignUpOrgPage.module.css";
 
-const SignUpPage = () => {
+const SignUpOrgPage = () => {
   const { currentUser } = useAuth();
   return (
     <div>
       <Header />
       <MyNavbar isLoggedIn={currentUser} />
-      <SignUpForm />
+      <SignUpOrgForm />
       <Footer />
     </div>
   );
 };
 
-export default SignUpPage;
+export default SignUpOrgPage;

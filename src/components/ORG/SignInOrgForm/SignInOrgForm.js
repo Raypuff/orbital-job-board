@@ -1,10 +1,10 @@
 import React, { useRef, useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
-import styles from "./LoginForm.module.css";
 import { Link, useHistory } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "../../../contexts/AuthContext";
+import styles from "./SignInOrgForm.module.css";
 
-const LoginForm = () => {
+const SignInOrgForm = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const { login, currentUser } = useAuth();
@@ -59,21 +59,21 @@ const LoginForm = () => {
             required
           />
         </Form.Group>
-        {/* <Form.Group controlId="formBasicCheckbox">
-          <Form.Check type="checkbox" label="Check me out" />
-        </Form.Group> */}
         <Button disabled={loading} variant="primary" type="submit">
-          Login
+          Sign in
         </Button>
         <div>
-          <Link to="/forgot_password">Forgot Password?</Link>
+          <Link to="/forgot-password-organization">Forgot Password?</Link>
         </div>
       </Form>
       <div className="w-100 text-center mt-2">
-        Need an account? <Link to="/register">Sign Up</Link>
+        Representing your organization and interested in posting a volunteer
+        opportunity?
+        <br />
+        <Link to="/sign-up-organization">Sign up here!</Link>
       </div>
     </div>
   );
 };
 
-export default LoginForm;
+export default SignInOrgForm;
