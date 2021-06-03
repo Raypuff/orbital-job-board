@@ -1,0 +1,8 @@
+.formBG {
+  display: grid;
+  place-items: center;
+}
+
+.formContainer {
+  margin: 10vmax 0 12vmax;
+}

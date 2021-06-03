@@ -49,7 +49,6 @@ const SignInOrgForm = () => {
                   required
                 />
               </Form.Group>
-
               <Form.Group controlId="formBasicPassword">
                 <Form.Label>Password</Form.Label>
                 <Form.Control
@@ -62,14 +61,14 @@ const SignInOrgForm = () => {
               <Button disabled={loading} variant="primary" type="submit">
                 Sign in
               </Button>
-              <Card.Text />
-              {error && <Alert variant="danger">{error}</Alert>}
-              <Card.Text />
-              <Card.Text>
-                <Link to="/forgot-password-organization">Forgot Password?</Link>
-              </Card.Text>
-              <Card.Text />
             </Form>
+            <Card.Text />
+            {error && <Alert variant="danger">{error}</Alert>}
+            <Card.Text />
+            <Card.Text>
+              <Link to="/forgot-password-organization">Forgot Password?</Link>
+            </Card.Text>
+            <Card.Text />
             <Card.Footer>
               Representing your organization and interested in posting a
               volunteer opportunity?{" "}

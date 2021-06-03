@@ -54,10 +54,8 @@ const ForgotPasswordOrg = () => {
               <Button disabled={loading} variant="primary" type="submit">
                 Reset Password
               </Button>
-              <Card.Text>
-                <br />
-              </Card.Text>
             </Form>
+            <Card.Text />
             <Card.Footer>
               Representing your organization and interested in posting a
               volunteer opportunity?{" "}

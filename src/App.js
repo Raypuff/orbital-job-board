@@ -3,7 +3,8 @@ import SignInOrgPage from "./pages/SignInOrgPage";
 import SignUpOrgPage from "./pages/SignUpOrgPage";
 import ForgotPasswordOrgPage from "./pages/ForgotPasswordOrgPage";
 import SignInAdminPage from "./pages/SignInAdminPage";
-
+import SignInStuPage from "./pages/SignInStuPage";
+import SignUpStuPage from "./pages/SignUpStuPage";
 import JobBoardPage from "./pages/JobBoardPage";
 import PostAJobPage from "./pages/PostAJobPage";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -16,9 +17,11 @@ function App() {
       <AuthProvider>
         <Router>
           <Switch>
+            {/* Admin Pages */}
             <Route path="/sign-in-admin">
               <SignInAdminPage />
             </Route>
+            {/* Organization Pages */}
             <Route path="/sign-in-organization">
               <SignInOrgPage />
             </Route>
@@ -28,11 +31,19 @@ function App() {
             <Route path="/forgot-password-organization">
               <ForgotPasswordOrgPage />
             </Route>
-            <Route path="/job-board">
-              <JobBoardPage />
-            </Route>
             <Route path="/post-a-job">
               <PostAJobPage />
+            </Route>
+            {/* Student Pages */}
+            <Route path="/sign-in-student">
+              <SignInStuPage />
+            </Route>
+            <Route path="/sign-up-student">
+              <SignUpStuPage />
+            </Route>
+            {/* General Pages */}
+            <Route path="/job-board">
+              <JobBoardPage />
             </Route>
             <Route path="/">
               <LandingPage />
