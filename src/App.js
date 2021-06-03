@@ -1,8 +1,9 @@
 import LandingPage from "./pages/LandingPage";
 import SignInOrgPage from "./pages/SignInOrgPage";
 import SignUpOrgPage from "./pages/SignUpOrgPage";
-import ForgotPasswordPage from "./pages/ForgotPasswordOrgPage";
+import ForgotPasswordOrgPage from "./pages/ForgotPasswordOrgPage";
 import SignInAdminPage from "./pages/SignInAdminPage";
+
 import JobBoardPage from "./pages/JobBoardPage";
 import PostAJobPage from "./pages/PostAJobPage";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -25,7 +26,7 @@ function App() {
               <SignUpOrgPage />
             </Route>
             <Route path="/forgot-password-organization">
-              <ForgotPasswordPage />
+              <ForgotPasswordOrgPage />
             </Route>
             <Route path="/job-board">
               <JobBoardPage />
