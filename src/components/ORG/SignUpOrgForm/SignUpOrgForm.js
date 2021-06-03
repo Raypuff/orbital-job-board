@@ -81,19 +81,19 @@ const SignUpOrgForm = () => {
               <Button disabled={loading} variant="primary" type="submit">
                 Sign up
               </Button>
-              <Card.Text />
-              {error && <Alert variant="danger">{error}</Alert>}
-              {message && (
-                <Alert variant="success">
-                  <Alert.Heading as="h6">{message}</Alert.Heading>
-                  <hr />
-                  <p className="mb-0">
-                    Please check your inbox for a verification email
-                  </p>
-                </Alert>
-              )}
-              <Card.Text />
             </Form>
+            <Card.Text />
+            {error && <Alert variant="danger">{error}</Alert>}
+            {message && (
+              <Alert variant="success">
+                <Alert.Heading as="h6">{message}</Alert.Heading>
+                <hr />
+                <p className="mb-0">
+                  Please check your inbox for a verification email
+                </p>
+              </Alert>
+            )}
+            <Card.Text />
             <Card.Footer>
               Already have an organization account?{" "}
               <Link to="/sign-in-organization">Sign in here!</Link>

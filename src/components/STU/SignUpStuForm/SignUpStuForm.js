@@ -1,7 +1,8 @@
-import { Card, Form, Button } from "react-bootstrap";
-import styles from "./SignInAdminForm.module.css";
+import { Card, Button, Form } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import styles from "./SignUpStuForm.module.css";
 
-const SignInAdminForm = () => {
+const SignUpStuForm = () => {
   async function handleSubmit(event) {
     console.log("your turn zech");
   }
@@ -10,7 +11,7 @@ const SignInAdminForm = () => {
     <div className={styles.formBG}>
       <div className={styles.formContainer}>
         <Card bg="light" text="dark" style={{ width: "23rem" }}>
-          <Card.Header as="h6">Sign in as a CCSGP administrator</Card.Header>
+          <Card.Header as="h6">Sign up as an NUS student</Card.Header>
           <Card.Body>
             <Form onSubmit={handleSubmit}>
               <Form.Group controlId="formBasicEmail">
@@ -21,6 +22,9 @@ const SignInAdminForm = () => {
                   // ref={emailRef}
                   required
                 />
+                <Form.Text className="text-muted">
+                  You can only sign up with your NUS email address
+                </Form.Text>
               </Form.Group>
               <Form.Group controlId="formBasicPassword">
                 <Form.Label>Password</Form.Label>
@@ -39,6 +43,11 @@ const SignInAdminForm = () => {
                 Sign in
               </Button>
             </Form>
+            <Card.Text />
+            <Card.Footer>
+              Already have an account?{" "}
+              <Link to="/sign-in-student">Sign in here!</Link>
+            </Card.Footer>
           </Card.Body>
         </Card>
       </div>
@@ -46,4 +55,4 @@ const SignInAdminForm = () => {
   );
 };
 
-export default SignInAdminForm;
+export default SignUpStuForm;
