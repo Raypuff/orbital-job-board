@@ -27,7 +27,7 @@ const PostAJobPage = () => {
   return (
     <>
       <Header />
-      <MyNavbar isLoggedIn={currentUser} />
+      <MyNavbar isSignedIn={currentUser} />
       {canPostJob()};
       <Footer />
     </>

@@ -1,21 +1,21 @@
 import Header from "../../components/Header";
 import MyNavbar from "../../components/NAVBAR/MyNavbar";
+import ForgotPasswordOrg from "../../components/ORG/ForgotPasswordOrg";
 import Footer from "../../components/Footer";
-import JobBoard from "../../components/JOBS/JobBoard";
 import { useAuth } from "../../contexts/AuthContext";
-// import styles from "./JobBoardPage.module.css";
+// import styles from "./ForgotPasswordOrgPage.module.css"
 
-const JobBoardPage = () => {
+const ForgotPasswordOrgPage = () => {
   const { currentUser } = useAuth();
 
   return (
-    <>
+    <div>
       <Header />
       <MyNavbar isSignedIn={currentUser} />
-      <JobBoard />
+      <ForgotPasswordOrg />
       <Footer />
-    </>
+    </div>
   );
 };
 
-export default JobBoardPage;
+export default ForgotPasswordOrgPage;

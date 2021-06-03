@@ -1,21 +1,20 @@
 import Header from "../../components/Header";
 import MyNavbar from "../../components/NAVBAR/MyNavbar";
+import SignInAdminForm from "../../components/ADMIN/SignInAdminForm";
 import Footer from "../../components/Footer";
-import JobBoard from "../../components/JOBS/JobBoard";
 import { useAuth } from "../../contexts/AuthContext";
-// import styles from "./JobBoardPage.module.css";
 
-const JobBoardPage = () => {
+const SignInAdminPage = () => {
   const { currentUser } = useAuth();
 
   return (
-    <>
+    <div>
       <Header />
       <MyNavbar isSignedIn={currentUser} />
-      <JobBoard />
+      <SignInAdminForm />
       <Footer />
-    </>
+    </div>
   );
 };
 
-export default JobBoardPage;
+export default SignInAdminPage;

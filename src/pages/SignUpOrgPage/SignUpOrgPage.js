@@ -1,21 +1,20 @@
 import Header from "../../components/Header";
 import MyNavbar from "../../components/NAVBAR/MyNavbar";
-import Footer from "../../components/Footer";
-import JobBoard from "../../components/JOBS/JobBoard";
 import { useAuth } from "../../contexts/AuthContext";
-// import styles from "./JobBoardPage.module.css";
+import SignUpOrgForm from "../../components/ORG/SignUpOrgForm";
+import Footer from "../../components/Footer";
+// import styles from "./SignUpOrgPage.module.css";
 
-const JobBoardPage = () => {
+const SignUpOrgPage = () => {
   const { currentUser } = useAuth();
-
   return (
-    <>
+    <div>
       <Header />
       <MyNavbar isSignedIn={currentUser} />
-      <JobBoard />
+      <SignUpOrgForm />
       <Footer />
-    </>
+    </div>
   );
 };
 
-export default JobBoardPage;
+export default SignUpOrgPage;

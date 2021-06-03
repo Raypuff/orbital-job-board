@@ -45,6 +45,7 @@ footer {
 .addSvg2 {
   height: 0;
   margin: 0;
+  user-select: none;
 }
 
 @media (min-width: 991px) {
