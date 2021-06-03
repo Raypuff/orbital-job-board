@@ -71,7 +71,8 @@ const PostAJob = () => {
           "User is not verified. Please verify your account before posting a job."
         );
       } else {
-        addItem(newJob, "jobs");
+        const jobID = userEmail + Date.now();
+        addItem(newJob, "jobs", jobID);
         setSuccessful(true);
         setMessage("Job Posted! Thank you for using our service");
       }
