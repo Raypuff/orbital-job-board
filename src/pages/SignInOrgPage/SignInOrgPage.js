@@ -11,7 +11,7 @@ const SignInOrgPage = () => {
   return (
     <div>
       <Header />
-      <MyNavbar isLoggedIn={currentUser} />
+      <MyNavbar isSignedIn={currentUser} />
       <SignInOrgForm />
       <Footer />
     </div>

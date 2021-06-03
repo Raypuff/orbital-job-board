@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Form, Button, Alert } from "react-bootstrap";
+import { Card, Form, Button, Alert } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 import styles from "./SignInOrgForm.module.css";
@@ -34,43 +34,49 @@ const SignInOrgForm = () => {
   }
 
   return (
-    <div className={styles.formPage}>
-      {error && <Alert variant="danger">{error}</Alert>}
-      <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="formBasicEmail">
-          <Form.Label>Organization email address</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="Enter email"
-            ref={emailRef}
-            required
-          />
-          <Form.Text className="text-muted">
-            We'll never share your email with anyone else.
-          </Form.Text>
-        </Form.Group>
+    <div className={styles.formBG}>
+      <div className={styles.formContainer}>
+        <Card bg="light" text="dark" style={{ width: "23rem" }}>
+          <Card.Header as="h6">Sign in as an organization</Card.Header>
+          <Card.Body>
+            <Form onSubmit={handleSubmit}>
+              <Form.Group controlId="formBasicEmail">
+                <Form.Label>Organization email address</Form.Label>
+                <Form.Control
+                  type="email"
+                  placeholder="Enter email"
+                  ref={emailRef}
+                  required
+                />
+              </Form.Group>
 
-        <Form.Group controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Password"
-            ref={passwordRef}
-            required
-          />
-        </Form.Group>
-        <Button disabled={loading} variant="primary" type="submit">
-          Sign in
-        </Button>
-        <div>
-          <Link to="/forgot-password-organization">Forgot Password?</Link>
-        </div>
-      </Form>
-      <div className="w-100 text-center mt-2">
-        Representing your organization and interested in posting a volunteer
-        opportunity?
-        <br />
-        <Link to="/sign-up-organization">Sign up here!</Link>
+              <Form.Group controlId="formBasicPassword">
+                <Form.Label>Password</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="Password"
+                  ref={passwordRef}
+                  required
+                />
+              </Form.Group>
+              <Button disabled={loading} variant="primary" type="submit">
+                Sign in
+              </Button>
+              <Card.Text />
+              {error && <Alert variant="danger">{error}</Alert>}
+              <Card.Text />
+              <Card.Text>
+                <Link to="/forgot-password-organization">Forgot Password?</Link>
+              </Card.Text>
+              <Card.Text />
+            </Form>
+            <Card.Footer>
+              Representing your organization and interested in posting a
+              volunteer opportunity?{" "}
+              <Link to="/sign-up-organization">Sign up here!</Link>
+            </Card.Footer>
+          </Card.Body>
+        </Card>
       </div>
     </div>
   );

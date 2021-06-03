@@ -2,9 +2,9 @@ import React from "react";
 import { Nav, NavDropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-// import styles from "./LoggedOutNavbar.module.css";
+// import styles from "./SignedOutNavbar.module.css";
 
-const LoggedOutNavbar = () => {
+const SignedOutNavbar = () => {
   return (
     <NavDropdown title="Sign in" id="collasible-nav-dropdown" alignRight>
       <NavDropdown.Item>
@@ -30,4 +30,4 @@ const LoggedOutNavbar = () => {
   );
 };
 
-export default LoggedOutNavbar;
+export default SignedOutNavbar;

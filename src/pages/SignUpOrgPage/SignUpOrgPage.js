@@ -10,7 +10,7 @@ const SignUpOrgPage = () => {
   return (
     <div>
       <Header />
-      <MyNavbar isLoggedIn={currentUser} />
+      <MyNavbar isSignedIn={currentUser} />
       <SignUpOrgForm />
       <Footer />
     </div>

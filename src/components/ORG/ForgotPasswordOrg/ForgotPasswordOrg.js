@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Form, Button, Alert } from "react-bootstrap";
+import { Card, Form, Button, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 import styles from "./ForgotPasswordOrg.module.css";
@@ -31,32 +31,40 @@ const ForgotPasswordOrg = () => {
   }
 
   return (
-    <div className={styles.formPage}>
-      {error && <Alert variant="danger">{error}</Alert>}
-      {message && <Alert variant="success">{message}</Alert>}
-      <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="formBasicEmail">
-          <Form.Label>Organization email address</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="Enter email"
-            ref={emailRef}
-            required
-          />
-          <Form.Text className="text-muted">
-            Input the email that you used to register your organization account.
-          </Form.Text>
-        </Form.Group>
-
-        <Button disabled={loading} variant="primary" type="submit">
-          Reset Password
-        </Button>
-      </Form>
-      <div className="w-100 text-center mt-2">
-        Representing your organization and interested in posting a volunteer
-        opportunity?
-        <br />
-        <Link to="/sign-up-organization">Sign up here!</Link>
+    <div className={styles.formBG}>
+      <div className={styles.formContainer}>
+        {error && <Alert variant="danger">{error}</Alert>}
+        {message && <Alert variant="success">{message}</Alert>}
+        <Card bg="light" text="dark" style={{ width: "23rem" }}>
+          <Card.Header as="h6">Reset your organization password</Card.Header>
+          <Card.Body>
+            <Form onSubmit={handleSubmit}>
+              <Form.Group controlId="formBasicEmail">
+                <Form.Label>Organization email address</Form.Label>
+                <Form.Control
+                  type="email"
+                  placeholder="Enter email"
+                  ref={emailRef}
+                  required
+                />
+                <Form.Text className="text-muted">
+                  Enter the email that you used to register your account
+                </Form.Text>
+              </Form.Group>
+              <Button disabled={loading} variant="primary" type="submit">
+                Reset Password
+              </Button>
+              <Card.Text>
+                <br />
+              </Card.Text>
+            </Form>
+            <Card.Footer>
+              Representing your organization and interested in posting a
+              volunteer opportunity?{" "}
+              <Link to="/sign-up-organization">Sign up here!</Link>
+            </Card.Footer>
+          </Card.Body>
+        </Card>
       </div>
     </div>
   );

@@ -3,9 +3,9 @@ import { NavDropdown, Nav } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 
-import styles from "./LoggedInNavbar.module.css";
+import styles from "./SignedInOrgNavbar.module.css";
 
-const LoggedInNavbar = () => {
+const SignedInOrgNavbar = () => {
   const [error, setError] = useState("");
   const { currentUser, logout } = useAuth();
   const history = useHistory();
@@ -45,4 +45,4 @@ const LoggedInNavbar = () => {
   );
 };
 
-export default LoggedInNavbar;
+export default SignedInOrgNavbar;

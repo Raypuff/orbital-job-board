@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Form, Button, Alert } from "react-bootstrap";
+import { Form, Button, Alert, Card } from "react-bootstrap";
 import styles from "./SignUpOrgForm.module.css";
 import { useAuth } from "../../../contexts/AuthContext";
 import { Link } from "react-router-dom";
@@ -27,9 +27,7 @@ const SignUpOrgForm = () => {
       await signup(emailRef.current.value, passwordRef.current.value);
       await sendEmailVerification();
       await logout();
-      setMessage(
-        "Signed up successfully. Please check your email for a verification message."
-      );
+      setMessage("Sign up successful!");
     } catch (err) {
       if (err.code === "auth/email-already-in-use") {
         setError("Email already in use");
@@ -40,51 +38,68 @@ const SignUpOrgForm = () => {
   }
 
   return (
-    <div className={styles.formPage}>
-      {error && <Alert variant="danger">{error}</Alert>}
-      {message && <Alert variant="success">{message}</Alert>}
-      <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="formBasicEmail">
-          <Form.Label>Organization email address</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="Enter email"
-            ref={emailRef}
-            required
-          />
-          <Form.Text className="text-muted">
-            We'll never share your email with anyone else.
-          </Form.Text>
-        </Form.Group>
+    <div className={styles.formBG}>
+      <div className={styles.formContainer}>
+        <Card bg="light" text="dark" style={{ width: "23rem" }}>
+          <Card.Header as="h6">Sign up as an organization</Card.Header>
+          <Card.Body>
+            <Form onSubmit={handleSubmit}>
+              <Form.Group controlId="formBasicEmail">
+                <Form.Label>Organization email address</Form.Label>
+                <Form.Control
+                  type="email"
+                  placeholder="Enter email"
+                  ref={emailRef}
+                  required
+                />
+                <Form.Text className="text-muted">
+                  We'll never share your email with anyone else
+                </Form.Text>
+              </Form.Group>
 
-        <Form.Group controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Password"
-            ref={passwordRef}
-            required
-          />
-          <Form.Text id="passwordReq" muted>
-            Your password must be at least 6 characters long.
-          </Form.Text>
-        </Form.Group>
-        <Form.Group controlId="formBasicPassword">
-          <Form.Label>Confirm Password</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Password"
-            ref={passwordConfirmRef}
-            required
-          />
-        </Form.Group>
-        <Button disabled={loading} variant="primary" type="submit">
-          Sign up
-        </Button>
-      </Form>
-      <div className="w-100 text-center mt-2">
-        Already have an organization account?{" "}
-        <Link to="/sign-in-organization">Sign in</Link>
+              <Form.Group controlId="formBasicPassword">
+                <Form.Label>Password</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="Password"
+                  ref={passwordRef}
+                  required
+                />
+                <Form.Text id="passwordReq" muted>
+                  Your password must be at least 6 characters long
+                </Form.Text>
+              </Form.Group>
+              <Form.Group controlId="formBasicPassword">
+                <Form.Label>Confirm Password</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="Password"
+                  ref={passwordConfirmRef}
+                  required
+                />
+              </Form.Group>
+              <Button disabled={loading} variant="primary" type="submit">
+                Sign up
+              </Button>
+              <Card.Text />
+              {error && <Alert variant="danger">{error}</Alert>}
+              {message && (
+                <Alert variant="success">
+                  <Alert.Heading as="h6">{message}</Alert.Heading>
+                  <hr />
+                  <p className="mb-0">
+                    Please check your inbox for a verification email
+                  </p>
+                </Alert>
+              )}
+              <Card.Text />
+            </Form>
+            <Card.Footer>
+              Already have an organization account?{" "}
+              <Link to="/sign-in-organization">Sign in here!</Link>
+            </Card.Footer>
+          </Card.Body>
+        </Card>
       </div>
     </div>
   );

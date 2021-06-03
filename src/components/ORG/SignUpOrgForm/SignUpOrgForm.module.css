@@ -1,5 +1,8 @@
-.formPage {
+.formBG {
   display: grid;
   place-items: center;
-  height: 70vh;
+}
+
+.formContainer {
+  margin: 10vmax 0 12vmax;
 }

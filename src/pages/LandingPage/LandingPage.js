@@ -11,7 +11,7 @@ const LandingPage = () => {
   return (
     <>
       <Header />
-      <MyNavbar isLoggedIn={currentUser} />
+      <MyNavbar isSignedIn={currentUser} />
       <Landing />
       <Footer />
     </>

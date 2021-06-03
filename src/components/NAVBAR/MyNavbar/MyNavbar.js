@@ -1,17 +1,17 @@
 import { Navbar, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import LoggedOutNavbar from "../LoggedOutNavbar";
-import LoggedInNavbar from "../LoggedInNavbar";
+import SignedOutNavbar from "../SignedOutNavbar";
+import SignedInOrgNavbar from "../SignedInOrgNavbar";
 import PostAJobButton from "../PostAJobButton";
 import styles from "./MyNavbar.module.css";
 import nusccsgplogo from "../../../assets/nusccsgp.png";
 
-const MyNavbar = ({ isLoggedIn }) => {
-  const LoginButton = ({ isLoggedIn }) => {
-    if (isLoggedIn != null) {
-      return <LoggedInNavbar />;
+const MyNavbar = ({ isSignedIn }) => {
+  const LoginButton = ({ isSignedIn }) => {
+    if (isSignedIn != null) {
+      return <SignedInOrgNavbar />;
     }
-    return <LoggedOutNavbar />;
+    return <SignedOutNavbar />;
   };
 
   return (
@@ -30,7 +30,7 @@ const MyNavbar = ({ isLoggedIn }) => {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse className="justify-content-end">
             <Nav>
-              <LoginButton isLoggedIn={isLoggedIn} />
+              <LoginButton isSignedIn={isSignedIn} />
             </Nav>
             <PostAJobButton />
           </Navbar.Collapse>

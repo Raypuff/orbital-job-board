@@ -11,7 +11,7 @@ const JobBoardPage = () => {
   return (
     <>
       <Header />
-      <MyNavbar isLoggedIn={currentUser} />
+      <MyNavbar isSignedIn={currentUser} />
       <JobBoard />
       <Footer />
     </>
