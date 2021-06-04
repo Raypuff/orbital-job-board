@@ -1,10 +1,36 @@
-import { Card, Button, Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import React, { useState, useRef } from "react";
+import { Card, Button, Form, Alert } from "react-bootstrap";
+import { Link, useHistory } from "react-router-dom";
 import styles from "./SignInStuForm.module.css";
+import { useAuth } from "../../../contexts/AuthContext";
 
 const SignInStuForm = () => {
+  const emailRef = useRef();
+  const passwordRef = useRef();
+  const { login, currentUser } = useAuth();
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const history = useHistory();
+
   async function handleSubmit(event) {
-    console.log("your turn zech");
+    event.preventDefault();
+
+    try {
+      setError("");
+      setLoading(true);
+      await login(emailRef.current.value, passwordRef.current.value);
+      history.push("/");
+      console.log(currentUser);
+    } catch (err) {
+      if (err.code === "auth/wrong-password") {
+        setError("Incorrect password");
+      } else if (err.code === "auth/user-not-found") {
+        setError("There is no account associated with this email.");
+      } else {
+        setError("Failed to sign in");
+      }
+    }
+    setLoading(false);
   }
 
   return (
@@ -19,7 +45,7 @@ const SignInStuForm = () => {
                 <Form.Control
                   type="email"
                   placeholder="Enter email"
-                  // ref={emailRef}
+                  ref={emailRef}
                   required
                 />
                 <Form.Text className="text-muted">
@@ -31,18 +57,17 @@ const SignInStuForm = () => {
                 <Form.Control
                   type="password"
                   placeholder="Password"
-                  // ref={passwordRef}
+                  ref={passwordRef}
                   required
                 />
               </Form.Group>
-              <Button
-                // disabled={loading}
-                variant="primary"
-                type="submit"
-              >
+              <Button disabled={loading} variant="primary" type="submit">
                 Sign in
               </Button>
             </Form>
+            <Card.Text />
+            {error && <Alert variant="danger">{error}</Alert>}
+            <Card.Text />
             <Card.Text />
             <Card.Text>
               <Link to="/forgot-password-student">Forgot Password?</Link>

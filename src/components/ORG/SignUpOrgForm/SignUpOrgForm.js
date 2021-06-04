@@ -3,6 +3,7 @@ import { Form, Button, Alert, Card } from "react-bootstrap";
 import styles from "./SignUpOrgForm.module.css";
 import { useAuth } from "../../../contexts/AuthContext";
 import { Link } from "react-router-dom";
+import { useStore } from "../../../contexts/StoreContext";
 
 const SignUpOrgForm = () => {
   const emailRef = useRef();
@@ -12,6 +13,7 @@ const SignUpOrgForm = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const { addItem } = useStore();
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -28,6 +30,17 @@ const SignUpOrgForm = () => {
       await sendEmailVerification();
       await logout();
       setMessage("Sign up successful!");
+
+      //create object for organization accounts in the database
+      const newOrgAccount = {
+        dateCreated: new Date().toUTCString(),
+      };
+
+      await addItem(
+        newOrgAccount,
+        "organization_accounts",
+        emailRef.current.value
+      );
     } catch (err) {
       if (err.code === "auth/email-already-in-use") {
         setError("Email already in use");
