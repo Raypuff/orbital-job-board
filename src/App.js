@@ -2,6 +2,7 @@ import LandingPage from "./pages/LandingPage";
 import SignInOrgPage from "./pages/SignInOrgPage";
 import SignUpOrgPage from "./pages/SignUpOrgPage";
 import ForgotPasswordOrgPage from "./pages/ForgotPasswordOrgPage";
+import YourProfileOrgPage from "./pages/YourProfileOrgPage";
 import SignInAdminPage from "./pages/SignInAdminPage";
 import SignInStuPage from "./pages/SignInStuPage";
 import SignUpStuPage from "./pages/SignUpStuPage";
@@ -30,6 +31,9 @@ function App() {
             </Route>
             <Route path="/forgot-password-organization">
               <ForgotPasswordOrgPage />
+            </Route>
+            <Route path="/profile-organization">
+              <YourProfileOrgPage />
             </Route>
             <Route path="/post-a-job">
               <PostAJobPage />

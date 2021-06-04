@@ -155,7 +155,7 @@ const PostAJob = () => {
         </Form.Group>
         <Form.Group controlId="formEmail">
           <Form.Label>Email address of contact person</Form.Label>
-          <Form.Control type="email" placeholder={userEmail} disabled />
+          <Form.Control type="email" placeholder={userEmail} readOnly />
         </Form.Group>
         <hr className={styles.divider} />
         <Form.Group controlId="formTitle">

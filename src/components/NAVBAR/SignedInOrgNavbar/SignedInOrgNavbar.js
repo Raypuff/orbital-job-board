@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NavDropdown, Nav } from "react-bootstrap";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 
 import styles from "./SignedInOrgNavbar.module.css";
@@ -38,6 +38,11 @@ const SignedInOrgNavbar = () => {
         <br />({isVerified()})
       </NavDropdown.Header>
       <NavDropdown.Divider />
+      <NavDropdown.Item>
+        <Nav.Link as={Link} to="profile-organization">
+          Your profile
+        </Nav.Link>
+      </NavDropdown.Item>
       <NavDropdown.Item>
         <Nav.Link onClick={handleLogout}>Sign out</Nav.Link>
       </NavDropdown.Item>
