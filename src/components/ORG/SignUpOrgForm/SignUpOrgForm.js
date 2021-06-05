@@ -34,6 +34,13 @@ const SignUpOrgForm = () => {
       //create object for organization accounts in the database
       const newOrgAccount = {
         dateCreated: new Date().toUTCString(),
+        organizationType: "",
+        organizationName: "",
+        organizationUEN: "",
+        organizationEmail: "",
+        nameOfContactPerson: "",
+        mobileOfContactPerson: "",
+        jobs: [],
       };
 
       await addItem(

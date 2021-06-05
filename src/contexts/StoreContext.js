@@ -55,10 +55,10 @@ export function StoreProvider({ children }) {
   }
 
   // EDIT FUNCTION
-  function editItem(itemToEdit, collectionType) {
+  function editItem(itemToEdit, itemToEditID, collectionType) {
     const ref = store.collection(collectionType);
     ref
-      .doc(itemToEdit.id)
+      .doc(itemToEditID)
       .update(itemToEdit)
       .catch((err) => {
         console.error(err);
