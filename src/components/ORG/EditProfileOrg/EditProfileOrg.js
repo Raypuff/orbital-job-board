@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useAuth } from "../../../contexts/AuthContext";
 import { useStore } from "../../../contexts/StoreContext";
-import { Row, Col, Card, Button, Form, Alert } from "react-bootstrap";
+import { Card, Button, Form, Alert } from "react-bootstrap";
 import styles from "./EditProfileOrg.module.css";
 import { store } from "../../../firebase";
 
 const EditProfileOrg = ({ setEdit }) => {
+  const [leftButton, setLeftButton] = useState("Cancel");
+  const [leftButtonVar, setLeftButtonVar] = useState("light");
   const { currentUser } = useAuth();
   const { editItem } = useStore();
   const [userData, setUserData] = useState(null);
@@ -80,6 +82,8 @@ const EditProfileOrg = ({ setEdit }) => {
       editItem(newAccountInfo, currentUser.email, "organization_accounts");
       setSuccessful(true);
       setMessage("User profile updated successfully!");
+      setLeftButton("Back");
+      setLeftButtonVar("secondary");
     } catch (err) {
       setError("Failed to update user info");
       console.log(err);
@@ -93,11 +97,6 @@ const EditProfileOrg = ({ setEdit }) => {
         <div className={styles.formContainer}>
           <Card bg="light" text="dark" style={{ width: "23rem" }}>
             <Card.Header as="h6">Edit your organization profile</Card.Header>
-            {error && <Alert variant="danger">{error}</Alert>}
-            {loading && (
-              <Alert variant="primary">Updating your profile...</Alert>
-            )}
-            {successful && <Alert variant="success">{message}</Alert>}
             <Card.Body>
               <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="formOrgType">
@@ -141,6 +140,7 @@ const EditProfileOrg = ({ setEdit }) => {
                       userData !== null ? userData.organizationEmail : ""
                     }
                     ref={orgemailref}
+                    readOnly
                   />
                 </Form.Group>
                 <Form.Group controlId="formpocName">
@@ -161,27 +161,33 @@ const EditProfileOrg = ({ setEdit }) => {
                     ref={pocmobileref}
                   />
                 </Form.Group>
-                {/* <Row>
-                <Col> */}
-                <Button
-                  // disabled={loading}
-                  variant="light"
-                  onClick={(event) => setEdit(false)}
-                >
-                  Cancel
-                </Button>
-                {/* </Col>
-                <Col> */}
-                <Button
-                  disabled={successful}
-                  variant="primary"
-                  type="submit"
-                  alignRight
-                >
-                  Submit
-                </Button>
-                {/* </Col>
-              </Row> */}
+                <div className={styles.buttonContainer}>
+                  <div>
+                    <Button
+                      // disabled={loading}
+                      variant={leftButtonVar}
+                      onClick={(event) => setEdit(false)}
+                    >
+                      {leftButton}
+                    </Button>
+                  </div>
+                  <div className={styles.rightButton}>
+                    <Button
+                      disabled={successful}
+                      variant="primary"
+                      type="submit"
+                    >
+                      Submit
+                    </Button>
+                  </div>
+                </div>
+
+                <Card.Text />
+                {error && <Alert variant="danger">{error}</Alert>}
+                {loading && (
+                  <Alert variant="primary">Updating your profile...</Alert>
+                )}
+                {successful && <Alert variant="success">{message}</Alert>}
               </Form>
             </Card.Body>
           </Card>
