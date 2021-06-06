@@ -36,13 +36,20 @@ const SignUpStuForm = () => {
       setMessage("Sign up successful");
 
       const newStudentAccount = {
+        name: "",
+        nusnetID: "",
+        email: emailRef.current.value,
+        contanctNo: "",
+        course: "",
+        year: "",
         dateCreated: new Date().toUTCString(),
+        jobsApplied: [],
       };
 
       await addItem(
         newStudentAccount,
         "student_accounts",
-        emailRef.current.value
+        emailRef.current.value.toLowerCase()
       );
     } catch (err) {
       if (err.code === "auth/email-already-in-use") {

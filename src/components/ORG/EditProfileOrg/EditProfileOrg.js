@@ -69,11 +69,11 @@ const EditProfileOrg = ({ setEdit }) => {
       pocNo:
         pocNoRef.current.value.trim() !== ""
           ? pocNoRef.current.value
-          : userData.pocNoRef,
+          : userData.pocNo,
       pocEmail:
         pocEmailRef.current.value.trim() !== ""
           ? pocEmailRef.current.value
-          : userData.pocEmailRef,
+          : userData.pocEmail,
     };
 
     console.log(newAccountInfo);
@@ -123,7 +123,10 @@ const EditProfileOrg = ({ setEdit }) => {
                   />
                 </Form.Group>
                 <Form.Group controlId="formuen">
-                  <Form.Label>Organization UEN</Form.Label>
+                  <Form.Label>
+                    Organization UEN, Charity Registration No. or Society
+                    Registration No.
+                  </Form.Label>
                   <Form.Control
                     placeholder={userData !== null ? userData.uen : ""}
                     ref={uenRef}
@@ -132,7 +135,7 @@ const EditProfileOrg = ({ setEdit }) => {
                     Only applicable for Non-NUS Organizations
                   </Form.Text>
                 </Form.Group>
-                <Form.Group controlId="formorgEmail">
+                <Form.Group controlId="formEmail">
                   <Form.Label>Email address of organization</Form.Label>
                   <Form.Control
                     placeholder={userData !== null ? userData.email : ""}
@@ -140,21 +143,21 @@ const EditProfileOrg = ({ setEdit }) => {
                     readOnly
                   />
                 </Form.Group>
-                <Form.Group controlId="formpocName">
+                <Form.Group controlId="formPocName">
                   <Form.Label>Name of contact person</Form.Label>
                   <Form.Control
                     placeholder={userData !== null ? userData.pocName : ""}
                     ref={pocNameRef}
                   />
                 </Form.Group>
-                <Form.Group controlId="formpocNum">
+                <Form.Group controlId="formPocNum">
                   <Form.Label>Mobile number of contact person</Form.Label>
                   <Form.Control
                     placeholder={userData !== null ? userData.pocNo : ""}
                     ref={pocNoRef}
                   />
                 </Form.Group>
-                <Form.Group controlId="formpocEmail">
+                <Form.Group controlId="formPocEmail">
                   <Form.Label>Email address of contact person</Form.Label>
                   <Form.Control
                     placeholder={userData !== null ? userData.pocEmail : ""}

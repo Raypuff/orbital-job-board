@@ -51,7 +51,10 @@ const YourProfileOrg = () => {
                   />
                 </Form.Group>
                 <Form.Group controlId="formUen">
-                  <Form.Label>Organization UEN</Form.Label>
+                  <Form.Label>
+                    Organization UEN, Charity Registration No. or Society
+                    Registration No.
+                  </Form.Label>
                   <Form.Control
                     placeholder={userData !== null ? userData.uen : ""}
                     readOnly

@@ -33,20 +33,21 @@ const SignUpOrgForm = () => {
 
       //create object for organization accounts in the database
       const newOrgAccount = {
+        type: "",
+        name: "",
+        uen: "",
+        email: emailRef.current.value,
+        pocName: "",
+        pocNo: "",
+        pocEmail: "",
         dateCreated: new Date().toUTCString(),
-        organizationType: "",
-        organizationName: "",
-        organizationUEN: "",
-        organizationEmail: "",
-        nameOfContactPerson: "",
-        mobileOfContactPerson: "",
-        jobs: [],
+        jobsPosted: [],
       };
 
       await addItem(
         newOrgAccount,
         "organization_accounts",
-        emailRef.current.value
+        emailRef.current.value.toLowerCase()
       );
     } catch (err) {
       if (err.code === "auth/email-already-in-use") {
