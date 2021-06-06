@@ -19,6 +19,12 @@ const PostAJob = () => {
   const [message, setMessage] = useState("");
   const [successful, setSuccessful] = useState(false);
 
+  // checkboxes for flexible fields
+  const [flexibleDate, setFlexibleDate] = useState(false);
+  const [flexibleDays, setFlexibleDays] = useState(false);
+  const [flexibleTime, setFlexibleTime] = useState(false);
+  const [virtual, setVirtual] = useState(false);
+
   //finding currentUser that is logged in
   const { currentUser } = useAuth();
 
@@ -44,7 +50,25 @@ const PostAJob = () => {
   const pocEmailRef = useRef();
 
   const [error, setError] = useState("");
-  //to show the terms and conditions modal
+
+  const beneficiaryTags = [
+    "Children",
+    "Teens",
+    "Youth",
+    "Adults",
+    "Elderly",
+    "Others",
+  ];
+  const skillTags = ["Python", "React", "Javascript", "React Native", "Others"];
+  const dayTags = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+  ];
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -168,17 +192,22 @@ const PostAJob = () => {
                   <Form.Label>Target profile of beneficiary</Form.Label>
                   <Form.Control
                     required
-                    // placeholder="Children from disadvantaged backgrounds"
+                    as="select"
+                    multiple
                     ref={beneficiaryRef}
-                  />
+                  >
+                    {beneficiaryTags.map((beneficiary) => (
+                      <option>{beneficiary}</option>
+                    ))}
+                  </Form.Control>
                 </Form.Group>
                 <Form.Group controlId="formSkills">
                   <Form.Label>Skills required</Form.Label>
-                  <Form.Control
-                    required
-                    // placeholder="Intermediate Python programming skills"
-                    ref={skillsRef}
-                  />
+                  <Form.Control required as="select" multiple ref={skillsRef}>
+                    {skillTags.map((skill) => (
+                      <option>{skill}</option>
+                    ))}
+                  </Form.Control>
                 </Form.Group>
                 <Form.Group controlId="formPurpose">
                   <Form.Label>Purpose of volunteer work</Form.Label>
@@ -196,20 +225,33 @@ const PostAJob = () => {
                     <Form.Group controlId="formStartDate">
                       <Form.Label>Start date of volunteer work</Form.Label>
                       <Form.Control
-                        required
+                        required={!flexibleDate}
+                        readOnly={flexibleDate}
                         type="date"
-                        // placeholder="2 months"
+                        // placeholder={flexibleDate ? "Flexible" : 11 / 7 / 1999}
                         ref={startDateRef}
                       />
+                      <Form.Text>
+                        <Form>
+                          <Form.Group>
+                            <Form.Check
+                              onClick={(event) =>
+                                setFlexibleDate(!flexibleDate)
+                              }
+                              label="Start and end dates are flexible"
+                            />
+                          </Form.Group>
+                        </Form>
+                      </Form.Text>
                     </Form.Group>
                   </Col>
                   <Col>
                     <Form.Group controlId="formEndDate">
                       <Form.Label>End date of volunteer work</Form.Label>
                       <Form.Control
-                        required
+                        required={!flexibleDate}
+                        readOnly={flexibleDate}
                         type="date"
-                        // placeholder="2 months"
                         ref={endDateRef}
                       />
                     </Form.Group>
@@ -218,20 +260,50 @@ const PostAJob = () => {
                 <Form.Group controlId="formDays">
                   <Form.Label>Days of the week of volunteer work</Form.Label>
                   <Form.Control
-                    required
-                    // placeholder="2 months"
+                    required={!flexibleDays}
+                    disabled={flexibleDays}
+                    as="select"
+                    multiple
                     ref={daysRef}
-                  />
+                  >
+                    {dayTags.map((day) => (
+                      <option>{day}</option>
+                    ))}
+                  </Form.Control>
+                  <Form.Text>
+                    <Form>
+                      <Form.Group>
+                        <Form.Check
+                          onClick={(event) => setFlexibleDays(!flexibleDays)}
+                          label="Days are flexible"
+                        />
+                      </Form.Group>
+                    </Form>
+                  </Form.Text>
                 </Form.Group>
+
                 <Row>
                   <Col>
                     <Form.Group controlId="formStartTime">
                       <Form.Label>Start time of volunteer work</Form.Label>
                       <Form.Control
-                        required
-                        // placeholder="2 months"
+                        required={!flexibleTime}
+                        readOnly={flexibleTime}
+                        placeholder={flexibleTime ? "Flexible" : "7:00PM"}
                         ref={startTimeRef}
                       />
+                      <Form.Text>
+                        <Form>
+                          <Form.Group>
+                            <Form.Check
+                              onClick={(event) =>
+                                setFlexibleTime(!flexibleTime)
+                              }
+                              label="Start and end times are flexible"
+                            />
+                          </Form.Group>
+                        </Form>
+                      </Form.Text>
                     </Form.Group>
                   </Col>
                   <Col>
@@ -239,62 +311,70 @@ const PostAJob = () => {
                     <Form.Group controlId="formEndTime">
                       <Form.Label>End time of volunteer work</Form.Label>
                       <Form.Control
-                        required
-                        // placeholder="2 months"
+                        required={!flexibleTime}
+                        readOnly={flexibleTime}
+                        placeholder={flexibleTime ? "Flexible" : "9:00PM"}
                         ref={endTimeRef}
                       />
                     </Form.Group>
                   </Col>
                 </Row>
+                <Form.Group controlId="formPlatform">
+                  <Form.Label>Platform of volunteer work</Form.Label>
+                  <Form.Control
+                    required
+                    as="select"
+                    // placeholder="2 months"
+                    onClick={(event) => {
+                      if (event.target.value === "Virtual") {
+                        setVirtual(true);
+                      } else if (event.target.value === "In person") {
+                        setVirtual(false);
+                      }
+                    }}
+                    ref={platformRef}
+                  >
+                    <option>In person</option>
+                    <option>Virtual</option>
+                  </Form.Control>
+                </Form.Group>
                 <Row>
-                  <Col>
-                    <Form.Group controlId="formPlatform">
-                      <Form.Label>Platform of volunteer work</Form.Label>
+                  <Col md={8}>
+                    <Form.Group controlId="formLocation">
+                      <Form.Label>Location of volunteer work</Form.Label>
                       <Form.Control
-                        required
-                        as="select"
-                        // placeholder="2 months"
-                        ref={platformRef}
-                      >
-                        <option>In person</option>
-                        <option>Virtual</option>
-                      </Form.Control>
+                        required={!virtual}
+                        readOnly={virtual}
+                        placeholder="Bukit Timah Plaza"
+                        ref={locationRef}
+                      />
                     </Form.Group>
                   </Col>
-                  <Col>
+                  <Col md={4}>
                     <Form.Group controlId="formPostalCode">
                       <Form.Label>Postal code of location</Form.Label>
                       <Form.Control
-                        required
-                        // placeholder="2 months"
+                        required={!virtual}
+                        readOnly={virtual}
+                        placeholder="588996"
                         ref={postalCodeRef}
                       />
                     </Form.Group>
                   </Col>
                 </Row>
-                <Form.Group controlId="formLocation">
-                  <Form.Label>Location of volunteer work</Form.Label>
-                  <Form.Control
-                    required
-                    // placeholder="2 months"
-                    ref={locationRef}
-                  />
-                </Form.Group>
                 <Form.Group controlId="formAddInfo">
                   <Form.Label>Additional information</Form.Label>
                   <Form.Control
                     as="textarea"
                     rows={2}
-                    // required
-                    // placeholder="2 months"
+                    placeholder="Minimum commitment is 2 months"
                     ref={addInfoRef}
                   />
                 </Form.Group>
                 <Form.Group controlId="formImageUrl">
                   <Form.Label>Image URL</Form.Label>
                   <Form.Control
-                    // required
-                    // placeholder="2 months"
+                    placeholder="Direct Imgur link to image"
                     ref={imageUrlRef}
                   />
                 </Form.Group>
