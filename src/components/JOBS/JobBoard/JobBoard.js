@@ -1,5 +1,5 @@
 import React from "react";
-import JobCard from "../JobCard";
+import JobBoardCard from "../JobBoardCard";
 import styles from "./JobBoard.module.css";
 import { useStore } from "../../../contexts/StoreContext";
 
@@ -13,16 +13,31 @@ const JobBoard = () => {
   return (
     <div className={styles.container}>
       <div className={styles.jobContainer}>
-        {jobs.map((job) => (
-          <JobCard
-            id={job.job_title}
-            title={job.job_title}
-            org_name={job.organization_name}
-            beneficiary={job.target_beneficiary}
-            duration={job.duration}
-            writeup={job.desc}
-          />
-        ))}
+        {jobs.map((job) => {
+          const type = "find type with orgID";
+          const name = "find name with orgID";
+          const uen = "find uen with orgID";
+          const email = "find email with orgID";
+          return (
+            <JobBoardCard
+              id={job.id}
+              type={type}
+              name={name}
+              uen={uen}
+              email={email}
+              status={job.status}
+              title={job.title}
+              purpose={job.purpose}
+              beneficiary={job.beneficiary}
+              skillsReq={jobs.skillsReq}
+              duration={jobs.duration}
+              addInfo={jobs.addInfo}
+              pocName={jobs.pocName}
+              pocNo={jobs.pocNo}
+              pocEmail={jobs.pocEmail}
+            />
+          );
+        })}
       </div>
     </div>
   );
