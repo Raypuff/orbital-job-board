@@ -1,5 +1,5 @@
 .signedOut {
   display: grid;
   place-items: center;
-  height: 15vh;
+  margin: 15vmax;
 }
