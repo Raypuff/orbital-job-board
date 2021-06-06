@@ -103,11 +103,15 @@ const EditProfileOrg = ({ setEdit }) => {
                 <Form.Group controlId="formOrgType">
                   <Form.Label>Organization type</Form.Label>
                   <Form.Control
+                    as="select"
                     placeholder={
                       userData !== null ? userData.organizationType : ""
                     }
                     ref={orgtyperef}
-                  />
+                  >
+                    <option>NUS Organization</option>
+                    <option>Non-NUS Organization</option>
+                  </Form.Control>
                 </Form.Group>
                 <Form.Group controlId="formOrgName">
                   <Form.Label>Organization name</Form.Label>
@@ -126,6 +130,9 @@ const EditProfileOrg = ({ setEdit }) => {
                     }
                     ref={orguenref}
                   />
+                  <Form.Text className="text-muted">
+                    Only applicable for Non-NUS Organizations
+                  </Form.Text>
                 </Form.Group>
                 <Form.Group controlId="formorgEmail">
                   <Form.Label>Email address of organization</Form.Label>

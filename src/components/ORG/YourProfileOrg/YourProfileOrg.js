@@ -65,6 +65,9 @@ const YourProfileOrg = () => {
                     // ref={???}
                     readOnly
                   />
+                  <Form.Text className="text-muted">
+                    Only applicable for Non-NUS Organizations
+                  </Form.Text>
                 </Form.Group>
                 <Form.Group controlId="formorgEmail">
                   <Form.Label>Email address of organization</Form.Label>
