@@ -16,47 +16,40 @@ const PostAJob = () => {
   const { currentUser } = useAuth();
 
   //references to data in the form
-  const nameRef = useRef();
-  const phoneNumberRef = useRef();
-  const userEmail = currentUser.email;
-  const jobTitleRef = useRef();
+  // organization data
+  const pocNameRef = useRef();
+  const pocNoRef = useRef();
+  const pocEmailRef = useRef();
+  // job data
+  const titleRef = useRef();
   const purposeRef = useRef();
-  const targetBeneficiaryRef = useRef();
-  const skillsRequiredRef = useRef();
+  const beneficiaryRef = useRef();
+  const skillsReqRef = useRef();
   const durationRef = useRef();
-  const nameOfStudentOrganizationRef = useRef();
-  const nameOfOrganizationRef = useRef();
-  const UENRef = useRef();
-  var organization_name = "";
-  var UEN_number = "";
+  const addInfoRef = useRef();
 
-  //obtaining conditional values
-  if (nameOfStudentOrganizationRef === true) {
-    organization_name = nameOfStudentOrganizationRef.current.value();
-  } else if (nameOfOrganizationRef === true) {
-    organization_name = nameOfOrganizationRef.current.value();
-    UEN_number = UENRef.current.value();
-  }
-
-  const [show, setShow] = useState(false);
-  const [org, setOrg] = useState("NUS Organization");
   const [error, setError] = useState("");
+  //to show the terms and conditions modal
+  const [show, setShow] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
     //creating the job to be posted from the refs
     const newJob = {
-      name_of_contact: nameRef.current.value,
-      phone_number: phoneNumberRef.current.value,
-      user_email: userEmail,
-      job_title: jobTitleRef.current.value,
-      desc: purposeRef.current.value,
-      target_beneficiary: targetBeneficiaryRef.current.value,
-      skills_required: skillsRequiredRef.current.value,
+      id: "orgEmail + Date.now()",
+      orgID: "retrieve org.id from database",
+      status: "pending",
+      title: titleRef.current.value,
+      purpose: purposeRef.current.value,
+      beneficiary: beneficiaryRef.current.value,
+      skillsReq: skillsReqRef.current.value,
       duration: durationRef.current.value,
-      organization_name: organization_name,
-      UEN_number: UEN_number,
+      addInfo: addInfoRef.current.value,
+      pocName: pocNameRef.current.value,
+      pocNo: pocNoRef.current.value,
+      pocEmail: pocEmailRef.current.value,
+      applicants: [],
     };
 
     try {
@@ -71,10 +64,11 @@ const PostAJob = () => {
           "User is not verified. Please verify your account before posting a job."
         );
       } else {
-        const jobID = userEmail + Date.now();
+        //successful posting
+        const jobID = "???"; //userEmail + Date.now(); zech u gotta do this part idk this
         addItem(newJob, "jobs", jobID);
         setSuccessful(true);
-        setMessage("Job Posted! Thank you for using our service");
+        setMessage("Job Posted. Thank you for using our service!");
       }
     } catch (err) {
       setError("Failed to post a job");
@@ -84,47 +78,6 @@ const PostAJob = () => {
     setSubmitted(false);
   };
 
-  // Rendering the corresponding fields depending on type of organization
-  const OrgRender = ({ org }) => {
-    if (org === "NUS Organization") {
-      return (
-        <Form.Group controlId="formNUSOrg">
-          <Form.Label>Name of Student Organization</Form.Label>
-          <Form.Control
-            required
-            placeholder="NUS Hackers"
-            ref={nameOfStudentOrganizationRef}
-          ></Form.Control>
-        </Form.Group>
-      );
-    } else if (org === "Non-NUS Organization") {
-      return (
-        <>
-          <Form.Group controlId="formNonNUSOrg">
-            <Form.Label>Name of Organization</Form.Label>
-            <Form.Control
-              required
-              placeholder="Saturday Kids"
-              ref={nameOfOrganizationRef}
-            ></Form.Control>
-          </Form.Group>
-          <Form.Group controlId="formNonNUSOrgUEN">
-            <Form.Label>
-              UEN, Charity registration number or Society registration number
-            </Form.Label>
-            <Form.Control
-              required
-              placeholder="TyyCCnnnnX"
-              ref={UENRef}
-            ></Form.Control>
-          </Form.Group>
-        </>
-      );
-    } else {
-      return <div></div>;
-    }
-  };
-
   return (
     <>
       {error && <Alert variant="danger">{error}</Alert>}
@@ -132,30 +85,65 @@ const PostAJob = () => {
       {successful && <Alert variant="success">{message}</Alert>}
       {}
       <Form onSubmit={handleSubmit} className={styles.formContainer}>
-        <Form.Group controlId="formOrganization">
+        <Form.Group controlId="formType">
           <Form.Label>Organization Type</Form.Label>
           <Form.Control
             required
-            as="select"
-            onChange={(event) => setOrg(event.target.value)}
-          >
-            <option>NUS Organization</option>
-            <option>Non-NUS Organization</option>
-          </Form.Control>
+            placeHolder="Retrieve type from database"
+            readOnly
+          ></Form.Control>
         </Form.Group>
-        {/* conditional rendering of {name of group} or {name of org + uen} */}
-        <OrgRender org={org} />
         <Form.Group controlId="formName">
-          <Form.Label>Name of contact person</Form.Label>
-          <Form.Control required placeholder="John Doe" ref={nameRef} />
+          <Form.Label>Name of Organization</Form.Label>
+          <Form.Control
+            required
+            placeholder="Retrieve name from database"
+            readOnly
+          ></Form.Control>
         </Form.Group>
-        <Form.Group controlId="formMobileNumber">
-          <Form.Label>Mobile number of contact person</Form.Label>
-          <Form.Control required placeholder="9123 4567" ref={phoneNumberRef} />
+        <Form.Group controlId="formUen">
+          <Form.Label>
+            UEN, Charity registration number or Society registration number
+          </Form.Label>
+          <Form.Control
+            required
+            placeholder="Retrieve uen from database"
+            readOnly
+          ></Form.Control>
         </Form.Group>
         <Form.Group controlId="formEmail">
+          <Form.Label>Email address of Organization</Form.Label>
+          <Form.Control
+            required
+            placeholder="Retrieve email from database"
+            readOnly
+          ></Form.Control>
+        </Form.Group>
+
+        <Form.Group controlId="formPocName">
+          <Form.Label>Name of contact person</Form.Label>
+          <Form.Control
+            required
+            placeholder="Retrieve pocName from database"
+            ref={pocNameRef}
+          />
+        </Form.Group>
+        <Form.Group controlId="formPocNo">
+          <Form.Label>Mobile number of contact person</Form.Label>
+          <Form.Control
+            required
+            placeholder="Retrieve pocNo from database"
+            ref={pocNoRef}
+          />
+        </Form.Group>
+        <Form.Group controlId="formPocEmail">
           <Form.Label>Email address of contact person</Form.Label>
-          <Form.Control type="email" placeholder={userEmail} readOnly />
+          <Form.Control
+            required
+            placeholder="Retrieve pocEmail from database"
+            ref={pocEmailRef}
+            type="email"
+          />
         </Form.Group>
         <hr className={styles.divider} />
         <Form.Group controlId="formTitle">
@@ -163,7 +151,7 @@ const PostAJob = () => {
           <Form.Control
             required
             placeholder="Python instructor"
-            ref={jobTitleRef}
+            ref={titleRef}
           />
         </Form.Group>
         <Form.Group controlId="formPurpose">
@@ -182,21 +170,26 @@ const PostAJob = () => {
           <Form.Control
             required
             placeholder="Children from disadvantaged backgrounds"
-            ref={targetBeneficiaryRef}
+            ref={beneficiaryRef}
           />
         </Form.Group>
-        <Form.Group controlId="formSkills">
+        <Form.Group controlId="formSkillsReq">
           <Form.Label>Skills required</Form.Label>
           <Form.Control
             required
             placeholder="Intermediate Python programming skills"
-            ref={skillsRequiredRef}
+            ref={skillsReqRef}
           />
         </Form.Group>
         <Form.Group controlId="formDuration">
           <Form.Label>Duration of volunteer work</Form.Label>
           <Form.Control required placeholder="2 months" ref={durationRef} />
         </Form.Group>
+        <Form.Group controlId="formAddInfo">
+          <Form.Label>Additional information</Form.Label>
+          <Form.Control required placeholder="2 months" ref={addInfoRef} />
+        </Form.Group>
+
         <Link to="/post_a_job" onClick={() => setShow(true)}>
           Terms and Conditions of Use
         </Link>
