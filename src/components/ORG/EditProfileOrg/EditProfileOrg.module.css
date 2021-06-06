@@ -6,3 +6,12 @@
 .formContainer {
   margin: 10vmax 0 12vmax;
 }
+
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.rightButton {
+  margin-left: auto;
+}
