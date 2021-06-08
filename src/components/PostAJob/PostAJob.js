@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   Row,
   Col,
@@ -10,10 +10,12 @@ import {
 } from "react-bootstrap";
 import styles from "./PostAJob.module.css";
 import { useAuth } from "../../contexts/AuthContext";
+import { store } from "../../firebase";
 import { useStore } from "../../contexts/StoreContext";
+var uniqid = require("uniqid");
 
 const PostAJob = () => {
-  const { addItem } = useStore();
+  const { addItem, editItem } = useStore();
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [message, setMessage] = useState("");
@@ -51,6 +53,9 @@ const PostAJob = () => {
 
   const [error, setError] = useState("");
 
+  //to obtain currentUser data from database
+  const [userData, setUserData] = useState(null);
+
   const beneficiaryTags = [
     "Children",
     "Teens",
@@ -70,13 +75,31 @@ const PostAJob = () => {
     "Sunday",
   ];
 
+  //retrieve user from database
+  const getUser = async () => {
+    await store
+      .collection("organization_accounts")
+      .doc(currentUser.email)
+      .get()
+      .then((documentSnapshot) => {
+        if (documentSnapshot.exists) {
+          setUserData(documentSnapshot.data());
+        }
+      });
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
+    const jobID = uniqid();
+
     //creating the job to be posted from the refs
     const newJob = {
-      id: "orgEmail + Date.now()",
-      orgID: "retrieve org.id from database",
+      orgID: currentUser.email,
       status: "pending",
       title: titleRef.current.value,
       beneficiary: beneficiaryRef.current.value,
@@ -92,10 +115,24 @@ const PostAJob = () => {
       postalCode: postalCodeRef.current.value,
       addInfo: addInfoRef.current.value,
       imageUrl: imageUrlRef.current.value,
-      pocName: pocNameRef.current.value,
-      pocNo: pocNoRef.current.value,
-      pocEmail: pocEmailRef.current.value,
+      pocName:
+        pocNameRef.current.value !== ""
+          ? pocNameRef.current.value
+          : userData.pocName,
+      pocNo:
+        pocNoRef.current.value !== "" ? pocNoRef.current.value : userData.pocNo,
+      pocEmail:
+        pocEmailRef.current.value !== ""
+          ? pocEmailRef.current.value
+          : userData.pocEmail,
       applicants: [],
+    };
+
+    //pushing job id to organization account
+    const updatedJobsPosted = userData !== null ? userData.jobsPosted : "";
+    updatedJobsPosted.push(jobID);
+    const updatedOrgAccount = {
+      jobsPosted: updatedJobsPosted,
     };
 
     try {
@@ -111,25 +148,21 @@ const PostAJob = () => {
         );
       } else {
         //successful posting
-        const jobID = "???"; //userEmail + Date.now(); zech u gotta do this part idk this
         addItem(newJob, "jobs", jobID);
+        //updating job array of account with new job posting
+        editItem(updatedOrgAccount, currentUser.email, "organization_accounts");
         setSuccessful(true);
         setMessage("Job Posted. Thank you for using our service!");
       }
     } catch (err) {
       setError("Failed to post a job");
-      console.log(err);
     }
     setLoading(false);
-    setSubmitted(false);
+    setSubmitted(true);
   };
 
   return (
     <div className={styles.formContainer}>
-      {error && <Alert variant="danger">{error}</Alert>}
-      {loading && <Alert variant="primary">Posting your job...</Alert>}
-      {successful && <Alert variant="success">{message}</Alert>}
-      {}
       <Form onSubmit={handleSubmit} className={styles.formBox}>
         <Accordion defaultActiveKey="0">
           <Card>
@@ -142,7 +175,7 @@ const PostAJob = () => {
                   <Form.Label>Organization Type</Form.Label>
                   <Form.Control
                     required
-                    placeholder="Retrieve type from database"
+                    placeholder={userData !== null ? userData.type : ""}
                     readOnly
                   ></Form.Control>
                 </Form.Group>
@@ -150,7 +183,7 @@ const PostAJob = () => {
                   <Form.Label>Name of Organization</Form.Label>
                   <Form.Control
                     required
-                    placeholder="Retrieve name from database"
+                    placeholder={userData !== null ? userData.name : ""}
                     readOnly
                   ></Form.Control>
                 </Form.Group>
@@ -161,7 +194,7 @@ const PostAJob = () => {
                   </Form.Label>
                   <Form.Control
                     required
-                    placeholder="Retrieve uen from database"
+                    placeholder={userData !== null ? userData.uen : ""}
                     readOnly
                   ></Form.Control>
                 </Form.Group>
@@ -169,7 +202,7 @@ const PostAJob = () => {
                   <Form.Label>Email address of Organization</Form.Label>
                   <Form.Control
                     required
-                    placeholder="Retrieve email from database"
+                    placeholder={userData !== null ? userData.email : ""}
                     readOnly
                   ></Form.Control>
                 </Form.Group>
@@ -381,31 +414,28 @@ const PostAJob = () => {
               </div>
             </Accordion.Collapse>
             <Accordion.Toggle as={Card.Header} eventKey="2">
-              <h5>Contact Details</h5>
+              <h5>Contact Details (Leave Blank if Unchanged)</h5>
             </Accordion.Toggle>
             <Accordion.Collapse eventKey="2">
               <div className={styles.accordionBox}>
                 <Form.Group controlId="formPocName">
                   <Form.Label>Name of contact person</Form.Label>
                   <Form.Control
-                    required
-                    placeholder="Retrieve pocName from database"
+                    placeholder={userData !== null ? userData.pocName : ""}
                     ref={pocNameRef}
                   />
                 </Form.Group>
                 <Form.Group controlId="formPocNo">
                   <Form.Label>Mobile number of contact person</Form.Label>
                   <Form.Control
-                    required
-                    placeholder="Retrieve pocNo from database"
+                    placeholder={userData !== null ? userData.pocNo : ""}
                     ref={pocNoRef}
                   />
                 </Form.Group>
                 <Form.Group controlId="formPocEmail">
                   <Form.Label>Email address of contact person</Form.Label>
                   <Form.Control
-                    required
-                    placeholder="Retrieve pocEmail from database"
+                    placeholder={userData !== null ? userData.pocEmail : ""}
                     ref={pocEmailRef}
                     type="email"
                   />
@@ -552,6 +582,9 @@ const PostAJob = () => {
         <Button disabled={submitted} variant="primary" type="submit">
           Post job
         </Button>
+        {error && <Alert variant="danger">{error}</Alert>}
+        {loading && <Alert variant="primary">Posting your job...</Alert>}
+        {successful && <Alert variant="success">{message}</Alert>}
       </Form>
     </div>
   );

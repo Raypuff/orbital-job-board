@@ -39,7 +39,7 @@ const SignUpStuForm = () => {
         name: "",
         nusnetID: "",
         email: emailRef.current.value,
-        contanctNo: "",
+        contactNo: "",
         course: "",
         year: "",
         dateCreated: new Date().toUTCString(),

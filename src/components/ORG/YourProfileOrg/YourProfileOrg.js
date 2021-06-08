@@ -67,7 +67,6 @@ const YourProfileOrg = () => {
                   <Form.Label>Email address of organization</Form.Label>
                   <Form.Control
                     placeholder={userData !== null ? userData.email : ""}
-                    // ref={???}
                     readOnly
                   />
                 </Form.Group>
@@ -75,7 +74,6 @@ const YourProfileOrg = () => {
                   <Form.Label>Name of contact person</Form.Label>
                   <Form.Control
                     placeholder={userData !== null ? userData.pocName : ""}
-                    // ref={???}
                     readOnly
                   />
                 </Form.Group>
@@ -83,7 +81,6 @@ const YourProfileOrg = () => {
                   <Form.Label>Mobile number of contact person</Form.Label>
                   <Form.Control
                     placeholder={userData !== null ? userData.pocNo : ""}
-                    // ref={???}
                     readOnly
                   />
                 </Form.Group>
@@ -91,16 +88,11 @@ const YourProfileOrg = () => {
                   <Form.Label>Email address of contact person</Form.Label>
                   <Form.Control
                     placeholder={userData !== null ? userData.pocEmail : ""}
-                    // ref={???}
                     readOnly
                   />
                 </Form.Group>
 
-                <Button
-                  // disabled={loading}
-                  variant="primary"
-                  type="submit"
-                >
+                <Button variant="primary" type="submit">
                   Edit profile
                 </Button>
               </Form>
