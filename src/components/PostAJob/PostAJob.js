@@ -8,6 +8,7 @@ import {
   Button,
   Alert,
 } from "react-bootstrap";
+import DropdownMultiselect from "react-multiselect-dropdown-bootstrap";
 import styles from "./PostAJob.module.css";
 import { useAuth } from "../../contexts/AuthContext";
 import { store } from "../../firebase";
@@ -21,6 +22,8 @@ const PostAJob = () => {
   const [message, setMessage] = useState("");
   const [successful, setSuccessful] = useState(false);
 
+  const [beneficiaries, setBeneficiaries] = useState([]);
+  const [skills, setSkills] = useState([]);
   // checkboxes for flexible fields
   const [virtual, setVirtual] = useState(false);
   const [multiLocation, setMultiLocation] = useState(false);
@@ -35,8 +38,8 @@ const PostAJob = () => {
   //references to data in the form
   // job details
   const titleRef = useRef();
-  const beneficiaryRef = useRef();
-  const skillsRef = useRef();
+  // const beneficiaryRef = useRef();
+  // const skillsRef = useRef();
   const purposeRef = useRef();
   // platform location
   const platformRef = useRef();
@@ -166,8 +169,8 @@ const PostAJob = () => {
       orgID: currentUser.email,
       status: "pending",
       title: titleRef.current.value,
-      beneficiary: beneficiaryRef.current.value,
-      skills: skillsRef.current.value,
+      beneficiaries: beneficiaries,
+      skills: skills,
       purpose: purposeRef.current.value,
 
       platform: platformRef.current.value,
@@ -294,9 +297,20 @@ const PostAJob = () => {
                     ref={titleRef}
                   />
                 </Form.Group>
+
                 <Form.Group controlId="formBeneficiary">
                   <Form.Label>Target profile of beneficiary</Form.Label>
-                  <Form.Control
+                  <DropdownMultiselect
+                    placeholder="Select at least one beneficiary"
+                    options={beneficiaryTags}
+                    name="beneficiaries"
+                    handleOnChange={(selected) => {
+                      setBeneficiaries(selected);
+                      console.log(beneficiaries);
+                    }}
+                  />
+
+                  {/* <Form.Control
                     required
                     as="select"
                     multiple
@@ -305,15 +319,25 @@ const PostAJob = () => {
                     {beneficiaryTags.map((beneficiary) => (
                       <option>{beneficiary}</option>
                     ))}
-                  </Form.Control>
+                  </Form.Control> */}
                 </Form.Group>
                 <Form.Group controlId="formSkills">
                   <Form.Label>Skills required</Form.Label>
-                  <Form.Control required as="select" multiple ref={skillsRef}>
+                  <DropdownMultiselect
+                    placeholder="Select at least one skill"
+                    options={skillTags}
+                    name="skills"
+                    handleOnChange={(selected) => {
+                      setSkills(selected);
+                      console.log(skills);
+                    }}
+                  />
+
+                  {/* <Form.Control required as="select" multiple ref={skillsRef}>
                     {skillTags.map((skill) => (
                       <option>{skill}</option>
                     ))}
-                  </Form.Control>
+                  </Form.Control> */}
                 </Form.Group>
                 <Form.Group controlId="formPurpose">
                   <Form.Label>Purpose of volunteer work</Form.Label>
