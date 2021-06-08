@@ -1,5 +1,157 @@
-.applyButton {
-  width: 5vw;
-  margin-left: 18px;
-  margin-bottom: 10px;
+/* defining marginon the left and right of the screen and in between cards */
+.cardContainer {
+  margin: 0 1rem 0.25rem;
+}
+/* for the image */
+.image {
+  width: auto;
+  height: 11.5rem; /* (54-6)/(12)*(3) */
+  object-fit: cover;
+  margin: 0.5rem;
+  transition: 0.3s;
+}
+/* make the image pop upon hover */
+.image:hover,
+.image:active {
+  transform: scale(1.1, 1.1);
+}
+/* holds all the text */
+.centreColumnWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding-bottom: 0.5rem;
+}
+/* holds title text and org text*/
+.titleWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+/* holds title text */
+.titleContainer {
+  margin: 0.5rem 0.5rem 0 0;
+  font-weight: 500;
+}
+/* holds org text */
+.orgContainer {
+  color: rgb(124, 124, 124);
+  font-weight: 400;
+}
+/* wraps the text info for each row */
+.infoWrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+/* for the location and distance to change to column in mobile*/
+.higherInfoWrapper {
+  display: flex;
+  flex-direction: row;
+}
+/* margin from text to icon */
+.infoContainer {
+  margin-left: 0.35rem;
+}
+/* margin from distance to location */
+.distanceContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  margin-left: 1.5rem;
+}
+/* makes distance disappear if not applicable */
+.distanceContainerNone {
+  display: none;
+}
+/* wraps the extra shifts */
+.extraShiftWrapper {
+  display: flex;
+  align-items: center;
+}
+/* holds the extra shifts */
+.extraShiftContainer {
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-left: 1rem;
+}
+/* makes the extra shifts disppear if not applicable  */
+.extraShiftContainerNone {
+  display: none;
+}
+/*  wraps button*/
+.buttonWrapper {
+  margin-top: 9.5rem; /* 12rem - 2.5rem*/
+}
+/* button details */
+.button {
+  width: auto;
+  margin: 0 0.5rem 0.5rem 0;
+  padding: 0.4rem 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #f8f8f8;
+  background-color: #003d7c;
+  border: 1px solid rgb(116, 116, 116);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+/* button change on hover */
+.button:hover,
+.button:active {
+  transform: scale(1.1, 1.1);
+  color: #003d7c;
+  background-color: #ef7c00;
+  transition: 0.3s;
+}
+/* wanted to implement the arrow appear on hover */
+.buttonArrow {
+  display: none;
+}
+/* button text */
+.buttonText {
+  line-height: 1;
+  margin: 0;
+  padding: 0.25rem 0;
+}
+
+@media screen and (max-width: 850px) {
+  .buttonText {
+    font-size: 0.8rem;
+  }
+  @media screen and (max-width: 767px) {
+    /* fit image on mobile screen */
+    .image {
+      margin: 1rem 0 0.5rem;
+      padding: 0 1rem 0;
+      height: 35vh;
+      width: auto;
+    }
+    .centreColumnWrapper {
+      margin: 0 1.5rem;
+    }
+    /* for the distance to go under location and for extra shifts to go under dates */
+    .higherInfoWrapper {
+      flex-direction: column;
+    }
+    .distanceContainer {
+      margin-left: 0;
+    }
+    .extraShiftWrapper {
+      margin: 0.1rem 0 0 0.35rem;
+    }
+    .buttonText {
+      font-size: 1.2rem;
+    }
+    .buttonWrapper {
+      display: flex;
+      justify-content: center;
+      margin-top: auto;
+    }
+  }
 }
