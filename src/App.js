@@ -7,6 +7,7 @@ import SignInAdminPage from "./pages/SignInAdminPage";
 import SignInStuPage from "./pages/SignInStuPage";
 import SignUpStuPage from "./pages/SignUpStuPage";
 import JobBoardPage from "./pages/JobBoardPage";
+import JobDetailsPage from "./pages/JobDetailsPage";
 import PostAJobPage from "./pages/PostAJobPage";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -48,6 +49,9 @@ function App() {
             {/* General Pages */}
             <Route path="/job-board">
               <JobBoardPage />
+            </Route>
+            <Route path="/jobs/:id">
+              <JobDetailsPage />
             </Route>
             <Route path="/">
               <LandingPage />

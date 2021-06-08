@@ -10,6 +10,7 @@ import {
   CalendarWeekFill,
   ArrowRight,
 } from "react-bootstrap-icons";
+import { Link } from "react-router-dom";
 import styles from "./JobBoardCard.module.css";
 
 const JobBoardCard = ({
@@ -182,12 +183,14 @@ const JobBoardCard = ({
             </div>
           </Col>
           <Col md={2} lg={2}>
-            {/* Apply Now Button */}
+            {/* Learn More Button */}
             <div className={styles.buttonWrapper}>
-              <div className={styles.button} variant="primary">
-                <h6 className={styles.buttonText}>Learn more</h6>
-                <ArrowRight className={styles.buttonArrow} />
-              </div>
+              <Link to={`/jobs/${id}`}>
+                <div className={styles.button} variant="primary">
+                  <h6 className={styles.buttonText}>Learn more</h6>
+                  <ArrowRight className={styles.buttonArrow} />
+                </div>
+              </Link>
             </div>
           </Col>
         </Row>
