@@ -30,6 +30,7 @@ const JobBoard = () => {
 
           return (
             <JobBoardCard
+              key={job.id}
               id={job.id}
               orgType={orgType}
               orgName={orgName}

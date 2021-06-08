@@ -1,4 +1,4 @@
-import { Row, Col, Card, Button } from "react-bootstrap";
+import { Row, Col, Card } from "react-bootstrap";
 // import { useState } from "react";
 // import JobBoardModal from "../JobBoardModal";
 import {
@@ -38,7 +38,6 @@ const JobBoardCard = ({
   pocNo,
   pocEmail,
 }) => {
-  console.log(adShift);
   return (
     <div className={styles.cardContainer}>
       <Card>

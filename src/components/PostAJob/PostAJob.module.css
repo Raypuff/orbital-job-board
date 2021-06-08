@@ -21,3 +21,12 @@ ol > li {
 .accordionBox {
   margin: 1em;
 }
+
+.typeDisplay {
+  grid-gap: 0px;
+  /* a useless property */
+}
+
+.typeDisplayNone {
+  display: none;
+}
