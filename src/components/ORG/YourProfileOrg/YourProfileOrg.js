@@ -24,7 +24,7 @@ const YourProfileOrg = () => {
 
   useEffect(() => {
     getUser();
-  });
+  }, [edit]);
 
   if (edit === true) {
     return <EditProfileOrg setEdit={setEdit} />;
@@ -36,74 +36,63 @@ const YourProfileOrg = () => {
             <Card.Header as="h6">Your organization profile</Card.Header>
             <Card.Body>
               <Form onSubmit={(event) => setEdit(true)}>
-                <Form.Group controlId="formOrgType">
-                  <Form.Label>Organization type</Form.Label>
+                <Form.Group controlId="formType">
+                  <Form.Label>Organization type</Form.Label>{" "}
                   <Form.Control
-                    placeholder={
-                      userData !== null ? userData.organizationType : ""
-                    }
-                    // ref={???}
+                    placeholder={userData !== null ? userData.type : ""}
                     readOnly
                   />
                 </Form.Group>
-                <Form.Group controlId="formOrgName">
+                <Form.Group controlId="formName">
                   <Form.Label>Organization name</Form.Label>
                   <Form.Control
-                    placeholder={
-                      userData !== null ? userData.organizationName : ""
-                    }
-                    // ref={???}
+                    placeholder={userData !== null ? userData.name : ""}
                     readOnly
                   />
                 </Form.Group>
-                <Form.Group controlId="formuen">
-                  <Form.Label>Organization UEN</Form.Label>
+                <Form.Group controlId="formUen">
+                  <Form.Label>
+                    Organization UEN, Charity Registration No. or Society
+                    Registration No.
+                  </Form.Label>
                   <Form.Control
-                    placeholder={
-                      userData !== null ? userData.organizationUEN : ""
-                    }
-                    // ref={???}
+                    placeholder={userData !== null ? userData.uen : ""}
                     readOnly
                   />
                   <Form.Text className="text-muted">
                     Only applicable for Non-NUS Organizations
                   </Form.Text>
                 </Form.Group>
-                <Form.Group controlId="formorgEmail">
+                <Form.Group controlId="formEmail">
                   <Form.Label>Email address of organization</Form.Label>
                   <Form.Control
-                    placeholder={
-                      userData !== null ? userData.organizationEmail : ""
-                    }
-                    // ref={???}
+                    placeholder={userData !== null ? userData.email : ""}
                     readOnly
                   />
                 </Form.Group>
-                <Form.Group controlId="formpocName">
+                <Form.Group controlId="formPocName">
                   <Form.Label>Name of contact person</Form.Label>
                   <Form.Control
-                    placeholder={
-                      userData !== null ? userData.nameOfContactPerson : ""
-                    }
-                    // ref={???}
+                    placeholder={userData !== null ? userData.pocName : ""}
                     readOnly
                   />
                 </Form.Group>
-                <Form.Group controlId="formpocNum">
+                <Form.Group controlId="formPocNo">
                   <Form.Label>Mobile number of contact person</Form.Label>
                   <Form.Control
-                    placeholder={
-                      userData !== null ? userData.mobileOfContactPerson : ""
-                    }
-                    // ref={???}
+                    placeholder={userData !== null ? userData.pocNo : ""}
                     readOnly
                   />
                 </Form.Group>
-                <Button
-                  // disabled={loading}
-                  variant="primary"
-                  type="submit"
-                >
+                <Form.Group controlId="formPocEmail">
+                  <Form.Label>Email address of contact person</Form.Label>
+                  <Form.Control
+                    placeholder={userData !== null ? userData.pocEmail : ""}
+                    readOnly
+                  />
+                </Form.Group>
+
+                <Button variant="primary" type="submit">
                   Edit profile
                 </Button>
               </Form>

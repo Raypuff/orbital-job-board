@@ -1,13 +1,23 @@
 .formContainer {
-  margin: 3vh 10vw;
-  width: 80vw;
+  display: grid;
+  place-items: center;
+}
+
+.formBox {
+  margin: 3vmax 0;
+  width: 75em;
+}
+
+@media (max-width: 1234px) {
+  .formBox {
+    width: 95%;
+  }
 }
 
 ol > li {
   font-weight: bold;
 }
 
-.divider {
-  border-top: 3px solid #f8f8f8;
-  margin: 30px 0;
+.accordionBox {
+  margin: 1em;
 }

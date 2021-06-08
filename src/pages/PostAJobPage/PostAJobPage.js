@@ -16,8 +16,9 @@ const PostAJobPage = () => {
       return (
         <div className={styles.signedOut}>
           <p>
-            Please <Link to="/sign_in">sign in as organization</Link> to post a
-            job!
+            Please{" "}
+            <Link to="/sign-in-organization">sign in as organization</Link> to
+            post a job!
           </p>
         </div>
       );

@@ -5,11 +5,21 @@ const JobModal = ({
   show,
   onHide,
   id,
+  type,
+  name,
+  uen,
+  email,
+  status,
   title,
-  org_name,
+  purpose,
   beneficiary,
+  skillsReq,
   duration,
-  writeup,
+  addInfo,
+  pocName,
+  pocNo,
+  pocEmail,
+  applicants,
 }) => {
   return (
     <>
@@ -21,12 +31,11 @@ const JobModal = ({
         centered
       >
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-vcenter">{title}</Modal.Title>
+          <Modal.Title id="contained-modal-title-vcenter">
+            title yeet
+          </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          <h4>{`${org_name} | ${beneficiary} | ${duration}`}</h4>
-          <p>{writeup}</p>
-        </Modal.Body>
+        <Modal.Body>description yeet</Modal.Body>
         <Modal.Footer>
           <Button onClick={onHide}>Close</Button>
         </Modal.Footer>

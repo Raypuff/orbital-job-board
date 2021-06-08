@@ -18,12 +18,13 @@ const EditProfileOrg = ({ setEdit }) => {
   const [error, setError] = useState("");
 
   //initializing refs for submit function
-  const orgtyperef = useRef();
-  const orgnameref = useRef();
-  const orguenref = useRef();
-  const orgemailref = useRef();
-  const pocnameref = useRef();
-  const pocmobileref = useRef();
+  const typeRef = useRef();
+  const nameRef = useRef();
+  const uenRef = useRef();
+  const emailRef = useRef();
+  const pocNameRef = useRef();
+  const pocNoRef = useRef();
+  const pocEmailRef = useRef();
 
   const getUser = async () => {
     store
@@ -39,36 +40,40 @@ const EditProfileOrg = ({ setEdit }) => {
 
   useEffect(() => {
     getUser();
-  });
+  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
     const newAccountInfo = {
-      organizationType:
-        orgtyperef.current.value.trim() !== ""
-          ? orgtyperef.current.value
-          : userData.organizationType,
-      organizationName:
-        orgnameref.current.value.trim() !== ""
-          ? orgnameref.current.value
-          : userData.organizationName,
-      organizationUEN:
-        orguenref.current.value.trim() !== ""
-          ? orguenref.current.value
-          : userData.organizationUEN,
-      organizationEmail:
-        orgemailref.current.value.trim() !== ""
-          ? orgemailref.current.value
-          : userData.organizationEmail,
-      nameOfContactPerson:
-        pocnameref.current.value.trim() !== ""
-          ? pocnameref.current.value
-          : userData.nameOfContactPerson,
-      mobileOfContactPerson:
-        pocmobileref.current.value.trim() !== ""
-          ? pocmobileref.current.value
-          : userData.mobileOfContactPerson,
+      type:
+        typeRef.current.value.trim() !== ""
+          ? typeRef.current.value
+          : userData.type,
+      name:
+        nameRef.current.value.trim() !== ""
+          ? nameRef.current.value
+          : userData.name,
+      uen:
+        uenRef.current.value.trim() !== ""
+          ? uenRef.current.value
+          : userData.uen,
+      email:
+        emailRef.current.value.trim() !== ""
+          ? emailRef.current.value
+          : userData.email,
+      pocName:
+        pocNameRef.current.value.trim() !== ""
+          ? pocNameRef.current.value
+          : userData.pocName,
+      pocNo:
+        pocNoRef.current.value.trim() !== ""
+          ? pocNoRef.current.value
+          : userData.pocNo,
+      pocEmail:
+        pocEmailRef.current.value.trim() !== ""
+          ? pocEmailRef.current.value
+          : userData.pocEmail,
     };
 
     console.log(newAccountInfo);
@@ -103,10 +108,8 @@ const EditProfileOrg = ({ setEdit }) => {
                   <Form.Label>Organization type</Form.Label>
                   <Form.Control
                     as="select"
-                    placeholder={
-                      userData !== null ? userData.organizationType : ""
-                    }
-                    ref={orgtyperef}
+                    placeholder={userData !== null ? userData.type : ""}
+                    ref={typeRef}
                   >
                     <option>NUS Organization</option>
                     <option>Non-NUS Organization</option>
@@ -115,56 +118,56 @@ const EditProfileOrg = ({ setEdit }) => {
                 <Form.Group controlId="formOrgName">
                   <Form.Label>Organization name</Form.Label>
                   <Form.Control
-                    placeholder={
-                      userData !== null ? userData.organizationName : ""
-                    }
-                    ref={orgnameref}
+                    placeholder={userData !== null ? userData.name : ""}
+                    ref={nameRef}
                   />
                 </Form.Group>
                 <Form.Group controlId="formuen">
-                  <Form.Label>Organization UEN</Form.Label>
+                  <Form.Label>
+                    Organization UEN, Charity Registration No. or Society
+                    Registration No.
+                  </Form.Label>
                   <Form.Control
-                    placeholder={
-                      userData !== null ? userData.organizationUEN : ""
-                    }
-                    ref={orguenref}
+                    placeholder={userData !== null ? userData.uen : ""}
+                    ref={uenRef}
                   />
                   <Form.Text className="text-muted">
                     Only applicable for Non-NUS Organizations
                   </Form.Text>
                 </Form.Group>
-                <Form.Group controlId="formorgEmail">
+                <Form.Group controlId="formEmail">
                   <Form.Label>Email address of organization</Form.Label>
                   <Form.Control
-                    placeholder={
-                      userData !== null ? userData.organizationEmail : ""
-                    }
-                    ref={orgemailref}
+                    placeholder={userData !== null ? userData.email : ""}
+                    ref={emailRef}
                     readOnly
                   />
                 </Form.Group>
-                <Form.Group controlId="formpocName">
+                <Form.Group controlId="formPocName">
                   <Form.Label>Name of contact person</Form.Label>
                   <Form.Control
-                    placeholder={
-                      userData !== null ? userData.nameOfContactPerson : ""
-                    }
-                    ref={pocnameref}
+                    placeholder={userData !== null ? userData.pocName : ""}
+                    ref={pocNameRef}
                   />
                 </Form.Group>
-                <Form.Group controlId="formpocNum">
+                <Form.Group controlId="formPocNum">
                   <Form.Label>Mobile number of contact person</Form.Label>
                   <Form.Control
-                    placeholder={
-                      userData !== null ? userData.mobileOfContactPerson : ""
-                    }
-                    ref={pocmobileref}
+                    placeholder={userData !== null ? userData.pocNo : ""}
+                    ref={pocNoRef}
                   />
                 </Form.Group>
+                <Form.Group controlId="formPocEmail">
+                  <Form.Label>Email address of contact person</Form.Label>
+                  <Form.Control
+                    placeholder={userData !== null ? userData.pocEmail : ""}
+                    ref={pocEmailRef}
+                  />
+                </Form.Group>
+
                 <div className={styles.buttonContainer}>
                   <div>
                     <Button
-                      // disabled={loading}
                       variant={leftButtonVar}
                       onClick={(event) => setEdit(false)}
                     >
