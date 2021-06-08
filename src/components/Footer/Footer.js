@@ -16,7 +16,7 @@ const Footer = () => {
     <footer>
       <div className={styles.linkBack}>
         <div className={styles.addContainer}>
-          <h4>NUS School of Computing</h4>
+          <h4 className={styles.footerh4}>NUS School of Computing</h4>
           <ul>
             <li>
               <img className={styles.addSvg} src={address} alt="address svg" />
@@ -65,7 +65,7 @@ const Footer = () => {
           </div>
         </div>
         <div className={styles.resContainer}>
-          <h4>Organisation</h4>
+          <h4 className={styles.footerh4}>Organisation</h4>
           <a href="https://www.comp.nus.edu.sg/about">About</a>
           <a href="https://www.comp.nus.edu.sg/about/depts/cs">
             Dept. of Computer Science
@@ -100,7 +100,7 @@ const Footer = () => {
           <a href="https://www.comp.nus.edu.sg/giving">Giving</a>
           <a href="http://www.comp.nus.edu.sg/careers">Careers</a>
           <br />
-          <h4>Resources</h4>
+          <h4 className={styles.footerh4}>Resources</h4>
           <a href="https://mysoc.nus.edu.sg/">MySoC</a>
           <a href="http://exchange.nus.edu.sg/">Email</a>
           <a href="https://myportal.nus.edu.sg/">Student</a>
