@@ -28,8 +28,10 @@ const JobBoardCard = ({
   location,
   postalCode,
   type,
+  flexiDate,
   longStartDate,
   longEndDate,
+  flexiHours,
   longHours,
   adShift,
   addInfo,
@@ -135,7 +137,9 @@ const JobBoardCard = ({
                   <CalendarWeekFill />
                   <div className={styles.infoContainer}>
                     {type === "Long term"
-                      ? `${longStartDate.toDateString()} - ${longEndDate.toDateString()}`
+                      ? !flexiDate
+                        ? `${longStartDate.toDateString()} - ${longEndDate.toDateString()}`
+                        : "Flexible dates"
                       : `${adShift[0].date.toDateString()} ${tConvert(
                           adShift[0].startTime
                         )} - ${tConvert(adShift[0].endTime)}`}

@@ -171,13 +171,15 @@ const PostAJob = () => {
       purpose: purposeRef.current.value,
 
       platform: platformRef.current.value,
-      multiLocation: multiLocationRef.current.value,
+      multiLocation: multiLocation,
       location: locationRef.current.value,
       postalCode: postalCodeRef.current.value,
 
       type: typeRef.current.value,
+      flexiDate: flexibleDate,
       longStartDate: longStartDateRef.current.value,
       longEndDate: longEndDateRef.current.value,
+      flexiHour: flexibleHours,
       longHours: longHoursRef.current.value,
       adShift: adShift,
 
