@@ -1,4 +1,11 @@
+import { useState } from "react";
+import { Row, Col } from "react-bootstrap";
+import JobDetailsModal from "../JobDetailsModal";
+import styles from "./JobDetails.module.css";
+
 const JobDetails = ({ id }) => {
+  const [showModal, setShowModal] = useState(false);
+
   const job = dummyData[id];
   const orgs = dummyOrgData;
 
@@ -28,12 +35,221 @@ const JobDetails = ({ id }) => {
     applicants,
   } = job;
 
+  const orgType = orgs[orgID].type;
+  const orgName = orgs[orgID].name;
+  const orgEmail = orgs[orgID].email;
+
   return (
-    <div>
-      <h4>{id}</h4>
-      <p>{orgID}</p>
-      <p>{title}</p>
-    </div>
+    <>
+      <div className={styles.container}>
+        <div className={styles.wrapper}>
+          <Row>
+            <Col md={2}>
+              <div className={styles.imageCol}>
+                <img
+                  className={styles.image}
+                  src={imageUrl}
+                  alt="volunteer"
+                ></img>
+              </div>
+            </Col>
+            <Col md={6}>
+              <div className={styles.detailCol}>
+                <div className={styles.detailContainer}>
+                  <h4>{title}</h4>
+                  <hr className={styles.divider} />
+                  <h5>About</h5>
+                  <div className={styles.lineWrapper}>
+                    <h7>Beneficiaries: </h7>
+                    {beneficiaries.map((beneficiary, index) => {
+                      if (index + 1 !== beneficiaries.length) {
+                        return <h7 key={index}>{`${beneficiary}, `}</h7>;
+                      } else {
+                        return <h7 key={index}>{beneficiary}</h7>;
+                      }
+                    })}
+                  </div>
+                  <div className={styles.lineWrapper}>
+                    <h7>Skills: </h7>
+                    {skills.map((skill, index) => {
+                      if (index + 1 !== skills.length) {
+                        return <h7 key={index}>{`${skill}, `}</h7>;
+                      } else {
+                        return <h7 key={index}>{skill}</h7>;
+                      }
+                    })}
+                  </div>
+                  <h7>Purpose: </h7>
+                  <h7>{purpose}</h7>
+                </div>
+                <div className={styles.detailContainer}>
+                  <h5>Location</h5>
+                  <h7>Platform: </h7>
+                  <h7>
+                    {platform}
+                    <br />
+                  </h7>
+                  <div
+                    className={
+                      platform === "Physical"
+                        ? styles.display
+                        : styles.displayNone
+                    }
+                  >
+                    <h7>Location: </h7>
+                    <h7>
+                      {multiLocation === true ? "Multiple locations" : location}
+                    </h7>
+                    <h7>
+                      {multiLocation === true ? "" : "(Calc dist)"}
+                      <br />
+                    </h7>
+
+                    <h7>Postal code: </h7>
+                    <h7>{postalCode}</h7>
+                  </div>
+                </div>
+                <div className={styles.detailContainer}>
+                  <h5>Commitment period</h5>
+                  <h7>Commitment type: </h7>
+                  <h7>
+                    {type}
+                    <br />
+                  </h7>
+                  <div
+                    className={
+                      type === "Long term" ? styles.display : styles.displayNone
+                    }
+                  >
+                    <h7>Dates: </h7>
+                    <h7>
+                      {type === "Long term"
+                        ? flexiDate === false
+                          ? `${longStartDate.toDateString()} - ${longEndDate.toDateString()}`
+                          : "Flexible start and end date"
+                        : ""}
+                      <br />
+                    </h7>
+                    <h7>Required hours: </h7>
+                    <h7>
+                      {flexiHours === false
+                        ? longHours
+                        : "Flexible required hours"}
+                      <br />
+                    </h7>
+                  </div>
+                  <div
+                    className={
+                      type === "Ad hoc" ? styles.display : styles.displayNone
+                    }
+                  >
+                    <div className={styles.shiftWrapper}>
+                      <h7>
+                        Shifts:
+                        <br />
+                      </h7>
+                      <ol>
+                        {type === "Ad hoc"
+                          ? adShift.map((shift, index) => {
+                              return (
+                                <li key={index}>
+                                  <h7>
+                                    {`${shift.date.toDateString()} ${tConvert(
+                                      shift.startTime
+                                    )} - ${tConvert(shift.endTime)}`}
+                                  </h7>
+                                </li>
+                              );
+                            })
+                          : ""}
+                      </ol>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <h5>Additional information</h5>
+                  <h7>{addInfo}</h7>
+                </div>
+              </div>
+            </Col>
+            <Col md={4}>
+              <div className={styles.orgCol}>
+                <div className={styles.orgContainer}>
+                  <h5>by {orgName}</h5>
+                  <hr className={styles.divider} />
+                  <h7>
+                    {orgType}
+                    <br />
+                  </h7>
+                  <h7>
+                    <a href={`mailto:${orgEmail}`}>{orgEmail}</a>
+                  </h7>
+                </div>
+                <div className={styles.orgContainer}>
+                  <h5>Contact us</h5>
+                  <hr className={styles.divider} />
+                  <h7>
+                    {pocName}
+                    <br />
+                  </h7>
+                  <h7>
+                    {pocNo}
+                    <br />
+                  </h7>
+                  <h7>
+                    <a href={`mailto:${pocEmail}`}>{pocEmail}</a>
+                  </h7>
+                </div>
+              </div>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={2} />
+            <Col md={6}>
+              <div className={styles.buttonRow}>
+                <div
+                  className={styles.button}
+                  onClick={() => setShowModal(true)}
+                >
+                  Apply now
+                </div>
+              </div>
+            </Col>
+            <Col md={4} />
+          </Row>
+        </div>
+      </div>
+      <JobDetailsModal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        id={id}
+        orgType={orgType}
+        orgName={orgName}
+        orgEmail={orgEmail}
+        status={status}
+        title={title}
+        beneficiaries={beneficiaries}
+        skills={skills}
+        purpose={purpose}
+        platform={platform}
+        multiLocation={multiLocation}
+        location={location}
+        postalCode={postalCode}
+        type={type}
+        flexiDate={flexiDate}
+        longStartDate={longStartDate}
+        longEndDate={longEndDate}
+        flexiHours={flexiHours}
+        longHours={longHours}
+        adShift={adShift}
+        addInfo={addInfo}
+        imageUrl={imageUrl}
+        pocName={pocName}
+        pocNo={pocNo}
+        pocEmail={pocEmail}
+        applicants={applicants}
+      />
+    </>
   );
 };
 export default JobDetails;
@@ -184,3 +400,18 @@ const dummyOrgData = {
     jobsPosted: [],
   },
 };
+
+function tConvert(time) {
+  // Check correct time format and split into components
+  time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [
+    time,
+  ];
+
+  if (time.length > 1) {
+    // If time format correct
+    time = time.slice(1); // Remove full string match value
+    time[5] = +time[0] < 12 ? "AM" : "PM"; // Set AM/PM
+    time[0] = +time[0] % 12 || 12; // Adjust hours
+  }
+  return time.join(""); // return adjusted time or original string
+}

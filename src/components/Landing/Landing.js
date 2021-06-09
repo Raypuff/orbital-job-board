@@ -9,7 +9,7 @@ const Landing = () => {
         <span className={styles.yourself}>It's time to get yourself </span>
         <span className={styles.involved}>involved.</span>
       </h1>
-      <Link to="/job-board">
+      <Link to="/jobs">
         <Button variant="warning">Volunteer Now!</Button>
       </Link>
     </div>

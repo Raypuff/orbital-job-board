@@ -47,11 +47,11 @@ function App() {
               <SignUpStuPage />
             </Route>
             {/* General Pages */}
-            <Route path="/job-board">
-              <JobBoardPage />
-            </Route>
             <Route path="/jobs/:id">
               <JobDetailsPage />
+            </Route>
+            <Route path="/jobs">
+              <JobBoardPage />
             </Route>
             <Route path="/">
               <LandingPage />

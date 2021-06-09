@@ -39,7 +39,7 @@ const SignedInOrgNavbar = () => {
       </NavDropdown.Header>
       <NavDropdown.Divider />
       <NavDropdown.Item>
-        <Nav.Link as={Link} to="profile-organization">
+        <Nav.Link as={Link} to="/profile-organization">
           Your profile
         </Nav.Link>
       </NavDropdown.Item>

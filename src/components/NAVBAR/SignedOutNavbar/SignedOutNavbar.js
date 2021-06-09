@@ -8,20 +8,20 @@ const SignedOutNavbar = () => {
   return (
     <NavDropdown title="Sign in" id="collasible-nav-dropdown" alignRight>
       <NavDropdown.Item>
-        <Nav.Link as={Link} to="sign-in-student">
+        <Nav.Link as={Link} to="/sign-in-student">
           Sign in as NUS Student
         </Nav.Link>
       </NavDropdown.Item>
       <NavDropdown.Item>
         <Nav>
-          <Nav.Link as={Link} to="sign-in-organization">
+          <Nav.Link as={Link} to="/sign-in-organization">
             Sign in as Organization
           </Nav.Link>
         </Nav>
       </NavDropdown.Item>
       <NavDropdown.Item>
         <Nav>
-          <Nav.Link as={Link} to="sign-in-admin">
+          <Nav.Link as={Link} to="/sign-in-admin">
             Sign in as Administrator
           </Nav.Link>
         </Nav>

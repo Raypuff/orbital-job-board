@@ -180,8 +180,8 @@ const PostAJob = () => {
 
       type: typeRef.current.value,
       flexiDate: flexibleDate,
-      longStartDate: longStartDateRef.current.value,
-      longEndDate: longEndDateRef.current.value,
+      longStartDate: new Date(longStartDateRef.current.value),
+      longEndDate: new Date(longEndDateRef.current.value),
       flexiHour: flexibleHours,
       longHours: longHoursRef.current.value,
       adShift: adShift,
@@ -309,17 +309,6 @@ const PostAJob = () => {
                       console.log(beneficiaries);
                     }}
                   />
-
-                  {/* <Form.Control
-                    required
-                    as="select"
-                    multiple
-                    ref={beneficiaryRef}
-                  >
-                    {beneficiaryTags.map((beneficiary) => (
-                      <option>{beneficiary}</option>
-                    ))}
-                  </Form.Control> */}
                 </Form.Group>
                 <Form.Group controlId="formSkills">
                   <Form.Label>Skills required</Form.Label>
@@ -332,12 +321,6 @@ const PostAJob = () => {
                       console.log(skills);
                     }}
                   />
-
-                  {/* <Form.Control required as="select" multiple ref={skillsRef}>
-                    {skillTags.map((skill) => (
-                      <option>{skill}</option>
-                    ))}
-                  </Form.Control> */}
                 </Form.Group>
                 <Form.Group controlId="formPurpose">
                   <Form.Label>Purpose of volunteer work</Form.Label>
@@ -1040,7 +1023,7 @@ function adShiftProcessor(
 
 const TermsAndConditions = () => {
   return (
-    <ol>
+    <ol className={styles.terms}>
       <li>Agreement To Terms</li>
       <p>
         All access of any area of "orbital-job-board.vercel.app" ("The Website")
@@ -1110,7 +1093,7 @@ const TermsAndConditions = () => {
       <li>General Disclaimer And Limitation Of Liability</li>
       <p>
         We will not be liable for any loss or damage{" "}
-        <ul>
+        <ol>
           <li>
             That you may incur on account of using, visiting or relying on any
             statements, opinion, representation or information in The Website;
@@ -1124,7 +1107,7 @@ const TermsAndConditions = () => {
             Resulting from the conduct or the views of any person who accesses
             or uses The Website.
           </li>
-        </ul>
+        </ol>
       </p>
       <li>Fees</li>
       <p>
