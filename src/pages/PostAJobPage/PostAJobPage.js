@@ -1,7 +1,7 @@
 import Header from "../../components/Header";
 import MyNavbar from "../../components/NAVBAR/MyNavbar";
 import Footer from "../../components/Footer";
-import PostAJob from "../../components/PostAJob";
+import PostAJob from "../../components/ORG/PostAJob";
 import { useAuth } from "../../contexts/AuthContext";
 import { Link } from "react-router-dom";
 import styles from "./PostAJobPage.module.css";

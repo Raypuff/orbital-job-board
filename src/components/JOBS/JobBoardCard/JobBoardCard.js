@@ -1,4 +1,4 @@
-import { Row, Col, Card, Button } from "react-bootstrap";
+import { Row, Col, Card } from "react-bootstrap";
 // import { useState } from "react";
 // import JobBoardModal from "../JobBoardModal";
 import {
@@ -10,6 +10,8 @@ import {
   CalendarWeekFill,
   ArrowRight,
 } from "react-bootstrap-icons";
+// import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import styles from "./JobBoardCard.module.css";
 
 const JobBoardCard = ({
@@ -28,8 +30,10 @@ const JobBoardCard = ({
   location,
   postalCode,
   type,
+  flexiDate,
   longStartDate,
   longEndDate,
+  flexiHours,
   longHours,
   adShift,
   addInfo,
@@ -38,7 +42,33 @@ const JobBoardCard = ({
   pocNo,
   pocEmail,
 }) => {
-  console.log(adShift);
+  //!!!using api to find long lang of postal code (maybe can shift this to postajob so long lang attached to job)
+
+  // const [coord, setCoord] = useState([]);
+
+  // useEffect(() => {
+  //   requestCoord();
+  // }, [postalCode]);
+
+  // async function requestCoord() {
+  //   const res = await fetch(`https://geocode.xyz/${postalCode}?json=1`);
+  //   const json = await res.json();
+  //   setCoord([json.latt, json.longt]); //doesn't work because they have a limit on requests
+  //   console.log(`${location}: ${coord}`);
+  // }
+
+  //!!!using browser capability to get long lang of user
+  // function success(pos) {
+  //   var crd = pos.coords;
+
+  //   console.log("Your current position is:");
+  //   console.log(`Latitude : ${crd.latitude}`);
+  //   console.log(`Longitude: ${crd.longitude}`);
+  //   console.log(`More or less ${crd.accuracy} meters.`);
+  // }
+  // const geo = navigator.geolocation;
+  // console.log(geo.getCurrentPosition(success));
+  //!!! use openrouteservice to get the MATRIX distance using long lang of both user and location
   return (
     <div className={styles.cardContainer}>
       <Card>
@@ -136,7 +166,9 @@ const JobBoardCard = ({
                   <CalendarWeekFill />
                   <div className={styles.infoContainer}>
                     {type === "Long term"
-                      ? `${longStartDate.toDateString()} - ${longEndDate.toDateString()}`
+                      ? !flexiDate
+                        ? `${longStartDate.toDateString()} - ${longEndDate.toDateString()}`
+                        : "Flexible dates"
                       : `${adShift[0].date.toDateString()} ${tConvert(
                           adShift[0].startTime
                         )} - ${tConvert(adShift[0].endTime)}`}
@@ -179,12 +211,14 @@ const JobBoardCard = ({
             </div>
           </Col>
           <Col md={2} lg={2}>
-            {/* Apply Now Button */}
+            {/* Learn More Button */}
             <div className={styles.buttonWrapper}>
-              <div className={styles.button} variant="primary">
-                <h6 className={styles.buttonText}>Learn more</h6>
-                <ArrowRight className={styles.buttonArrow} />
-              </div>
+              <Link to={`/jobs/${id}`}>
+                <div className={styles.button} variant="primary">
+                  <h6 className={styles.buttonText}>Learn more</h6>
+                  <ArrowRight className={styles.buttonArrow} />
+                </div>
+              </Link>
             </div>
           </Col>
         </Row>
