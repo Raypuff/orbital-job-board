@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { NavDropdown, Nav } from "react-bootstrap";
+import PostAJobButton from "../PostAJobButton";
 import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 
@@ -32,21 +33,31 @@ const SignedInOrgNavbar = () => {
   }
 
   return (
-    <NavDropdown title="Profile" id="collasible-nav-dropdown" alignRight>
-      <NavDropdown.Header className={styles.email}>
-        {currentUser.email}
-        <br />({isVerified()})
-      </NavDropdown.Header>
-      <NavDropdown.Divider />
-      <NavDropdown.Item>
-        <Nav.Link as={Link} to="profile-organization">
-          Your profile
+    <>
+      <Nav>
+        <NavDropdown title="Profile" id="collasible-nav-dropdown" alignRight>
+          <NavDropdown.Header className={styles.email}>
+            {currentUser.email}
+            <br />({isVerified()})
+          </NavDropdown.Header>
+          <NavDropdown.Divider />
+          <NavDropdown.Item>
+            <Nav.Link as={Link} to="/profile-organization">
+              Your profile
+            </Nav.Link>
+          </NavDropdown.Item>
+          <NavDropdown.Item>
+            <Nav.Link onClick={handleLogout}>Sign out</Nav.Link>
+          </NavDropdown.Item>
+        </NavDropdown>
+      </Nav>
+      <Nav>
+        <Nav.Link as={Link} to="/your-jobs">
+          Your Jobs
         </Nav.Link>
-      </NavDropdown.Item>
-      <NavDropdown.Item>
-        <Nav.Link onClick={handleLogout}>Sign out</Nav.Link>
-      </NavDropdown.Item>
-    </NavDropdown>
+      </Nav>
+      <PostAJobButton />
+    </>
   );
 };
 

@@ -30,6 +30,7 @@ const JobBoard = () => {
 
           return (
             <JobBoardCard
+              key={job.id}
               id={job.id}
               orgType={orgType}
               orgName={orgName}
@@ -45,8 +46,10 @@ const JobBoard = () => {
               location={job.location}
               postalCode={job.postalCode}
               type={job.type}
+              flexiDate={job.flexiDate}
               longStartDate={job.longStartDate}
               longEndDate={job.longEndDate}
+              flexiHours={job.flexiHours}
               longHours={job.longHours}
               adShift={job.adShift}
               addInfo={job.addInfo}
@@ -102,8 +105,10 @@ const dummyData = {
     location: "Bukit Panjang Plaza",
     postalCode: 677743,
     type: "Ad hoc",
+    flexiDate: false,
     longStartDate: null,
     longEndDate: null,
+    flexiHours: false,
     longHours: null,
     adShift: [
       { date: new Date("2021-05-25"), startTime: "17:30", endTime: "19:30" },
@@ -129,8 +134,10 @@ const dummyData = {
     location: null,
     postalCode: null,
     type: "Long term",
+    flexiDate: false,
     longStartDate: new Date("2021-01-06"),
     longEndDate: new Date("2021-12-31"),
+    flexiHours: false,
     longHours: 140,
     adShift: null,
     addInfo: "TAs will be paid $40 an hour -HAND",
@@ -138,6 +145,32 @@ const dummyData = {
     pocName: "Zechary",
     pocNo: 91234567,
     pocEmail: "peepeetime@gmail.com",
+    applicants: [],
+  },
+  "random-key-3": {
+    id: "random-key-3",
+    orgID: "testflexiDate@gmail.com",
+    status: "approved",
+    title: "FlexiDate Test",
+    beneficiaries: ["Elderly"],
+    skills: ["Smartphone"],
+    purpose: "Teach elderly phone stuff",
+    platform: "Physical",
+    multiLocation: true,
+    location: null,
+    postalCode: null,
+    type: "Long term",
+    flexiDate: true,
+    longStartDate: new Date("2021-01-06"),
+    longEndDate: new Date("2021-12-31"),
+    flexiHours: true,
+    longHours: 140,
+    adShift: null,
+    addInfo: "Teachers will be paid $90 an hour",
+    imageUrl: "http://www.mandysam.com/img/random.jpg",
+    pocName: "MrKuku",
+    pocNo: 88887777,
+    pocEmail: "testflexiDate@gmail.com",
     applicants: [],
   },
 };
@@ -165,6 +198,18 @@ const dummyOrgData = {
     pocNo: 92345678,
     pocEmail: "peepeetime@gmail.com",
     dateCreated: new Date("Jul 11 2017"),
-    applicants: [],
+    jobsPosted: [],
+  },
+  "testflexiDate@gmail.com": {
+    id: "testflexiDate@gmail.com",
+    type: "Non-NUS Organization",
+    name: "St Theresa's Home",
+    uen: 888443,
+    email: "testflexiDate@gmail.com",
+    pocName: "Ng Wan Yu",
+    pocNo: 91079192,
+    pocEmail: "testflexiDate@gmail.com",
+    dateCreated: new Date("February 23 2005"),
+    jobsPosted: [],
   },
 };
