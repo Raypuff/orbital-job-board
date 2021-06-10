@@ -60,7 +60,7 @@ footer {
   margin: 0 0.8em;
 }
 
-div > h4 {
+.footerh4 {
   font-size: 18px;
   color: #fff;
 }

@@ -6,7 +6,7 @@
 .jobContainer {
   display: flex;
   flex-direction: column;
-  width: 40em;
+  max-width: 54rem;
   height: auto;
   margin: 20px 0;
 }
