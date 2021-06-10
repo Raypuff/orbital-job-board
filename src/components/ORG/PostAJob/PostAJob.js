@@ -10,9 +10,9 @@ import {
 } from "react-bootstrap";
 import DropdownMultiselect from "react-multiselect-dropdown-bootstrap";
 import styles from "./PostAJob.module.css";
-import { useAuth } from "../../contexts/AuthContext";
-import { store } from "../../firebase";
-import { useStore } from "../../contexts/StoreContext";
+import { useAuth } from "../../../contexts/AuthContext";
+import { store } from "../../../firebase";
+import { useStore } from "../../../contexts/StoreContext";
 var uniqid = require("uniqid");
 
 const PostAJob = () => {

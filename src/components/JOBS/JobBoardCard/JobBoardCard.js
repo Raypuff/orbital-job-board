@@ -42,7 +42,7 @@ const JobBoardCard = ({
   pocNo,
   pocEmail,
 }) => {
-  //!!!using api to find long lang of postal code
+  //!!!using api to find long lang of postal code (maybe can shift this to postajob so long lang attached to job)
 
   // const [coord, setCoord] = useState([]);
 

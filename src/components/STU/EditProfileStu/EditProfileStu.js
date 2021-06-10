@@ -2,10 +2,10 @@ import React, { useEffect, useState, useRef } from "react";
 import { useAuth } from "../../../contexts/AuthContext";
 import { useStore } from "../../../contexts/StoreContext";
 import { Card, Button, Form, Alert } from "react-bootstrap";
-import styles from "./EditProfileOrg.module.css";
+import styles from "./EditProfileStu.module.css";
 import { store } from "../../../firebase";
 
-const EditProfileOrg = ({ setEdit }) => {
+const EditProfileStu = ({ setEdit }) => {
   const [leftButton, setLeftButton] = useState("Cancel");
   const [leftButtonVar, setLeftButtonVar] = useState("light");
   const { currentUser } = useAuth();
@@ -18,17 +18,16 @@ const EditProfileOrg = ({ setEdit }) => {
   const [error, setError] = useState("");
 
   //initializing refs for submit function
-  const typeRef = useRef();
   const nameRef = useRef();
-  const uenRef = useRef();
+  const dobRef = useRef();
   const emailRef = useRef();
-  const pocNameRef = useRef();
-  const pocNoRef = useRef();
-  const pocEmailRef = useRef();
+  const contactNoRef = useRef();
+  const courseRef = useRef();
+  const yearRef = useRef();
 
   const getUser = async () => {
     store
-      .collection("organization_accounts")
+      .collection("student_accounts")
       .doc(currentUser.email)
       .get()
       .then((documentSnapshot) => {
@@ -50,36 +49,32 @@ const EditProfileOrg = ({ setEdit }) => {
         emailRef.current.value.trim() !== ""
           ? emailRef.current.value
           : userData.email,
-      type:
-        typeRef.current.value.trim() !== ""
-          ? typeRef.current.value
-          : userData.type,
       name:
         nameRef.current.value.trim() !== ""
           ? nameRef.current.value
+          : userData.type,
+      dob:
+        dobRef.current.value.trim() !== ""
+          ? dobRef.current.value
           : userData.name,
-      uen:
-        uenRef.current.value.trim() !== ""
-          ? uenRef.current.value
-          : userData.uen,
       email:
         emailRef.current.value.trim() !== ""
           ? emailRef.current.value
           : userData.email,
-      pocName:
-        pocNameRef.current.value.trim() !== ""
-          ? pocNameRef.current.value
+      contactNo:
+        contactNoRef.current.value.trim() !== ""
+          ? contactNoRef.current.value
           : userData.pocName,
-      pocNo:
-        pocNoRef.current.value.trim() !== ""
-          ? pocNoRef.current.value
+      course:
+        courseRef.current.value.trim() !== ""
+          ? courseRef.current.value
           : userData.pocNo,
-      pocEmail:
-        pocEmailRef.current.value.trim() !== ""
-          ? pocEmailRef.current.value
+      year:
+        yearRef.current.value.trim() !== ""
+          ? yearRef.current.value
           : userData.pocEmail,
       dateCreated: new Date(),
-      jobsPosted: [], //zech have to edit this if not will overwrite all jobspostd i think?
+      jobsApplied: [], //zech have to change this as it may overwrite their jobsapplied
     };
 
     console.log(newAccountInfo);
@@ -90,9 +85,9 @@ const EditProfileOrg = ({ setEdit }) => {
       setError("");
       setLoading(true);
 
-      editItem(newAccountInfo, currentUser.email, "organization_accounts");
+      editItem(newAccountInfo, currentUser.email, "student_accounts");
       setSuccessful(true);
-      setMessage("Organization profile updated successfully!");
+      setMessage("User profile updated successfully!");
       setLeftButton("Back");
       setLeftButtonVar("secondary");
     } catch (err) {
@@ -107,68 +102,60 @@ const EditProfileOrg = ({ setEdit }) => {
       <div className={styles.formBG}>
         <div className={styles.formContainer}>
           <Card bg="light" text="dark" style={{ width: "23rem" }}>
-            <Card.Header as="h6">Edit your organization profile</Card.Header>
+            <Card.Header as="h6">Edit your profile</Card.Header>
             <Card.Body>
               <Form onSubmit={handleSubmit}>
-                <Form.Group controlId="formOrgType">
-                  <Form.Label>Organization type</Form.Label>
-                  <Form.Control
-                    as="select"
-                    placeholder={userData !== null ? userData.type : ""}
-                    ref={typeRef}
-                  >
-                    <option>NUS Organization</option>
-                    <option>Non-NUS Organization</option>
-                  </Form.Control>
-                </Form.Group>
-                <Form.Group controlId="formOrgName">
-                  <Form.Label>Organization name</Form.Label>
+                <Form.Group controlId="formName">
+                  <Form.Label>Name as in NRIC</Form.Label>{" "}
                   <Form.Control
                     placeholder={userData !== null ? userData.name : ""}
                     ref={nameRef}
                   />
                 </Form.Group>
-                <Form.Group controlId="formuen">
-                  <Form.Label>
-                    Organization UEN, Charity Registration No. or Society
-                    Registration No.
-                  </Form.Label>
+                <Form.Group controlId="formDob">
+                  <Form.Label>Date of birth</Form.Label>
                   <Form.Control
-                    placeholder={userData !== null ? userData.uen : ""}
-                    ref={uenRef}
+                    type="date"
+                    placeholder={userData !== null ? userData.dob : ""}
+                    ref={dobRef}
                   />
-                  <Form.Text className="text-muted">
-                    Only applicable for Non-NUS Organizations
-                  </Form.Text>
                 </Form.Group>
                 <Form.Group controlId="formEmail">
-                  <Form.Label>Email address of organization</Form.Label>
+                  <Form.Label>Email address</Form.Label>
                   <Form.Control
                     placeholder={userData !== null ? userData.email : ""}
                     ref={emailRef}
                     readOnly
                   />
                 </Form.Group>
-                <Form.Group controlId="formPocName">
-                  <Form.Label>Name of contact person</Form.Label>
+                <Form.Group controlId="formContactNo">
+                  <Form.Label>Mobile number</Form.Label>
                   <Form.Control
-                    placeholder={userData !== null ? userData.pocName : ""}
-                    ref={pocNameRef}
+                    placeholder={userData !== null ? userData.contactNo : ""}
+                    ref={contactNoRef}
                   />
                 </Form.Group>
-                <Form.Group controlId="formPocNum">
-                  <Form.Label>Mobile number of contact person</Form.Label>
+                <Form.Group controlId="formCourse">
+                  <Form.Label>Course of study</Form.Label>
                   <Form.Control
-                    placeholder={userData !== null ? userData.pocNo : ""}
-                    ref={pocNoRef}
+                    placeholder={userData !== null ? userData.course : ""}
+                    ref={courseRef}
                   />
                 </Form.Group>
-                <Form.Group controlId="formPocEmail">
-                  <Form.Label>Email address of contact person</Form.Label>
+                <Form.Group controlId="formYear">
+                  <Form.Label>Year of study</Form.Label>
                   <Form.Control
-                    placeholder={userData !== null ? userData.pocEmail : ""}
-                    ref={pocEmailRef}
-                  />
+                    as="select"
+                    placeholder={userData !== null ? userData.year : ""}
+                    ref={yearRef}
+                  >
+                    <option>Year 1</option>
+                    <option>Year 2</option>
+                    <option>Year 3</option>
+                    <option>Year 4</option>
+                    <option>Year 5</option>
+                    <option>Alumni</option>
+                  </Form.Control>
                 </Form.Group>
 
                 <div className={styles.buttonContainer}>
@@ -206,4 +193,4 @@ const EditProfileOrg = ({ setEdit }) => {
   );
 };
 
-export default EditProfileOrg;
+export default EditProfileStu;
