@@ -167,7 +167,7 @@ const PostAJob = () => {
     const newJob = {
       id: jobID,
       orgID: currentUser.email,
-      status: "pending",
+      status: "Pending",
       title: titleRef.current.value,
       beneficiaries: beneficiaries,
       skills: skills,
@@ -201,7 +201,7 @@ const PostAJob = () => {
       applicants: [],
     };
 
-    console.log(newJob);
+    // console.log(newJob);
 
     //pushing job id to organization account
     const updatedJobsPosted = userData !== null ? userData.jobsPosted : "";
@@ -506,13 +506,15 @@ const PostAJob = () => {
                       required={adHoc}
                       disabled={!adHoc}
                       placeholder={!adHoc ? null : shiftNumber}
-                      as="select"
+                      type="number"
+                      min="0"
+                      max="10"
                       ref={shiftNumberRef}
                       onChange={(event) => {
                         setShiftNumber(event.target.value);
                       }}
-                    >
-                      <option>0</option>
+                    />
+                    {/* <option>0</option>
                       <option>1</option>
                       <option>2</option>
                       <option>3</option>
@@ -523,7 +525,7 @@ const PostAJob = () => {
                       <option>8</option>
                       <option>9</option>
                       <option>10</option>
-                    </Form.Control>
+                    </Form.Control> */}
                   </Form.Group>
                 </div>
 
