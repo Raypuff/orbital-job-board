@@ -73,7 +73,7 @@ const JobBoardCard = ({
     <div className={styles.cardContainer}>
       <Card>
         <Row>
-          <Col xs={12} md={2} lg={3}>
+          <Col lg={3}>
             {/* Image */}
             <div className={styles.imageContainer}>
               <Card.Img
@@ -83,7 +83,7 @@ const JobBoardCard = ({
               />
             </div>
           </Col>
-          <Col md={8} lg={7}>
+          <Col lg={7}>
             <div className={styles.centreColumnWrapper}>
               {/* Title and Organization */}
               <div className={styles.titleWrapper}>
@@ -210,7 +210,7 @@ const JobBoardCard = ({
               </div>
             </div>
           </Col>
-          <Col md={2} lg={2}>
+          <Col lg={2}>
             {/* Learn More Button */}
             <div className={styles.buttonWrapper}>
               <Link to={`/jobs/${id}`}>

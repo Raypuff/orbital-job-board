@@ -19,9 +19,9 @@ header {
   margin-left: auto;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 575px) {
   header,
   .headerLogo {
-    height: 0px;
+    height: 0;
   }
 }

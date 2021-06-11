@@ -1,19 +1,26 @@
 /* defining marginon the left and right of the screen and in between cards */
 .cardContainer {
-  margin: 0 1rem 0.25rem;
+  margin: 0 1rem 0.5rem;
 }
 /* for the image */
+.imageContainer {
+  box-sizing: border-box;
+  /* background-color: blue; */
+  height: 100%;
+  padding: 0.5rem;
+}
+
 .image {
-  width: auto;
-  height: 11.5rem; /* (54-6)/(12)*(3) */
   object-fit: cover;
-  margin: 0.5rem;
+  /* height: 100%; */
+  height: 11.4rem;
   transition: 0.3s;
 }
 /* make the image pop upon hover */
 .image:hover,
 .image:active {
-  transform: scale(1.1, 1.1);
+  transition: 0.3s;
+  transform: scale(1.05);
 }
 /* holds all the text */
 .centreColumnWrapper {
@@ -120,18 +127,16 @@
   padding: 0.25rem 0;
 }
 
-@media screen and (max-width: 850px) {
+@media screen and (max-width: 1125px) {
   .buttonText {
-    font-size: 0.8rem;
+    font-size: 1.1vw;
   }
-  @media screen and (max-width: 767px) {
-    /* fit image on mobile screen */
-    .image {
-      margin: 0.9rem 0 1rem;
-      padding: 0 1rem 0;
-      height: 35vh;
-      width: auto;
-      transform: scale(1.1, 1.1);
+  /* fit image when job cards become stacked */
+  @media screen and (max-width: 992px) {
+    .image:hover,
+    .image:active {
+      /* remove the hover animation */
+      transform: scale(1);
     }
     .centreColumnWrapper {
       margin: 0 1.5rem;
