@@ -1,12 +1,25 @@
 .container {
-  display: grid;
-  place-items: center;
+  max-width: 76rem;
+  margin: 2rem auto;
 }
 
-.jobContainer {
-  display: flex;
-  flex-direction: column;
-  max-width: 54rem;
-  height: auto;
-  margin: 20px 0;
+.filterContainer {
+  background-color: red;
+  margin: 0 0 0 2rem;
+  height: 100%;
+}
+
+@media screen and (max-width: 992px) {
+  .filterContainer {
+    margin: 0 0 0 1rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    margin: 1rem auto;
+  }
+  .filterContainer {
+    margin: 0;
+  }
 }

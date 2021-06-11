@@ -11,7 +11,7 @@
   height: 0;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 576px) {
   .navbarLogo {
     height: 2em;
   }

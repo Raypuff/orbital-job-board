@@ -16,7 +16,7 @@ const MyNavbar = ({ isSignedIn }) => {
   return (
     <div className={styles.navback}>
       <div className={styles.navbar}>
-        <Navbar bg="light" variant="light">
+        <Navbar bg="light" variant="light" expand="sm">
           <Navbar.Brand>
             <Link to="/">
               <img
