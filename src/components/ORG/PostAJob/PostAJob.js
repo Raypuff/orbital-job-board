@@ -13,98 +13,92 @@ import styles from "./PostAJob.module.css";
 import { useAuth } from "../../../contexts/AuthContext";
 import { store } from "../../../firebase";
 import { useStore } from "../../../contexts/StoreContext";
+import { Formik } from "formik";
+import * as Yup from "yup";
+import { BeneficiaryTags, SkillTags } from "./Data";
+
 var uniqid = require("uniqid");
 
 const PostAJob = () => {
+  // Database useStates
   const { addItem, editItem } = useStore();
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [message, setMessage] = useState("");
   const [successful, setSuccessful] = useState(false);
-
+  // Form useStates
   const [beneficiaries, setBeneficiaries] = useState([]);
   const [skills, setSkills] = useState([]);
-  // checkboxes for flexible fields
-  const [virtual, setVirtual] = useState(false);
-  const [multiLocation, setMultiLocation] = useState(false);
-  const [adHoc, setAdHoc] = useState(false);
-  const [shiftNumber, setShiftNumber] = useState(0);
-  const [flexibleDate, setFlexibleDate] = useState(false);
-  const [flexibleHours, setFlexibleHours] = useState(false);
+  // const [virtual, setVirtual] = useState(false);
+  // const [multiLocation, setMultiLocation] = useState(false);
+  // const [adHoc, setAdHoc] = useState(false);
+  // const [shiftNumber, setShiftNumber] = useState(0);
+  // const [flexibleDate, setFlexibleDate] = useState(false);
+  // const [flexibleHours, setFlexibleHours] = useState(false);
 
   //finding currentUser that is logged in
   const { currentUser } = useAuth();
 
   //references to data in the form
   // job details
-  const titleRef = useRef();
-  // const beneficiaryRef = useRef();
-  // const skillsRef = useRef();
-  const purposeRef = useRef();
-  // platform location
-  const platformRef = useRef();
-  const multiLocationRef = useRef();
-  const locationRef = useRef();
-  const postalCodeRef = useRef();
-  // date time type
-  const typeRef = useRef();
-  const longStartDateRef = useRef();
-  const longEndDateRef = useRef();
-  const longHoursRef = useRef();
-  // adshift data
-  const shiftNumberRef = useRef();
-  const shift1DateRef = useRef();
-  const shift1StartRef = useRef();
-  const shift1EndRef = useRef();
-  const shift2DateRef = useRef();
-  const shift2StartRef = useRef();
-  const shift2EndRef = useRef();
-  const shift3DateRef = useRef();
-  const shift3StartRef = useRef();
-  const shift3EndRef = useRef();
-  const shift4DateRef = useRef();
-  const shift4StartRef = useRef();
-  const shift4EndRef = useRef();
-  const shift5DateRef = useRef();
-  const shift5StartRef = useRef();
-  const shift5EndRef = useRef();
-  const shift6DateRef = useRef();
-  const shift6StartRef = useRef();
-  const shift6EndRef = useRef();
-  const shift7DateRef = useRef();
-  const shift7StartRef = useRef();
-  const shift7EndRef = useRef();
-  const shift8DateRef = useRef();
-  const shift8StartRef = useRef();
-  const shift8EndRef = useRef();
-  const shift9DateRef = useRef();
-  const shift9StartRef = useRef();
-  const shift9EndRef = useRef();
-  const shift10DateRef = useRef();
-  const shift10StartRef = useRef();
-  const shift10EndRef = useRef();
+  // const titleRef = useRef();
+  // // const beneficiaryRef = useRef();
+  // // const skillsRef = useRef();
+  // const purposeRef = useRef();
+  // // platform location
+  // const platformRef = useRef();
+  // const multiLocationRef = useRef();
+  // const locationRef = useRef();
+  // const postalCodeRef = useRef();
+  // // date time type
+  // const typeRef = useRef();
+  // const longStartDateRef = useRef();
+  // const longEndDateRef = useRef();
+  // const longHoursRef = useRef();
+  // // adshift data
+  // const shiftNumberRef = useRef();
+  // const shift1DateRef = useRef();
+  // const shift1StartRef = useRef();
+  // const shift1EndRef = useRef();
+  // const shift2DateRef = useRef();
+  // const shift2StartRef = useRef();
+  // const shift2EndRef = useRef();
+  // const shift3DateRef = useRef();
+  // const shift3StartRef = useRef();
+  // const shift3EndRef = useRef();
+  // const shift4DateRef = useRef();
+  // const shift4StartRef = useRef();
+  // const shift4EndRef = useRef();
+  // const shift5DateRef = useRef();
+  // const shift5StartRef = useRef();
+  // const shift5EndRef = useRef();
+  // const shift6DateRef = useRef();
+  // const shift6StartRef = useRef();
+  // const shift6EndRef = useRef();
+  // const shift7DateRef = useRef();
+  // const shift7StartRef = useRef();
+  // const shift7EndRef = useRef();
+  // const shift8DateRef = useRef();
+  // const shift8StartRef = useRef();
+  // const shift8EndRef = useRef();
+  // const shift9DateRef = useRef();
+  // const shift9StartRef = useRef();
+  // const shift9EndRef = useRef();
+  // const shift10DateRef = useRef();
+  // const shift10StartRef = useRef();
+  // const shift10EndRef = useRef();
 
-  const addInfoRef = useRef();
-  const imageUrlRef = useRef();
-  // contact details
-  const pocNameRef = useRef();
-  const pocNoRef = useRef();
-  const pocEmailRef = useRef();
+  // const addInfoRef = useRef();
+  // const imageUrlRef = useRef();
+  // // contact details
+  // const pocNameRef = useRef();
+  // const pocNoRef = useRef();
+  // const pocEmailRef = useRef();
 
   const [error, setError] = useState("");
 
   //to obtain currentUser data from database
   const [userData, setUserData] = useState(null);
-
-  const beneficiaryTags = [
-    "Children",
-    "Teens",
-    "Youth",
-    "Adults",
-    "Elderly",
-    "Others",
-  ];
-  const skillTags = ["Python", "React", "Javascript", "React Native", "Others"];
 
   //retrieve user from database
   const getUser = async () => {
@@ -129,76 +123,73 @@ const PostAJob = () => {
     const jobID = uniqid();
 
     // processing the adShift into a list
-    const adShift = adShiftProcessor(
-      shiftNumber,
-      shift1DateRef,
-      shift1StartRef,
-      shift1EndRef,
-      shift2DateRef,
-      shift2StartRef,
-      shift2EndRef,
-      shift3DateRef,
-      shift3StartRef,
-      shift3EndRef,
-      shift4DateRef,
-      shift4StartRef,
-      shift4EndRef,
-      shift5DateRef,
-      shift5StartRef,
-      shift5EndRef,
-      shift6DateRef,
-      shift6StartRef,
-      shift6EndRef,
-      shift7DateRef,
-      shift7StartRef,
-      shift7EndRef,
-      shift8DateRef,
-      shift8StartRef,
-      shift8EndRef,
-      shift9DateRef,
-      shift9StartRef,
-      shift9EndRef,
-      shift10DateRef,
-      shift10StartRef,
-      shift10EndRef
-    );
+    // const adShift = adShiftProcessor(
+    //   shiftNumber,
+    //   shift1DateRef,
+    //   shift1StartRef,
+    //   shift1EndRef,
+    //   shift2DateRef,
+    //   shift2StartRef,
+    //   shift2EndRef,
+    //   shift3DateRef,
+    //   shift3StartRef,
+    //   shift3EndRef,
+    //   shift4DateRef,
+    //   shift4StartRef,
+    //   shift4EndRef,
+    //   shift5DateRef,
+    //   shift5StartRef,
+    //   shift5EndRef,
+    //   shift6DateRef,
+    //   shift6StartRef,
+    //   shift6EndRef,
+    //   shift7DateRef,
+    //   shift7StartRef,
+    //   shift7EndRef,
+    //   shift8DateRef,
+    //   shift8StartRef,
+    //   shift8EndRef,
+    //   shift9DateRef,
+    //   shift9StartRef,
+    //   shift9EndRef,
+    //   shift10DateRef,
+    //   shift10StartRef,
+    //   shift10EndRef
+    // );
 
     //creating the job to be posted from the refs
     const newJob = {
-      id: jobID,
-      orgID: currentUser.email,
-      status: "Pending",
-      title: titleRef.current.value,
-      beneficiaries: beneficiaries,
-      skills: skills,
-      purpose: purposeRef.current.value,
-
-      platform: platformRef.current.value,
-      multiLocation: multiLocation,
-      location: locationRef.current.value,
-      postalCode: postalCodeRef.current.value,
-
-      type: typeRef.current.value,
-      flexiDate: flexibleDate,
-      longStartDate: new Date(longStartDateRef.current.value),
-      longEndDate: new Date(longEndDateRef.current.value),
-      flexiHour: flexibleHours,
-      longHours: longHoursRef.current.value,
-      adShift: adShift,
-
-      addInfo: addInfoRef.current.value,
-      imageUrl: imageUrlRef.current.value,
-      pocName:
-        pocNameRef.current.value !== ""
-          ? pocNameRef.current.value
-          : userData.pocName,
-      pocNo:
-        pocNoRef.current.value !== "" ? pocNoRef.current.value : userData.pocNo,
-      pocEmail:
-        pocEmailRef.current.value !== ""
-          ? pocEmailRef.current.value
-          : userData.pocEmail,
-      applicants: [],
+      // id: jobID,
+      // orgID: currentUser.email,
+      // status: "Pending",
+      // title: titleRef.current.value,
+      // beneficiaries: beneficiaries,
+      // skills: skills,
+      // purpose: purposeRef.current.value,
+      // platform: platformRef.current.value,
+      // multiLocation: multiLocation,
+      // location: locationRef.current.value,
+      // postalCode: postalCodeRef.current.value,
+      // type: typeRef.current.value,
+      // flexiDate: flexibleDate,
+      // longStartDate: new Date(longStartDateRef.current.value),
+      // longEndDate: new Date(longEndDateRef.current.value),
+      // flexiHour: flexibleHours,
+      // longHours: longHoursRef.current.value,
+      // adShift: adShift,
+      // addInfo: addInfoRef.current.value,
+      // imageUrl: imageUrlRef.current.value,
+      // pocName:
+      //   pocNameRef.current.value !== ""
+      //     ? pocNameRef.current.value
+      //     : userData.pocName,
+      // pocNo:
+      //   pocNoRef.current.value !== "" ? pocNoRef.current.value : userData.pocNo,
+      // pocEmail:
+      //   pocEmailRef.current.value !== ""
+      //     ? pocEmailRef.current.value
+      //     : userData.pocEmail,
+      // applicants: [],
     };
 
     // console.log(newJob);
@@ -238,409 +229,640 @@ const PostAJob = () => {
 
   return (
     <div className={styles.formContainer}>
-      <Form onSubmit={handleSubmit} className={styles.formBox}>
-        <Accordion defaultActiveKey="0">
-          <Card>
-            <Accordion.Toggle as={Card.Header} eventKey="0">
-              <h5>Organization Details</h5>
-            </Accordion.Toggle>
-            <Accordion.Collapse eventKey="0">
-              <div className={styles.accordionBox}>
-                <Form.Group controlId="formType">
-                  <Form.Label>Organization Type</Form.Label>
-                  <Form.Control
-                    required
-                    placeholder={userData !== null ? userData.type : ""}
-                    readOnly
-                  ></Form.Control>
-                </Form.Group>
-                <Form.Group controlId="formName">
-                  <Form.Label>Name of Organization</Form.Label>
-                  <Form.Control
-                    required
-                    placeholder={userData !== null ? userData.name : ""}
-                    readOnly
-                  ></Form.Control>
-                </Form.Group>
-                <Form.Group controlId="formUen">
-                  <Form.Label>
-                    UEN, Charity registration number or Society registration
-                    number
-                  </Form.Label>
-                  <Form.Control
-                    required
-                    placeholder={userData !== null ? userData.uen : ""}
-                    readOnly
-                  ></Form.Control>
-                </Form.Group>
-                <Form.Group controlId="formEmail">
-                  <Form.Label>Email address of Organization</Form.Label>
-                  <Form.Control
-                    required
-                    placeholder={userData !== null ? userData.email : ""}
-                    readOnly
-                  ></Form.Control>
-                </Form.Group>
-              </div>
-            </Accordion.Collapse>
-            <Accordion.Toggle as={Card.Header} eventKey="1">
-              <h5>Job Details</h5>
-            </Accordion.Toggle>
-            <Accordion.Collapse eventKey="1">
-              <div className={styles.accordionBox}>
-                {/* About the job */}
-                <Form.Group controlId="formTitle">
-                  <Form.Label>Title of volunteer work</Form.Label>
-                  <Form.Control
-                    required
-                    placeholder="Python instructor"
-                    ref={titleRef}
-                  />
-                </Form.Group>
+      <Formik
+        initialValues={{
+          title: "",
+          purpose: "",
+          platform: "Physical",
+          multiLocation: false,
+          location: "",
+          postalCode: 0,
+          type: "Long term",
+          flexiDate: false,
+          longStartDate: "",
+          longEndDate: "",
+          flexiHours: false,
+          longHours: 0,
+          shiftNumber: 0,
+          shift1Date: "",
+          shift1Start: "",
+          shift1End: "",
+          shift2Date: "",
+          shift2Start: "",
+          shift2End: "",
+          shift3Date: "",
+          shift3Start: "",
+          shift3End: "",
+          shift4Date: "",
+          shift4Start: "",
+          shift4End: "",
+          shift5Date: "",
+          shift5Start: "",
+          shift5End: "",
+          shift6Date: "",
+          shift6Start: "",
+          shift6End: "",
+          shift7Date: "",
+          shift7Start: "",
+          shift7End: "",
+          shift8Date: "",
+          shift8Start: "",
+          shift8End: "",
+          shift9Date: "",
+          shift9Start: "",
+          shift9End: "",
+          shift10Date: "",
+          shift10Start: "",
+          shift10End: "",
+          addInfo: "",
+          imageUrl: "",
+          pocName: "",
+          pocNo: 0,
+          pocEmail: "",
+          terms: false,
+        }}
+        validationSchema={validationSchema}
+      >
+        {({
+          values,
+          touched,
+          errors,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          isSubmitting,
+        }) => (
+          <Form onSubmit={handleSubmit} className={styles.formBox}>
+            {console.log(values)}
+            <Accordion defaultActiveKey="0">
+              <Card>
+                {/* Accordion 1: Organization Details (These details are not collected in this form) */}
+                <Accordion.Toggle as={Card.Header} eventKey="0">
+                  <h5>Organization Details</h5>
+                </Accordion.Toggle>
+                <Accordion.Collapse eventKey="0">
+                  <div className={styles.accordionBox}>
+                    <Form.Group controlId="formOrgType">
+                      <Form.Label>Organization Type</Form.Label>
+                      <Form.Control
+                        required
+                        placeholder={userData !== null ? userData.type : ""}
+                        readOnly
+                      ></Form.Control>
+                    </Form.Group>
+                    <Form.Group controlId="formOrgName">
+                      <Form.Label>Name of Organization</Form.Label>
+                      <Form.Control
+                        required
+                        placeholder={userData !== null ? userData.name : ""}
+                        readOnly
+                      ></Form.Control>
+                    </Form.Group>
+                    <Form.Group controlId="formOrgUen">
+                      <Form.Label>
+                        UEN, Charity registration number or Society registration
+                        number
+                      </Form.Label>
+                      <Form.Control
+                        required
+                        placeholder={userData !== null ? userData.uen : ""}
+                        readOnly
+                      ></Form.Control>
+                    </Form.Group>
+                    <Form.Group controlId="formOrgEmail">
+                      <Form.Label>Email address of Organization</Form.Label>
+                      <Form.Control
+                        required
+                        placeholder={userData !== null ? userData.email : ""}
+                        readOnly
+                      ></Form.Control>
+                    </Form.Group>
+                  </div>
+                </Accordion.Collapse>
+                {/* Accordion 2: Job Details */}
+                <Accordion.Toggle as={Card.Header} eventKey="1">
+                  <h5>Job Details</h5>
+                </Accordion.Toggle>
+                <Accordion.Collapse eventKey="1">
+                  <div className={styles.accordionBox}>
+                    {/* About the job */}
+                    <Form.Group controlId="formTitle">
+                      <Form.Label>Title of volunteer work</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="title"
+                        placeholder="Python instructor"
+                        value={values.title}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        isValid={touched.title && !errors.title}
+                        isInvalid={touched.title && errors.title}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.title}
+                      </Form.Control.Feedback>
+                    </Form.Group>
 
-                <Form.Group controlId="formBeneficiary">
-                  <Form.Label>Target profile of beneficiary</Form.Label>
-                  <DropdownMultiselect
-                    placeholder="Select at least one beneficiary"
-                    options={beneficiaryTags}
-                    name="beneficiaries"
-                    handleOnChange={(selected) => {
-                      setBeneficiaries(selected);
-                      console.log(beneficiaries);
-                    }}
-                  />
-                </Form.Group>
-                <Form.Group controlId="formSkills">
-                  <Form.Label>Skills required</Form.Label>
-                  <DropdownMultiselect
-                    placeholder="Select at least one skill"
-                    options={skillTags}
-                    name="skills"
-                    handleOnChange={(selected) => {
-                      setSkills(selected);
-                      console.log(skills);
-                    }}
-                  />
-                </Form.Group>
-                <Form.Group controlId="formPurpose">
-                  <Form.Label>Purpose of volunteer work</Form.Label>
-                  <Form.Control
-                    required
-                    as="textarea"
-                    rows={2}
-                    placeholder={`Teach children basic programming skills
+                    <Form.Group controlId="formBeneficiary">
+                      <Form.Label>Target profile of beneficiary</Form.Label>
+                      <DropdownMultiselect
+                        placeholder="Select at least one beneficiary"
+                        options={BeneficiaryTags}
+                        name="beneficiaries"
+                        handleOnChange={(selected) => {
+                          setBeneficiaries(selected);
+                        }}
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="formSkills">
+                      <Form.Label>Skills required</Form.Label>
+                      <DropdownMultiselect
+                        placeholder="Select at least one skill"
+                        options={SkillTags}
+                        name="skills"
+                        handleOnChange={(selected) => {
+                          setSkills(selected);
+                        }}
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="formPurpose">
+                      <Form.Label>Purpose of volunteer work</Form.Label>
+                      <Form.Control
+                        type="text"
+                        as="textarea"
+                        rows={2}
+                        name="purpose"
+                        placeholder={`Teach children basic programming skills
 (Elaborate on how students can benefit from volunteering)`}
-                    ref={purposeRef}
-                  />
-                </Form.Group>
-                {/* Platform and Location */}
-                <Form.Group controlId="formPlatform">
-                  <Form.Label>Platform of volunteer work</Form.Label>
-                  <Form.Control
-                    required
-                    as="select"
-                    onChange={(event) => {
-                      if (event.target.value === "Virtual") {
-                        setVirtual(true);
-                      } else if (event.target.value === "Physical") {
-                        setVirtual(false);
+                        value={values.purpose}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        isValid={touched.purpose && !errors.purpose}
+                        isInvalid={touched.purpose && errors.purpose}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.purpose}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                    {/* Platform and Location */}
+                    <Form.Group controlId="formPlatform">
+                      <Form.Label>Platform of volunteer work</Form.Label>
+                      <Form.Control
+                        name="platform"
+                        as="select"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        isValid={touched.platform && !errors.platform}
+                        isInvalid={touched.platform && errors.platform}
+                      >
+                        <option>Physical</option>
+                        <option>Virtual</option>
+                      </Form.Control>
+                      <Form.Control.Feedback type="invalid">
+                        {errors.platform}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                    <div
+                      className={
+                        values.platform === "Virtual"
+                          ? styles.typeDisplayNone
+                          : styles.typeDisplay
                       }
-                    }}
-                    ref={platformRef}
-                  >
-                    <option>Physical</option>
-                    <option>Virtual</option>
-                  </Form.Control>
-                </Form.Group>
-                <div
-                  className={
-                    virtual ? styles.typeDisplayNone : styles.typeDisplay
-                  }
-                >
-                  <Row>
-                    <Col md={8}>
-                      <Form.Group controlId="formLocation">
-                        <Form.Label>Location of volunteer work</Form.Label>
-                        <Form.Control
-                          required={!multiLocation && !virtual}
-                          readOnly={multiLocation || virtual}
-                          placeholder={
-                            multiLocation || virtual
-                              ? null
-                              : "Bukit Timah Plaza"
-                          }
-                          ref={locationRef}
-                        />
-                        <Form.Text>
-                          <Form.Group>
-                            <Form.Check
-                              disabled={virtual}
-                              checked={virtual ? false : multiLocation}
-                              onClick={(event) =>
-                                setMultiLocation(!multiLocation)
+                    >
+                      <Row>
+                        <Col md={8}>
+                          <Form.Group controlId="formLocation">
+                            <Form.Label>Location of volunteer work</Form.Label>
+
+                            <Form.Control
+                              type="text"
+                              readOnly={
+                                values.multiLocation ||
+                                values.platform === "Virtual"
                               }
-                              label="Multiple locations"
-                              ref={multiLocationRef}
+                              name="location"
+                              value={values.location}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              placeholder={
+                                values.multiLocation ||
+                                values.platform === "Virtual"
+                                  ? null
+                                  : "Bukit Timah Plaza"
+                              }
+                              isValid={touched.location && !errors.location}
+                              isInvalid={touched.location && errors.location}
                             />
+                            <Form.Control.Feedback type="invalid">
+                              {errors.location}
+                            </Form.Control.Feedback>
+                            <Form.Text>
+                              <Form.Group controlId="formMultiLocation">
+                                <Form.Check
+                                  name="multiLocation"
+                                  label="Multiple locations"
+                                  disabled={values.platform === "Virtual"}
+                                  checked={
+                                    values.platform === "Virtual"
+                                      ? false
+                                      : values.multiLocation
+                                  }
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  // isValid={
+                                  //   touched.multiLocation &&
+                                  //   !errors.multiLocation
+                                  // }
+                                  // isInvalid={
+                                  //   touched.multiLocation &&
+                                  //   errors.multiLocation
+                                  // }
+                                  feedback={errors.multiLocation}
+                                />
+                              </Form.Group>
+                            </Form.Text>
                           </Form.Group>
-                        </Form.Text>
-                      </Form.Group>
-                    </Col>
-                    <Col md={4}>
-                      <Form.Group controlId="formPostalCode">
-                        <Form.Label>Postal code of location</Form.Label>
-                        <Form.Control
-                          required={!multiLocation && !virtual}
-                          readOnly={multiLocation || virtual}
-                          placeholder={multiLocation || virtual ? null : 588996}
-                          ref={postalCodeRef}
-                        />
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                </div>
-                {/* Date and Time */}
-                <Form.Group controlId="formType">
-                  <Form.Label>Type of volunteer commitment level</Form.Label>
-                  <Form.Control
-                    required
-                    as="select"
-                    onChange={(event) => {
-                      if (event.target.value === "Long term") {
-                        setAdHoc(false);
-                      } else if (event.target.value === "Ad hoc") {
-                        setAdHoc(true);
+                        </Col>
+                        <Col md={4}>
+                          <Form.Group controlId="formPostalCode">
+                            <Form.Label>Postal code of location</Form.Label>
+                            <Form.Control
+                              type="text"
+                              name="postalCode"
+                              value={values.postalCode}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              readOnly={
+                                values.multiLocation ||
+                                values.platform === "Virtual"
+                              }
+                              placeholder={
+                                values.multiLocation ||
+                                values.platform === "Virtual"
+                                  ? null
+                                  : 588996
+                              }
+                              isValid={touched.postalCode && !errors.postalCode}
+                              isInvalid={
+                                touched.postalCode && errors.postalCode
+                              }
+                            />
+                            <Form.Control.Feedback type="invalid">
+                              {errors.postalCode}
+                            </Form.Control.Feedback>
+                          </Form.Group>
+                        </Col>
+                      </Row>
+                    </div>
+                    {/* Date and Time */}
+                    <Form.Group controlId="formType">
+                      <Form.Label>
+                        Type of volunteer commitment level
+                      </Form.Label>
+                      <Form.Control
+                        name="type"
+                        as="select"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        values={values.type}
+                        isValid={touched.type && !errors.type}
+                        isInvalid={touched.type && errors.type}
+                      >
+                        <option>Long term</option>
+                        <option>Ad hoc</option>
+                      </Form.Control>
+                      <Form.Control.Feedback type="invalid">
+                        {errors.type}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                    {/* Long term */}
+                    <div
+                      className={
+                        values.type !== "Long term"
+                          ? styles.typeDisplayNone
+                          : styles.typeDisplay
                       }
-                    }}
-                    ref={typeRef}
-                  >
-                    <option>Long term</option>
-                    <option>Ad hoc</option>
-                  </Form.Control>
-                </Form.Group>
-                {/* Long term */}
-                <div
-                  className={
-                    adHoc ? styles.typeDisplayNone : styles.typeDisplay
-                  }
-                >
-                  <Row>
-                    <Col>
-                      <Form.Group controlId="formLongStartDate">
+                    >
+                      <Row>
+                        <Col>
+                          <Form.Group controlId="formLongStartDate">
+                            <Form.Label>
+                              Long term - Start date of volunteer work
+                            </Form.Label>
+                            <Form.Control
+                              name="longStartDate"
+                              readOnly={
+                                values.type !== "Long term" || values.flexiDate
+                              }
+                              type="date"
+                              value={values.longStartDate}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              isValid={
+                                touched.longStartDate && !errors.longStartDate
+                              }
+                              isInvalid={
+                                touched.longStartDate && errors.longStartDate
+                              }
+                            />
+                            <Form.Control.Feedback type="invalid">
+                              {errors.longStartDate}
+                            </Form.Control.Feedback>
+                            <Form.Text>
+                              <Form>
+                                <Form.Group>
+                                  <Form.Check
+                                    name="flexiDate"
+                                    label="Start and end dates are flexible"
+                                    checked={
+                                      values.type !== "Long term"
+                                        ? false
+                                        : values.flexiDate
+                                    }
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    // isValid={
+                                    //   touched.flexiDate && !errors.flexiDate
+                                    // }
+                                    // isInvalid={
+                                    //   touched.flexiDate && errors.flexiDate
+                                    // }
+                                    feedback={errors.flexiDate}
+                                  />
+                                </Form.Group>
+                              </Form>
+                            </Form.Text>
+                          </Form.Group>
+                        </Col>
+                        <Col>
+                          <Form.Group controlId="formLongEndDate">
+                            <Form.Label>
+                              Long term - End date of volunteer work
+                            </Form.Label>
+                            <Form.Control
+                              name="longEndDate"
+                              type="date"
+                              readOnly={
+                                values.type !== "Long term" || values.flexiDate
+                              }
+                              value={values.longEndDate}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              isValid={
+                                touched.longEndDate && !errors.longEndDate
+                              }
+                              isInvalid={
+                                touched.longEndDate && errors.longEndDate
+                              }
+                            />
+                            <Form.Control.Feedback type="invalid">
+                              {errors.longEndDate}
+                            </Form.Control.Feedback>
+                          </Form.Group>
+                        </Col>
+                      </Row>
+                      <Form.Group controlId="formLongHours">
                         <Form.Label>
-                          Long term - Start date of volunteer work
+                          Long term - Number of hours to commit
                         </Form.Label>
                         <Form.Control
-                          required={!adHoc && !flexibleDate}
-                          readOnly={adHoc || flexibleDate}
-                          type="date"
-                          // value={adHoc || flexibleDate ? null : "1999-07-11"}
-                          ref={longStartDateRef}
+                          name="longHours"
+                          readOnly={
+                            values.type !== "Long term" || values.flexiHours
+                          }
+                          placeholder={
+                            values.type !== "Long term" || values.flexiHours
+                              ? null
+                              : 40
+                          }
+                          value={values.longHours}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          isValid={touched.longHours && !errors.longHours}
+                          isInvalid={touched.longHours && errors.longHours}
                         />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.longHours}
+                        </Form.Control.Feedback>
                         <Form.Text>
                           <Form>
                             <Form.Group>
                               <Form.Check
-                                disabled={adHoc}
-                                checked={adHoc ? false : flexibleDate}
-                                onClick={(event) =>
-                                  setFlexibleDate(!flexibleDate)
+                                name="flexiHours"
+                                label="Number of hours to commit is flexible"
+                                checked={
+                                  values.type !== "Long term"
+                                    ? false
+                                    : values.flexiHours
                                 }
-                                label="Start and end dates are flexible"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                // isValid={
+                                //   touched.flexiHours && !errors.flexiHours
+                                // }
+                                // isInvalid={
+                                //   touched.flexiHours && errors.flexiHours
+                                // }
+                                feedback={errors.flexiHours}
                               />
                             </Form.Group>
                           </Form>
                         </Form.Text>
                       </Form.Group>
-                    </Col>
-                    <Col>
-                      <Form.Group controlId="formLongEndDate">
-                        <Form.Label>
-                          Long term - End date of volunteer work
-                        </Form.Label>
+                    </div>
+                    {/* Ad hoc */}
+                    <div
+                      className={
+                        values.type === "Ad hoc"
+                          ? styles.typeDisplay
+                          : styles.typeDisplayNone
+                      }
+                    >
+                      <Form.Group controlId="formShiftNumber">
+                        <Form.Label>Ad hoc - Number of shifts</Form.Label>
                         <Form.Control
-                          required={!adHoc && !flexibleDate}
-                          readOnly={adHoc || flexibleDate}
-                          type="date"
-                          // value={adHoc || flexibleDate ? null:"" }
-                          ref={longEndDateRef}
+                          name="shiftNumber"
+                          disabled={values.type !== "Ad hoc"}
+                          placeholder={
+                            values.type !== "Ad hoc" ? null : values.shiftNumber
+                          }
+                          type="number"
+                          min="0"
+                          max="10"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          isValid={touched.shiftNumber && !errors.shiftNumber}
+                          isInvalid={touched.shiftNumber && errors.shiftNumber}
                         />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.shiftNumber}
+                        </Form.Control.Feedback>
                       </Form.Group>
-                    </Col>
-                  </Row>
-                  <Form.Group controlId="formLongHours">
-                    <Form.Label>
-                      Long term - Number of hours to commit
-                    </Form.Label>
-                    <Form.Control
-                      required={!adHoc && !flexibleHours}
-                      readOnly={adHoc || flexibleHours}
-                      placeholder={adHoc || flexibleHours ? null : 40}
-                      ref={longHoursRef}
-                    />
-                    <Form.Text>
-                      <Form>
-                        <Form.Group>
-                          <Form.Check
-                            disabled={adHoc}
-                            checked={adHoc ? false : flexibleHours}
-                            onClick={(event) =>
-                              setFlexibleHours(!flexibleHours)
-                            }
-                            label="Number of hours to commit is flexible"
-                          />
-                        </Form.Group>
-                      </Form>
-                    </Form.Text>
-                  </Form.Group>
-                </div>
-                {/* Ad hoc */}
-                <div
-                  className={
-                    adHoc ? styles.typeDisplay : styles.typeDisplayNone
-                  }
-                >
-                  <Form.Group controlId="formShiftNumber">
-                    <Form.Label>Ad hoc - Number of shifts</Form.Label>
-                    <Form.Control
-                      required={adHoc}
-                      disabled={!adHoc}
-                      placeholder={!adHoc ? null : shiftNumber}
-                      type="number"
-                      min="0"
-                      max="10"
-                      ref={shiftNumberRef}
-                      onChange={(event) => {
-                        setShiftNumber(event.target.value);
-                      }}
-                    />
-                    {/* <option>0</option>
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
-                      <option>5</option>
-                      <option>6</option>
-                      <option>7</option>
-                      <option>8</option>
-                      <option>9</option>
-                      <option>10</option>
-                    </Form.Control> */}
-                  </Form.Group>
-                </div>
+                    </div>
 
-                {/* Shifts display (I'm not proud of this) */}
-                <Shifts
-                  adHoc={adHoc}
-                  shiftNumber={shiftNumber}
-                  shift1DateRef={shift1DateRef}
-                  shift1StartRef={shift1StartRef}
-                  shift1EndRef={shift1EndRef}
-                  shift2DateRef={shift2DateRef}
-                  shift2StartRef={shift2StartRef}
-                  shift2EndRef={shift2EndRef}
-                  shift3DateRef={shift3DateRef}
-                  shift3StartRef={shift3StartRef}
-                  shift3EndRef={shift3EndRef}
-                  shift4DateRef={shift4DateRef}
-                  shift4StartRef={shift4StartRef}
-                  shift4EndRef={shift4EndRef}
-                  shift5DateRef={shift5DateRef}
-                  shift5StartRef={shift5StartRef}
-                  shift5EndRef={shift5EndRef}
-                  shift6DateRef={shift6DateRef}
-                  shift6StartRef={shift6StartRef}
-                  shift6EndRef={shift6EndRef}
-                  shift7DateRef={shift7DateRef}
-                  shift7StartRef={shift7StartRef}
-                  shift7EndRef={shift7EndRef}
-                  shift8DateRef={shift8DateRef}
-                  shift8StartRef={shift8StartRef}
-                  shift8EndRef={shift8EndRef}
-                  shift9DateRef={shift9DateRef}
-                  shift9StartRef={shift9StartRef}
-                  shift9EndRef={shift9EndRef}
-                  shift10DateRef={shift10DateRef}
-                  shift10StartRef={shift10StartRef}
-                  shift10EndRef={shift10EndRef}
-                />
+                    {/* Shifts display (I'm not proud of this) */}
+                    {/* <Shifts
+                      // adHoc={adHoc}
+                      // shiftNumber={shiftNumber}
+                      // shift1DateRef={shift1DateRef}
+                      // shift1StartRef={shift1StartRef}
+                      // shift1EndRef={shift1EndRef}
+                      // shift2DateRef={shift2DateRef}
+                      // shift2StartRef={shift2StartRef}
+                      // shift2EndRef={shift2EndRef}
+                      // shift3DateRef={shift3DateRef}
+                      // shift3StartRef={shift3StartRef}
+                      // shift3EndRef={shift3EndRef}
+                      // shift4DateRef={shift4DateRef}
+                      // shift4StartRef={shift4StartRef}
+                      // shift4EndRef={shift4EndRef}
+                      // shift5DateRef={shift5DateRef}
+                      // shift5StartRef={shift5StartRef}
+                      // shift5EndRef={shift5EndRef}
+                      // shift6DateRef={shift6DateRef}
+                      // shift6StartRef={shift6StartRef}
+                      // shift6EndRef={shift6EndRef}
+                      // shift7DateRef={shift7DateRef}
+                      // shift7StartRef={shift7StartRef}
+                      // shift7EndRef={shift7EndRef}
+                      // shift8DateRef={shift8DateRef}
+                      // shift8StartRef={shift8StartRef}
+                      // shift8EndRef={shift8EndRef}
+                      // shift9DateRef={shift9DateRef}
+                      // shift9StartRef={shift9StartRef}
+                      // shift9EndRef={shift9EndRef}
+                      // shift10DateRef={shift10DateRef}
+                      // shift10StartRef={shift10StartRef}
+                      // shift10EndRef={shift10EndRef}
+                    /> */}
 
-                {/* Remaining details */}
-                <Form.Group controlId="formAddInfo">
-                  <Form.Label>Additional information</Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    rows={2}
-                    placeholder="Minimum commitment is 2 months"
-                    ref={addInfoRef}
-                  />
-                </Form.Group>
-                <Form.Group controlId="formImageUrl">
-                  <Form.Label>Image URL</Form.Label>
-                  <Form.Control
-                    placeholder="Direct Imgur link to image"
-                    ref={imageUrlRef}
-                  />
-                </Form.Group>
-              </div>
-            </Accordion.Collapse>
-            <Accordion.Toggle as={Card.Header} eventKey="2">
-              <h5>Contact Details</h5>
-              <Form.Text className="muted-text">
-                (Leave Blank if Unchanged)
-              </Form.Text>
-            </Accordion.Toggle>
-            <Accordion.Collapse eventKey="2">
-              <div className={styles.accordionBox}>
-                <Form.Group controlId="formPocName">
-                  <Form.Label>Name of contact person</Form.Label>
-                  <Form.Control
-                    placeholder={userData !== null ? userData.pocName : ""}
-                    ref={pocNameRef}
-                  />
-                </Form.Group>
-                <Form.Group controlId="formPocNo">
-                  <Form.Label>Mobile number of contact person</Form.Label>
-                  <Form.Control
-                    placeholder={userData !== null ? userData.pocNo : ""}
-                    ref={pocNoRef}
-                  />
-                </Form.Group>
-                <Form.Group controlId="formPocEmail">
-                  <Form.Label>Email address of contact person</Form.Label>
-                  <Form.Control
-                    placeholder={userData !== null ? userData.pocEmail : ""}
-                    ref={pocEmailRef}
-                    type="email"
-                  />
-                </Form.Group>
-              </div>
-            </Accordion.Collapse>
-            <Accordion.Toggle as={Card.Header} eventKey="3">
-              <h5>Terms and Conditions of Use</h5>
-            </Accordion.Toggle>
-            <Accordion.Collapse eventKey="3">
-              <div className={styles.accordionBox}>
-                <TermsAndConditions />
-                <Form.Group controlId="formTerms">
-                  <Form.Check
-                    required
-                    type="checkbox"
-                    label="I agree with the Terms and Conditions of Use"
-                  />
-                </Form.Group>
-              </div>
-            </Accordion.Collapse>
-          </Card>
-        </Accordion>
-        <Card.Text />
-        <Button disabled={submitted} variant="primary" type="submit">
-          Post job
-        </Button>
-        {error && <Alert variant="danger">{error}</Alert>}
-        {loading && <Alert variant="primary">Posting your job...</Alert>}
-        {successful && <Alert variant="success">{message}</Alert>}
-      </Form>
+                    {/* Remaining details */}
+                    <Form.Group controlId="formAddInfo">
+                      <Form.Label>Additional information</Form.Label>
+                      <Form.Control
+                        name="addInfo"
+                        type="text"
+                        as="textarea"
+                        rows={2}
+                        value={values.addInfo}
+                        placeholder="Minimum commitment is 2 months"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        isValid={touched.addInfo && !errors.addInfo}
+                        isInvalid={touched.addInfo && errors.addInfo}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.addInfo}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group controlId="formImageUrl">
+                      <Form.Label>Image URL</Form.Label>
+                      <Form.Control
+                        name="imageUrl"
+                        type="text"
+                        placeholder="Direct Imgur link to image"
+                        value={values.imageUrl}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        isValid={touched.imageUrl && !errors.imageUrl}
+                        isInvalid={touched.imageUrl && errors.imageUrl}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.imageUrl}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </div>
+                </Accordion.Collapse>
+                <Accordion.Toggle as={Card.Header} eventKey="2">
+                  <h5>Contact Details</h5>
+                  <Form.Text className="muted-text">
+                    (Leave Blank if Unchanged)
+                  </Form.Text>
+                </Accordion.Toggle>
+                <Accordion.Collapse eventKey="2">
+                  <div className={styles.accordionBox}>
+                    <Form.Group controlId="formPocName">
+                      <Form.Label>Name of contact person</Form.Label>
+                      <Form.Control
+                        name="pocName"
+                        type="text"
+                        placeholder={userData !== null ? userData.pocName : ""}
+                        value={values.pocName}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        isValid={touched.pocName && !errors.pocName}
+                        isInvalid={touched.pocName && errors.pocName}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.pocName}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group controlId="formPocNo">
+                      <Form.Label>Mobile number of contact person</Form.Label>
+                      <Form.Control
+                        name="pocNo"
+                        type="text"
+                        placeholder={userData !== null ? userData.pocNo : ""}
+                        value={values.pocNo}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        isValid={touched.pocNo && !errors.pocNo}
+                        isInvalid={touched.poNo && errors.pocNo}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.pocNo}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group controlId="formPocEmail">
+                      <Form.Label>Email address of contact person</Form.Label>
+                      <Form.Control
+                        name="pocEmail"
+                        type="email"
+                        placeholder={userData !== null ? userData.pocEmail : ""}
+                        value={values.pocEmail}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        isValid={touched.pocEmail && !errors.pocEmail}
+                        isInvalid={touched.pocEmail && errors.pocEmail}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.pocEmail}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </div>
+                </Accordion.Collapse>
+                <Accordion.Toggle as={Card.Header} eventKey="3">
+                  <h5>Terms and Conditions of Use</h5>
+                </Accordion.Toggle>
+                <Accordion.Collapse eventKey="3">
+                  <div className={styles.accordionBox}>
+                    <TermsAndConditions />
+                    <Form.Group controlId="formTerms">
+                      <Form.Check
+                        name="terms"
+                        label="I agree with the Terms and Conditions of Use"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        isValid={touched.terms && !errors.terms}
+                        isInvalid={touched.terms && errors.terms}
+                        feedback={errors.terms}
+                      />
+                    </Form.Group>
+                  </div>
+                </Accordion.Collapse>
+              </Card>
+            </Accordion>
+
+            <Card.Text />
+            <Button disabled={submitted} variant="primary" type="submit">
+              Post job
+            </Button>
+            {error && <Alert variant="danger">{error}</Alert>}
+            {loading && <Alert variant="primary">Posting your job...</Alert>}
+            {successful && <Alert variant="success">{message}</Alert>}
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 };
@@ -1001,27 +1223,65 @@ function adShiftProcessor(
     holder.endTime = temp[i][2].current.value;
     returnList.push(holder);
   }
-
   return returnList;
-
-  // const listShift = [
-  //   { date: new Date(shift1Date), startTime: shift1Start, endTime: shift1End },
-  //   { date: new Date(shift2Date), startTime: shift2Start, endTime: shift2End },
-  //   { date: new Date(shift3Date), startTime: shift3Start, endTime: shift3End },
-  //   { date: new Date(shift4Date), startTime: shift4Start, endTime: shift4End },
-  //   { date: new Date(shift5Date), startTime: shift5Start, endTime: shift5End },
-  //   { date: new Date(shift6Date), startTime: shift6Start, endTime: shift6End },
-  //   { date: new Date(shift7Date), startTime: shift7Start, endTime: shift7End },
-  //   { date: new Date(shift8Date), startTime: shift8Start, endTime: shift8End },
-  //   { date: new Date(shift9Date), startTime: shift9Start, endTime: shift9End },
-  //   {
-  //     date: new Date(shift10Date),
-  //     startTime: shift10Start,
-  //     endTime: shift10End,
-  //   },
-  // ];
-  // return listShift.slice(0, shiftNumber);
 }
+
+const validationSchema = Yup.object().shape({
+  title: Yup.string().required(),
+  purpose: Yup.string().required(),
+  platform: Yup.string().required(),
+  multiLocation: Yup.bool(),
+  location: Yup.string(),
+  postalCode: Yup.number(),
+  type: Yup.string().required(),
+  flexiDate: Yup.bool(),
+  longStartDate: Yup.date(),
+  longEndDate: Yup.date(),
+  flexiHours: Yup.bool(),
+  longHours: Yup.number(),
+  shiftNumber: Yup.number(),
+  shift1Date: Yup.date(),
+  shift1Start: Yup.string(),
+  shift1End: Yup.string(),
+  shift2Date: Yup.date(),
+  shift2Start: Yup.string(),
+  shift2End: Yup.string(),
+  shift3Date: Yup.date(),
+  shift3Start: Yup.string(),
+  shift3End: Yup.string(),
+  shift4Date: Yup.date(),
+  shift4Start: Yup.string(),
+  shift4End: Yup.string(),
+  shift5Date: Yup.date(),
+  shift5Start: Yup.string(),
+  shift5End: Yup.string(),
+  shift6Date: Yup.date(),
+  shift6Start: Yup.string(),
+  shift6End: Yup.string(),
+  shift7Date: Yup.date(),
+  shift7Start: Yup.string(),
+  shift7End: Yup.string(),
+  shift8Date: Yup.date(),
+  shift8Start: Yup.string(),
+  shift8End: Yup.string(),
+  shift9Date: Yup.date(),
+  shift9Start: Yup.string(),
+  shift9End: Yup.string(),
+  shift10Date: Yup.date(),
+  shift10Start: Yup.string(),
+  shift10End: Yup.string(),
+  addInfo: Yup.string(),
+  imageUrl: Yup.string().url(),
+  pocName: Yup.string().required(),
+  pocNo: Yup.number().required(),
+  pocEmail: Yup.string().email().required(),
+  terms: Yup.bool()
+    .required()
+    .oneOf(
+      [true],
+      "Terms and Conditions of Use must be accepted to post a Job"
+    ),
+});
 
 const TermsAndConditions = () => {
   return (

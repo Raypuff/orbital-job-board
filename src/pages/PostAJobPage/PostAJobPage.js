@@ -2,6 +2,7 @@ import Header from "../../components/Header";
 import MyNavbar from "../../components/NAVBAR/MyNavbar";
 import Footer from "../../components/Footer";
 import PostAJob from "../../components/ORG/PostAJob";
+// import PostAJobTest from "../../components/ORG/PostAJob/PostAJobTest";
 import { useAuth } from "../../contexts/AuthContext";
 import { Link } from "react-router-dom";
 import styles from "./PostAJobPage.module.css";
@@ -29,7 +30,7 @@ const PostAJobPage = () => {
     <>
       <Header />
       <MyNavbar isSignedIn={currentUser} />
-      {canPostJob()};
+      {canPostJob()}
       <Footer />
     </>
   );
