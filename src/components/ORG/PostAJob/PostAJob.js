@@ -9,6 +9,8 @@ import {
   Alert,
 } from "react-bootstrap";
 import DropdownMultiselect from "react-multiselect-dropdown-bootstrap";
+import Shifts from "./Shifts";
+import Terms from "./Terms";
 import styles from "./PostAJob.module.css";
 import { useAuth } from "../../../contexts/AuthContext";
 import { store } from "../../../firebase";
@@ -22,78 +24,15 @@ var uniqid = require("uniqid");
 const PostAJob = () => {
   // Database useStates
   const { addItem, editItem } = useStore();
-  const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [message, setMessage] = useState("");
   const [successful, setSuccessful] = useState(false);
   // Form useStates
   const [beneficiaries, setBeneficiaries] = useState([]);
   const [skills, setSkills] = useState([]);
-  // const [virtual, setVirtual] = useState(false);
-  // const [multiLocation, setMultiLocation] = useState(false);
-  // const [adHoc, setAdHoc] = useState(false);
-  // const [shiftNumber, setShiftNumber] = useState(0);
-  // const [flexibleDate, setFlexibleDate] = useState(false);
-  // const [flexibleHours, setFlexibleHours] = useState(false);
 
   //finding currentUser that is logged in
   const { currentUser } = useAuth();
-
-  //references to data in the form
-  // job details
-  // const titleRef = useRef();
-  // // const beneficiaryRef = useRef();
-  // // const skillsRef = useRef();
-  // const purposeRef = useRef();
-  // // platform location
-  // const platformRef = useRef();
-  // const multiLocationRef = useRef();
-  // const locationRef = useRef();
-  // const postalCodeRef = useRef();
-  // // date time type
-  // const typeRef = useRef();
-  // const longStartDateRef = useRef();
-  // const longEndDateRef = useRef();
-  // const longHoursRef = useRef();
-  // // adshift data
-  // const shiftNumberRef = useRef();
-  // const shift1DateRef = useRef();
-  // const shift1StartRef = useRef();
-  // const shift1EndRef = useRef();
-  // const shift2DateRef = useRef();
-  // const shift2StartRef = useRef();
-  // const shift2EndRef = useRef();
-  // const shift3DateRef = useRef();
-  // const shift3StartRef = useRef();
-  // const shift3EndRef = useRef();
-  // const shift4DateRef = useRef();
-  // const shift4StartRef = useRef();
-  // const shift4EndRef = useRef();
-  // const shift5DateRef = useRef();
-  // const shift5StartRef = useRef();
-  // const shift5EndRef = useRef();
-  // const shift6DateRef = useRef();
-  // const shift6StartRef = useRef();
-  // const shift6EndRef = useRef();
-  // const shift7DateRef = useRef();
-  // const shift7StartRef = useRef();
-  // const shift7EndRef = useRef();
-  // const shift8DateRef = useRef();
-  // const shift8StartRef = useRef();
-  // const shift8EndRef = useRef();
-  // const shift9DateRef = useRef();
-  // const shift9StartRef = useRef();
-  // const shift9EndRef = useRef();
-  // const shift10DateRef = useRef();
-  // const shift10StartRef = useRef();
-  // const shift10EndRef = useRef();
-
-  // const addInfoRef = useRef();
-  // const imageUrlRef = useRef();
-  // // contact details
-  // const pocNameRef = useRef();
-  // const pocNoRef = useRef();
-  // const pocEmailRef = useRef();
 
   const [error, setError] = useState("");
 
@@ -117,114 +56,109 @@ const PostAJob = () => {
     getUser();
   }, []);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const mySubmit = (values, { setSubmitting, resetForm }) => {
+    setSubmitting(true);
+    setTimeout(() => {
+      submitJob(values);
+      resetForm();
+      setSubmitting(false);
+    }, 500);
 
-    const jobID = uniqid();
+    function submitJob(values) {
+      const jobID = uniqid();
+      const newJob = {
+        id: jobID,
+        orgID: currentUser.email,
+        status: "Pending",
+        title: values.title,
+        beneficiaries: beneficiaries,
+        skills: skills,
+        purpose: values.purpose,
+        platform: values.platform,
+        multiLocation: values.multiLocation,
+        location: values.location,
+        postalCode: values.postalCode,
+        type: values.type,
+        flexiDate: values.flexiDate,
+        longStartDate: values.longStartDate,
+        longEndDate: values.longEndDate,
+        flexiHours: values.flexiHours,
+        longHours: values.longHours,
+        adShift: adShiftProcessor(
+          values.shiftNumber,
+          values.shift1Date,
+          values.shift1Start,
+          values.shift1End,
+          values.shift2Date,
+          values.shift2Start,
+          values.shift2End,
+          values.shift3Date,
+          values.shift3Start,
+          values.shift3End,
+          values.shift4Date,
+          values.shift4Start,
+          values.shift4End,
+          values.shift5Date,
+          values.shift5Start,
+          values.shift5End,
+          values.shift6Date,
+          values.shift6Start,
+          values.shift6End,
+          values.shift7Date,
+          values.shift7Start,
+          values.shift7End,
+          values.shift8Date,
+          values.shift8Start,
+          values.shift8End,
+          values.shift9Date,
+          values.shift9Start,
+          values.shift9End,
+          values.shift10Date,
+          values.shift10Start,
+          values.shift10End
+        ),
+        addInfo: values.addInfo,
+        imageUrl: values.imageUrl,
+        pocName: values.retrievePoc ? userData.pocName : values.pocName,
+        pocNo: values.retrievePoc ? userData.pocNo : values.pocNo,
+        pocEmail: values.retrievePoc ? userData.pocEmail : values.pocEmail,
+        applicants: [],
+      };
 
-    // processing the adShift into a list
-    // const adShift = adShiftProcessor(
-    //   shiftNumber,
-    //   shift1DateRef,
-    //   shift1StartRef,
-    //   shift1EndRef,
-    //   shift2DateRef,
-    //   shift2StartRef,
-    //   shift2EndRef,
-    //   shift3DateRef,
-    //   shift3StartRef,
-    //   shift3EndRef,
-    //   shift4DateRef,
-    //   shift4StartRef,
-    //   shift4EndRef,
-    //   shift5DateRef,
-    //   shift5StartRef,
-    //   shift5EndRef,
-    //   shift6DateRef,
-    //   shift6StartRef,
-    //   shift6EndRef,
-    //   shift7DateRef,
-    //   shift7StartRef,
-    //   shift7EndRef,
-    //   shift8DateRef,
-    //   shift8StartRef,
-    //   shift8EndRef,
-    //   shift9DateRef,
-    //   shift9StartRef,
-    //   shift9EndRef,
-    //   shift10DateRef,
-    //   shift10StartRef,
-    //   shift10EndRef
-    // );
-
-    //creating the job to be posted from the refs
-    const newJob = {
-      // id: jobID,
-      // orgID: currentUser.email,
-      // status: "Pending",
-      // title: titleRef.current.value,
-      // beneficiaries: beneficiaries,
-      // skills: skills,
-      // purpose: purposeRef.current.value,
-      // platform: platformRef.current.value,
-      // multiLocation: multiLocation,
-      // location: locationRef.current.value,
-      // postalCode: postalCodeRef.current.value,
-      // type: typeRef.current.value,
-      // flexiDate: flexibleDate,
-      // longStartDate: new Date(longStartDateRef.current.value),
-      // longEndDate: new Date(longEndDateRef.current.value),
-      // flexiHour: flexibleHours,
-      // longHours: longHoursRef.current.value,
-      // adShift: adShift,
-      // addInfo: addInfoRef.current.value,
-      // imageUrl: imageUrlRef.current.value,
-      // pocName:
-      //   pocNameRef.current.value !== ""
-      //     ? pocNameRef.current.value
-      //     : userData.pocName,
-      // pocNo:
-      //   pocNoRef.current.value !== "" ? pocNoRef.current.value : userData.pocNo,
-      // pocEmail:
-      //   pocEmailRef.current.value !== ""
-      //     ? pocEmailRef.current.value
-      //     : userData.pocEmail,
-      // applicants: [],
-    };
-
-    // console.log(newJob);
+      alert(
+        `TEST: Name: ${newJob.pocName}, No:${newJob.pocNo}, Email:${newJob.pocEmail}`
+      );
+    }
 
     //pushing job id to organization account
-    const updatedJobsPosted = userData !== null ? userData.jobsPosted : "";
-    updatedJobsPosted.push(jobID);
-    const updatedOrgAccount = {
-      jobsPosted: updatedJobsPosted,
-    };
+    // const updatedJobsPosted = userData !== null ? userData.jobsPosted : "";
+    // updatedJobsPosted.push(jobID);
+    // const updatedOrgAccount = {
+    //   jobsPosted: updatedJobsPosted,
+    // };
 
-    try {
-      setSuccessful(false);
-      setMessage("");
-      setSubmitted(true);
-      setError("");
-      setLoading(true);
+    // try {
+    //   setSuccessful(false);
+    //   setMessage("");
+    //   setSubmitted(true);
+    //   setError("");
 
-      if (!currentUser.emailVerified) {
-        setError(
-          "User is not verified. Please verify your account before posting a job."
-        );
-      } else {
-        //successful posting
-        addItem(newJob, "jobs", jobID);
-        //updating job array of account with new job posting
-        editItem(updatedOrgAccount, currentUser.email, "organization_accounts");
-        setSuccessful(true);
-        setMessage("Job Posted. Thank you for using our service!");
-      }
-    } catch (err) {
-      setError("Failed to post a job");
-    }
-    setLoading(false);
-    setSubmitted(true);
+    //   if (!currentUser.emailVerified) {
+    //     setError(
+    //       "User is not verified. Please verify your account before posting a job."
+    //     );
+    //   } else {
+    //     //successful posting
+    //     addItem(newJob, "jobs", jobID);
+    //     //updating job array of account with new job posting
+    //     editItem(updatedOrgAccount, currentUser.email, "organization_accounts");
+    //     setSuccessful(true);
+    //     setMessage("Job Posted. Thank you for using our service!");
+    //   }
+    // } catch (err) {
+    //   setError("Failed to post a job");
+    // }
+    // setSubmitted(true);
   };
 
   return (
@@ -277,11 +211,13 @@ const PostAJob = () => {
           addInfo: "",
           imageUrl: "",
           pocName: "",
-          pocNo: 0,
+          pocNo: "",
           pocEmail: "",
+          retrievePoc: false,
           terms: false,
         }}
         validationSchema={validationSchema}
+        onSubmit={mySubmit}
       >
         {({
           values,
@@ -469,14 +405,6 @@ const PostAJob = () => {
                                   }
                                   onChange={handleChange}
                                   onBlur={handleBlur}
-                                  // isValid={
-                                  //   touched.multiLocation &&
-                                  //   !errors.multiLocation
-                                  // }
-                                  // isInvalid={
-                                  //   touched.multiLocation &&
-                                  //   errors.multiLocation
-                                  // }
                                   feedback={errors.multiLocation}
                                 />
                               </Form.Group>
@@ -581,12 +509,6 @@ const PostAJob = () => {
                                     }
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    // isValid={
-                                    //   touched.flexiDate && !errors.flexiDate
-                                    // }
-                                    // isInvalid={
-                                    //   touched.flexiDate && errors.flexiDate
-                                    // }
                                     feedback={errors.flexiDate}
                                   />
                                 </Form.Group>
@@ -657,12 +579,6 @@ const PostAJob = () => {
                                 }
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                // isValid={
-                                //   touched.flexiHours && !errors.flexiHours
-                                // }
-                                // isInvalid={
-                                //   touched.flexiHours && errors.flexiHours
-                                // }
                                 feedback={errors.flexiHours}
                               />
                             </Form.Group>
@@ -700,41 +616,13 @@ const PostAJob = () => {
                       </Form.Group>
                     </div>
 
-                    {/* Shifts display (I'm not proud of this) */}
-                    {/* <Shifts
-                      // adHoc={adHoc}
-                      // shiftNumber={shiftNumber}
-                      // shift1DateRef={shift1DateRef}
-                      // shift1StartRef={shift1StartRef}
-                      // shift1EndRef={shift1EndRef}
-                      // shift2DateRef={shift2DateRef}
-                      // shift2StartRef={shift2StartRef}
-                      // shift2EndRef={shift2EndRef}
-                      // shift3DateRef={shift3DateRef}
-                      // shift3StartRef={shift3StartRef}
-                      // shift3EndRef={shift3EndRef}
-                      // shift4DateRef={shift4DateRef}
-                      // shift4StartRef={shift4StartRef}
-                      // shift4EndRef={shift4EndRef}
-                      // shift5DateRef={shift5DateRef}
-                      // shift5StartRef={shift5StartRef}
-                      // shift5EndRef={shift5EndRef}
-                      // shift6DateRef={shift6DateRef}
-                      // shift6StartRef={shift6StartRef}
-                      // shift6EndRef={shift6EndRef}
-                      // shift7DateRef={shift7DateRef}
-                      // shift7StartRef={shift7StartRef}
-                      // shift7EndRef={shift7EndRef}
-                      // shift8DateRef={shift8DateRef}
-                      // shift8StartRef={shift8StartRef}
-                      // shift8EndRef={shift8EndRef}
-                      // shift9DateRef={shift9DateRef}
-                      // shift9StartRef={shift9StartRef}
-                      // shift9EndRef={shift9EndRef}
-                      // shift10DateRef={shift10DateRef}
-                      // shift10StartRef={shift10StartRef}
-                      // shift10EndRef={shift10EndRef}
-                    /> */}
+                    <Shifts
+                      handleChange={handleChange}
+                      handleBlur={handleBlur}
+                      values={values}
+                      touched={touched}
+                      errors={errors}
+                    />
 
                     {/* Remaining details */}
                     <Form.Group controlId="formAddInfo">
@@ -775,9 +663,6 @@ const PostAJob = () => {
                 </Accordion.Collapse>
                 <Accordion.Toggle as={Card.Header} eventKey="2">
                   <h5>Contact Details</h5>
-                  <Form.Text className="muted-text">
-                    (Leave Blank if Unchanged)
-                  </Form.Text>
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="2">
                   <div className={styles.accordionBox}>
@@ -786,8 +671,11 @@ const PostAJob = () => {
                       <Form.Control
                         name="pocName"
                         type="text"
+                        readOnly={values.retrievePoc}
                         placeholder={userData !== null ? userData.pocName : ""}
-                        value={values.pocName}
+                        value={
+                          values.retrievePoc ? userData.pocName : values.pocName
+                        }
                         onChange={handleChange}
                         onBlur={handleBlur}
                         isValid={touched.pocName && !errors.pocName}
@@ -802,12 +690,15 @@ const PostAJob = () => {
                       <Form.Control
                         name="pocNo"
                         type="text"
+                        readOnly={values.retrievePoc}
                         placeholder={userData !== null ? userData.pocNo : ""}
-                        value={values.pocNo}
+                        value={
+                          values.retrievePoc ? userData.pocNo : values.pocNo
+                        }
                         onChange={handleChange}
                         onBlur={handleBlur}
                         isValid={touched.pocNo && !errors.pocNo}
-                        isInvalid={touched.poNo && errors.pocNo}
+                        isInvalid={touched.pocNo && errors.pocNo}
                       />
                       <Form.Control.Feedback type="invalid">
                         {errors.pocNo}
@@ -818,8 +709,13 @@ const PostAJob = () => {
                       <Form.Control
                         name="pocEmail"
                         type="email"
+                        readOnly={values.retrievePoc}
                         placeholder={userData !== null ? userData.pocEmail : ""}
-                        value={values.pocEmail}
+                        value={
+                          values.retrievePoc
+                            ? userData.pocEmail
+                            : values.pocEmail
+                        }
                         onChange={handleChange}
                         onBlur={handleBlur}
                         isValid={touched.pocEmail && !errors.pocEmail}
@@ -829,6 +725,16 @@ const PostAJob = () => {
                         {errors.pocEmail}
                       </Form.Control.Feedback>
                     </Form.Group>
+                    <Form.Group controlId="formRetrievePoc">
+                      <Form.Check
+                        name="retrievePoc"
+                        label="Retrieve contact details from 'Your Profile'"
+                        checked={values.retrievePoc}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        feedback={errors.retrievePoc}
+                      />
+                    </Form.Group>
                   </div>
                 </Accordion.Collapse>
                 <Accordion.Toggle as={Card.Header} eventKey="3">
@@ -836,7 +742,7 @@ const PostAJob = () => {
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="3">
                   <div className={styles.accordionBox}>
-                    <TermsAndConditions />
+                    <Terms />
                     <Form.Group controlId="formTerms">
                       <Form.Check
                         name="terms"
@@ -854,11 +760,14 @@ const PostAJob = () => {
             </Accordion>
 
             <Card.Text />
-            <Button disabled={submitted} variant="primary" type="submit">
+            <Button disabled={isSubmitting} variant="primary" type="submit">
               Post job
             </Button>
+            <Card.Text />
             {error && <Alert variant="danger">{error}</Alert>}
-            {loading && <Alert variant="primary">Posting your job...</Alert>}
+            {isSubmitting && (
+              <Alert variant="primary">Posting your job...</Alert>
+            )}
             {successful && <Alert variant="success">{message}</Alert>}
           </Form>
         )}
@@ -868,306 +777,6 @@ const PostAJob = () => {
 };
 
 export default PostAJob;
-
-const Shifts = ({
-  adHoc,
-  shiftNumber,
-  shift1DateRef,
-  shift1StartRef,
-  shift1EndRef,
-  shift2DateRef,
-  shift2StartRef,
-  shift2EndRef,
-  shift3DateRef,
-  shift3StartRef,
-  shift3EndRef,
-  shift4DateRef,
-  shift4StartRef,
-  shift4EndRef,
-  shift5DateRef,
-  shift5StartRef,
-  shift5EndRef,
-  shift6DateRef,
-  shift6StartRef,
-  shift6EndRef,
-  shift7DateRef,
-  shift7StartRef,
-  shift7EndRef,
-  shift8DateRef,
-  shift8StartRef,
-  shift8EndRef,
-  shift9DateRef,
-  shift9StartRef,
-  shift9EndRef,
-  shift10DateRef,
-  shift10StartRef,
-  shift10EndRef,
-}) => {
-  return (
-    <div className={adHoc ? styles.typeDisplay : styles.typeDisplayNone}>
-      <div
-        className={
-          shiftNumber >= 1 ? styles.typeDisplay : styles.typeDisplayNone
-        }
-      >
-        <Row>
-          <Col>
-            <Form.Group controlId="formShift1Date">
-              <Form.Label>Shift 1 date</Form.Label>
-              <Form.Control type="date" ref={shift1DateRef} />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formShift1Start">
-              <Form.Label>Shift 1 start time</Form.Label>
-              <Form.Control type="time" ref={shift1StartRef} />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formShift1End">
-              <Form.Label>Shift 1 end Time</Form.Label>
-              <Form.Control type="time" ref={shift1EndRef} />
-            </Form.Group>
-          </Col>
-        </Row>
-      </div>
-      <div
-        className={
-          shiftNumber >= 2 ? styles.typeDisplay : styles.typeDisplayNone
-        }
-      >
-        <Row>
-          <Col>
-            <Form.Group controlId="formShift2Date">
-              <Form.Label>Shift 2 date</Form.Label>
-              <Form.Control type="date" ref={shift2DateRef} />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formShift2Start">
-              <Form.Label>Shift 2 start time</Form.Label>
-              <Form.Control type="time" ref={shift2StartRef} />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formShift2End">
-              <Form.Label>Shift 2 end Time</Form.Label>
-              <Form.Control type="time" ref={shift2EndRef} />
-            </Form.Group>
-          </Col>
-        </Row>
-      </div>
-      <div
-        className={
-          shiftNumber >= 3 ? styles.typeDisplay : styles.typeDisplayNone
-        }
-      >
-        <Row>
-          <Col>
-            <Form.Group controlId="formShift3Date">
-              <Form.Label>Shift 3 date</Form.Label>
-              <Form.Control type="date" ref={shift3DateRef} />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formShift3Start">
-              <Form.Label>Shift 3 start time</Form.Label>
-              <Form.Control type="time" ref={shift3StartRef} />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formShift3End">
-              <Form.Label>Shift 3 end Time</Form.Label>
-              <Form.Control type="time" ref={shift3EndRef} />
-            </Form.Group>
-          </Col>
-        </Row>
-      </div>
-      <div
-        className={
-          shiftNumber >= 4 ? styles.typeDisplay : styles.typeDisplayNone
-        }
-      >
-        <Row>
-          <Col>
-            <Form.Group controlId="formShift4Date">
-              <Form.Label>Shift 4 date</Form.Label>
-              <Form.Control type="date" ref={shift4DateRef} />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formShift4Start">
-              <Form.Label>Shift 4 start time</Form.Label>
-              <Form.Control type="time" ref={shift4StartRef} />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formShift4End">
-              <Form.Label>Shift 4 end Time</Form.Label>
-              <Form.Control type="time" ref={shift4EndRef} />
-            </Form.Group>
-          </Col>
-        </Row>
-      </div>
-      <div
-        className={
-          shiftNumber >= 5 ? styles.typeDisplay : styles.typeDisplayNone
-        }
-      >
-        <Row>
-          <Col>
-            <Form.Group controlId="formShift5Date">
-              <Form.Label>Shift 5 date</Form.Label>
-              <Form.Control type="date" ref={shift5DateRef} />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formShift5Start">
-              <Form.Label>Shift 5 start time</Form.Label>
-              <Form.Control type="time" ref={shift5StartRef} />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formShift5End">
-              <Form.Label>Shift 5 end Time</Form.Label>
-              <Form.Control type="time" ref={shift5EndRef} />
-            </Form.Group>
-          </Col>
-        </Row>
-      </div>
-      <div
-        className={
-          shiftNumber >= 6 ? styles.typeDisplay : styles.typeDisplayNone
-        }
-      >
-        <Row>
-          <Col>
-            <Form.Group controlId="formShift6Date">
-              <Form.Label>Shift 6 date</Form.Label>
-              <Form.Control type="date" ref={shift6DateRef} />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formShift6Start">
-              <Form.Label>Shift 6 start time</Form.Label>
-              <Form.Control type="time" ref={shift6StartRef} />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formShift6End">
-              <Form.Label>Shift 6 end Time</Form.Label>
-              <Form.Control type="time" ref={shift6EndRef} />
-            </Form.Group>
-          </Col>
-        </Row>
-      </div>
-      <div
-        className={
-          shiftNumber >= 7 ? styles.typeDisplay : styles.typeDisplayNone
-        }
-      >
-        <Row>
-          <Col>
-            <Form.Group controlId="formShift7Date">
-              <Form.Label>Shift 7 date</Form.Label>
-              <Form.Control type="date" ref={shift7DateRef} />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formShift7Start">
-              <Form.Label>Shift 7 start time</Form.Label>
-              <Form.Control type="time" ref={shift7StartRef} />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formShift7End">
-              <Form.Label>Shift 7 end Time</Form.Label>
-              <Form.Control type="time" ref={shift7EndRef} />
-            </Form.Group>
-          </Col>
-        </Row>
-      </div>
-      <div
-        className={
-          shiftNumber >= 8 ? styles.typeDisplay : styles.typeDisplayNone
-        }
-      >
-        <Row>
-          <Col>
-            <Form.Group controlId="formShift8Date">
-              <Form.Label>Shift 8 date</Form.Label>
-              <Form.Control type="date" ref={shift8DateRef} />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formShift8Start">
-              <Form.Label>Shift 8 start time</Form.Label>
-              <Form.Control type="time" ref={shift8StartRef} />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formShift8End">
-              <Form.Label>Shift 8 end Time</Form.Label>
-              <Form.Control type="time" ref={shift8EndRef} />
-            </Form.Group>
-          </Col>
-        </Row>
-      </div>
-      <div
-        className={
-          shiftNumber >= 9 ? styles.typeDisplay : styles.typeDisplayNone
-        }
-      >
-        <Row>
-          <Col>
-            <Form.Group controlId="formShift9Date">
-              <Form.Label>Shift 9 date</Form.Label>
-              <Form.Control type="date" ref={shift9DateRef} />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formShift9Start">
-              <Form.Label>Shift 9 start time</Form.Label>
-              <Form.Control type="time" ref={shift9StartRef} />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formShift9End">
-              <Form.Label>Shift 9 end Time</Form.Label>
-              <Form.Control type="time" ref={shift9EndRef} />
-            </Form.Group>
-          </Col>
-        </Row>
-      </div>
-      <div
-        className={
-          shiftNumber >= 10 ? styles.typeDisplay : styles.typeDisplayNone
-        }
-      >
-        <Row>
-          <Col>
-            <Form.Group controlId="formShift10Date">
-              <Form.Label>Shift 10 date</Form.Label>
-              <Form.Control type="date" ref={shift10DateRef} />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formShift10Start">
-              <Form.Label>Shift 10 start time</Form.Label>
-              <Form.Control type="time" ref={shift10StartRef} />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formShift10End">
-              <Form.Label>Shift 10 end Time</Form.Label>
-              <Form.Control type="time" ref={shift10EndRef} />
-            </Form.Group>
-          </Col>
-        </Row>
-      </div>
-    </div>
-  );
-};
 
 function adShiftProcessor(
   shiftNumber,
@@ -1218,63 +827,214 @@ function adShiftProcessor(
   const returnList = [];
   for (var i = 0; i < shiftNumber; i++) {
     var holder = { date: "", startTime: "", endTime: "" };
-    holder.date = new Date(temp[i][0].current.value);
-    holder.startTime = temp[i][1].current.value;
-    holder.endTime = temp[i][2].current.value;
+    holder.date = new Date(temp[i][0]);
+    holder.startTime = temp[i][1];
+    holder.endTime = temp[i][2];
     returnList.push(holder);
   }
   return returnList;
 }
 
 const validationSchema = Yup.object().shape({
-  title: Yup.string().required(),
-  purpose: Yup.string().required(),
-  platform: Yup.string().required(),
+  title: Yup.string().required("Please indicate the volunteer job title"),
+  purpose: Yup.string().required(
+    "Please indicate the Purpose of the volunteer job"
+  ),
+  platform: Yup.string().required(
+    "Please indicate if the Platform is Physical or Virtual"
+  ),
   multiLocation: Yup.bool(),
-  location: Yup.string(),
-  postalCode: Yup.number(),
-  type: Yup.string().required(),
+  location: Yup.string().when("platform", {
+    is: "Physical",
+    then: Yup.string().required(
+      "Please indicate the location of the volunteer job"
+    ),
+  }),
+  postalCode: Yup.string().when("platform", {
+    is: "Physical",
+    then: Yup.string("Please enter a 6 digit number")
+      .matches(/^[0-9]+$/, "Please enter a 6 digit number")
+      .min(6, "Please enter a 6 digit number")
+      .max(6, "Please enter a 6 digit number")
+      .required("Please indicate the Postal Code of the volunteer job"),
+  }),
+  type: Yup.string().required(
+    "Please indicate if the Type is Long term or Ad hoc"
+  ),
   flexiDate: Yup.bool(),
-  longStartDate: Yup.date(),
-  longEndDate: Yup.date(),
+  longStartDate: Yup.date().when(["type", "flexiDate"], {
+    is: (type, flexiDate) => type === "Long term" && flexiDate !== true,
+    then: Yup.date().required(
+      "Please indicate the Start Date of the Volunteer job (If the date is flexible, tick 'Start and end dates are flexible'"
+    ),
+  }),
+  longEndDate: Yup.date().when(["type", "flexiDate"], {
+    is: (type, flexiDate) => type === "Long term" && flexiDate !== true,
+    then: Yup.date().required(
+      "Please indicate the End Date of the Volunteer job (If the date is flexible, tick 'Start and end dates are flexible'"
+    ),
+  }),
   flexiHours: Yup.bool(),
-  longHours: Yup.number(),
-  shiftNumber: Yup.number(),
-  shift1Date: Yup.date(),
-  shift1Start: Yup.string(),
-  shift1End: Yup.string(),
-  shift2Date: Yup.date(),
-  shift2Start: Yup.string(),
-  shift2End: Yup.string(),
-  shift3Date: Yup.date(),
-  shift3Start: Yup.string(),
-  shift3End: Yup.string(),
-  shift4Date: Yup.date(),
-  shift4Start: Yup.string(),
-  shift4End: Yup.string(),
-  shift5Date: Yup.date(),
-  shift5Start: Yup.string(),
-  shift5End: Yup.string(),
-  shift6Date: Yup.date(),
-  shift6Start: Yup.string(),
-  shift6End: Yup.string(),
-  shift7Date: Yup.date(),
-  shift7Start: Yup.string(),
-  shift7End: Yup.string(),
-  shift8Date: Yup.date(),
-  shift8Start: Yup.string(),
-  shift8End: Yup.string(),
-  shift9Date: Yup.date(),
-  shift9Start: Yup.string(),
-  shift9End: Yup.string(),
-  shift10Date: Yup.date(),
-  shift10Start: Yup.string(),
-  shift10End: Yup.string(),
+  longHours: Yup.number().when(["type", "flexiHours"], {
+    is: (type, flexiHours) => type === "Long term" && flexiHours !== true,
+    then: Yup.number("Please enter a number")
+      .positive("Please only enter a positive number")
+      .required("Please indicate the number of hours to commit"),
+  }),
+  shiftNumber: Yup.number("Please only enter numbers"),
+  shift1Date: Yup.date().when("shiftNumber", {
+    is: (shiftNumber) => shiftNumber >= 1,
+    then: Yup.date().required("Please indicate the date of the shift"),
+  }),
+  shift1Start: Yup.string().when("shiftNumber", {
+    is: (shiftNumber) => shiftNumber >= 1,
+    then: Yup.string().required("Please indicate the start time of the shift"),
+  }),
+
+  shift1End: Yup.string().when("shiftNumber", {
+    is: (shiftNumber) => shiftNumber >= 1,
+    then: Yup.string().required("Please indicate the end time of the shift"),
+  }),
+  shift2Date: Yup.date().when("shiftNumber", {
+    is: (shiftNumber) => shiftNumber >= 2,
+    then: Yup.date().required("Please the indicate date of the shift"),
+  }),
+  shift2Start: Yup.string().when("shiftNumber", {
+    is: (shiftNumber) => shiftNumber >= 2,
+    then: Yup.string().required("Please indicate the start time of the shift"),
+  }),
+
+  shift2End: Yup.string().when("shiftNumber", {
+    is: (shiftNumber) => shiftNumber >= 2,
+    then: Yup.string().required("Please indicate the end time of the shift"),
+  }),
+  shift3Date: Yup.date().when("shiftNumber", {
+    is: (shiftNumber) => shiftNumber >= 3,
+    then: Yup.date().required("Please indicate the date of the shift"),
+  }),
+  shift3Start: Yup.string().when("shiftNumber", {
+    is: (shiftNumber) => shiftNumber >= 3,
+    then: Yup.string().required("Please indicate the start time of the shift"),
+  }),
+
+  shift3End: Yup.string().when("shiftNumber", {
+    is: (shiftNumber) => shiftNumber >= 3,
+    then: Yup.string().required("Please indicate the end time of the shift"),
+  }),
+  shift4Date: Yup.date().when("shiftNumber", {
+    is: (shiftNumber) => shiftNumber >= 4,
+    then: Yup.date().required("Please indicate the date of the shift"),
+  }),
+  shift4Start: Yup.string().when("shiftNumber", {
+    is: (shiftNumber) => shiftNumber >= 4,
+    then: Yup.string().required("Please indicate the start time of the shift"),
+  }),
+
+  shift4End: Yup.string().when("shiftNumber", {
+    is: (shiftNumber) => shiftNumber >= 4,
+    then: Yup.string().required("Please indicate the end time of the shift"),
+  }),
+  shift5Date: Yup.date().when("shiftNumber", {
+    is: (shiftNumber) => shiftNumber >= 5,
+    then: Yup.date().required("Please indicate the date of the shift"),
+  }),
+  shift5Start: Yup.string().when("shiftNumber", {
+    is: (shiftNumber) => shiftNumber >= 5,
+    then: Yup.string().required("Please indicate the start time of the shift"),
+  }),
+
+  shift5End: Yup.string().when("shiftNumber", {
+    is: (shiftNumber) => shiftNumber >= 5,
+    then: Yup.string().required("Please indicate the end time of the shift"),
+  }),
+  shift6Date: Yup.date().when("shiftNumber", {
+    is: (shiftNumber) => shiftNumber >= 6,
+    then: Yup.date().required("Please indicate the date of the shift"),
+  }),
+  shift6Start: Yup.string().when("shiftNumber", {
+    is: (shiftNumber) => shiftNumber >= 6,
+    then: Yup.string().required("Please indicate the start time of the shift"),
+  }),
+
+  shift6End: Yup.string().when("shiftNumber", {
+    is: (shiftNumber) => shiftNumber >= 6,
+    then: Yup.string().required("Please indicate the end time of the shift"),
+  }),
+  shift7Date: Yup.date().when("shiftNumber", {
+    is: (shiftNumber) => shiftNumber >= 7,
+    then: Yup.date().required("Please indicate the date of the shift"),
+  }),
+  shift7Start: Yup.string().when("shiftNumber", {
+    is: (shiftNumber) => shiftNumber >= 7,
+    then: Yup.string().required("Please indicate the start time of the shift"),
+  }),
+
+  shift7End: Yup.string().when("shiftNumber", {
+    is: (shiftNumber) => shiftNumber >= 7,
+    then: Yup.string().required("Please indicate the end time of the shift"),
+  }),
+  shift8Date: Yup.date().when("shiftNumber", {
+    is: (shiftNumber) => shiftNumber >= 8,
+    then: Yup.date().required("Please indicate the date of the shift"),
+  }),
+  shift8Start: Yup.string().when("shiftNumber", {
+    is: (shiftNumber) => shiftNumber >= 8,
+    then: Yup.string().required("Please indicate the start time of the shift"),
+  }),
+
+  shift8End: Yup.string().when("shiftNumber", {
+    is: (shiftNumber) => shiftNumber >= 8,
+    then: Yup.string().required("Please indicate the end time of the shift"),
+  }),
+  shift9Date: Yup.date().when("shiftNumber", {
+    is: (shiftNumber) => shiftNumber >= 9,
+    then: Yup.date().required("Please indicate the date of the shift"),
+  }),
+  shift9Start: Yup.string().when("shiftNumber", {
+    is: (shiftNumber) => shiftNumber >= 9,
+    then: Yup.string().required("Please indicate the start time of the shift"),
+  }),
+
+  shift9End: Yup.string().when("shiftNumber", {
+    is: (shiftNumber) => shiftNumber >= 9,
+    then: Yup.string().required("Please indicate the end time of the shift"),
+  }),
+  shift10Date: Yup.date().when("shiftNumber", {
+    is: (shiftNumber) => shiftNumber >= 10,
+    then: Yup.date().required("Please indicate the date of the shift"),
+  }),
+  shift10Start: Yup.string().when("shiftNumber", {
+    is: (shiftNumber) => shiftNumber >= 10,
+    then: Yup.string().required("Please indicate the start time of the shift"),
+  }),
+
+  shift10End: Yup.string().when("shiftNumber", {
+    is: (shiftNumber) => shiftNumber >= 10,
+    then: Yup.string().required("Please indicate the end time of the shift"),
+  }),
   addInfo: Yup.string(),
-  imageUrl: Yup.string().url(),
-  pocName: Yup.string().required(),
-  pocNo: Yup.number().required(),
-  pocEmail: Yup.string().email().required(),
+  imageUrl: Yup.string().url(
+    "Please enter a valid URL that links directly to an image"
+  ),
+  pocName: Yup.string().when("retrievePoc", {
+    is: false,
+    then: Yup.string().required("Please enter the name of contact person"),
+  }),
+  pocNo: Yup.string().when("retrievePoc", {
+    is: false,
+    then: Yup.string("Please enter only numbers")
+      .matches(/^[0-9]+$/, "Please enter only numbers")
+      .min(8, "Please enter an 8 digit mobile number")
+      .max(8, "Please enter an 8 digit mobile number")
+      .required("Please enter the mobile number of contact person"),
+  }),
+  pocEmail: Yup.string().when("retrievePoc", {
+    is: false,
+    then: Yup.string()
+      .email("Please enter a valid email address")
+      .required("Please enter the email address of contact person"),
+  }),
+  retrievePoc: Yup.bool(),
   terms: Yup.bool()
     .required()
     .oneOf(
@@ -1282,117 +1042,3 @@ const validationSchema = Yup.object().shape({
       "Terms and Conditions of Use must be accepted to post a Job"
     ),
 });
-
-const TermsAndConditions = () => {
-  return (
-    <ol className={styles.terms}>
-      <li>Agreement To Terms</li>
-      <p>
-        All access of any area of "orbital-job-board.vercel.app" ("The Website")
-        is governed by the terms and conditions below ("Terms"). If you do not
-        accept any of these Terms, exit immediately. Continue only if you accept
-        these Terms. In these Terms, the words "we", "our" and "us" refers to
-        the Government of Singapore.
-      </p>
-      <li>Access To The Website</li>
-      <p>
-        The accessibility and operation of The Website relies on technologies
-        outside our control. We do not guarantee continuous accessibility or
-        uninterrupted operation of The Website.
-      </p>
-      <li>Relying On Information</li>
-      <p>
-        We provide The Website as a general information source only and we are
-        not involved in giving professional advice here. The Website may not
-        cover all information available on a particular issue. Before relying on
-        the Website, you should do your own checks or obtain professional advice
-        relevant to your particular circumstances.
-      </p>
-      <li>Security</li>
-      <p>
-        Where appropriate, we use available technology to protect the security
-        of communications made through The Website. However, we do not accept
-        liability for the security, authenticity, integrity or confidentiality
-        of any transactions and other communications made through The Website.
-      </p>
-      <p>
-        Internet communications may be susceptible to interference or
-        interception by third parties. Despite our best efforts, we make no
-        warranties that The Website is free of infection by computer viruses or
-        other unauthorised software.
-      </p>
-      <p>
-        You should take appropriate steps to keep your information, software and
-        equipment secure. This includes clearing your Internet browser cookies
-        and cache before and after using any services on The Website. You should
-        keep your passwords confidential.
-      </p>
-      <li>Hyperlinks</li>
-      <p>
-        We are not responsible or liable for the availability or content of any
-        other Internet site (not provided by us) linked to or from The Website.
-        Access to any other Internet site is at your own risk. If you create a
-        link or frame to The Website, you do so at your own risk.
-      </p>
-      <p>
-        We reserve the right to object or disable any link or frame to or from
-        The Website.
-      </p>
-      <p>We reserve the right to change the URL of The Website.</p>
-      <li>Intellectual Property</li>
-      <p>
-        Materials, including source code, pages, documents and online graphics,
-        audio and video in The Website are protected by law. The intellectual
-        property rights in the materials is owned by or licensed to us. All
-        rights reserved. (Government of Singapore © 2018).
-      </p>
-      <p>
-        Apart from any fair dealings for the purposes of private study,
-        research, criticism or review, as permitted in law, no part of The
-        Website may be reproduced or reused for any commercial purposes
-        whatsoever without our prior written permission.
-      </p>
-      <li>General Disclaimer And Limitation Of Liability</li>
-      <p>
-        We will not be liable for any loss or damage{" "}
-        <ol>
-          <li>
-            That you may incur on account of using, visiting or relying on any
-            statements, opinion, representation or information in The Website;
-          </li>
-          <li>
-            Resulting from any delay in operation or transmission,
-            communications failure, Internet access difficulties or malfunctions
-            in equipment or software; or
-          </li>
-          <li>
-            Resulting from the conduct or the views of any person who accesses
-            or uses The Website.
-          </li>
-        </ol>
-      </p>
-      <li>Fees</li>
-      <p>
-        There are currently no fees for using any part of The Website. We
-        reserve the right to introduce new fees from time to time. We are not
-        responsible for any fees charged by any other Internet site (not
-        provided by us).
-      </p>
-      <li>Applicable Laws</li>
-      <p>
-        Use of The Website and these Terms are governed by the laws of
-        Singapore. Any claim relating to use of The Website shall be heard by
-        Singapore Courts.
-      </p>
-
-      <li>Variation</li>
-      <p>
-        We may revise these Terms at any time by updating this page. You should
-        visit this page from time to time and review the then current Terms
-        because they are binding on you. We may modify or discontinue any
-        information or features that form part of The Website at any time, with
-        or without notice to you, and without liability.{" "}
-      </p>
-    </ol>
-  );
-};
