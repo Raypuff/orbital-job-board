@@ -213,7 +213,7 @@ const JobBoardCard = ({
           <Col lg={2}>
             {/* Learn More Button */}
             <div className={styles.buttonWrapper}>
-              <Link to={`/jobs/${id}`}>
+              <Link to={`/jobs/${id}`} target="blank">
                 <div className={styles.button} variant="primary">
                   <h6 className={styles.buttonText}>Learn more</h6>
                   <ArrowRight className={styles.buttonArrow} />
