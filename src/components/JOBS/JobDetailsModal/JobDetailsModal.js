@@ -1,5 +1,6 @@
 import { Modal, Button, Form } from "react-bootstrap";
 import { useRef } from "react";
+import { Link } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 import styles from "./JobDetailsModal.module.css";
 var uniqid = require("uniqid");
@@ -170,11 +171,20 @@ const SignedOutModal = ({ show, onHide }) => {
   return (
     <Modal show={show} onHide={onHide} size="md" centered>
       <Modal.Header closeButton>
-        <Modal.Title>Sign in lol</Modal.Title>
+        <Modal.Title>Please sign in</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <h4>Sign in lol</h4>
-        <p>sign in pls first lmao</p>
+        <h4>
+          To apply for volunteer jobs, please
+          <br />
+          <Link to="/sign-in-student">
+            Sign in as an NUS student
+          </Link> first{" "}
+        </h4>
+        <p>
+          Don't have an account? Sign up <Link to="/sign-up-student">here</Link>
+          !
+        </p>
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={onHide}>Close</Button>
