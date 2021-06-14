@@ -68,3 +68,21 @@ const JobBoard = () => {
 };
 
 export default JobBoard;
+
+// function getMyLocation() {
+//   if (navigator.geolocation) {
+//     navigator.geolocation.getCurrentPosition(success);
+//   } else {
+//     alert("Geolocation not supported");
+//   }
+// }
+
+// function success(pos) {
+//   var crd = pos.coords;
+//   console.log("Your current position is:");
+//   console.log(`Latitude : ${crd.latitude}`);
+//   console.log(`Longitude: ${crd.longitude}`);
+//   console.log(`More or less ${crd.accuracy} meters.`);
+//   myLat = crd.latitude
+//   myLong = crd.longitude
+// }

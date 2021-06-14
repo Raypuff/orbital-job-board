@@ -7,10 +7,10 @@ import {
   XCircleFill,
   CheckCircleFill,
 } from "react-bootstrap-icons";
-import styles from "./YourJobsCards.module.css";
+import styles from "./YourJobsCard.module.css";
 import ApplicantsModal from "./ApplicantsModal";
 
-const YourJobsCards = ({
+const YourJobsCard = ({
   key,
   id,
   status,
@@ -214,7 +214,7 @@ const YourJobsCards = ({
   );
 };
 
-export default YourJobsCards;
+export default YourJobsCard;
 
 const statusDict = {
   Pending: "Pending approval by administrator",

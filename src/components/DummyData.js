@@ -130,7 +130,8 @@ export const dummyApps = {
     stuID: "1@gmail.com",
     jobID: "random-key-1",
     status: "Pending",
-    stuAddInfo: "I am bob and i am smart",
+    stuAddInfo:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ultricies nunc quis aliquam commodo. Sed aliquam mi vitae justo imperdiet, et porta velit tristique. Morbi id sapien a metus laoreet vulputate. Nulla facilisi. Vivamus scelerisque magna vel orci consequat dignissim. Pellentesque vestibulum, felis vitae facilisis venenatis, purus nisl dictum mauris.I am bob and i am smart",
     dateApplied: new Date("2021-05-04"),
   },
 };

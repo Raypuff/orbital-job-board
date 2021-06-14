@@ -1,6 +1,6 @@
 import { Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import YourJobsCards from "./YourJobsCards";
+import YourJobsCard from "./YourJobsCard";
 import { dummyJobs } from "../../DummyData";
 import styles from "./YourJobs.module.css";
 
@@ -21,7 +21,7 @@ const YourJobs = () => {
           </Col>
           <Col md={9}>
             {yourJobs.map((job) => (
-              <YourJobsCards
+              <YourJobsCard
                 key={job.id}
                 id={job.id}
                 status={job.status}
