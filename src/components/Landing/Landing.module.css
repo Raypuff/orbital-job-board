@@ -92,7 +92,10 @@
   .title2 {
     font-size: 16vmin;
   }
+  .button {
+    border: 0.125rem solid black;
+  }
   .buttonText {
-    font-size: 5vmin;
+    font-size: 6vmin;
   }
 }
