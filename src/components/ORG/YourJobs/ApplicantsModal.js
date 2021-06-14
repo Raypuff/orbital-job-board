@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Modal, Form, Row, Col } from "react-bootstrap";
 import ApplicantsModalCard from "./ApplicantsModalCard";
-import { dummyApps } from "../../DummyData";
+import { dummyApps, dummyStus } from "../../DummyData";
 import styles from "./ApplicantsModal.module.css";
 
 const ApplicantsModal = ({
@@ -40,6 +40,9 @@ const ApplicantsModal = ({
     onHide();
     setFilterField("All");
   };
+
+  const allStus = dummyStus;
+
   return (
     <Modal
       show={show}
@@ -80,7 +83,23 @@ const ApplicantsModal = ({
             }
           })
           .map((application) => {
-            return <ApplicantsModalCard application={application} />;
+            const stu = allStus[application.stuID];
+            return (
+              <ApplicantsModalCard
+                key={application.id}
+                id={application.id}
+                stuID={application.stuID}
+                jobID={application.jobID}
+                status={application.status}
+                stuAddInfo={application.stuAddInfo}
+                dateApplied={application.dateApplied}
+                name={stu.name}
+                email={stu.email}
+                contactNo={stu.contactNo}
+                course={stu.course}
+                yearOfStudy={stu.yearOfStudy}
+              />
+            );
           })}
       </Modal.Body>
     </Modal>
