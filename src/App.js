@@ -9,6 +9,7 @@ import SignUpStuPage from "./pages/SignUpStuPage";
 import JobBoardPage from "./pages/JobBoardPage";
 import JobDetailsPage from "./pages/JobDetailsPage";
 import PostAJobPage from "./pages/PostAJobPage";
+import YourJobsPage from "./pages/YourJobsPage";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import { StoreProvider } from "./contexts/StoreContext";
@@ -38,6 +39,9 @@ function App() {
             </Route>
             <Route path="/post-a-job">
               <PostAJobPage />
+            </Route>
+            <Route path="/your-jobs">
+              <YourJobsPage />
             </Route>
             {/* Student Pages */}
             <Route path="/sign-in-student">

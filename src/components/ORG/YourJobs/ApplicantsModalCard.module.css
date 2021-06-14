@@ -1,0 +1,47 @@
+.cardContainer {
+  margin: 0.5rem;
+}
+
+.topRowContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+  align-items: baseline;
+}
+
+.status {
+  display: flex;
+  gap: 0.25em;
+  align-items: baseline;
+}
+
+.pending {
+  composes: status;
+  color: orange;
+}
+
+.rejected {
+  composes: status;
+  color: red;
+}
+
+.accepted {
+  composes: status;
+  color: green;
+}
+
+.displayNone {
+  display: none;
+}
+
+.buttonContainer {
+  display: flex;
+  height: 100%;
+}
+
+.buttonWrapper {
+  display: flex;
+  gap: 1em;
+  margin-top: auto;
+  margin-left: auto;
+}
