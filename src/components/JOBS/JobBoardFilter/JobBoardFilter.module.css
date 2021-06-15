@@ -1,6 +1,8 @@
 .input {
   display: flex;
   align-items: center;
+  align-content: center;
+  align-self: center;
 }
 
 .filterHeader {
@@ -16,4 +18,17 @@
 .chevUp {
   composes: chevDown;
   transform: scaleY(-1) translateY(-0.25rem);
+}
+
+.container {
+  margin: 0 1rem 0.5rem;
+}
+.filterHeaderContainer {
+  display: initial;
+}
+
+.filterHeaderWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
 }
