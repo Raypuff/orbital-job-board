@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import { Row, Col } from "react-bootstrap";
 import JobBoardFilter from "../JobBoardFilter";
 import JobBoardCard from "../JobBoardCard";
@@ -10,6 +10,8 @@ import { Formik } from "formik";
 // import { getDefaultNormalizer } from "@testing-library/dom";
 
 const JobBoard = () => {
+  const [filterState, setFilterState] = useState({});
+
   const jobs = Object.values(dummyJobs);
   const orgs = dummyOrgs;
 
@@ -28,6 +30,8 @@ const JobBoard = () => {
     initialValues[SkillTags[j]] = true;
   }
 
+  // filtering
+
   return (
     <div className={styles.container}>
       <Row>
@@ -41,6 +45,7 @@ const JobBoard = () => {
                   handleBlur={handleBlur}
                   BeneficiaryTags={BeneficiaryTags}
                   SkillTags={SkillTags}
+                  setFilterState={setFilterState}
                 />
               )}
             </Formik>
