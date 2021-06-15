@@ -4,9 +4,27 @@
   width: 100%;
   align-items: baseline;
 }
+
+.titleWrapper {
+  white-space: nowrap;
+}
+
+.filterWrapper {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  white-space: nowrap;
+}
+
 @media screen and (max-width: 468px) {
   .titleContainer {
     flex-direction: column;
     gap: 0.5em;
   }
+}
+
+.emptyState {
+  display: grid;
+  place-items: center;
+  margin: 1rem;
 }

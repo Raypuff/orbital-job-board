@@ -43,6 +43,14 @@ const ApplicantsModal = ({
 
   const allStus = dummyStus;
 
+  const yourApplicationsFiltered = yourApplications.filter((application) => {
+    if (filterField === "All") {
+      return true;
+    } else {
+      return application.status === filterField;
+    }
+  });
+
   return (
     <Modal
       show={show}
@@ -53,36 +61,32 @@ const ApplicantsModal = ({
     >
       <Modal.Header closeButton>
         <div className={styles.titleContainer}>
-          <Modal.Title>
+          <Modal.Title className={styles.titleWrapper}>
             <div>{title}</div>
           </Modal.Title>
           <Form>
-            <Form.Group style={{ margin: "0" }}>
-              <Form.Control
-                as="select"
-                onChange={(event) => {
-                  setFilterField(event.target.value);
-                }}
-              >
-                <option>All</option>
-                <option>Pending</option>
-                <option>Accepted</option>
-                <option>Rejected</option>
-              </Form.Control>
-            </Form.Group>
+            <div className={styles.filterWrapper}>
+              <Form.Label>Filter by: </Form.Label>
+              <Form.Group style={{ margin: "0" }}>
+                <Form.Control
+                  as="select"
+                  onChange={(event) => {
+                    setFilterField(event.target.value);
+                  }}
+                >
+                  <option>All</option>
+                  <option>Pending</option>
+                  <option>Accepted</option>
+                  <option>Rejected</option>
+                </Form.Control>
+              </Form.Group>
+            </div>
           </Form>
         </div>
       </Modal.Header>
       <Modal.Body>
-        {yourApplications
-          .filter((application) => {
-            if (filterField === "All") {
-              return true;
-            } else {
-              return application.status === filterField;
-            }
-          })
-          .map((application) => {
+        {yourApplicationsFiltered.length >= 1 ? (
+          yourApplicationsFiltered.map((application) => {
             const stu = allStus[application.stuID];
             return (
               <ApplicantsModalCard
@@ -100,7 +104,17 @@ const ApplicantsModal = ({
                 yearOfStudy={stu.yearOfStudy}
               />
             );
-          })}
+          })
+        ) : filterField === "All" ? (
+          <div className={styles.emptyState}>
+            There are no applicants for this job
+          </div>
+        ) : (
+          <div className={styles.emptyState}>
+            There are no applicants for this job that fulfil the following
+            filter: {filterField}
+          </div>
+        )}
       </Modal.Body>
     </Modal>
   );

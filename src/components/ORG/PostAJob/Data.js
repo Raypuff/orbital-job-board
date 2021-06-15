@@ -1,15 +1,15 @@
 export const BeneficiaryTags = [
   "Children",
   "Teens",
-  "Youth",
+  "Youths",
   "Adults",
   "Elderly",
-  "Others",
+  "Others_beneficiaries",
 ];
 export const SkillTags = [
   "Python",
   "React",
   "Javascript",
-  "React Native",
-  "Others",
+  "ReactNative",
+  "Other_skills",
 ];
