@@ -1,26 +1,50 @@
 import React from "react";
 import { Row, Col } from "react-bootstrap";
+import JobBoardFilter from "../JobBoardFilter";
 import JobBoardCard from "../JobBoardCard";
 import styles from "./JobBoard.module.css";
 import { dummyJobs, dummyOrgs } from "../../DummyData";
+import { BeneficiaryTags, SkillTags } from "../../ORG/PostAJob/Data";
+import { Formik } from "formik";
 // import { useStore } from "../../../contexts/StoreContext";
 // import { getDefaultNormalizer } from "@testing-library/dom";
 
 const JobBoard = () => {
-  // const { jobs, loading } = useStore();
-
-  // if (loading) {
-  //   return <h1>Loading.....</h1>;
-  // }
-
   const jobs = Object.values(dummyJobs);
   const orgs = dummyOrgs;
+
+  // For Formik
+  var initialValues = {
+    sort: "mostRecent",
+    longTerm: true,
+    adHoc: true,
+    physical: true,
+    virtual: true,
+  };
+  for (var i = 0; i < BeneficiaryTags.length; i++) {
+    initialValues[BeneficiaryTags[i]] = true;
+  }
+  for (var j = 0; j < SkillTags.length; j++) {
+    initialValues[SkillTags[j]] = true;
+  }
 
   return (
     <div className={styles.container}>
       <Row>
         <Col md={4} lg={3}>
-          <div className={styles.filterContainer}>filter</div>
+          <div className={styles.filterContainer}>
+            <Formik initialValues={initialValues}>
+              {({ values, handleChange, handleBlur }) => (
+                <JobBoardFilter
+                  values={values}
+                  handleChange={handleChange}
+                  handleBlur={handleBlur}
+                  BeneficiaryTags={BeneficiaryTags}
+                  SkillTags={SkillTags}
+                />
+              )}
+            </Formik>
+          </div>
         </Col>
         <Col md={8} lg={9}>
           {jobs.map((job) => {

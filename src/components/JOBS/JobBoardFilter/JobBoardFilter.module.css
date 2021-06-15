@@ -1,0 +1,19 @@
+.input {
+  display: flex;
+  align-items: center;
+}
+
+.filterHeader {
+  border-radius: 15px;
+  display: flex;
+}
+
+.chevDown {
+  margin-left: auto;
+  transition: ease-out 0.3s;
+}
+
+.chevUp {
+  composes: chevDown;
+  transform: scaleY(-1) translateY(-0.25rem);
+}
