@@ -23,3 +23,11 @@
     margin: 0;
   }
 }
+
+.emptyState {
+  display: grid;
+  place-items: center;
+  font-size: 2rem;
+  height: 70vh;
+  text-align: center;
+}

@@ -35,6 +35,9 @@ const JobBoardFilter = ({
           <Accordion.Collapse eventKey="1">
             <Card.Body>
               <Card.Title>Sort by</Card.Title>
+              <Form.Text className="text-muted">
+                (not implemented yet}
+              </Form.Text>
               <Form.Group controlId="formSortBy">
                 <Form.Check
                   type="radio"

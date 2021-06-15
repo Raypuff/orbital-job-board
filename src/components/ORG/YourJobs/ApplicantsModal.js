@@ -106,11 +106,11 @@ const ApplicantsModal = ({
             );
           })
         ) : filterField === "All" ? (
-          <div className={styles.emptyPage}>
+          <div className={styles.emptyState}>
             There are no applicants for this job
           </div>
         ) : (
-          <div className={styles.emptyPage}>
+          <div className={styles.emptyState}>
             There are no applicants for this job that fulfil the following
             filter: {filterField}
           </div>

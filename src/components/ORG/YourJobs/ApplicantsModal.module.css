@@ -23,7 +23,7 @@
   }
 }
 
-.emptyPage {
+.emptyState {
   display: grid;
   place-items: center;
   margin: 1rem;

@@ -1,7 +1,7 @@
 export const BeneficiaryTags = [
   "Children",
   "Teens",
-  "Youth",
+  "Youths",
   "Adults",
   "Elderly",
   "Others_beneficiaries",

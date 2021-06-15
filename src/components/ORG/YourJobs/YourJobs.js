@@ -98,7 +98,7 @@ const YourJobs = () => {
               />
             ))
           ) : (
-            <div className={styles.noJobContainer}>
+            <div className={styles.emptyState}>
               <Link to="/post-a-job">
                 <h3>Post some jobs</h3>
               </Link>
