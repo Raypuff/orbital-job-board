@@ -38,7 +38,11 @@ const SignUpStuForm = () => {
       setLoading(true);
 
       //firebase side methods
-      await signup(emailRef.current.value, passwordRef.current.value);
+      await signup(
+        emailRef.current.value,
+        passwordRef.current.value,
+        "student"
+      );
       await sendEmailVerification();
       await logout();
       setMessage("Sign up successful");

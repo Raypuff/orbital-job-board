@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { auth } from "../firebase";
+import { store } from "../firebase";
 
 const AuthContext = React.createContext();
 
@@ -10,8 +11,17 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
   const [loading, setLoading] = useState(true);
+  const [userType, setUserType] = useState();
 
-  function signup(email, password) {
+  function signup(email, password, accountType) {
+    const ref = store.collection("accounts");
+    const accountObject = { type: accountType };
+    ref
+      .doc(email)
+      .set(accountObject)
+      .catch((err) => {
+        console.error(err);
+      });
     return auth.createUserWithEmailAndPassword(email, password);
   }
 
@@ -31,8 +41,20 @@ export function AuthProvider({ children }) {
     return auth.currentUser.sendEmailVerification();
   }
 
+  function getUserType(email) {
+    const ref = store.collection("accounts").doc(email);
+    setLoading(true);
+    ref.onSnapshot((docSnapshot) => {
+      setUserType(docSnapshot.data().type);
+    });
+  }
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
+      console.log(user);
+      if (user !== null) {
+        getUserType(user.email);
+      }
       setCurrentUser(user);
       setLoading(false);
     });
@@ -42,6 +64,7 @@ export function AuthProvider({ children }) {
 
   const value = {
     currentUser,
+    userType,
     login,
     signup,
     logout,
