@@ -50,7 +50,7 @@ const SignUpOrgForm = () => {
       //send account to backend
       const body = { id };
       const response = await fetch(
-        "http://volunteer-ccsgp-backend.herokuapp.com/organization_accounts",
+        "https://volunteer-ccsgp-backend.herokuapp.com/organization_accounts",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

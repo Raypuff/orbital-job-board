@@ -3,24 +3,30 @@ import { Card, Button, Form, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import styles from "./SignUpStuForm.module.css";
 import { useAuth } from "../../../contexts/AuthContext";
-import { useStore } from "../../../contexts/StoreContext";
 
 const SignUpStuForm = () => {
   //importing methods from auth and store
   const { signup, logout, sendEmailVerification } = useAuth();
-  const { addItem } = useStore();
 
+  //ref values to access form data
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
+
+  //useStates for form
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
   async function handleSubmit(event) {
+    //prevent page refresh
     event.preventDefault();
-    setMessage("");
 
+    //reset states of messages
+    setMessage("");
+    setError("");
+
+    //check if passwords match and email is nus student email
     if (passwordRef.current.value !== passwordConfirmRef.current.value) {
       return setError("Passwords do not match");
     } else if (!emailRef.current.value.includes("@u.nus.edu")) {
@@ -28,28 +34,27 @@ const SignUpStuForm = () => {
     }
 
     try {
-      setError("");
+      //loading to signify start of process
       setLoading(true);
+
+      //firebase side methods
       await signup(emailRef.current.value, passwordRef.current.value);
       await sendEmailVerification();
       await logout();
       setMessage("Sign up successful");
 
-      const newStudentAccount = {
-        name: "",
-        nusnetID: "",
-        email: emailRef.current.value,
-        contactNo: "",
-        course: "",
-        year: "",
-        dateCreated: new Date().toUTCString(),
-        jobsApplied: [],
-      };
+      //creating variables to send over through http request
+      const id = emailRef.current.value;
 
-      await addItem(
-        newStudentAccount,
-        "student_accounts",
-        emailRef.current.value.toLowerCase()
+      //send account to backend
+      const body = { id };
+      const response = await fetch(
+        "https://volunteer-ccsgp-backend.herokuapp.com/student_accounts",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        }
       );
     } catch (err) {
       if (err.code === "auth/email-already-in-use") {
