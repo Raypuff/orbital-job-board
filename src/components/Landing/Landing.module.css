@@ -1,5 +1,7 @@
 .container {
-  height: calc(100vh - 100px - 3.4rem);
+  /* height: calc(100vh - 100px - 3.4rem); */
+  height: calc(100vh - 155px);
+  min-height: 30rem;
   max-width: 74rem;
   padding: 0 1.5rem;
   margin: 0 auto;
@@ -20,6 +22,7 @@
 .hook1 {
   font-size: 2em;
   line-height: 0.35;
+  white-space: nowrap;
 }
 
 .hook2 {
@@ -64,6 +67,7 @@
 .buttonText1 {
   font-size: 0.64em;
   color: #f8f8f8;
+  white-space: nowrap;
 }
 
 .buttonText2 {
@@ -87,12 +91,16 @@
 
 .bg {
   position: absolute;
-  right: -3rem;
-  top: calc(100px + 3.4rem);
-  height: calc(100vh - 100px - 3.4rem);
+  right: 0;
+  bottom: 0;
+  max-height: calc(100vh - 155px);
+  max-width: 57vw;
 }
 
 @media screen and (max-width: 1200px) {
+  .container {
+    padding: 0 2.5rem;
+  }
   .hookWrapper {
     font-size: 1.8rem;
   }
