@@ -39,14 +39,10 @@ const SignedInStuNavbar = () => {
           <br />({isVerified()})
         </NavDropdown.Header>
         <NavDropdown.Divider />
-        <NavDropdown.Item>
-          <Nav.Link as={Link} to="/profile-student">
-            Your profile
-          </Nav.Link>
+        <NavDropdown.Item as={Link} to="/profile-student">
+          Your profile
         </NavDropdown.Item>
-        <NavDropdown.Item>
-          <Nav.Link onClick={handleLogout}>Sign out</Nav.Link>
-        </NavDropdown.Item>
+        <NavDropdown.Item onClick={handleLogout}>Sign out</NavDropdown.Item>
       </NavDropdown>
       <Nav>
         <Nav.Link as={Link} to="/your-applications">
