@@ -116,7 +116,7 @@
   align-items: center;
   color: black;
   background-color: #f8f8f8;
-  border-radius: 10px;
+  border-radius: 40px;
   cursor: pointer;
   transition: 0.3s;
 }
@@ -161,7 +161,9 @@
       margin: 0.1rem 0 0 0.35rem;
     }
     .button {
-      background-color: #ef7c00;
+      color: white;
+      background-color: #193f76;
+      padding: 0.5rem 1rem;
     }
     .buttonText {
       font-size: 1.2rem;

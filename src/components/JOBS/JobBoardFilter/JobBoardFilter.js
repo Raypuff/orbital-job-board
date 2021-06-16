@@ -38,7 +38,7 @@ const JobBoardFilter = ({
               <Form.Text className="text-muted">
                 (not implemented yet}
               </Form.Text>
-              <Form.Group controlId="formSortBy">
+              <Form.Group controlId="formMostRecent" className={styles.input}>
                 <Form.Check
                   type="radio"
                   label="Most recent"
@@ -47,8 +47,12 @@ const JobBoardFilter = ({
                   checked={values.sort === "mostRecent"}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  className={styles.input}
                 />
+              </Form.Group>
+              <Form.Group
+                controlId="formNearestDistance"
+                className={styles.input}
+              >
                 <Form.Check
                   type="radio"
                   label="Nearest distance"
@@ -57,7 +61,6 @@ const JobBoardFilter = ({
                   checked={values.sort === "nearestDistance"}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  className={styles.input}
                 />
               </Form.Group>
               <Dropdown.Divider />
@@ -77,22 +80,25 @@ const JobBoardFilter = ({
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="0">
                   <Card.Body>
-                    <Form.Group controlId="formType">
+                    <Form.Group
+                      controlId="formLongTerm"
+                      className={styles.input}
+                    >
                       <Form.Check
                         name="longTerm"
                         label="Long term"
                         checked={values.longTerm}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        className={styles.input}
                       />
+                    </Form.Group>
+                    <Form.Group controlId="formAdHoc" className={styles.input}>
                       <Form.Check
                         name="adHoc"
                         label="Ad hoc"
                         checked={values.adHoc}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        className={styles.input}
                       />
                     </Form.Group>
                   </Card.Body>
@@ -115,22 +121,28 @@ const JobBoardFilter = ({
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="0">
                   <Card.Body>
-                    <Form.Group controlId="formPlatform">
+                    <Form.Group
+                      controlId="formPhysical"
+                      className={styles.input}
+                    >
                       <Form.Check
                         name="physical"
                         label="Physical"
                         checked={values.physical}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        className={styles.input}
                       />
+                    </Form.Group>
+                    <Form.Group
+                      controlId="formVirtual"
+                      className={styles.input}
+                    >
                       <Form.Check
                         name="virtual"
                         label="Virtual"
                         checked={values.virtual}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        className={styles.input}
                       />
                     </Form.Group>
                   </Card.Body>
@@ -155,9 +167,12 @@ const JobBoardFilter = ({
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="0">
                   <Card.Body>
-                    <Form.Group controlId="formBeneficiaries">
-                      {BeneficiaryTags.map((beneficiary, index) => {
-                        return (
+                    {BeneficiaryTags.map((beneficiary, index) => {
+                      return (
+                        <Form.Group
+                          controlId={`form${beneficiary}`}
+                          className={styles.input}
+                        >
                           <Form.Check
                             key={beneficiary}
                             name={beneficiary}
@@ -165,11 +180,10 @@ const JobBoardFilter = ({
                             checked={values[beneficiary]}
                             onChange={handleChange}
                             onBlur={handleBlur}
-                            className={styles.input}
                           />
-                        );
-                      })}
-                    </Form.Group>
+                        </Form.Group>
+                      );
+                    })}
                   </Card.Body>
                 </Accordion.Collapse>
               </Accordion>
@@ -188,9 +202,12 @@ const JobBoardFilter = ({
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="0">
                   <Card.Body>
-                    <Form.Group controlId="formSkills">
-                      {SkillTags.map((skill, index) => {
-                        return (
+                    {SkillTags.map((skill, index) => {
+                      return (
+                        <Form.Group
+                          controlId={`form${skill}`}
+                          className={styles.input}
+                        >
                           <Form.Check
                             key={skill}
                             name={skill}
@@ -198,11 +215,10 @@ const JobBoardFilter = ({
                             checked={values[skill]}
                             onChange={handleChange}
                             onBlur={handleBlur}
-                            className={styles.input}
                           />
-                        );
-                      })}
-                    </Form.Group>
+                        </Form.Group>
+                      );
+                    })}
                   </Card.Body>
                 </Accordion.Collapse>
               </Accordion>

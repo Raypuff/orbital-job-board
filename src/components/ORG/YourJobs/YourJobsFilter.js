@@ -47,46 +47,64 @@ const YourJobsFilter = ({
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="0">
                   <Card.Body>
-                    <Form.Group controlId="formStatus">
+                    <Form.Group
+                      controlId="formPending"
+                      className={styles.input}
+                    >
                       <Form.Check
                         name="pending"
                         label="Pending"
                         checked={values.pending}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        className={styles.input}
                       />
+                    </Form.Group>
+                    <Form.Group
+                      controlId="formApproved"
+                      className={styles.input}
+                    >
                       <Form.Check
                         name="approved"
                         label="Approved"
                         checked={values.approved}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        className={styles.input}
                       />
+                    </Form.Group>
+                    <Form.Group
+                      controlId="formCompleted"
+                      className={styles.input}
+                    >
                       <Form.Check
                         name="completed"
                         label="Completed"
                         checked={values.completed}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        className={styles.input}
                       />
+                    </Form.Group>
+                    <Form.Group
+                      controlId="formRejected"
+                      className={styles.input}
+                    >
                       <Form.Check
                         name="rejected"
                         label="Rejected"
                         checked={values.rejected}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        className={styles.input}
                       />
+                    </Form.Group>
+                    <Form.Group
+                      controlId="formTakenDown"
+                      className={styles.input}
+                    >
                       <Form.Check
                         name="takenDown"
                         label="Taken down"
                         checked={values.takenDown}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        className={styles.input}
                       />
                     </Form.Group>
                   </Card.Body>
@@ -108,22 +126,25 @@ const YourJobsFilter = ({
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="0">
                   <Card.Body>
-                    <Form.Group controlId="formType">
+                    <Form.Group
+                      controlId="formLongTerm"
+                      className={styles.input}
+                    >
                       <Form.Check
                         name="longTerm"
                         label="Long term"
                         checked={values.longTerm}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        className={styles.input}
                       />
+                    </Form.Group>
+                    <Form.Group controlId="formAdHoc" className={styles.input}>
                       <Form.Check
                         name="adHoc"
                         label="Ad hoc"
                         checked={values.adHoc}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        className={styles.input}
                       />
                     </Form.Group>
                   </Card.Body>
@@ -146,22 +167,28 @@ const YourJobsFilter = ({
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="0">
                   <Card.Body>
-                    <Form.Group controlId="formPlatform">
+                    <Form.Group
+                      controlId="formPhysical"
+                      className={styles.input}
+                    >
                       <Form.Check
                         name="physical"
                         label="Physical"
                         checked={values.physical}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        className={styles.input}
                       />
+                    </Form.Group>
+                    <Form.Group
+                      controlId="formVirtual"
+                      className={styles.input}
+                    >
                       <Form.Check
                         name="virtual"
                         label="Virtual"
                         checked={values.virtual}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        className={styles.input}
                       />
                     </Form.Group>
                   </Card.Body>
