@@ -821,7 +821,7 @@ function adShiftProcessor(
   const returnList = [];
   for (var i = 0; i < shiftNumber; i++) {
     var holder = { date: "", startTime: "", endTime: "" };
-    holder.date = new Date(temp[i][0]);
+    holder.date = temp[i][0];
     holder.startTime = temp[i][1];
     holder.endTime = temp[i][2];
     returnList.push(holder);
