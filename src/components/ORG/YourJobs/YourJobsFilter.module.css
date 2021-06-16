@@ -3,10 +3,8 @@
 }
 
 .input {
-  display: flex;
-  align-items: center;
   align-content: center;
-  align-self: center;
+  margin-bottom: 0px;
 }
 
 .filterHeader {

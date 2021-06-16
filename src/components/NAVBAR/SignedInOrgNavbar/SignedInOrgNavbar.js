@@ -41,14 +41,10 @@ const SignedInOrgNavbar = () => {
             <br />({isVerified()})
           </NavDropdown.Header>
           <NavDropdown.Divider />
-          <NavDropdown.Item>
-            <Nav.Link as={Link} to="/profile-organization">
-              Your profile
-            </Nav.Link>
+          <NavDropdown.Item as={Link} to="/profile-organization">
+            Your profile
           </NavDropdown.Item>
-          <NavDropdown.Item>
-            <Nav.Link onClick={handleLogout}>Sign out</Nav.Link>
-          </NavDropdown.Item>
+          <NavDropdown.Item onClick={handleLogout}>Sign out</NavDropdown.Item>
         </NavDropdown>
       </Nav>
       <Nav>

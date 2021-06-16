@@ -8,8 +8,8 @@
 }
 .cardContainer:hover .button {
   transform: translateX(-3px) translateY(-15px);
-  /* color: #003d7c; */
-  background-color: #ef7c00;
+  color: #f8f8f8;
+  background-color: #193f76;
 }
 
 /* for the image */
@@ -114,9 +114,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #f8f8f8;
-  background-color: black;
-  border-radius: 10px;
+  color: black;
+  background-color: #f8f8f8;
+  border-radius: 40px;
   cursor: pointer;
   transition: 0.3s;
 }
@@ -161,7 +161,9 @@
       margin: 0.1rem 0 0 0.35rem;
     }
     .button {
-      background-color: #ef7c00;
+      color: white;
+      background-color: #193f76;
+      padding: 0.5rem 1rem;
     }
     .buttonText {
       font-size: 1.2rem;
