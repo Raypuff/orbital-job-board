@@ -157,9 +157,9 @@ const JobBoardCard = ({
                   <div className={styles.infoContainer}>
                     {type === "Long term"
                       ? !flexiDate
-                        ? `${longStartDate.toDateString()} - ${longEndDate.toDateString()}`
+                        ? `${longStartDate} - ${longEndDate}`
                         : "Flexible dates"
-                      : `${adShift[0].date.toDateString()} ${tConvert(
+                      : `${adShift[0].date} ${tConvert(
                           adShift[0].startTime
                         )} - ${tConvert(adShift[0].endTime)}`}
                   </div>

@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Row, Col } from "react-bootstrap";
+import { useState, useEffect } from "react";
+import { Row, Col, Spinner } from "react-bootstrap";
 import JobBoardFilter from "../JobBoardFilter";
 import JobBoardCard from "../JobBoardCard";
 import styles from "./JobBoard.module.css";
@@ -13,8 +13,52 @@ import { ConeStriped } from "react-bootstrap-icons";
 const JobBoard = () => {
   const [filterState, setFilterState] = useState({});
 
-  const jobs = Object.values(dummyJobs);
-  const orgs = dummyOrgs;
+  //useState to store jobs and orgs fetched
+  const [jobsData, setJobsData] = useState({});
+  const [orgs, setOrgs] = useState({});
+  const [jobLoading, setJobLoading] = useState(true);
+  const [orgLoading, setOrgLoading] = useState(true);
+
+  const getJobs = async () => {
+    const response = await fetch(
+      "https://volunteer-ccsgp-backend.herokuapp.com/jobs"
+    );
+    const jsonData = await response.json();
+
+    setJobsData(jsonData);
+    /*
+    jobsData.map((job) => {
+      job.ad_shift.map((ad_shift) => {
+        ad_shift.date = new Date(ad_shift.date);
+      });
+      job.long_start_date = new Date(job.long_start_date);
+      job.long_end_date = new Date(job.long_end_date);
+    });
+    */
+    setJobLoading(false);
+  };
+
+  const getOrgs = async () => {
+    const response = await fetch(
+      "https://volunteer-ccsgp-backend.herokuapp.com/organization_accounts"
+    );
+    const jsonData = await response.json();
+    setOrgs(jsonData);
+    setOrgLoading(false);
+  };
+
+  useEffect(() => {
+    getJobs();
+  }, []);
+
+  useEffect(() => {
+    getOrgs();
+  }, []);
+
+  const jobs = Object.values(jobsData);
+
+  console.log("Print Orgs");
+  console.log(orgs);
 
   // filtering
   var benFilter = []; //records the beneficiaries filters in place
@@ -70,6 +114,13 @@ const JobBoard = () => {
     initialValues[SkillTags[j]] = true;
   }
 
+  if (jobLoading || orgLoading) {
+    return (
+      <Spinner animation="border" role="status">
+        <span className="sr-only">Loading....</span>
+      </Spinner>
+    );
+  }
   return (
     <div className={styles.container}>
       <Row>

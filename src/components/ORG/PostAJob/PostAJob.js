@@ -13,8 +13,6 @@ import Shifts from "./Shifts";
 import Terms from "./Terms";
 import styles from "./PostAJob.module.css";
 import { useAuth } from "../../../contexts/AuthContext";
-import { store } from "../../../firebase";
-import { useStore } from "../../../contexts/StoreContext";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { BeneficiaryTags, SkillTags } from "./Data";
@@ -23,8 +21,6 @@ var uniqid = require("uniqid");
 
 const PostAJob = () => {
   // Database useStates
-  const { addItem, editItem } = useStore();
-  const [submitted, setSubmitted] = useState(false);
   const [message, setMessage] = useState("");
   const [successful, setSuccessful] = useState(false);
   // Form useStates
@@ -41,15 +37,13 @@ const PostAJob = () => {
 
   //retrieve user from database
   const getUser = async () => {
-    await store
-      .collection("organization_accounts")
-      .doc(currentUser.email)
-      .get()
-      .then((documentSnapshot) => {
-        if (documentSnapshot.exists) {
-          setUserData(documentSnapshot.data());
-        }
-      });
+    const response = await fetch(
+      "https://volunteer-ccsgp-backend.herokuapp.com/organization_accounts/" +
+        currentUser.email,
+      {}
+    );
+    const jsonData = await response.json();
+    setUserData(jsonData);
   };
 
   useEffect(() => {
@@ -64,7 +58,12 @@ const PostAJob = () => {
       setSubmitting(false);
     }, 500);
 
-    function submitJob(values) {
+    async function submitJob(values) {
+      //resetting useStates
+      setSuccessful(false);
+      setMessage("");
+      setError("");
+
       const jobID = uniqid();
       const newJob = {
         id: jobID,
@@ -122,43 +121,38 @@ const PostAJob = () => {
         pocName: values.retrievePoc ? userData.pocName : values.pocName,
         pocNo: values.retrievePoc ? userData.pocNo : values.pocNo,
         pocEmail: values.retrievePoc ? userData.pocEmail : values.pocEmail,
-        applicants: [],
       };
 
-      alert(
-        `TEST: Name: ${newJob.pocName}, No:${newJob.pocNo}, Email:${newJob.pocEmail}`
-      );
+      try {
+        //postjob to jobs database
+        const body = { newJob };
+        const addToJobDB = await fetch(
+          "https://volunteer-ccsgp-backend.herokuapp.com/jobs",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          }
+        );
+
+        const body2 = {
+          newJobID: jobID,
+        };
+
+        const addToJobsPosted = await fetch(
+          "https://volunteer-ccsgp-backend.herokuapp.com/organization_accounts/postjob/" +
+            currentUser.email,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body2),
+          }
+        );
+      } catch (err) {
+        setError("Failed to post due to internal error");
+        console.log(error);
+      }
     }
-
-    //pushing job id to organization account
-    // const updatedJobsPosted = userData !== null ? userData.jobsPosted : "";
-    // updatedJobsPosted.push(jobID);
-    // const updatedOrgAccount = {
-    //   jobsPosted: updatedJobsPosted,
-    // };
-
-    // try {
-    //   setSuccessful(false);
-    //   setMessage("");
-    //   setSubmitted(true);
-    //   setError("");
-
-    //   if (!currentUser.emailVerified) {
-    //     setError(
-    //       "User is not verified. Please verify your account before posting a job."
-    //     );
-    //   } else {
-    //     //successful posting
-    //     addItem(newJob, "jobs", jobID);
-    //     //updating job array of account with new job posting
-    //     editItem(updatedOrgAccount, currentUser.email, "organization_accounts");
-    //     setSuccessful(true);
-    //     setMessage("Job Posted. Thank you for using our service!");
-    //   }
-    // } catch (err) {
-    //   setError("Failed to post a job");
-    // }
-    // setSubmitted(true);
   };
 
   return (
