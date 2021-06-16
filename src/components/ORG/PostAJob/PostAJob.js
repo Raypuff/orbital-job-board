@@ -126,21 +126,18 @@ const PostAJob = () => {
       try {
         //postjob to jobs database
         const body = { newJob };
-        const addToJobDB = await fetch(
-          "https://volunteer-ccsgp-backend.herokuapp.com/jobs",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body),
-          }
-        );
+        const addToJobDB = await fetch("http://localhost:5000/jobs", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
 
         const body2 = {
           newJobID: jobID,
         };
 
         const addToJobsPosted = await fetch(
-          "https://volunteer-ccsgp-backend.herokuapp.com/organization_accounts/postjob/" +
+          "http://localhost:5000/organization_accounts/postjob/" +
             currentUser.email,
           {
             method: "PUT",
