@@ -26,15 +26,6 @@ const JobBoard = () => {
     const jsonData = await response.json();
 
     setJobsData(jsonData);
-    /*
-    jobsData.map((job) => {
-      job.ad_shift.map((ad_shift) => {
-        ad_shift.date = new Date(ad_shift.date);
-      });
-      job.long_start_date = new Date(job.long_start_date);
-      job.long_end_date = new Date(job.long_end_date);
-    });
-    */
     setJobLoading(false);
   };
 
@@ -57,8 +48,15 @@ const JobBoard = () => {
 
   const jobs = Object.values(jobsData);
 
-  console.log("Print Orgs");
-  console.log(orgs);
+  if (jobLoading || orgLoading) {
+    return (
+      <Spinner animation="border" role="status">
+        <span className="sr-only">Loading....</span>
+      </Spinner>
+    );
+  } else if (jobs.length < 1) {
+    return <h2>No jobs at the moment</h2>;
+  }
 
   // filtering
   var benFilter = []; //records the beneficiaries filters in place
@@ -98,7 +96,6 @@ const JobBoard = () => {
       }
       return returnValue;
     });
-
   // For Formik
   var initialValues = {
     sort: "mostRecent",
@@ -114,13 +111,6 @@ const JobBoard = () => {
     initialValues[SkillTags[j]] = true;
   }
 
-  if (jobLoading || orgLoading) {
-    return (
-      <Spinner animation="border" role="status">
-        <span className="sr-only">Loading....</span>
-      </Spinner>
-    );
-  }
   return (
     <div className={styles.container}>
       <Row>
@@ -143,6 +133,8 @@ const JobBoard = () => {
         <Col md={8} lg={9}>
           {filteredJobs.length >= 1 ? (
             filteredJobs.map((job) => {
+              console.log("Printing OrgID");
+              console.log(job.orgID);
               const orgType = orgs[job.orgID].type;
               const orgName = orgs[job.orgID].name;
               const orgUen = orgs[job.orgID].uen;
