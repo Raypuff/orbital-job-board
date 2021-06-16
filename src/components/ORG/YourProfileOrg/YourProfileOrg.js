@@ -3,7 +3,6 @@ import { Card, Form, Button } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import styles from "./YourProfileOrg.module.css";
 import { useAuth } from "../../../contexts/AuthContext";
-import { store } from "../../../firebase";
 
 const YourProfileOrg = () => {
   const [edit, setEdit] = useState(false);
@@ -11,15 +10,13 @@ const YourProfileOrg = () => {
   const [userData, setUserData] = useState(null);
 
   const getUser = async () => {
-    await store
-      .collection("organization_accounts")
-      .doc(currentUser.email)
-      .get()
-      .then((documentSnapshot) => {
-        if (documentSnapshot.exists) {
-          setUserData(documentSnapshot.data());
-        }
-      });
+    const response = await fetch(
+      "https://volunteer-ccsgp-backend.herokuapp.com/organization_accounts/" +
+        currentUser.email,
+      {}
+    );
+    const jsonData = await response.json();
+    setUserData(jsonData);
   };
 
   useEffect(() => {
@@ -66,7 +63,7 @@ const YourProfileOrg = () => {
                 <Form.Group controlId="formEmail">
                   <Form.Label>Email address of organization</Form.Label>
                   <Form.Control
-                    placeholder={userData !== null ? userData.email : ""}
+                    placeholder={userData !== null ? userData.id : ""}
                     readOnly
                   />
                 </Form.Group>

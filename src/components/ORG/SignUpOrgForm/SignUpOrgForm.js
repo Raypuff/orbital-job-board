@@ -6,48 +6,56 @@ import { Link } from "react-router-dom";
 import { useStore } from "../../../contexts/StoreContext";
 
 const SignUpOrgForm = () => {
+  //ref values to access form data
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
+
+  //imported methods from firebase authentication
   const { signup, logout, sendEmailVerification } = useAuth();
+
+  //initializing useStates for signup
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const { addItem } = useStore();
 
   async function handleSubmit(event) {
+    //prevent page from refreshing
     event.preventDefault();
-    setMessage("");
 
+    //resetting signup STATES
+    setMessage("");
+    setError("");
+
+    //checking for errors in code
     if (passwordRef.current.value !== passwordConfirmRef.current.value) {
       return setError("Passwords do not match");
     }
 
     try {
-      setError("");
+      //start of signup process
       setLoading(true);
+
+      //firebase side methods
       await signup(emailRef.current.value, passwordRef.current.value);
       await sendEmailVerification();
       await logout();
+
+      //set message to signify signup is successful
       setMessage("Sign up successful!");
 
-      //create object for organization accounts in the database
-      const newOrgAccount = {
-        type: "",
-        name: "",
-        uen: "",
-        email: emailRef.current.value,
-        pocName: "",
-        pocNo: "",
-        pocEmail: "",
-        dateCreated: new Date().toUTCString(),
-        jobsPosted: [],
-      };
+      //creating variables to send over through http request
+      const id = emailRef.current.value;
 
-      await addItem(
-        newOrgAccount,
-        "organization_accounts",
-        emailRef.current.value.toLowerCase()
+      //send account to backend
+      const body = { id };
+      const response = await fetch(
+        "http://volunteer-ccsgp-backend.herokuapp.com/organization_accounts",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        }
       );
     } catch (err) {
       if (err.code === "auth/email-already-in-use") {

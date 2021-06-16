@@ -1,15 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useAuth } from "../../../contexts/AuthContext";
-import { useStore } from "../../../contexts/StoreContext";
 import { Card, Button, Form, Alert } from "react-bootstrap";
 import styles from "./EditProfileOrg.module.css";
-import { store } from "../../../firebase";
 
 const EditProfileOrg = ({ setEdit }) => {
   const [leftButton, setLeftButton] = useState("Cancel");
   const [leftButtonVar, setLeftButtonVar] = useState("light");
   const { currentUser } = useAuth();
-  const { editItem } = useStore();
   const [userData, setUserData] = useState(null);
 
   const [loading, setLoading] = useState(false);
@@ -27,29 +24,30 @@ const EditProfileOrg = ({ setEdit }) => {
   const pocEmailRef = useRef();
 
   const getUser = async () => {
-    store
-      .collection("organization_accounts")
-      .doc(currentUser.email)
-      .get()
-      .then((documentSnapshot) => {
-        if (documentSnapshot.exists) {
-          setUserData(documentSnapshot.data());
-        }
-      });
+    const response = await fetch(
+      "https://volunteer-ccsgp-backend.herokuapp.com/organization_accounts/" +
+        currentUser.email,
+      {}
+    );
+    const jsonData = await response.json();
+    setUserData(jsonData);
   };
 
   useEffect(() => {
     getUser();
   }, []);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
+    //prevent page refresh
     event.preventDefault();
 
+    //resetting submit states
+    setSuccessful(false);
+    setMessage("");
+    setError("");
+
+    //creating new object to send to backend
     const newAccountInfo = {
-      id:
-        emailRef.current.value.trim() !== ""
-          ? emailRef.current.value
-          : userData.email,
       type:
         typeRef.current.value.trim() !== ""
           ? typeRef.current.value
@@ -78,19 +76,23 @@ const EditProfileOrg = ({ setEdit }) => {
         pocEmailRef.current.value.trim() !== ""
           ? pocEmailRef.current.value
           : userData.pocEmail,
-      dateCreated: new Date(),
-      jobsPosted: [], //zech have to edit this if not will overwrite all jobspostd i think?
     };
 
-    console.log(newAccountInfo);
-
     try {
-      setSuccessful(false);
-      setMessage("");
-      setError("");
+      //signify start of update process
       setLoading(true);
 
-      editItem(newAccountInfo, currentUser.email, "organization_accounts");
+      const response = await fetch(
+        "https://volunteer-ccsgp-backend.herokuapp.com/organization_accounts/" +
+          currentUser.email,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(newAccountInfo),
+        }
+      );
+
+      //set success usestate to true
       setSuccessful(true);
       setMessage("Organization profile updated successfully!");
       setLeftButton("Back");
@@ -99,6 +101,8 @@ const EditProfileOrg = ({ setEdit }) => {
       setError("Failed to update user info");
       console.log(err);
     }
+
+    //no longer loading as update process has ended
     setLoading(false);
   };
 
@@ -144,7 +148,7 @@ const EditProfileOrg = ({ setEdit }) => {
                 <Form.Group controlId="formEmail">
                   <Form.Label>Email address of organization</Form.Label>
                   <Form.Control
-                    placeholder={userData !== null ? userData.email : ""}
+                    placeholder={userData !== null ? userData.id : ""}
                     ref={emailRef}
                     readOnly
                   />
