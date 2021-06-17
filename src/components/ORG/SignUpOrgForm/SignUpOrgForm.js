@@ -3,7 +3,6 @@ import { Form, Button, Alert, Card } from "react-bootstrap";
 import styles from "./SignUpOrgForm.module.css";
 import { useAuth } from "../../../contexts/AuthContext";
 import { Link } from "react-router-dom";
-import { useStore } from "../../../contexts/StoreContext";
 
 const SignUpOrgForm = () => {
   //ref values to access form data

@@ -1,22 +1,46 @@
-import { Row, Col } from "react-bootstrap";
-import { useState } from "react";
+import { Row, Col, Spinner } from "react-bootstrap";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import YourJobsCard from "./YourJobsCard";
 import YourJobsFilter from "./YourJobsFilter";
 import { dummyJobs } from "../../DummyData";
 import styles from "./YourJobs.module.css";
 import { Formik } from "formik";
+import { useAuth } from "../../../contexts/AuthContext";
 
 const YourJobs = () => {
   const [filterState, setFilterState] = useState({});
+  const { currentUser } = useAuth();
 
-  const allJobs = dummyJobs;
-  const yourOrgID = "otakuneko23@gmail.com";
-  const yourJobs = Object.values(allJobs);
-  // const yourJobs = [];
+  const [jobs, setJobs] = useState({});
+  const [orgs, setOrgs] = useState({});
+  const [jobLoading, setJobLoading] = useState(true);
+
+  const getYourJobs = async () => {
+    const response = await fetch(
+      "https://volunteer-ccsgp-backend.herokuapp.com/jobs/" + currentUser.email
+    );
+    const jsonData = await response.json();
+    setJobs(jsonData);
+    setJobLoading(false);
+  };
+
+  useEffect(() => {
+    getYourJobs();
+  }, []);
+
+  console.log("Printing YourJobs");
+  console.log(jobs);
+  console.log(new Date().toISOString().slice(0, 10));
+
+  if (jobLoading) {
+    return <Spinner animation="border" role="status" />;
+  } else if (jobs.length < 1) {
+    return <h2>No jobs at the moment</h2>;
+  }
 
   //filter
-  const filteredJobs = yourJobs
+  const filteredJobs = jobs
     .filter((job) => (!filterState.pending ? job.status !== "Pending" : true))
     .filter((job) => (!filterState.approved ? job.status !== "Approved" : true))
     .filter((job) =>

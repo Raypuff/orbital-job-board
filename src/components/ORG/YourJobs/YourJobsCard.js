@@ -105,7 +105,7 @@ const YourJobsCard = ({
                   </div>
                 </div>
 
-                <h6>Posted on: {datePosted.toDateString()}</h6>
+                <h6>Posted on: {datePosted}</h6>
                 <h6>
                   Location:{" "}
                   {platform === "Virtual"
@@ -174,7 +174,9 @@ const YourJobsCard = ({
                 </div>
 
                 <div className={styles.applicants}>
-                  <h4>Applicants: {applicants.length}</h4>
+                  <h4>
+                    Applicants: {applicants !== null ? applicants.length : "0"}
+                  </h4>
                 </div>
               </div>
             </Col>

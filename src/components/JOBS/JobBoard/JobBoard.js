@@ -11,12 +11,10 @@ import { LoadingJobs, NoJobs, FilterNoJobs } from "./EmptyStates";
 
 const JobBoard = () => {
 	const [filterState, setFilterState] = useState({});
-
-	//useState to store jobs and orgs fetched
-	const [jobsData, setJobsData] = useState({});
-	const [orgs, setOrgs] = useState({});
-	const [jobLoading, setJobLoading] = useState(true);
-	const [orgLoading, setOrgLoading] = useState(true);
+  const [jobs, setJobs] = useState({});
+  const [orgs, setOrgs] = useState({});
+  const [jobLoading, setJobLoading] = useState(true);
+  const [orgLoading, setOrgLoading] = useState(true);
 
 	const getJobs = async () => {
 		const response = await fetch(
@@ -24,9 +22,9 @@ const JobBoard = () => {
 		);
 		const jsonData = await response.json();
 
-		setJobsData(jsonData);
-		setJobLoading(false);
-	};
+    setJobs(jsonData);
+    setJobLoading(false);
+  };
 
 	const getOrgs = async () => {
 		const response = await fetch(
@@ -44,8 +42,6 @@ const JobBoard = () => {
 	useEffect(() => {
 		getOrgs();
 	}, []);
-
-	const jobs = Object.values(jobsData);
 
 	if (jobLoading || orgLoading) {
 		return <LoadingJobs />;

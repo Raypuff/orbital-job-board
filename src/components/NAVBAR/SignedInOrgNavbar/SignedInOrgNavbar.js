@@ -8,7 +8,7 @@ import styles from "./SignedInOrgNavbar.module.css";
 
 const SignedInOrgNavbar = () => {
   const [error, setError] = useState("");
-  const { currentUser, logout } = useAuth();
+  const { currentUser, logout, userType } = useAuth();
   const history = useHistory();
 
   async function handleLogout() {
@@ -39,6 +39,9 @@ const SignedInOrgNavbar = () => {
           <NavDropdown.Header className={styles.email}>
             {currentUser.email}
             <br />({isVerified()})
+            <br />
+            <br />
+            Account Type: {userType}
           </NavDropdown.Header>
           <NavDropdown.Divider />
           <NavDropdown.Item as={Link} to="/profile-organization">
