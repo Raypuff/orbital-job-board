@@ -3,183 +3,173 @@ import { Row, Col, Spinner } from "react-bootstrap";
 import JobBoardFilter from "../JobBoardFilter";
 import JobBoardCard from "../JobBoardCard";
 import styles from "./JobBoard.module.css";
-import { dummyJobs, dummyOrgs } from "../../DummyData";
 import { BeneficiaryTags, SkillTags } from "../../ORG/PostAJob/Data";
 import { Formik } from "formik";
-import { ConeStriped } from "react-bootstrap-icons";
+import { LoadingJobs, NoJobs, FilterNoJobs } from "./EmptyStates";
+// import { useStore } from "../../../contexts/StoreContext";
 // import { getDefaultNormalizer } from "@testing-library/dom";
 
 const JobBoard = () => {
-  const [filterState, setFilterState] = useState({});
-
-  //useState to store jobs and orgs fetched
+	const [filterState, setFilterState] = useState({});
   const [jobs, setJobs] = useState({});
   const [orgs, setOrgs] = useState({});
   const [jobLoading, setJobLoading] = useState(true);
   const [orgLoading, setOrgLoading] = useState(true);
 
-  const getJobs = async () => {
-    const response = await fetch(
-      "https://volunteer-ccsgp-backend.herokuapp.com/jobs"
-    );
-    const jsonData = await response.json();
+	const getJobs = async () => {
+		const response = await fetch(
+			"https://volunteer-ccsgp-backend.herokuapp.com/jobs"
+		);
+		const jsonData = await response.json();
 
     setJobs(jsonData);
     setJobLoading(false);
   };
 
-  const getOrgs = async () => {
-    const response = await fetch(
-      "https://volunteer-ccsgp-backend.herokuapp.com/organization_accounts"
-    );
-    const jsonData = await response.json();
-    setOrgs(jsonData);
-    setOrgLoading(false);
-  };
+	const getOrgs = async () => {
+		const response = await fetch(
+			"https://volunteer-ccsgp-backend.herokuapp.com/organization_accounts"
+		);
+		const jsonData = await response.json();
+		setOrgs(jsonData);
+		setOrgLoading(false);
+	};
 
-  useEffect(() => {
-    getJobs();
-  }, []);
+	useEffect(() => {
+		getJobs();
+	}, []);
 
-  useEffect(() => {
-    getOrgs();
-  }, []);
+	useEffect(() => {
+		getOrgs();
+	}, []);
 
-  if (jobLoading || orgLoading) {
-    return (
-      <Spinner animation="border" role="status">
-        <span className="sr-only">Loading....</span>
-      </Spinner>
-    );
-  } else if (jobs.length < 1) {
-    return <h2>No jobs at the moment</h2>;
-  }
+	if (jobLoading || orgLoading) {
+		return <LoadingJobs />;
+	} else if (jobs.length < 1) {
+		return <NoJobs />;
+	}
 
-  // filtering
-  var benFilter = []; //records the beneficiaries filters in place
-  for (var k = 0; k < BeneficiaryTags.length; k++) {
-    const benTag = BeneficiaryTags[k];
-    if (filterState[benTag]) {
-      benFilter.push(benTag);
-    }
-  }
-  var skillFilter = []; //records the skills filters in place
-  for (var l = 0; l < SkillTags.length; l++) {
-    const skillTag = SkillTags[l];
-    if (filterState[skillTag]) {
-      skillFilter.push(skillTag);
-    }
-  }
-  var filteredJobs = jobs
-    .filter((job) => filterState.longTerm || job.type !== "Long term")
-    .filter((job) => filterState.adHoc || job.type !== "Ad hoc")
-    .filter((job) => filterState.physical || job.platform !== "Physical")
-    .filter((job) => filterState.virtual || job.platform !== "Virtual")
-    .filter((job) => {
-      var returnValue = false;
-      for (const ben in job.beneficiaries) {
-        if (benFilter.includes(job.beneficiaries[ben])) {
-          returnValue = true;
-        }
-      }
-      return returnValue;
-    })
-    .filter((job) => {
-      var returnValue = false;
-      for (const skill in job.skills) {
-        if (skillFilter.includes(job.skills[skill])) {
-          returnValue = true;
-        }
-      }
-      return returnValue;
-    });
-  // For Formik
-  var initialValues = {
-    sort: "mostRecent",
-    longTerm: true,
-    adHoc: true,
-    physical: true,
-    virtual: true,
-  };
-  for (var i = 0; i < BeneficiaryTags.length; i++) {
-    initialValues[BeneficiaryTags[i]] = true;
-  }
-  for (var j = 0; j < SkillTags.length; j++) {
-    initialValues[SkillTags[j]] = true;
-  }
+	// filtering
+	var benFilter = []; //records the beneficiaries filters in place
+	for (var k = 0; k < BeneficiaryTags.length; k++) {
+		const benTag = BeneficiaryTags[k];
+		if (filterState[benTag]) {
+			benFilter.push(benTag);
+		}
+	}
+	var skillFilter = []; //records the skills filters in place
+	for (var l = 0; l < SkillTags.length; l++) {
+		const skillTag = SkillTags[l];
+		if (filterState[skillTag]) {
+			skillFilter.push(skillTag);
+		}
+	}
+	var filteredJobs = jobs
+		.filter((job) => filterState.longTerm || job.type !== "Long term")
+		.filter((job) => filterState.adHoc || job.type !== "Ad hoc")
+		.filter((job) => filterState.physical || job.platform !== "Physical")
+		.filter((job) => filterState.virtual || job.platform !== "Virtual")
+		.filter((job) => {
+			var returnValue = false;
+			for (const ben in job.beneficiaries) {
+				if (benFilter.includes(job.beneficiaries[ben])) {
+					returnValue = true;
+				}
+			}
+			return returnValue;
+		})
+		.filter((job) => {
+			var returnValue = false;
+			for (const skill in job.skills) {
+				if (skillFilter.includes(job.skills[skill])) {
+					returnValue = true;
+				}
+			}
+			return returnValue;
+		});
+	// For Formik
+	var initialValues = {
+		sort: "mostRecent",
+		longTerm: true,
+		adHoc: true,
+		physical: true,
+		virtual: true,
+	};
+	for (var i = 0; i < BeneficiaryTags.length; i++) {
+		initialValues[BeneficiaryTags[i]] = true;
+	}
+	for (var j = 0; j < SkillTags.length; j++) {
+		initialValues[SkillTags[j]] = true;
+	}
 
-  return (
-    <div className={styles.container}>
-      <Row>
-        <Col md={4} lg={3}>
-          <div className={styles.filterContainer}>
-            <Formik initialValues={initialValues}>
-              {({ values, handleChange, handleBlur }) => (
-                <JobBoardFilter
-                  values={values}
-                  handleChange={handleChange}
-                  handleBlur={handleBlur}
-                  BeneficiaryTags={BeneficiaryTags}
-                  SkillTags={SkillTags}
-                  setFilterState={setFilterState}
-                />
-              )}
-            </Formik>
-          </div>
-        </Col>
-        <Col md={8} lg={9}>
-          {filteredJobs.length >= 1 ? (
-            filteredJobs.map((job) => {
-              console.log("Printing OrgID");
-              console.log(job.orgID);
-              const orgType = orgs[job.orgID].type;
-              const orgName = orgs[job.orgID].name;
-              const orgUen = orgs[job.orgID].uen;
-              const orgEmail = orgs[job.orgID].email;
+	return (
+		<div className={styles.container}>
+			<Row>
+				<Col md={4} lg={3}>
+					<div className={styles.filterContainer}>
+						<Formik initialValues={initialValues}>
+							{({ values, handleChange, handleBlur }) => (
+								<JobBoardFilter
+									values={values}
+									handleChange={handleChange}
+									handleBlur={handleBlur}
+									BeneficiaryTags={BeneficiaryTags}
+									SkillTags={SkillTags}
+									setFilterState={setFilterState}
+								/>
+							)}
+						</Formik>
+					</div>
+				</Col>
+				<Col md={8} lg={9}>
+					{filteredJobs.length >= 1 ? (
+						filteredJobs.map((job) => {
+							console.log("Printing OrgID");
+							console.log(job.orgID);
+							const orgType = orgs[job.orgID].type;
+							const orgName = orgs[job.orgID].name;
+							const orgUen = orgs[job.orgID].uen;
+							const orgEmail = orgs[job.orgID].email;
 
-              return (
-                <JobBoardCard
-                  key={job.id}
-                  id={job.id}
-                  orgType={orgType}
-                  orgName={orgName}
-                  orgUen={orgUen}
-                  orgEmail={orgEmail}
-                  status={job.status}
-                  title={job.title}
-                  beneficiaries={job.beneficiaries}
-                  skills={job.skills}
-                  purpose={job.purpose}
-                  platform={job.platform}
-                  multiLocation={job.multiLocation}
-                  location={job.location}
-                  postalCode={job.postalCode}
-                  type={job.type}
-                  flexiDate={job.flexiDate}
-                  longStartDate={job.longStartDate}
-                  longEndDate={job.longEndDate}
-                  flexiHours={job.flexiHours}
-                  longHours={job.longHours}
-                  adShift={job.adShift}
-                  addInfo={job.addInfo}
-                  imageUrl={job.imageUrl}
-                  pocName={job.pocName}
-                  pocNo={job.pocNo}
-                  pocEmail={job.pocEmail}
-                />
-              );
-            })
-          ) : (
-            <div className={styles.emptyState}>
-              There are no jobs...
-              <br />
-              Perhaps try different filters?
-            </div>
-          )}
-        </Col>
-      </Row>
-    </div>
-  );
+							return (
+								<JobBoardCard
+									key={job.id}
+									id={job.id}
+									orgType={orgType}
+									orgName={orgName}
+									orgUen={orgUen}
+									orgEmail={orgEmail}
+									status={job.status}
+									title={job.title}
+									beneficiaries={job.beneficiaries}
+									skills={job.skills}
+									purpose={job.purpose}
+									platform={job.platform}
+									multiLocation={job.multiLocation}
+									location={job.location}
+									postalCode={job.postalCode}
+									type={job.type}
+									flexiDate={job.flexiDate}
+									longStartDate={job.longStartDate}
+									longEndDate={job.longEndDate}
+									flexiHours={job.flexiHours}
+									longHours={job.longHours}
+									adShift={job.adShift}
+									addInfo={job.addInfo}
+									imageUrl={job.imageUrl}
+									pocName={job.pocName}
+									pocNo={job.pocNo}
+									pocEmail={job.pocEmail}
+								/>
+							);
+						})
+					) : (
+						<FilterNoJobs />
+					)}
+				</Col>
+			</Row>
+		</div>
+	);
 };
 
 export default JobBoard;

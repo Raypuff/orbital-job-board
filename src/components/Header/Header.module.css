@@ -1,27 +1,27 @@
 header {
-  height: 100px;
-  background-color: #fff;
+	height: 100px;
+	background-color: #fff;
 }
 
 .logobox {
-  display: flex;
-  max-width: 75em;
-  margin: 0 auto;
+	display: flex;
+	max-width: 75em;
+	margin: 0 auto;
 }
 
 .headerLogo {
-  height: 50px;
-  margin: 25px 2em;
+	height: 50px;
+	margin: 25px 2em;
 }
 
 .rightlogo {
-  composes: headerLogo;
-  margin-left: auto;
+	composes: headerLogo;
+	margin-left: auto;
 }
 
-@media (max-width: 575px) {
-  header,
-  .headerLogo {
-    height: 0;
-  }
+@media (max-width: 576px) {
+	header,
+	.headerLogo {
+		height: 0;
+	}
 }
