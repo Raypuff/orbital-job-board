@@ -37,7 +37,11 @@ const SignUpOrgForm = () => {
       setLoading(true);
 
       //firebase side methods
-      await signup(emailRef.current.value, passwordRef.current.value);
+      await signup(
+        emailRef.current.value,
+        passwordRef.current.value,
+        "organization"
+      );
       await sendEmailVerification();
       await logout();
 
