@@ -48,7 +48,7 @@ const EditProfileStu = ({ setEdit }) => {
       id:
         emailRef.current.value.trim() !== ""
           ? emailRef.current.value
-          : userData.email,
+          : userData.id,
       name:
         nameRef.current.value.trim() !== ""
           ? nameRef.current.value
@@ -57,10 +57,6 @@ const EditProfileStu = ({ setEdit }) => {
         dobRef.current.value.trim() !== ""
           ? dobRef.current.value
           : userData.name,
-      email:
-        emailRef.current.value.trim() !== ""
-          ? emailRef.current.value
-          : userData.email,
       contactNo:
         contactNoRef.current.value.trim() !== ""
           ? contactNoRef.current.value

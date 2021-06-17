@@ -53,7 +53,7 @@ const YourProfileStu = () => {
                 <Form.Group controlId="formEmail">
                   <Form.Label>Email address</Form.Label>
                   <Form.Control
-                    placeholder={userData !== null ? userData.email : ""}
+                    placeholder={userData !== null ? userData.id : ""}
                     readOnly
                   />
                 </Form.Group>

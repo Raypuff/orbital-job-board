@@ -263,7 +263,7 @@ const PostAJob = () => {
                       <Form.Label>Email address of Organization</Form.Label>
                       <Form.Control
                         required
-                        placeholder={userData !== null ? userData.email : ""}
+                        placeholder={userData !== null ? userData.id : ""}
                         readOnly
                       ></Form.Control>
                     </Form.Group>
