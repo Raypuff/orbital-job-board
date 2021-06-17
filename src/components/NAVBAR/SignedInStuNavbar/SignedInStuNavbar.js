@@ -7,7 +7,7 @@ import styles from "./SignedInStuNavbar.module.css";
 
 const SignedInStuNavbar = () => {
   const [error, setError] = useState("");
-  const { currentUser, logout } = useAuth();
+  const { currentUser, logout, userType } = useAuth();
   const history = useHistory();
 
   async function handleLogout() {
@@ -37,6 +37,8 @@ const SignedInStuNavbar = () => {
         <NavDropdown.Header className={styles.email}>
           {currentUser.email}
           <br />({isVerified()})
+          <br />
+          <br /> Account Type: {userType}
         </NavDropdown.Header>
         <NavDropdown.Divider />
         <NavDropdown.Item as={Link} to="/profile-student">

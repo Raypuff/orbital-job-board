@@ -7,14 +7,13 @@ import { dummyJobs, dummyOrgs } from "../../DummyData";
 import { BeneficiaryTags, SkillTags } from "../../ORG/PostAJob/Data";
 import { Formik } from "formik";
 import { ConeStriped } from "react-bootstrap-icons";
-// import { useStore } from "../../../contexts/StoreContext";
 // import { getDefaultNormalizer } from "@testing-library/dom";
 
 const JobBoard = () => {
   const [filterState, setFilterState] = useState({});
 
   //useState to store jobs and orgs fetched
-  const [jobsData, setJobsData] = useState({});
+  const [jobs, setJobs] = useState({});
   const [orgs, setOrgs] = useState({});
   const [jobLoading, setJobLoading] = useState(true);
   const [orgLoading, setOrgLoading] = useState(true);
@@ -25,7 +24,7 @@ const JobBoard = () => {
     );
     const jsonData = await response.json();
 
-    setJobsData(jsonData);
+    setJobs(jsonData);
     setJobLoading(false);
   };
 
@@ -45,8 +44,6 @@ const JobBoard = () => {
   useEffect(() => {
     getOrgs();
   }, []);
-
-  const jobs = Object.values(jobsData);
 
   if (jobLoading || orgLoading) {
     return (
