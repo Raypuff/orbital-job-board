@@ -1,0 +1,43 @@
+.container {
+	height: calc(100vh - 155px);
+	display: grid;
+	place-items: center;
+}
+
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1em;
+	margin-bottom: 7rem;
+}
+
+.title {
+	text-align: center;
+	font-size: 2.5rem;
+	color: #193f76;
+}
+
+.altAction {
+	font-size: 1.2rem;
+}
+.altActionButton {
+	background-color: #193f76;
+	border-radius: 4em;
+	padding: 1em 2em;
+	cursor: pointer;
+	display: grid;
+	place-items: center;
+	transition: 0.5s ease-in;
+	text-decoration: none;
+}
+.altActionButtonText {
+	font-size: 1.5rem;
+	color: #f8f8f8;
+}
+.altActionButton:hover {
+	transform: translateY(-1rem);
+	background-color: #122f57;
+	transition: 0.25s ease;
+	text-decoration: none;
+}

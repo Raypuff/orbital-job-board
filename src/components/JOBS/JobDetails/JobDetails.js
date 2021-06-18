@@ -78,15 +78,15 @@ const JobDetails = ({ id }) => {
 	const currentUser = { email: orgID };
 
 	var displayState = 3;
-	if (status === "Approved") {
-		displayState = 0;
-	} else if (accType === "admin") {
-		displayState = 1;
-	} else if (accType === "org" && currentUser.email === orgID) {
-		displayState = 2;
-	} else {
-		displayState = 3;
-	}
+	// if (status === "Approved") {
+	// 	displayState = 0;
+	// } else if (accType === "admin") {
+	// 	displayState = 1;
+	// } else if (status === "Pending" && accType === "org" && currentUser.email === orgID) {
+	// 	displayState = 2;
+	// } else {
+	// 	displayState = 3;
+	// }
 
 	if (displayState === 3) {
 		return <NotAvailable />;
