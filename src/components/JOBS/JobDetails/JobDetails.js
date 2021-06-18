@@ -3,47 +3,44 @@ import { Row, Col } from "react-bootstrap";
 import { NotAvailable, StillPending } from "./EmptyStates";
 import JobDetailsApplyModal from "../JobDetailsApplyModal";
 import { ApplyButton } from "../JobDetailsApplyModal/JobDetailsApplyModal";
-import JobDetailsAdminModal from "../JobDetailsAdminModal";
-import { AdminButton } from "../JobDetailsAdminModal/JobDetailsAdminModal";
+import {
+	JobDetailsAdminRejModal,
+	JobDetailsAdminAppModal,
+	AdminRejButton,
+	AdminAppButton,
+} from "../JobDetailsAdminModal/JobDetailsAdminModal";
 import styles from "./JobDetails.module.css";
 
 const JobDetails = ({ id }) => {
 	const [showApplyModal, setShowApplyModal] = useState(false);
-	const [showAdminModal, setShowAdminModal] = useState(false);
+	const [showAdminRejModal, setShowAdminRejModal] = useState(false);
+	const [showAdminAppModal, setShowAdminAppModal] = useState(false);
 	const [job, setJob] = useState();
 	const [org, setOrg] = useState();
 	const [jobLoading, setJobLoading] = useState(true);
 	const [orgLoading, setOrgLoading] = useState(true);
 
-	const getJob = async () => {
+	const getData = async () => {
 		const response = await fetch(
 			"https://volunteer-ccsgp-backend.herokuapp.com/jobs/" + id
 		);
 		const jsonData = await response.json();
-
+		const response2 = await fetch(
+			"https://volunteer-ccsgp-backend.herokuapp.com/organization_accounts/" +
+				jsonData.orgID
+		);
+		const jsonData2 = await response2.json();
 		setJob(jsonData);
+		setOrg(jsonData2);
 		setJobLoading(false);
-	};
-
-	const getOrg = async () => {
-		if (!jobLoading) {
-			const response = await fetch(
-				"https://volunteer-ccsgp-backend.herokuapp.com/organization_accounts/" +
-					job.orgID
-			);
-			const jsonData = await response.json();
-
-			setOrg(jsonData);
-			setOrgLoading(false);
-		}
+		setOrgLoading(false);
 	};
 
 	useEffect(() => {
-		getJob();
-		getOrg();
-	}, []);
+		getData();
+	}, [org]);
 
-	if (jobLoading || orgLoading) {
+	if (orgLoading) {
 		return <h1>Loading job information...</h1>;
 	}
 
@@ -76,6 +73,7 @@ const JobDetails = ({ id }) => {
 	const orgType = org.type;
 	const orgName = org.name;
 
+	// For display diff displayStates
 	const accType = "admin";
 	const currentUser = { email: orgID };
 
@@ -270,7 +268,14 @@ const JobDetails = ({ id }) => {
 										<ApplyButton handleClick={() => setShowApplyModal(true)} />
 									) : null}
 									{displayState === 1 ? (
-										<AdminButton handleClick={() => setShowAdminModal(true)} />
+										<>
+											<AdminRejButton
+												handleClick={() => setShowAdminRejModal(true)}
+											/>
+											<AdminAppButton
+												handleClick={() => setShowAdminAppModal(true)}
+											/>
+										</>
 									) : null}
 								</div>
 							</Col>
@@ -311,36 +316,68 @@ const JobDetails = ({ id }) => {
 					/>
 				) : null}
 				{displayState === 1 ? (
-					<JobDetailsAdminModal
-						show={showAdminModal}
-						onHide={() => setShowAdminModal(false)}
-						id={id}
-						orgType={orgType}
-						orgName={orgName}
-						orgEmail={orgID}
-						status={status}
-						title={title}
-						beneficiaries={beneficiaries}
-						skills={skills}
-						purpose={purpose}
-						platform={platform}
-						multiLocation={multiLocation}
-						location={location}
-						postalCode={postalCode}
-						type={type}
-						flexiDate={flexiDate}
-						longStartDate={longStartDate}
-						longEndDate={longEndDate}
-						flexiHours={flexiHours}
-						longHours={longHours}
-						adShift={adShift}
-						addInfo={addInfo}
-						imageUrl={imageUrl}
-						pocName={pocName}
-						pocNo={pocNo}
-						pocEmail={pocEmail}
-						applicants={applicants}
-					/>
+					<>
+						<JobDetailsAdminRejModal
+							show={showAdminRejModal}
+							onHide={() => setShowAdminRejModal(false)}
+							id={id}
+							orgType={orgType}
+							orgName={orgName}
+							orgEmail={orgID}
+							status={status}
+							title={title}
+							beneficiaries={beneficiaries}
+							skills={skills}
+							purpose={purpose}
+							platform={platform}
+							multiLocation={multiLocation}
+							location={location}
+							postalCode={postalCode}
+							type={type}
+							flexiDate={flexiDate}
+							longStartDate={longStartDate}
+							longEndDate={longEndDate}
+							flexiHours={flexiHours}
+							longHours={longHours}
+							adShift={adShift}
+							addInfo={addInfo}
+							imageUrl={imageUrl}
+							pocName={pocName}
+							pocNo={pocNo}
+							pocEmail={pocEmail}
+							applicants={applicants}
+						/>
+						<JobDetailsAdminAppModal
+							show={showAdminAppModal}
+							onHide={() => setShowAdminAppModal(false)}
+							id={id}
+							orgType={orgType}
+							orgName={orgName}
+							orgEmail={orgID}
+							status={status}
+							title={title}
+							beneficiaries={beneficiaries}
+							skills={skills}
+							purpose={purpose}
+							platform={platform}
+							multiLocation={multiLocation}
+							location={location}
+							postalCode={postalCode}
+							type={type}
+							flexiDate={flexiDate}
+							longStartDate={longStartDate}
+							longEndDate={longEndDate}
+							flexiHours={flexiHours}
+							longHours={longHours}
+							adShift={adShift}
+							addInfo={addInfo}
+							imageUrl={imageUrl}
+							pocName={pocName}
+							pocNo={pocNo}
+							pocEmail={pocEmail}
+							applicants={applicants}
+						/>
+					</>
 				) : null}
 			</>
 		);

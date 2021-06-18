@@ -1,14 +1,97 @@
+import { Modal, Button } from "react-bootstrap";
 import styles from "./JobDetailsAdminModal.module.css";
 
-const JobDetailsAdminModal = () => {
-	return <div>i am an admin and im here to reject/accept jobs</div>;
-};
-export default JobDetailsAdminModal;
-
-export const AdminButton = ({ handleClick }) => {
+export const JobDetailsAdminRejModal = ({
+	show,
+	onHide,
+	id,
+	orgType,
+	orgName,
+	orgEmail,
+	status,
+	title,
+	beneficiaries,
+	skills,
+	purpose,
+	platform,
+	multiLocation,
+	location,
+	postalCode,
+	type,
+	flexiDate,
+	longStartDate,
+	longEndDate,
+	flexiHours,
+	longHours,
+	adShift,
+	addInfo,
+	imageUrl,
+	pocName,
+	pocNo,
+	pocEmail,
+	applicants,
+}) => {
 	return (
-		<div className={styles.button} onClick={handleClick}>
-			Reject/Approve
-		</div>
+		<Modal show={show} onHide={onHide}>
+			rejecc
+		</Modal>
+	);
+};
+
+export const JobDetailsAdminAppModal = ({
+	show,
+	onHide,
+	id,
+	orgType,
+	orgName,
+	orgEmail,
+	status,
+	title,
+	beneficiaries,
+	skills,
+	purpose,
+	platform,
+	multiLocation,
+	location,
+	postalCode,
+	type,
+	flexiDate,
+	longStartDate,
+	longEndDate,
+	flexiHours,
+	longHours,
+	adShift,
+	addInfo,
+	imageUrl,
+	pocName,
+	pocNo,
+	pocEmail,
+	applicants,
+}) => {
+	return (
+		<Modal show={show} onHide={onHide}>
+			{" "}
+			approve
+		</Modal>
+	);
+};
+
+export const AdminRejButton = ({ handleClick }) => {
+	return (
+		<>
+			<div className={styles.button} onClick={handleClick}>
+				Reject
+			</div>
+		</>
+	);
+};
+
+export const AdminAppButton = ({ handleClick }) => {
+	return (
+		<>
+			<div className={styles.button} onClick={handleClick}>
+				Approve
+			</div>
+		</>
 	);
 };
