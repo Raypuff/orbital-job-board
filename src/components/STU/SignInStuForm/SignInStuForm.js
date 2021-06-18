@@ -31,6 +31,7 @@ const SignInStuForm = () => {
       }
     }
     setLoading(false);
+    window.location.reload(false);
   }
 
   return (
