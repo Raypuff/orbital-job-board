@@ -18,7 +18,8 @@ const YourJobs = () => {
 
   const getYourJobs = async () => {
     const response = await fetch(
-      "https://volunteer-ccsgp-backend.herokuapp.com/jobs/" + currentUser.email
+      "https://volunteer-ccsgp-backend.herokuapp.com/jobs/from_organization/" +
+        currentUser.email
     );
     const jsonData = await response.json();
     setJobs(jsonData);

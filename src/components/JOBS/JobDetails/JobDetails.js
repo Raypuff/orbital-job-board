@@ -1,13 +1,46 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Row, Col } from "react-bootstrap";
 import JobDetailsModal from "../JobDetailsModal";
 import styles from "./JobDetails.module.css";
 
 const JobDetails = ({ id }) => {
   const [showModal, setShowModal] = useState(false);
+  const [job, setJob] = useState();
+  const [org, setOrg] = useState();
+  const [jobLoading, setJobLoading] = useState(true);
+  const [orgLoading, setOrgLoading] = useState(true);
 
-  const job = dummyData[id];
-  const orgs = dummyOrgData;
+  const getJob = async () => {
+    const response = await fetch(
+      "https://volunteer-ccsgp-backend.herokuapp.com/jobs/" + id
+    );
+    const jsonData = await response.json();
+
+    setJob(jsonData);
+    setJobLoading(false);
+  };
+
+  const getOrg = async () => {
+    if (!jobLoading) {
+      const response = await fetch(
+        "https://volunteer-ccsgp-backend.herokuapp.com/organization_accounts/" +
+          job.orgID
+      );
+      const jsonData = await response.json();
+
+      setOrg(jsonData);
+      setOrgLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getJob();
+    getOrg();
+  }, []);
+
+  if (jobLoading || orgLoading) {
+    return <h1>Loading job information...</h1>;
+  }
 
   const {
     orgID,
@@ -35,9 +68,8 @@ const JobDetails = ({ id }) => {
     applicants,
   } = job;
 
-  const orgType = orgs[orgID].type;
-  const orgName = orgs[orgID].name;
-  const orgEmail = orgs[orgID].email;
+  const orgType = org.type;
+  const orgName = org.name;
 
   return (
     <>
@@ -182,7 +214,7 @@ const JobDetails = ({ id }) => {
                     <br />
                   </h7>
                   <h7>
-                    <a href={`mailto:${orgEmail}`}>{orgEmail}</a>
+                    <a href={`mailto:${orgID}`}>{orgID}</a>
                   </h7>
                 </div>
                 <div className={styles.orgContainer}>
@@ -225,7 +257,7 @@ const JobDetails = ({ id }) => {
         id={id}
         orgType={orgType}
         orgName={orgName}
-        orgEmail={orgEmail}
+        orgEmail={orgID}
         status={status}
         title={title}
         beneficiaries={beneficiaries}
@@ -253,153 +285,6 @@ const JobDetails = ({ id }) => {
   );
 };
 export default JobDetails;
-
-const dummyData = {
-  // "random-key-0": {
-  //     id: "random-key-0",
-  //     orgID: "<org.id>",
-  //     status: "pending | rejected | approved | completed",
-  //     title: "<event title or volunteer title>",
-  //     beneficiaries: ["<list of string beneficiaries>"],
-  //     skills: ["<list of string skills>"],
-  //     purpose: "<purpose of the entire event/role",
-  //     platform: "Physical | Virtual",
-  //     multiLocation: "(platform == "Physical" ? true | false : null)",
-  //     location: "(platform == "Physical" && multiLocation == false ? "<location>" : null)",
-  //     postalCode: "(platform == "Physical" && multiLocation == false ? "<postal code>" : null)",
-  //     type: "Ad hoc | Long term",
-  //     longStartDate: "(type == "Long term" ? "<dateTime object>" : null ,
-  //     longEndDate: "(type == "Long term" ? "<dateTime object>": null)",
-  //     longHours: "(type == "Long term" ? "<int hours required>": null)",
-  //     adShift: "(type == "Ad hoc" ? "<list of {dateTime date, int starTime, int endTime}>" : null)",
-  //     addInfo: "<additional information about the event/role>"
-  //     imageUrl: "<url of image of event/role>",
-  //     pocName: "<name of POC>",
-  //     pocNo: "<number of POC>",
-  //     pocEmail: "<email of POC>",
-  //     applicants: [],
-  //   },
-  "random-key-1": {
-    id: "random-key-1",
-    orgID: "otakuneko23@gmail.com",
-    status: "approved",
-    title: "Python teacher",
-    beneficiaries: ["Children", "Teens"],
-    skills: ["Python", "Teaching"],
-    purpose: "Teach students python",
-    platform: "Physical",
-    multiLocation: false,
-    location: "Bukit Panjang Plaza",
-    postalCode: 677743,
-    type: "Ad hoc",
-    flexiDate: false,
-    longStartDate: null,
-    longEndDate: null,
-    flexiHours: false,
-    longHours: null,
-    adShift: [
-      { date: new Date("2021-05-25"), startTime: "17:30", endTime: "19:30" },
-      { date: new Date("2021-04-02"), startTime: "17:00", endTime: "19:00" },
-    ],
-    addInfo: "All teachers will be reimbursed at $20 an hour",
-    imageUrl: "https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
-    pocName: "Rayner",
-    pocNo: 98365567,
-    pocEmail: "raynerljm@gmail.com",
-    applicants: [],
-  },
-  "random-key-2": {
-    id: "random-key-2",
-    orgID: "peepeetime@gmail.com",
-    status: "approved",
-    title: "CS2100 Tutor",
-    beneficiaries: ["Youths"],
-    skills: ["C++"],
-    purpose: "Teach students python",
-    platform: "Virtual",
-    multiLocation: null,
-    location: null,
-    postalCode: null,
-    type: "Long term",
-    flexiDate: false,
-    longStartDate: new Date("2021-01-06"),
-    longEndDate: new Date("2021-12-31"),
-    flexiHours: false,
-    longHours: 140,
-    adShift: null,
-    addInfo: "TAs will be paid $40 an hour -HAND",
-    imageUrl: "https://www.comp.nus.edu.sg/stfphotos/tantc.jpg",
-    pocName: "Zechary",
-    pocNo: 91234567,
-    pocEmail: "peepeetime@gmail.com",
-    applicants: [],
-  },
-  "random-key-3": {
-    id: "random-key-3",
-    orgID: "testflexiDate@gmail.com",
-    status: "approved",
-    title: "FlexiDate Test",
-    beneficiaries: ["Elderly"],
-    skills: ["Smartphone"],
-    purpose: "Teach elderly phone stuff",
-    platform: "Physical",
-    multiLocation: true,
-    location: null,
-    postalCode: null,
-    type: "Long term",
-    flexiDate: true,
-    longStartDate: new Date("2021-01-06"),
-    longEndDate: new Date("2021-12-31"),
-    flexiHours: true,
-    longHours: 140,
-    adShift: null,
-    addInfo: "Teachers will be paid $90 an hour",
-    imageUrl: "http://www.mandysam.com/img/random.jpg",
-    pocName: "MrKuku",
-    pocNo: 88887777,
-    pocEmail: "testflexiDate@gmail.com",
-    applicants: [],
-  },
-};
-
-const dummyOrgData = {
-  "otakuneko23@gmail.com": {
-    id: "otakuneko23@gmail.com",
-    type: "NUS Organization",
-    name: "NUS Hackers",
-    uen: null,
-    email: "otakuneko23@gmail.com",
-    pocName: "Rayner",
-    pocNo: 98365567,
-    pocEmail: "raynerljm@gmail.com",
-    dateCreated: new Date("Dec 28 1998"),
-    jobsPosted: [],
-  },
-  "peepeetime@gmail.com": {
-    id: "peepeetime@gmail.com",
-    type: "Non-NUS Organization",
-    name: "Zechary's Charities",
-    uen: 6969123,
-    email: "peepeetime@gmail.com",
-    pocName: "Zechary Au",
-    pocNo: 92345678,
-    pocEmail: "peepeetime@gmail.com",
-    dateCreated: new Date("Jul 11 2017"),
-    jobsPosted: [],
-  },
-  "testflexiDate@gmail.com": {
-    id: "testflexiDate@gmail.com",
-    type: "Non-NUS Organization",
-    name: "St Theresa's Home",
-    uen: 888443,
-    email: "testflexiDate@gmail.com",
-    pocName: "Ng Wan Yu",
-    pocNo: 91079192,
-    pocEmail: "testflexiDate@gmail.com",
-    dateCreated: new Date("February 23 2005"),
-    jobsPosted: [],
-  },
-};
 
 function tConvert(time) {
   // Check correct time format and split into components

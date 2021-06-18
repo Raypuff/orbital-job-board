@@ -60,10 +60,6 @@ const EditProfileOrg = ({ setEdit }) => {
         uenRef.current.value.trim() !== ""
           ? uenRef.current.value
           : userData.uen,
-      email:
-        emailRef.current.value.trim() !== ""
-          ? emailRef.current.value
-          : userData.email,
       pocName:
         pocNameRef.current.value.trim() !== ""
           ? pocNameRef.current.value
