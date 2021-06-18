@@ -32,8 +32,16 @@ export const JobDetailsAdminRejModal = ({
 	applicants,
 }) => {
 	return (
-		<Modal show={show} onHide={onHide}>
-			rejecc
+		<Modal show={show} onHide={onHide} centered>
+			<Modal.Header closeButton>
+				<Modal.Title>You are rejecting {title}</Modal.Title>
+			</Modal.Header>
+			<Modal.Body>
+				<div className={styles.modalContainer}>
+					Are you sure you want to reject this posting?
+					<Button variant="danger">Reject posting</Button>
+				</div>
+			</Modal.Body>
 		</Modal>
 	);
 };
@@ -69,9 +77,16 @@ export const JobDetailsAdminAppModal = ({
 	applicants,
 }) => {
 	return (
-		<Modal show={show} onHide={onHide}>
-			{" "}
-			approve
+		<Modal show={show} onHide={onHide} centered>
+			<Modal.Header closeButton>
+				<Modal.Title>You are approving {title}</Modal.Title>
+			</Modal.Header>
+			<Modal.Body>
+				<div className={styles.modalContainer}>
+					Are you sure you want to approve this posting?
+					<Button variant="success">Approve posting</Button>
+				</div>
+			</Modal.Body>
 		</Modal>
 	);
 };
@@ -79,9 +94,9 @@ export const JobDetailsAdminAppModal = ({
 export const AdminRejButton = ({ handleClick }) => {
 	return (
 		<>
-			<div className={styles.button} onClick={handleClick}>
-				Reject
-			</div>
+			<Button variant="danger" onClick={handleClick}>
+				Reject posting
+			</Button>
 		</>
 	);
 };
@@ -89,9 +104,9 @@ export const AdminRejButton = ({ handleClick }) => {
 export const AdminAppButton = ({ handleClick }) => {
 	return (
 		<>
-			<div className={styles.button} onClick={handleClick}>
-				Approve
-			</div>
+			<Button variant="success" onClick={handleClick}>
+				Approve posting
+			</Button>
 		</>
 	);
 };
