@@ -31,6 +31,7 @@ const SignInOrgForm = () => {
       }
     }
     setLoading(false);
+    window.location.reload(false);
   }
 
   return (
