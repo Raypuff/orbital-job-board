@@ -10,35 +10,27 @@ const JobDetails = ({ id }) => {
   const [jobLoading, setJobLoading] = useState(true);
   const [orgLoading, setOrgLoading] = useState(true);
 
-  const getJob = async () => {
+  const getData = async () => {
     const response = await fetch(
       "https://volunteer-ccsgp-backend.herokuapp.com/jobs/" + id
     );
     const jsonData = await response.json();
-
+    const response2 = await fetch(
+      "https://volunteer-ccsgp-backend.herokuapp.com/organization_accounts/" +
+        jsonData.orgID
+    );
+    const jsonData2 = await response2.json();
     setJob(jsonData);
+    setOrg(jsonData2);
     setJobLoading(false);
-  };
-
-  const getOrg = async () => {
-    if (!jobLoading) {
-      const response = await fetch(
-        "https://volunteer-ccsgp-backend.herokuapp.com/organization_accounts/" +
-          job.orgID
-      );
-      const jsonData = await response.json();
-
-      setOrg(jsonData);
-      setOrgLoading(false);
-    }
+    setOrgLoading(false);
   };
 
   useEffect(() => {
-    getJob();
-    getOrg();
-  }, []);
+    getData();
+  }, [org]);
 
-  if (jobLoading || orgLoading) {
+  if (orgLoading) {
     return <h1>Loading job information...</h1>;
   }
 
