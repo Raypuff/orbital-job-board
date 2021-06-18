@@ -51,7 +51,7 @@ const ApplicantsModalCard = ({
                 Accepted
               </div>
             </div>
-            <h6>Submitted on {dateApplied.toDateString()}</h6>
+            <h6>Submitted on {dateApplied}</h6>
             <h6>Course of study: {course}</h6>
             <h6>Year of study: {yearOfStudy}</h6>
             <h6>Mobile number: {contactNo}</h6>
