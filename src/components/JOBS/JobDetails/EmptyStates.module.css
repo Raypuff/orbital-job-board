@@ -1,5 +1,6 @@
 .container {
 	height: calc(100vh - 155px);
+	margin: 0 1rem;
 	display: grid;
 	place-items: center;
 }
@@ -10,6 +11,11 @@
 	align-items: center;
 	gap: 1em;
 	margin-bottom: 7rem;
+}
+
+.image {
+	max-width: 85vw;
+	min-width: 25vw;
 }
 
 .title {
@@ -40,4 +46,13 @@
 	background-color: #122f57;
 	transition: 0.25s ease;
 	text-decoration: none;
+}
+
+@media screen and (max-width: 576px) {
+	.container {
+		height: calc(100vh - 4rem);
+	}
+	.title {
+		font-size: 2rem;
+	}
 }

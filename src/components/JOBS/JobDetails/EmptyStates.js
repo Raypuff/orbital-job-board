@@ -7,7 +7,11 @@ export const NotAvailable = () => {
 	return (
 		<div className={styles.container}>
 			<div className={styles.wrapper}>
-				<img src={emptyState} alt="job not available for viewing" />
+				<img
+					className={styles.image}
+					src={emptyState}
+					alt="job not available for viewing"
+				/>
 				<div className={styles.title}>
 					This job is not available for viewing
 				</div>
