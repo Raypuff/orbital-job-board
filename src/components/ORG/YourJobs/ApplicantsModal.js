@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal, Form, Row, Col } from "react-bootstrap";
 import ApplicantsModalCard from "./ApplicantsModalCard";
 import { dummyApps, dummyStus } from "../../DummyData";
@@ -33,7 +33,20 @@ const ApplicantsModal = ({
   datePosted,
   applicants,
 }) => {
-  const yourApplications = Object.values(dummyApps);
+  //create usestate for job apps
+  const [applications, setApplications] = useState([]);
+
+  const getApplications = async () => {
+    const response = await fetch(
+      "https://volunteer-ccsgp-backend.herokuapp.com/job_applications/" + id
+    );
+    const jsonData = await response.json();
+    setApplications(jsonData);
+  };
+
+  useEffect(() => {
+    getApplications();
+  }, []);
 
   const [filterField, setFilterField] = useState("All");
   const onHideAndResetFilter = () => {
@@ -41,9 +54,7 @@ const ApplicantsModal = ({
     setFilterField("All");
   };
 
-  const allStus = dummyStus;
-
-  const yourApplicationsFiltered = yourApplications.filter((application) => {
+  const applicationsFiltered = applications.filter((application) => {
     if (filterField === "All") {
       return true;
     } else {
@@ -85,9 +96,8 @@ const ApplicantsModal = ({
         </div>
       </Modal.Header>
       <Modal.Body>
-        {yourApplicationsFiltered.length >= 1 ? (
-          yourApplicationsFiltered.map((application) => {
-            const stu = allStus[application.stuID];
+        {applicationsFiltered.length >= 1 ? (
+          applicationsFiltered.map((application) => {
             return (
               <ApplicantsModalCard
                 key={application.id}
@@ -97,11 +107,11 @@ const ApplicantsModal = ({
                 status={application.status}
                 stuAddInfo={application.stuAddInfo}
                 dateApplied={application.dateApplied}
-                name={stu.name}
-                email={stu.email}
-                contactNo={stu.contactNo}
-                course={stu.course}
-                yearOfStudy={stu.yearOfStudy}
+                name={application.stuName}
+                email={application.stuEmail}
+                contactNo={application.stuNo}
+                course={application.stuCourse}
+                yearOfStudy={application.stuYearOfStudy}
               />
             );
           })
