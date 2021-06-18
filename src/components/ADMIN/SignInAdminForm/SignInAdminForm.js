@@ -1,9 +1,48 @@
-import { Card, Form, Button } from "react-bootstrap";
+import React, { useRef, useState } from "react";
+import { Card, Form, Button, Alert } from "react-bootstrap";
 import styles from "./SignInAdminForm.module.css";
+import { Link, useHistory } from "react-router-dom";
+import { useAuth } from "../../../contexts/AuthContext";
 
 const SignInAdminForm = () => {
+  //initialize refs to access form data
+  const emailRef = useRef();
+  const passwordRef = useRef();
+
+  //history to push users back to landing page when done with sign in
+  const history = useHistory();
+
+  //useStates for use during signin
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  //import login methods from authcontext
+  const { login, currentUser } = useAuth();
+
   async function handleSubmit(event) {
-    console.log("your turn zech");
+    //prevent page refresh
+    event.preventDefault();
+
+    try {
+      //reset error message
+      setError("");
+
+      //start loading state to signify start of sign in
+      setLoading(true);
+
+      await login(emailRef.current.value, passwordRef.current.value);
+      history.push("/");
+    } catch (err) {
+      if (err.code === "auth/wrong-password") {
+        setError("Incorrect password");
+      } else if (err.code === "auth/user-not-found") {
+        setError("There is no account associated with this email.");
+      } else {
+        setError("Failed to sign in");
+      }
+    }
+    setLoading(false);
+    window.location.reload(false);
   }
 
   return (
@@ -18,7 +57,7 @@ const SignInAdminForm = () => {
                 <Form.Control
                   type="email"
                   placeholder="Enter email"
-                  // ref={emailRef}
+                  ref={emailRef}
                   required
                 />
               </Form.Group>
@@ -27,18 +66,17 @@ const SignInAdminForm = () => {
                 <Form.Control
                   type="password"
                   placeholder="Password"
-                  // ref={passwordRef}
+                  ref={passwordRef}
                   required
                 />
               </Form.Group>
-              <Button
-                // disabled={loading}
-                variant="primary"
-                type="submit"
-              >
+              <Button disabled={loading} variant="primary" type="submit">
                 Sign in
               </Button>
             </Form>
+            <Card.Text />
+            {error && <Alert variant="danger">{error}</Alert>}
+            <Card.Text />
           </Card.Body>
         </Card>
       </div>

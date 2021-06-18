@@ -33,6 +33,8 @@ const SignUpStuForm = () => {
       return setError("Not an NUS student email");
     }
 
+    const id = emailRef.current.value;
+
     try {
       //loading to signify start of process
       setLoading(true);
@@ -47,24 +49,19 @@ const SignUpStuForm = () => {
       await logout();
       setMessage("Sign up successful");
 
-      //creating variables to send over through http request
-      const id = emailRef.current.value;
-
       //send account to backend
       const body = { id };
-      const response = await fetch(
-        "https://volunteer-ccsgp-backend.herokuapp.com/student_accounts",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
-        }
-      );
+      const response = await fetch("http://localhost:5000/student_accounts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      console.log(response || "Failure");
     } catch (err) {
       if (err.code === "auth/email-already-in-use") {
         setError("Email already in use");
       }
-      console.log(err.code);
+      console.log(err);
     }
     setLoading(false);
   }
