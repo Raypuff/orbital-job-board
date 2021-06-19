@@ -6,16 +6,16 @@ import Footer from "../../components/Footer";
 import { useAuth } from "../../contexts/AuthContext";
 
 const LandingPage = () => {
-  const { currentUser } = useAuth();
+	const { currentUser } = useAuth();
 
-  return (
-    <>
-      <Header />
-      <MyNavbar isSignedIn={currentUser} />
-      <Landing />
-      <Footer />
-    </>
-  );
+	return (
+		<>
+			<Header />
+			<MyNavbar isSignedIn={currentUser} />
+			<Landing />
+			<Footer />
+		</>
+	);
 };
 
 export default LandingPage;
