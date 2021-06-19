@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Card, Button, Col, Row } from "react-bootstrap";
 import {
   HourglassSplit,
@@ -19,6 +20,28 @@ const ApplicantsModalCard = ({
   course,
   yearOfStudy,
 }) => {
+  const [loading, setLoading] = useState(false);
+
+  const handleAcceptReject = async (choice) => {
+    setLoading(true);
+    const body = { status: choice };
+    try {
+      const updateAppStatus = await fetch(
+        "https://volunteer-ccsgp-backend.herokuapp.com/job_applications/changestatus/" +
+          id,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        }
+      );
+      console.log(updateAppStatus);
+    } catch (err) {
+      console.error(err);
+    }
+    setLoading(false);
+  };
+
   return (
     <Card>
       <div className={styles.cardContainer}>
