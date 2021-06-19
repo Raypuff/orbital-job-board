@@ -4,9 +4,9 @@ import PostAJobButton from "../PostAJobButton";
 import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 
-import styles from "./SignedInOrgNavbar.module.css";
+import styles from "./SignedInAdminNavbar.module.css";
 
-const SignedInOrgNavbar = () => {
+const SignedInAdminNavbar = () => {
 	const [error, setError] = useState("");
 	const { currentUser, logout, userType } = useAuth();
 	const history = useHistory();
@@ -41,18 +41,18 @@ const SignedInOrgNavbar = () => {
 						<br />({isVerified()})
 						<br />
 						<br />
-						Account Type: Organization
+						Account Type: Admin
 					</NavDropdown.Header>
 					<NavDropdown.Divider />
-					<NavDropdown.Item as={Link} to="/profile-organization">
+					<NavDropdown.Item as={Link} to="/profile-admin">
 						Your profile
 					</NavDropdown.Item>
 					<NavDropdown.Item onClick={handleLogout}>Sign out</NavDropdown.Item>
 				</NavDropdown>
 			</Nav>
 			<Nav>
-				<Nav.Link as={Link} to="/your-jobs">
-					Your Jobs
+				<Nav.Link as={Link} to="/all-jobs">
+					All Jobs
 				</Nav.Link>
 			</Nav>
 			<PostAJobButton />
@@ -60,4 +60,4 @@ const SignedInOrgNavbar = () => {
 	);
 };
 
-export default SignedInOrgNavbar;
+export default SignedInAdminNavbar;
