@@ -258,6 +258,7 @@ const TripleDot = ({ id, setShowModal }) => {
       console.error(err);
     }
     setLoading(false);
+    window.location.reload(false);
   };
   return (
     <Dropdown>
