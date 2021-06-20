@@ -111,6 +111,7 @@ const ApplicantsModal = ({
                 contactNo={application.stuNo}
                 course={application.stuCourse}
                 yearOfStudy={application.stuYearOfStudy}
+                title={title}
               />
             );
           })
