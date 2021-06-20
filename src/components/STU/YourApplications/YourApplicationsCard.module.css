@@ -56,14 +56,9 @@
 	color: red;
 }
 
-.approved {
+.accepted {
 	composes: status;
 	color: green;
-}
-
-.takenDown {
-	composes: status;
-	color: orangered;
 }
 
 .icons {

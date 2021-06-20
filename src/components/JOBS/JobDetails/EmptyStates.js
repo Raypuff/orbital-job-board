@@ -1,7 +1,23 @@
 import { Link } from "react-router-dom";
-import { Alert } from "react-bootstrap";
+import { Alert, Spinner } from "react-bootstrap";
 import emptyState from "../../../assets/emptyState_noJobs.png";
 import styles from "./EmptyStates.module.css";
+
+export const LoadingJobDetails = () => {
+	return (
+		<div className={styles.loadingContainer}>
+			<div className={styles.loadingWrapper}>
+				<Spinner
+					animation="border"
+					role="status"
+					variant="primary"
+					className={styles.spinner}
+				/>
+				<div className={styles.loadingTitle}>Loading job details...</div>
+			</div>
+		</div>
+	);
+};
 
 export const NotAvailable = () => {
 	return (

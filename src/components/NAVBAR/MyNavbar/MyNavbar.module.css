@@ -1,18 +1,30 @@
 .navback {
-  background-color: #f8f8f8;
+	background-color: #f8f8f8;
 }
 
 .navbar {
-  max-width: 75em;
-  margin: auto;
+	max-width: 75em;
+	margin: auto;
 }
 
 .navbarLogo {
-  height: 0;
+	height: 2em;
+}
+
+.desktopDisplayNone {
+	display: none;
+}
+
+.mobileDisplayNone {
+	display: inherit;
 }
 
 @media (max-width: 576px) {
-  .navbarLogo {
-    height: 2em;
-  }
+	.desktopDisplayNone {
+		display: inherit;
+	}
+
+	.mobileDisplayNone {
+		display: none;
+	}
 }
