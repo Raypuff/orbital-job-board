@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { Modal, Form, Row, Col } from "react-bootstrap";
+import { Modal, Form } from "react-bootstrap";
 import ApplicantsModalCard from "./ApplicantsModalCard";
-import { dummyApps, dummyStus } from "../../DummyData";
 import styles from "./ApplicantsModal.module.css";
 
 const ApplicantsModal = ({

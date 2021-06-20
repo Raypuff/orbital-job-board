@@ -1,5 +1,4 @@
-import { Button, Row, Col } from "react-bootstrap";
-import { BoxArrowInRight } from "react-bootstrap-icons";
+import { Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import landingbg from "../../assets/landingbg.png";
 import styles from "./Landing.module.css";

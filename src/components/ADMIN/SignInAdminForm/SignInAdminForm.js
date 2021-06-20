@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Card, Form, Button, Alert } from "react-bootstrap";
 import styles from "./SignInAdminForm.module.css";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 
 const SignInAdminForm = () => {
@@ -17,7 +17,7 @@ const SignInAdminForm = () => {
   const [loading, setLoading] = useState(false);
 
   //import login methods from authcontext
-  const { login, currentUser } = useAuth();
+  const { login } = useAuth();
 
   async function handleSubmit(event) {
     //prevent page refresh

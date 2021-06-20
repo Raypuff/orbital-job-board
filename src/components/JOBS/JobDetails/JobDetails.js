@@ -17,7 +17,6 @@ const JobDetails = ({ id }) => {
   const [showAdminAppModal, setShowAdminAppModal] = useState(false);
   const [job, setJob] = useState();
   const [org, setOrg] = useState();
-  const [jobLoading, setJobLoading] = useState(true);
   const [orgLoading, setOrgLoading] = useState(true);
 
   const getData = async () => {
@@ -32,7 +31,6 @@ const JobDetails = ({ id }) => {
     const jsonData2 = await response2.json();
     setJob(jsonData);
     setOrg(jsonData2);
-    setJobLoading(false);
     setOrgLoading(false);
   };
 
