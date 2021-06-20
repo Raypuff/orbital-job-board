@@ -126,7 +126,7 @@ const JobDetailsApplyModal = ({
       const msg = {
         msg: {
           to: orgEmail,
-          from: "e0530207@u.nus.edu",
+          from: "volunteerccsgp@gmail.com",
           subject: `[Volunteer CCSGP] New applicant for your job ${title}`,
           text: text,
           html: html,

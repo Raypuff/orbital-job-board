@@ -45,7 +45,7 @@ const ApplicantsModalCard = ({
       const msg = {
         msg: {
           to: email,
-          from: "e0530207@u.nus.edu",
+          from: "volunteerccsgp@gmail.com",
           subject: `[Volunteer CCSGP] Change in status of your job application for ${title}`,
           text: text,
           html: html,
