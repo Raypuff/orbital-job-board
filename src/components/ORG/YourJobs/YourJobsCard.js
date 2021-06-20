@@ -240,6 +240,25 @@ const CustomDropdown = forwardRef(({ children, onClick }, ref) => (
 ));
 
 const TripleDot = ({ id, setShowModal }) => {
+  const [loading, setLoading] = useState(false);
+
+  const handleComplete = async () => {
+    setLoading(true);
+    console.log("Handling Complete");
+    try {
+      const setAsComplete = await fetch(
+        "https://volunteer-ccsgp-backend.herokuapp.com/jobs/complete/" + id,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({}),
+        }
+      );
+    } catch (err) {
+      console.error(err);
+    }
+    setLoading(false);
+  };
   return (
     <Dropdown>
       <Dropdown.Toggle as={CustomDropdown}></Dropdown.Toggle>
@@ -251,7 +270,9 @@ const TripleDot = ({ id, setShowModal }) => {
         <Dropdown.Item as={Link} to={`/jobs/${id}`} target="blank">
           View listing
         </Dropdown.Item>
-        <Dropdown.Item>Mark as completed</Dropdown.Item>
+        <Dropdown.Item onClick={(event) => handleComplete()}>
+          Mark as completed
+        </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
   );
