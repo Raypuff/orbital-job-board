@@ -3,6 +3,10 @@
 	margin: 2rem auto;
 }
 
+.rowContainer {
+	max-width: calc(100vw - 2px);
+}
+
 .filterContainer {
 	/* background-color: red; */
 	margin: 0 0 0 1rem;
