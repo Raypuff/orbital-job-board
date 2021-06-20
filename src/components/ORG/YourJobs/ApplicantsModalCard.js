@@ -44,7 +44,7 @@ const ApplicantsModalCard = ({
       const html = `Hello ${name}!<br>There has been an update to your volunteer application. <br>Please click on the link below and log in to view the updates to your application! <a href="volunteer-ccsgp-vercel.app">volunteer-ccsgp-vercel.app</a>`;
       const msg = {
         msg: {
-          to: "zecharyajw@gmail.com",
+          to: email,
           from: "e0530207@u.nus.edu",
           subject: `[Volunteer CCSGP] Change in status of your job application for ${title}`,
           text: text,
