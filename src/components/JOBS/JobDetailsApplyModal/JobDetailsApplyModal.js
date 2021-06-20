@@ -120,6 +120,24 @@ const JobDetailsApplyModal = ({
 					body: JSON.stringify(updateApplied),
 				}
 			);
+
+			const text = `Hello ${orgName}! There is a new application for your job ${title}. Please click on the link below and log in to view the new job application! volunteer-ccsgp-vercel.app`;
+			const html = `Hello ${orgName}!<br>There is a new application for your job ${title}. <br>Please click on the link below and log in to view the new job application! <a href="volunteer-ccsgp-vercel.app">volunteer-ccsgp-vercel.app</a>`;
+			const msg = {
+				msg: {
+					to: orgEmail,
+					from: "volunteerccsgp@gmail.com",
+					subject: `[Volunteer CCSGP] New applicant for your job ${title}`,
+					text: text,
+					html: html,
+				},
+			};
+
+			await fetch("https://volunteer-ccsgp-backend.herokuapp.com/email", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(msg),
+			});
 		} catch (err) {
 			console.error(err);
 		}
