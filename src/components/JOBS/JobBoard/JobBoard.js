@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Row, Col, Spinner } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import JobBoardFilter from "../JobBoardFilter";
 import JobBoardCard from "../JobBoardCard";
 import styles from "./JobBoard.module.css";

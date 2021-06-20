@@ -1,5 +1,5 @@
 import { Modal, Button, Form } from "react-bootstrap";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 import styles from "./JobDetailsApplyModal.module.css";
@@ -50,9 +50,9 @@ const JobDetailsApplyModal = ({
   const stuAddInfoRef = useRef();
 
   //creating useStates for submission
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
+  //const [loading, setLoading] = useState(false);
+  //const [message, setMessage] = useState("");
+  //const [error, setError] = useState("");
 
   const handleSubmit = async (event) => {
     //prevent page refresh
@@ -87,13 +87,13 @@ const JobDetailsApplyModal = ({
     };
     try {
       //reset useStates
-      setMessage("");
-      setError("");
+      //setMessage("");
+      //setError("");
 
       //start loading
-      setLoading(true);
+      //setLoading(true);
 
-      const postApplication = await fetch(
+      await fetch(
         "https://volunteer-ccsgp-backend.herokuapp.com/job_applications",
         {
           method: "POST",
@@ -102,7 +102,7 @@ const JobDetailsApplyModal = ({
         }
       );
 
-      const updateJobApplicants = await fetch(
+      await fetch(
         "https://volunteer-ccsgp-backend.herokuapp.com/jobs/apply/" + id,
         {
           method: "PUT",
@@ -111,7 +111,7 @@ const JobDetailsApplyModal = ({
         }
       );
 
-      const updateJobsApplied = await fetch(
+      await fetch(
         "https://volunteer-ccsgp-backend.herokuapp.com/student_accounts/apply_job/" +
           currentUser.email,
         {

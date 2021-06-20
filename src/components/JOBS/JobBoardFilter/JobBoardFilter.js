@@ -15,7 +15,7 @@ const JobBoardFilter = ({
   const [platformOpen, setPlatformOpen] = useState(true);
   const [beneficiariesOpen, setBeneficiariesOpen] = useState(true);
   const [skillsOpen, setSkillsOpen] = useState(true);
-  const { height, width } = useWindowDimensions();
+  const { width } = useWindowDimensions();
 
   return (
     <Form>

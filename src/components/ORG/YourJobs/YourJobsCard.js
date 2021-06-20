@@ -240,13 +240,13 @@ const CustomDropdown = forwardRef(({ children, onClick }, ref) => (
 ));
 
 const TripleDot = ({ id, setShowModal }) => {
-  const [loading, setLoading] = useState(false);
+  //const [loading, setLoading] = useState(false);
 
   const handleComplete = async () => {
-    setLoading(true);
+    //setLoading(true);
     console.log("Handling Complete");
     try {
-      const setAsComplete = await fetch(
+      await fetch(
         "https://volunteer-ccsgp-backend.herokuapp.com/jobs/complete/" + id,
         {
           method: "PUT",
@@ -257,7 +257,7 @@ const TripleDot = ({ id, setShowModal }) => {
     } catch (err) {
       console.error(err);
     }
-    setLoading(false);
+    //setLoading(false);
     window.location.reload(false);
   };
   return (

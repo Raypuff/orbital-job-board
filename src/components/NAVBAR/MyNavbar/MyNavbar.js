@@ -1,4 +1,4 @@
-import { Navbar, Nav } from "react-bootstrap";
+import { Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import SignedOutNavbar from "../SignedOutNavbar";
 import SignedInStuNavbar from "../SignedInStuNavbar";

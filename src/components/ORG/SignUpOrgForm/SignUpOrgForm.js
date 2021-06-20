@@ -52,7 +52,7 @@ const SignUpOrgForm = () => {
 
       //send account to backend
       const body = { id };
-      const response = await fetch(
+      await fetch(
         "https://volunteer-ccsgp-backend.herokuapp.com/organization_accounts",
         {
           method: "POST",
