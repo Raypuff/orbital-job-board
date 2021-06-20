@@ -50,11 +50,14 @@ const ApplicantsModalCard = ({
         },
       };
 
-      const sendEmail = await fetch("http://localhost:5000/email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(msg),
-      });
+      const sendEmail = await fetch(
+        "https://volunteer-ccsgp-backend.herokuapp.com/email",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(msg),
+        }
+      );
     } catch (err) {
       console.error(err);
     }
