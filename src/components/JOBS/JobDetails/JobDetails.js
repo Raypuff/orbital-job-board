@@ -184,7 +184,7 @@ const JobDetails = ({ id }) => {
                       <h7>
                         {type === "Long term"
                           ? flexiDate === false
-                            ? `${longStartDate.toDateString()} - ${longEndDate.toDateString()}`
+                            ? `${longStartDate} - ${longEndDate}`
                             : "Flexible start and end date"
                           : ""}
                         <br />
@@ -213,7 +213,7 @@ const JobDetails = ({ id }) => {
                                 return (
                                   <li key={index}>
                                     <h7>
-                                      {`${shift.date.toDateString()} ${tConvert(
+                                      {`${shift.date} ${tConvert(
                                         shift.startTime
                                       )} - ${tConvert(shift.endTime)}`}
                                     </h7>
