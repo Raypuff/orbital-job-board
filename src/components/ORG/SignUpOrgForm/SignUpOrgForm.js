@@ -7,11 +7,6 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 
 const SignUpOrgForm = () => {
-	//ref values to access form data
-	const emailRef = useRef();
-	const passwordRef = useRef();
-	const passwordConfirmRef = useRef();
-
 	//imported methods from firebase authentication
 	const { signup, logout, sendEmailVerification } = useAuth();
 
