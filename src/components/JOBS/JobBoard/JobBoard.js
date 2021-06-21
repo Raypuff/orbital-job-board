@@ -65,6 +65,7 @@ const JobBoard = () => {
 		}
 	}
 	var filteredJobs = jobs
+		// .filter((job) => job.status === "Approved")
 		.filter((job) => filterState.longTerm || job.type !== "Long term")
 		.filter((job) => filterState.adHoc || job.type !== "Ad hoc")
 		.filter((job) => filterState.physical || job.platform !== "Physical")
