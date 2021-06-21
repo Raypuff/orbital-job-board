@@ -10,6 +10,7 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
+  const [userVerified, setUserVerified] = useState(false);
   const [loading, setLoading] = useState(true);
   const [userType, setUserType] = useState();
 
@@ -53,6 +54,7 @@ export function AuthProvider({ children }) {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user !== null) {
         getUserType(user.email);
+        setUserVerified(user.emailVerified);
       }
       setCurrentUser(user);
       setLoading(false);
@@ -64,6 +66,7 @@ export function AuthProvider({ children }) {
   const value = {
     currentUser,
     userType,
+    userVerified,
     login,
     signup,
     logout,
