@@ -80,6 +80,7 @@ const JobDetails = ({ id }) => {
 	// For display diff displayStates
 	//0: Signed out OR Student haven't apply -> Apply button
 	//1: Student applied -> Disabled Apply button
+	//8: Org Not Your Job -> No button
 	//2: Org Job Pending -> Alert at top that job is still pending
 	//3: Org Job Approved -> Alert at top that job is visible
 	//4: Org Job Rejected -> Alert at top that job is rejectd
@@ -98,7 +99,10 @@ const JobDetails = ({ id }) => {
 			displayState = 1;
 		}
 	} else if (currentUser !== null && userType === "organization") {
-		if (status === "Pending") {
+		if (false) {
+			//true if id NOT in org.jobs.ID
+			displayState = 8;
+		} else if (status === "Pending") {
 			displayState = 2;
 		} else if (status === "Approved") {
 			displayState = 3;
