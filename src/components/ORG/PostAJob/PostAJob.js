@@ -22,15 +22,13 @@ var uniqid = require("uniqid");
 const PostAJob = () => {
 	// Database useStates
 	const [message, setMessage] = useState("");
-	const [successful, setSuccessful] = useState(false);
+	const [error, setError] = useState("");
 	// Form useStates
 	const [beneficiaries, setBeneficiaries] = useState([]);
 	const [skills, setSkills] = useState([]);
 
 	//finding currentUser that is logged in
 	const { currentUser } = useAuth();
-
-	const [error, setError] = useState("");
 
 	//to obtain currentUser data from database
 	const [userData, setUserData] = useState(null);
@@ -52,15 +50,10 @@ const PostAJob = () => {
 
 	const mySubmit = (values, { setSubmitting, resetForm }) => {
 		setSubmitting(true);
-		setTimeout(() => {
-			submitJob(values);
-			resetForm();
-			setSubmitting(false);
-		}, 500);
+		handleSubmit(values);
 
-		async function submitJob(values) {
+		async function handleSubmit(values) {
 			//resetting useStates
-			setSuccessful(false);
 			setMessage("");
 			setError("");
 
@@ -145,9 +138,11 @@ const PostAJob = () => {
 						body: JSON.stringify(body2),
 					}
 				);
+				setMessage("Successful");
+				resetForm();
+				setSubmitting(false);
 			} catch (err) {
 				setError("Failed to post due to internal error");
-				console.log(error);
 			}
 		}
 	};
@@ -759,7 +754,7 @@ const PostAJob = () => {
 						{isSubmitting && (
 							<Alert variant="primary">Posting your job...</Alert>
 						)}
-						{successful && <Alert variant="success">{message}</Alert>}
+						{message && <Alert variant="success">{message}</Alert>}
 					</Form>
 				)}
 			</Formik>
@@ -1015,8 +1010,6 @@ const validationSchema = Yup.object().shape({
 		is: false,
 		then: Yup.string("Please enter only numbers")
 			.matches(/^[0-9]+$/, "Please enter only numbers")
-			.min(8, "Please enter an 8 digit mobile number")
-			.max(8, "Please enter an 8 digit mobile number")
 			.required("Please enter the mobile number of contact person"),
 	}),
 	pocEmail: Yup.string().when("retrievePoc", {
