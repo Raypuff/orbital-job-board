@@ -16,16 +16,9 @@ const SignUpStuForm = () => {
 
 	const mySubmit = (values, { setSubmitting, resetForm }) => {
 		setSubmitting(true);
-		setTimeout(() => {
-			handleSubmit(values);
-			resetForm();
-			setSubmitting(false);
-		}, 500);
+		handleSubmit(values);
 
-		async function handleSubmit(event) {
-			//prevent page refresh
-			event.preventDefault();
-
+		async function handleSubmit(values) {
 			//reset states of messages
 			setMessage("");
 			setError("");
@@ -40,7 +33,7 @@ const SignUpStuForm = () => {
 				await signup(values.email, values.password, "student");
 				await sendEmailVerification();
 				await logout();
-				setMessage("Sign up successful");
+
 				const id = values.email;
 
 				//send account to backend
@@ -53,6 +46,9 @@ const SignUpStuForm = () => {
 						body: JSON.stringify(body),
 					}
 				);
+				setMessage("Sign up successful");
+				resetForm();
+				setSubmitting(false);
 			} catch (err) {
 				if (err.code === "auth/email-already-in-use") {
 					setError("This email address is already in use");
@@ -88,7 +84,6 @@ const SignUpStuForm = () => {
 											name="email"
 											type="email"
 											value={values.email}
-											placeholder="Enter your NUS email address"
 											onChange={handleChange}
 											onBlur={handleBlur}
 											isValid={touched.email && !errors.email}
@@ -107,7 +102,6 @@ const SignUpStuForm = () => {
 											name="password"
 											type="password"
 											value={values.password}
-											placeholder="Enter your password"
 											onChange={handleChange}
 											onBlur={handleBlur}
 											isValid={touched.password && !errors.password}
@@ -118,12 +112,11 @@ const SignUpStuForm = () => {
 										</Form.Control.Feedback>
 									</Form.Group>
 									<Form.Group controlId="formBasicPassword">
-										<Form.Label>Password Confirmation</Form.Label>
+										<Form.Label>Confirm password</Form.Label>
 										<Form.Control
 											name="passwordConfirm"
 											type="password"
 											value={values.passwordConfirm}
-											placeholder="Enter your password again"
 											onChange={handleChange}
 											onBlur={handleBlur}
 											isValid={
@@ -144,30 +137,34 @@ const SignUpStuForm = () => {
 									>
 										Sign up
 									</Button>
+									<Card.Text />
+									{error && (
+										<Alert variant="danger">
+											<Alert.Heading as="h6">{error}</Alert.Heading>
+											<hr />
+											<p className="mb-0">
+												If you have forgotten your password, you can reset your
+												password <Link to="/forgot-password-student">here</Link>
+											</p>
+										</Alert>
+									)}
+									{isSubmitting && (
+										<Alert variant="primary">Signing you up...</Alert>
+									)}
+
+									{message && (
+										<Alert variant="success">
+											<Alert.Heading as="h6">{message}</Alert.Heading>
+											<hr />
+											<p className="mb-0">
+												Please check your inbox for a verification email
+											</p>
+										</Alert>
+									)}
 								</Form>
 							)}
 						</Formik>
 						<Card.Text />
-
-						{error && (
-							<Alert variant="danger">
-								<Alert.Heading as="h6">{error}</Alert.Heading>
-								<hr />
-								<p className="mb-0">
-									If you have forgotten your password, you can reset your
-									password <Link to="/forgot-password-student">here</Link>
-								</p>
-							</Alert>
-						)}
-						{message && (
-							<Alert variant="success">
-								<Alert.Heading as="h6">{message}</Alert.Heading>
-								<hr />
-								<p className="mb-0">
-									Please check your inbox for a verification email
-								</p>
-							</Alert>
-						)}
 
 						<Card.Text />
 						<Card.Footer>
