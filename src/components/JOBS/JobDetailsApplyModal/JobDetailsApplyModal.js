@@ -5,7 +5,7 @@ import { useAuth } from "../../../contexts/AuthContext";
 import styles from "./JobDetailsApplyModal.module.css";
 var uniqid = require("uniqid");
 
-const JobDetailsApplyModal = ({
+export const JobDetailsApplyModal = ({
 	show,
 	onHide,
 	id,
@@ -238,8 +238,6 @@ const JobDetailsApplyModal = ({
 	}
 };
 
-export default JobDetailsApplyModal;
-
 // apply button to open this modal
 export const ApplyButton = ({ handleClick }) => {
 	return (
@@ -247,6 +245,9 @@ export const ApplyButton = ({ handleClick }) => {
 			Apply now
 		</div>
 	);
+};
+export const DisabledButton = () => {
+	return <div className={styles.disabledButton}>Already applied</div>;
 };
 
 const SignedOutModal = ({ show, onHide }) => {

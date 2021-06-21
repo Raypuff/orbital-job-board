@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react";
-import { Row, Col } from "react-bootstrap";
-import { LoadingJobDetails, NotAvailable, StillPending } from "./EmptyStates";
-import JobDetailsApplyModal from "../JobDetailsApplyModal";
-import { ApplyButton } from "../JobDetailsApplyModal/JobDetailsApplyModal";
+import { Row, Col, Alert } from "react-bootstrap";
+import { LoadingJobDetails, NotAvailable } from "./EmptyStates";
+import {
+	JobDetailsApplyModal,
+	ApplyButton,
+	DisabledButton,
+} from "../JobDetailsApplyModal/JobDetailsApplyModal";
 import {
 	JobDetailsAdminRejModal,
 	JobDetailsAdminAppModal,
 	AdminRejButton,
 	AdminAppButton,
 } from "../JobDetailsAdminModal/JobDetailsAdminModal";
+import { useAuth } from "../../../contexts/AuthContext";
 import styles from "./JobDetails.module.css";
 
 const JobDetails = ({ id }) => {
@@ -18,6 +22,7 @@ const JobDetails = ({ id }) => {
 	const [job, setJob] = useState();
 	const [org, setOrg] = useState();
 	const [orgLoading, setOrgLoading] = useState(true);
+	const { currentUser, userType } = useAuth();
 
 	const getData = async () => {
 		const response = await fetch(
@@ -73,32 +78,63 @@ const JobDetails = ({ id }) => {
 	const orgName = org.name;
 
 	// For display diff displayStates
-	const accType = "admin";
-	const currentUser = { email: orgID };
+	//0: Signed out OR Student haven't apply -> Apply button
+	//1: Student applied -> Disabled Apply button
+	//2: Org Job Pending -> Alert at top that job is still pending
+	//3: Org Job Approved -> Alert at top that job is visible
+	//4: Org Job Rejected -> Alert at top that job is rejectd
+	//5: Admin Job Pending -> Reject or Approve job
+	//6: Admin Job Approved/Rejected -> no button
+	//7: Not available
 
-	var displayState = 3;
-	if (status === "Approved") {
+	var displayState;
+	if (currentUser === null) {
 		displayState = 0;
-	} else if (accType === "admin") {
-		displayState = 1;
-	} else if (
-		status === "Pending" &&
-		accType === "org" &&
-		currentUser.email === orgID
-	) {
-		displayState = 2;
+	} else if (currentUser !== null && userType === "student") {
+		if (true) {
+			//true if id NOT in student.applications.jobID
+			displayState = 0;
+		} else {
+			displayState = 1;
+		}
+	} else if (currentUser !== null && userType === "organization") {
+		if (status === "Pending") {
+			displayState = 2;
+		} else if (status === "Approved") {
+			displayState = 3;
+		} else if (status === "Rejected") {
+			displayState = 4;
+		}
+	} else if (currentUser !== null && userType === "admin") {
+		if (status === "Pending") {
+			displayState = 5;
+		} else {
+			displayState = 6;
+		}
 	} else {
-		displayState = 3;
+		displayState = 7;
 	}
 
-	if (displayState === 3) {
+	if (displayState === 7) {
 		return <NotAvailable />;
 	} else {
 		return (
 			<>
 				<div className={styles.container}>
 					<div className={styles.wrapper}>
-						{displayState === 2 ? <StillPending /> : null}
+						{displayState === 2 ? (
+							<Alert variant="warning">
+								Your job is still pending approval and is not publicly visible
+							</Alert>
+						) : displayState === 3 ? (
+							<Alert variant="success">
+								Your job has been approved and is publicly visible
+							</Alert>
+						) : displayState === 4 ? (
+							<Alert variant="danger">
+								Your job has been rejected and is not publicly visible
+							</Alert>
+						) : null}
 						<Row>
 							<Col md={2}>
 								<div className={styles.imageCol}>
@@ -275,8 +311,9 @@ const JobDetails = ({ id }) => {
 								<div className={styles.buttonRow}>
 									{displayState === 0 ? (
 										<ApplyButton handleClick={() => setShowApplyModal(true)} />
-									) : null}
-									{displayState === 1 ? (
+									) : displayState === 1 ? (
+										<DisabledButton />
+									) : displayState === 5 ? (
 										<>
 											<AdminRejButton
 												handleClick={() => setShowAdminRejModal(true)}
@@ -323,8 +360,7 @@ const JobDetails = ({ id }) => {
 						pocEmail={pocEmail}
 						applicants={applicants}
 					/>
-				) : null}
-				{displayState === 1 ? (
+				) : displayState === 5 ? (
 					<>
 						<JobDetailsAdminRejModal
 							show={showAdminRejModal}

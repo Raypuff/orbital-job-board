@@ -41,11 +41,3 @@ export const NotAvailable = () => {
 		</div>
 	);
 };
-
-export const StillPending = () => {
-	return (
-		<Alert variant="warning">
-			Your job is still pending approval from CCSGP admins
-		</Alert>
-	);
-};
