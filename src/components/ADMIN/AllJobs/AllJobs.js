@@ -116,6 +116,7 @@ const AllJobs = () => {
 								pocName={job.pocName}
 								pocNo={job.pocNo}
 								pocEmail={job.pocEmail}
+								dateCreated={job.dateCreated}
 								datePosted={job.datePosted}
 								applicants={job.applicants}
 							/>

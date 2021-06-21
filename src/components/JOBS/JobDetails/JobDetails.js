@@ -70,6 +70,7 @@ const JobDetails = ({ id }) => {
 		pocName,
 		pocNo,
 		pocEmail,
+		dateCreated,
 		datePosted,
 		applicants,
 	} = job;
@@ -165,9 +166,16 @@ const JobDetails = ({ id }) => {
 									<div className={styles.detailContainer}>
 										<h4>{title}</h4>
 										<hr className={styles.divider} />
+										<h7>
+											{`Posted on: ${new Date(datePosted).toDateString()}`}
+											<br />
+										</h7>
 										<h5>About</h5>
 										<div className={styles.lineWrapper}>
-											<h7>Beneficiaries: </h7>
+											<h7>
+												Beneficiaries:
+												<br />{" "}
+											</h7>
 											{beneficiaries.map((beneficiary, index) => {
 												if (index + 1 !== beneficiaries.length) {
 													return <h7 key={index}>{`${beneficiary}, `}</h7>;
@@ -177,7 +185,10 @@ const JobDetails = ({ id }) => {
 											})}
 										</div>
 										<div className={styles.lineWrapper}>
-											<h7>Skills: </h7>
+											<h7>
+												Skills:
+												<br />{" "}
+											</h7>
 											{skills.map((skill, index) => {
 												if (index + 1 !== skills.length) {
 													return <h7 key={index}>{`${skill}, `}</h7>;
@@ -186,7 +197,10 @@ const JobDetails = ({ id }) => {
 												}
 											})}
 										</div>
-										<h7>Purpose: </h7>
+										<h7>
+											Purpose:
+											<br />{" "}
+										</h7>
 										<h7>{purpose}</h7>
 									</div>
 									<div className={styles.detailContainer}>

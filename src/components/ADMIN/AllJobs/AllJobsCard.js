@@ -33,6 +33,7 @@ const AllJobsCard = ({
 	pocName,
 	pocNo,
 	pocEmail,
+	dateCreated,
 	datePosted,
 	applicants,
 }) => {
@@ -101,8 +102,16 @@ const AllJobsCard = ({
 										<TripleDot id={id} />
 									</div>
 								</div>
-
-								<h6>Posted on: {new Date(datePosted).toDateString()}</h6>
+								<h6>Created on: {new Date(dateCreated).toDateString()}</h6>
+								<h6
+									className={
+										status !== "Approved" && status !== "Completed"
+											? styles.displayNone
+											: null
+									}
+								>
+									Posted on: {new Date(datePosted).toDateString()}
+								</h6>
 								<h6>
 									Location:{" "}
 									{platform === "Virtual"
