@@ -29,6 +29,7 @@ const ApplicantsModal = ({
 	pocName,
 	pocNo,
 	pocEmail,
+	dateCreated,
 	datePosted,
 	applicants,
 }) => {

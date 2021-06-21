@@ -70,6 +70,7 @@ const JobDetails = ({ id }) => {
 		pocName,
 		pocNo,
 		pocEmail,
+		dateCreated,
 		datePosted,
 		applicants,
 	} = job;
@@ -80,12 +81,14 @@ const JobDetails = ({ id }) => {
 	// For display diff displayStates
 	//0: Signed out OR Student haven't apply -> Apply button
 	//1: Student applied -> Disabled Apply button
-	//2: Org Job Pending -> Alert at top that job is still pending
-	//3: Org Job Approved -> Alert at top that job is visible
-	//4: Org Job Rejected -> Alert at top that job is rejectd
-	//5: Admin Job Pending -> Reject or Approve job
-	//6: Admin Job Approved/Rejected -> no button
-	//7: Not available
+	//2: Org Not Your Job -> No button
+	//3: Org Job Pending -> Alert at top that job is still pending
+	//4: Org Job Approved -> Alert at top that job is visible
+	//5: Org Job Rejected -> Alert at top that job is rejectd
+	//6: Admin Job Pending -> Reject or Approve job
+	//7: Admin Job Approved -> Alert at the top that the job is approved
+	//8: Admin Job Rejected -> Alert at the top that the job is rejected
+	//9: Not available
 
 	var displayState;
 	if (currentUser === null) {
@@ -98,41 +101,54 @@ const JobDetails = ({ id }) => {
 			displayState = 1;
 		}
 	} else if (currentUser !== null && userType === "organization") {
-		if (status === "Pending") {
+		if (false) {
+			//true if id NOT in org.jobs.ID
 			displayState = 2;
-		} else if (status === "Approved") {
+		} else if (status === "Pending") {
 			displayState = 3;
-		} else if (status === "Rejected") {
+		} else if (status === "Approved") {
 			displayState = 4;
+		} else if (status === "Rejected") {
+			displayState = 5;
 		}
 	} else if (currentUser !== null && userType === "admin") {
 		if (status === "Pending") {
-			displayState = 5;
-		} else {
 			displayState = 6;
+		} else if (status === "Approved") {
+			displayState = 7;
+		} else if (status === "Rejected") {
+			displayState = 8;
 		}
 	} else {
-		displayState = 7;
+		displayState = 9;
 	}
 
-	if (displayState === 7) {
+	if (displayState === 9) {
 		return <NotAvailable />;
 	} else {
 		return (
 			<>
 				<div className={styles.container}>
 					<div className={styles.wrapper}>
-						{displayState === 2 ? (
+						{displayState === 3 ? (
 							<Alert variant="warning">
 								Your job is still pending approval and is not publicly visible
 							</Alert>
-						) : displayState === 3 ? (
+						) : displayState === 4 ? (
 							<Alert variant="success">
 								Your job has been approved and is publicly visible
 							</Alert>
-						) : displayState === 4 ? (
+						) : displayState === 5 ? (
 							<Alert variant="danger">
 								Your job has been rejected and is not publicly visible
+							</Alert>
+						) : displayState === 7 ? (
+							<Alert variant="success">
+								This job has been approved and is publicly visible
+							</Alert>
+						) : displayState === 8 ? (
+							<Alert variant="danger">
+								This job has been rejected and is not publicly visible
 							</Alert>
 						) : null}
 						<Row>
@@ -150,9 +166,16 @@ const JobDetails = ({ id }) => {
 									<div className={styles.detailContainer}>
 										<h4>{title}</h4>
 										<hr className={styles.divider} />
+										<h7>
+											{`Posted on: ${new Date(datePosted).toDateString()}`}
+											<br />
+										</h7>
 										<h5>About</h5>
 										<div className={styles.lineWrapper}>
-											<h7>Beneficiaries: </h7>
+											<h7>
+												Beneficiaries:
+												<br />{" "}
+											</h7>
 											{beneficiaries.map((beneficiary, index) => {
 												if (index + 1 !== beneficiaries.length) {
 													return <h7 key={index}>{`${beneficiary}, `}</h7>;
@@ -162,7 +185,10 @@ const JobDetails = ({ id }) => {
 											})}
 										</div>
 										<div className={styles.lineWrapper}>
-											<h7>Skills: </h7>
+											<h7>
+												Skills:
+												<br />{" "}
+											</h7>
 											{skills.map((skill, index) => {
 												if (index + 1 !== skills.length) {
 													return <h7 key={index}>{`${skill}, `}</h7>;
@@ -171,7 +197,10 @@ const JobDetails = ({ id }) => {
 												}
 											})}
 										</div>
-										<h7>Purpose: </h7>
+										<h7>
+											Purpose:
+											<br />{" "}
+										</h7>
 										<h7>{purpose}</h7>
 									</div>
 									<div className={styles.detailContainer}>
@@ -313,7 +342,7 @@ const JobDetails = ({ id }) => {
 										<ApplyButton handleClick={() => setShowApplyModal(true)} />
 									) : displayState === 1 ? (
 										<DisabledButton />
-									) : displayState === 5 ? (
+									) : displayState === 6 ? (
 										<>
 											<AdminRejButton
 												handleClick={() => setShowAdminRejModal(true)}
@@ -360,7 +389,7 @@ const JobDetails = ({ id }) => {
 						pocEmail={pocEmail}
 						applicants={applicants}
 					/>
-				) : displayState === 5 ? (
+				) : displayState === 6 ? (
 					<>
 						<JobDetailsAdminRejModal
 							show={showAdminRejModal}

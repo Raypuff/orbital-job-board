@@ -1,20 +1,17 @@
 import { useState, useEffect } from "react";
-import { Accordion, Card, Dropdown, Form } from "react-bootstrap";
+import { Accordion, Card, Form } from "react-bootstrap";
 import { ChevronDown, Sliders } from "react-bootstrap-icons";
-import styles from "./JobBoardFilter.module.css";
+import styles from "./AllJobsFilter.module.css";
 
-const JobBoardFilter = ({
+const AllJobsFilter = ({
 	values,
 	handleChange,
 	handleBlur,
-	BeneficiaryTags,
-	SkillTags,
 	setFilterState,
 }) => {
+	const [statusOpen, setStatusOpen] = useState(true);
 	const [typeOpen, setTypeOpen] = useState(true);
 	const [platformOpen, setPlatformOpen] = useState(true);
-	const [beneficiariesOpen, setBeneficiariesOpen] = useState(true);
-	const [skillsOpen, setSkillsOpen] = useState(true);
 	const { width } = useWindowDimensions();
 
 	return (
@@ -34,38 +31,86 @@ const JobBoardFilter = ({
 					</Accordion.Toggle>
 					<Accordion.Collapse eventKey="1">
 						<Card.Body>
-							{/* SORT BY
-              <Card.Title>Sort by</Card.Title>
-              <Form.Text className="text-muted">
-                              </Form.Text>
-              <Form.Group controlId="formMostRecent" className={styles.input}>
-                <Form.Check
-                  type="radio"
-                  label="Most recent"
-                  name="sort"
-                  value="mostRecent"
-                  checked={values.sort === "mostRecent"}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-              </Form.Group>
-              <Form.Group
-                controlId="formNearestDistance"
-                className={styles.input}
-              >
-                <Form.Check
-                  type="radio"
-                  label="Nearest distance"
-                  name="sort"
-                  value="nearestDistance"
-                  checked={values.sort === "nearestDistance"}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-              </Form.Group>
-              <Dropdown.Divider /> */}
-							{/* FILTER BY */}
 							<Card.Title>Filter by</Card.Title>
+							{/* Status */}
+							<Accordion defaultActiveKey="0">
+								<Accordion.Toggle
+									as={Card.Header}
+									eventKey="0"
+									className={styles.filterHeader}
+									onClick={(event) => setStatusOpen(!statusOpen)}
+								>
+									Type
+									<div className={statusOpen ? styles.chevUp : styles.chevDown}>
+										<ChevronDown />
+									</div>
+								</Accordion.Toggle>
+								<Accordion.Collapse eventKey="0">
+									<Card.Body>
+										<Form.Group
+											controlId="formPending"
+											className={styles.input}
+										>
+											<Form.Check
+												name="pending"
+												label="Pending"
+												checked={values.pending}
+												onChange={handleChange}
+												onBlur={handleBlur}
+											/>
+										</Form.Group>
+										<Form.Group
+											controlId="formApproved"
+											className={styles.input}
+										>
+											<Form.Check
+												name="approved"
+												label="Approved"
+												checked={values.approved}
+												onChange={handleChange}
+												onBlur={handleBlur}
+											/>
+										</Form.Group>
+										<Form.Group
+											controlId="formCompleted"
+											className={styles.input}
+										>
+											<Form.Check
+												name="completed"
+												label="Completed"
+												checked={values.completed}
+												onChange={handleChange}
+												onBlur={handleBlur}
+											/>
+										</Form.Group>
+										<Form.Group
+											controlId="formRejected"
+											className={styles.input}
+										>
+											<Form.Check
+												name="rejected"
+												label="Rejected"
+												checked={values.rejected}
+												onChange={handleChange}
+												onBlur={handleBlur}
+											/>
+										</Form.Group>
+										<Form.Group
+											controlId="formTakenDown"
+											className={styles.input}
+										>
+											<Form.Check
+												name="takenDown"
+												label="Taken down"
+												checked={values.takenDown}
+												onChange={handleChange}
+												onBlur={handleBlur}
+											/>
+										</Form.Group>
+									</Card.Body>
+								</Accordion.Collapse>
+							</Accordion>
+
 							{/* Type */}
 							<Accordion defaultActiveKey="0">
 								<Accordion.Toggle
@@ -149,80 +194,6 @@ const JobBoardFilter = ({
 									</Card.Body>
 								</Accordion.Collapse>
 							</Accordion>
-							{/* Beneficiaries */}
-							<Accordion defaultActiveKey="0">
-								<Accordion.Toggle
-									as={Card.Header}
-									eventKey="0"
-									className={styles.filterHeader}
-									onClick={(event) => setBeneficiariesOpen(!beneficiariesOpen)}
-								>
-									Beneficiaries
-									<div
-										className={
-											beneficiariesOpen ? styles.chevUp : styles.chevDown
-										}
-									>
-										<ChevronDown />
-									</div>
-								</Accordion.Toggle>
-								<Accordion.Collapse eventKey="0">
-									<Card.Body>
-										{BeneficiaryTags.map((beneficiary, index) => {
-											return (
-												<Form.Group
-													controlId={`form${beneficiary}`}
-													className={styles.input}
-												>
-													<Form.Check
-														key={beneficiary}
-														name={beneficiary}
-														label={beneficiary}
-														checked={values[beneficiary]}
-														onChange={handleChange}
-														onBlur={handleBlur}
-													/>
-												</Form.Group>
-											);
-										})}
-									</Card.Body>
-								</Accordion.Collapse>
-							</Accordion>
-							{/* Skills */}
-							<Accordion defaultActiveKey="0">
-								<Accordion.Toggle
-									as={Card.Header}
-									eventKey="0"
-									className={styles.filterHeader}
-									onClick={(event) => setSkillsOpen(!skillsOpen)}
-								>
-									Skills
-									<div className={skillsOpen ? styles.chevUp : styles.chevDown}>
-										<ChevronDown />
-									</div>
-								</Accordion.Toggle>
-								<Accordion.Collapse eventKey="0">
-									<Card.Body>
-										{SkillTags.map((skill, index) => {
-											return (
-												<Form.Group
-													controlId={`form${skill}`}
-													className={styles.input}
-												>
-													<Form.Check
-														key={skill}
-														name={skill}
-														label={skill}
-														checked={values[skill]}
-														onChange={handleChange}
-														onBlur={handleBlur}
-													/>
-												</Form.Group>
-											);
-										})}
-									</Card.Body>
-								</Accordion.Collapse>
-							</Accordion>
 						</Card.Body>
 					</Accordion.Collapse>
 				</Card>
@@ -231,7 +202,7 @@ const JobBoardFilter = ({
 	);
 };
 
-export default JobBoardFilter;
+export default AllJobsFilter;
 
 function getWindowDimensions() {
 	const { innerWidth: width, innerHeight: height } = window;

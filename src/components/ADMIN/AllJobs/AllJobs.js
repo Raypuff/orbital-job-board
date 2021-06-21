@@ -1,41 +1,41 @@
 import { Row, Col } from "react-bootstrap";
 import { useEffect, useState } from "react";
-import YourJobsCard from "./YourJobsCard";
-import YourJobsFilter from "./YourJobsFilter";
-import { LoadingYourJobs, NoYourJobs, FilterNoYourJobs } from "./EmptyStates";
-import styles from "./YourJobs.module.css";
+import AllJobsCard from "./AllJobsCard";
+import AllJobsFilter from "./AllJobsFilter";
+import { LoadingAllJobs, NoAllJobs, FilterNoAllJobs } from "./EmptyStates";
+import styles from "./AllJobs.module.css";
 import { Formik } from "formik";
 import { useAuth } from "../../../contexts/AuthContext";
 
-const YourJobs = () => {
+const AllJobs = () => {
 	const [filterState, setFilterState] = useState({});
 	const { currentUser } = useAuth();
 
-	const [jobs, setJobs] = useState({});
-	const [jobLoading, setJobLoading] = useState(true);
+	const [jobs, setJobs] = useState([]);
+	const [jobLoading, setJobLoading] = useState(false);
 
-	const getYourJobs = async () => {
-		const response = await fetch(
-			"https://volunteer-ccsgp-backend.herokuapp.com/jobs/from_organization/" +
-				currentUser.email
-		);
-		const jsonData = await response.json();
-		setJobs(jsonData);
-		setJobLoading(false);
-	};
+	// const getAllJobs = async () => {
+	// 	const response = await fetch(
+	// 		"https://volunteer-ccsgp-backend.herokuapp.com/jobs/from_organization/" +
+	// 			currentUser.email
+	// 	);
+	// 	const jsonData = await response.json();
+	// 	setJobs(jsonData);
+	// 	setJobLoading(false);
+	// };
 
-	useEffect(() => {
-		getYourJobs();
-	}, []);
+	// useEffect(() => {
+	// 	getAllJobs();
+	// }, []);
 
-	console.log("Printing YourJobs");
-	console.log(jobs);
-	console.log(new Date().toISOString().slice(0, 10));
+	// console.log("Printing AllJobs");
+	// console.log(jobs);
+	// console.log(new Date().toISOString().slice(0, 10));
 
 	if (jobLoading) {
-		return <LoadingYourJobs />;
+		return <LoadingAllJobs />;
 	} else if (jobs.length < 1) {
-		return <NoYourJobs />;
+		return <NoAllJobs />;
 	}
 
 	//filter
@@ -79,7 +79,7 @@ const YourJobs = () => {
 					<div className={styles.filterContainer}>
 						<Formik initialValues={initialValues}>
 							{({ values, handleChange, handleBlur }) => (
-								<YourJobsFilter
+								<AllJobsFilter
 									values={values}
 									handleChange={handleChange}
 									handleBlur={handleBlur}
@@ -92,7 +92,7 @@ const YourJobs = () => {
 				<Col md={9} className={styles.secondColContainer}>
 					{filteredJobs.length >= 1 ? (
 						filteredJobs.map((job) => (
-							<YourJobsCard
+							<AllJobsCard
 								key={job.id}
 								id={job.id}
 								status={job.status}
@@ -123,7 +123,7 @@ const YourJobs = () => {
 						))
 					) : (
 						<div className={styles.emptyState}>
-							<FilterNoYourJobs />
+							<FilterNoAllJobs />
 						</div>
 					)}
 				</Col>
@@ -132,4 +132,4 @@ const YourJobs = () => {
 	);
 };
 
-export default YourJobs;
+export default AllJobs;

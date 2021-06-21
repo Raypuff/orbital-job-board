@@ -13,6 +13,7 @@ import PostAJobPage from "./pages/PostAJobPage";
 import YourJobsPage from "./pages/YourJobsPage";
 // admin pages
 import SignInAdminPage from "./pages/SignInAdminPage";
+import AllJobsPage from "./pages/AllJobsPage";
 // general pages
 import LandingPage from "./pages/LandingPage";
 import JobBoardPage from "./pages/JobBoardPage";
@@ -66,6 +67,9 @@ function App() {
 						{/* Admin Pages */}
 						<Route path="/sign-in-admin">
 							<SignInAdminPage />
+						</Route>
+						<Route path="/all-jobs">
+							<AllJobsPage />
 						</Route>
 						{/* General Pages */}
 						<Route path="/jobs/:id">

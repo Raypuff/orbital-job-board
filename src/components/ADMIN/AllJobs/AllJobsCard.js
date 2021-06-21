@@ -7,10 +7,9 @@ import {
 	XCircleFill,
 	CheckCircleFill,
 } from "react-bootstrap-icons";
-import styles from "./YourJobsCard.module.css";
-import ApplicantsModal from "./ApplicantsModal";
+import styles from "./AllJobsCard.module.css";
 
-const YourJobsCard = ({
+const AllJobsCard = ({
 	key,
 	id,
 	status,
@@ -38,8 +37,6 @@ const YourJobsCard = ({
 	datePosted,
 	applicants,
 }) => {
-	const [showModal, setShowModal] = useState(false);
-
 	return (
 		<>
 			<div className={styles.container}>
@@ -102,10 +99,9 @@ const YourJobsCard = ({
 										</div>
 									</div>
 									<div className={styles.dotsContainerMobile}>
-										<TripleDot id={id} setShowModal={setShowModal} />
+										<TripleDot id={id} />
 									</div>
 								</div>
-
 								<h6>Created on: {new Date(dateCreated).toDateString()}</h6>
 								<h6
 									className={
@@ -116,7 +112,6 @@ const YourJobsCard = ({
 								>
 									Posted on: {new Date(datePosted).toDateString()}
 								</h6>
-
 								<h6>
 									Location:{" "}
 									{platform === "Virtual"
@@ -181,54 +176,21 @@ const YourJobsCard = ({
 						<Col lg={4}>
 							<div className={styles.applicantsContainer}>
 								<div className={styles.dotsContainer}>
-									<TripleDot id={id} setShowModal={setShowModal} />
+									<TripleDot id={id} />
 								</div>
-
 								<div className={styles.applicants}>
-									<h4>
-										Applicants: {applicants !== null ? applicants.length : "0"}
-									</h4>
+									<h4>Proceed to view listing to approve or reject job</h4>
 								</div>
 							</div>
 						</Col>
 					</Row>
 				</Card>
 			</div>
-			<ApplicantsModal
-				show={showModal}
-				onHide={() => setShowModal(false)}
-				key={id}
-				id={id}
-				status={status}
-				title={title}
-				beneficiaries={beneficiaries}
-				skills={skills}
-				purpose={purpose}
-				platform={platform}
-				multiLocation={multiLocation}
-				location={location}
-				postalCode={postalCode}
-				type={type}
-				flexiDate={flexiDate}
-				longStartDate={longStartDate}
-				longEndDate={longEndDate}
-				flexiHours={flexiHours}
-				longHours={longHours}
-				adShift={adShift}
-				addInfo={addInfo}
-				imageUrl={imageUrl}
-				pocName={pocName}
-				pocNo={pocNo}
-				pocEmail={pocEmail}
-				dateCreated={dateCreated}
-				datePosted={datePosted}
-				applicants={applicants}
-			/>
 		</>
 	);
 };
 
-export default YourJobsCard;
+export default AllJobsCard;
 
 const CustomDropdown = forwardRef(({ children, onClick }, ref) => (
 	<a
@@ -243,40 +205,13 @@ const CustomDropdown = forwardRef(({ children, onClick }, ref) => (
 	</a>
 ));
 
-const TripleDot = ({ id, setShowModal }) => {
-	//const [loading, setLoading] = useState(false);
-
-	const handleComplete = async () => {
-		//setLoading(true);
-		console.log("Handling Complete");
-		try {
-			await fetch(
-				"https://volunteer-ccsgp-backend.herokuapp.com/jobs/complete/" + id,
-				{
-					method: "PUT",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({}),
-				}
-			);
-		} catch (err) {
-			console.error(err);
-		}
-		//setLoading(false);
-		window.location.reload(false);
-	};
+const TripleDot = ({ id }) => {
 	return (
 		<Dropdown>
 			<Dropdown.Toggle as={CustomDropdown}></Dropdown.Toggle>
 			<Dropdown.Menu align="right">
-				{/* <Dropdown.Item>Edit job</Dropdown.Item> */}
-				<Dropdown.Item onClick={() => setShowModal(true)}>
-					View applicants
-				</Dropdown.Item>
 				<Dropdown.Item as={Link} to={`/jobs/${id}`} target="blank">
 					View listing
-				</Dropdown.Item>
-				<Dropdown.Item onClick={(event) => handleComplete()}>
-					Mark as completed
 				</Dropdown.Item>
 			</Dropdown.Menu>
 		</Dropdown>
