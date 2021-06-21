@@ -2,9 +2,9 @@ import React, { useRef, useState } from "react";
 import { Card, Form, Button, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
-import styles from "./ForgotPasswordOrg.module.css";
+import styles from "./ForgotPasswordStu.module.css";
 
-const ForgotPasswordOrg = () => {
+const ForgotPasswordStu = () => {
 	const emailRef = useRef();
 	const { resetPassword, currentUser } = useAuth();
 	const [error, setError] = useState("");
@@ -36,11 +36,11 @@ const ForgotPasswordOrg = () => {
 				{error && <Alert variant="danger">{error}</Alert>}
 				{message && <Alert variant="success">{message}</Alert>}
 				<Card bg="light" text="dark" style={{ width: "23rem" }}>
-					<Card.Header as="h6">Reset your organization password</Card.Header>
+					<Card.Header as="h6">Reset your password</Card.Header>
 					<Card.Body>
 						<Form onSubmit={handleSubmit}>
 							<Form.Group controlId="formBasicEmail">
-								<Form.Label>Organization email address</Form.Label>
+								<Form.Label>Email address</Form.Label>
 								<Form.Control
 									type="email"
 									placeholder="Enter email"
@@ -48,7 +48,8 @@ const ForgotPasswordOrg = () => {
 									required
 								/>
 								<Form.Text className="text-muted">
-									Enter the email address that you used to register your account
+									Enter the NUS email address that you used to register your
+									account
 								</Form.Text>
 							</Form.Group>
 							<Button disabled={loading} variant="primary" type="submit">
@@ -57,9 +58,8 @@ const ForgotPasswordOrg = () => {
 						</Form>
 						<Card.Text />
 						<Card.Footer>
-							Representing your organization and interested in posting a
-							volunteer opportunity?{" "}
-							<Link to="/sign-up-organization">Sign up here!</Link>
+							Interested in applying for volunteer opportunities?{" "}
+							<Link to="/sign-up-student">Sign up here!</Link>
 						</Card.Footer>
 					</Card.Body>
 				</Card>
@@ -68,4 +68,4 @@ const ForgotPasswordOrg = () => {
 	);
 };
 
-export default ForgotPasswordOrg;
+export default ForgotPasswordStu;

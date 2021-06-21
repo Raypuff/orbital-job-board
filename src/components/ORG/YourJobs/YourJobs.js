@@ -75,7 +75,7 @@ const YourJobs = () => {
 	return (
 		<div className={styles.container}>
 			<Row className={styles.rowContainer}>
-				<Col md={3}>
+				<Col md={3} className={styles.firstColContainer}>
 					<div className={styles.filterContainer}>
 						<Formik initialValues={initialValues}>
 							{({ values, handleChange, handleBlur }) => (
@@ -89,7 +89,7 @@ const YourJobs = () => {
 						</Formik>
 					</div>
 				</Col>
-				<Col md={9}>
+				<Col md={9} className={styles.secondColContainer}>
 					{filteredJobs.length >= 1 ? (
 						filteredJobs.map((job) => (
 							<YourJobsCard

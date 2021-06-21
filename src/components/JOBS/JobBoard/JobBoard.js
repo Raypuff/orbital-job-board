@@ -3,7 +3,7 @@ import { Row, Col } from "react-bootstrap";
 import JobBoardFilter from "../JobBoardFilter";
 import JobBoardCard from "../JobBoardCard";
 import styles from "./JobBoard.module.css";
-import { BeneficiaryTags, SkillTags } from "../../ORG/PostAJob/Data";
+import { BeneficiaryTags, SkillTags } from "../../../assets/Tags";
 import { Formik } from "formik";
 import { LoadingJobs, NoJobs, FilterNoJobs } from "./EmptyStates";
 // import { useStore } from "../../../contexts/StoreContext";
@@ -105,7 +105,7 @@ const JobBoard = () => {
 	return (
 		<div className={styles.container}>
 			<Row className={styles.rowContainer}>
-				<Col md={4} lg={3}>
+				<Col md={4} lg={3} className={styles.firstColContainer}>
 					<div className={styles.filterContainer}>
 						<Formik initialValues={initialValues}>
 							{({ values, handleChange, handleBlur }) => (
@@ -121,7 +121,7 @@ const JobBoard = () => {
 						</Formik>
 					</div>
 				</Col>
-				<Col md={8} lg={9}>
+				<Col md={8} lg={9} className={styles.secondColContainer}>
 					{filteredJobs.length >= 1 ? (
 						filteredJobs.map((job) => {
 							console.log("Printing OrgID");

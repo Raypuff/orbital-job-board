@@ -2,37 +2,29 @@ import Header from "../../components/Header";
 import MyNavbar from "../../components/NAVBAR/MyNavbar";
 import Footer from "../../components/Footer";
 import PostAJob from "../../components/ORG/PostAJob";
-// import PostAJobTest from "../../components/ORG/PostAJob/PostAJobTest";
+import { NotOrg } from "./EmptyStates";
 import { useAuth } from "../../contexts/AuthContext";
 import { Link } from "react-router-dom";
 import styles from "./PostAJobPage.module.css";
 
 const PostAJobPage = () => {
-  const { currentUser } = useAuth();
+	const { currentUser, userType } = useAuth();
 
-  function canPostJob() {
-    if (currentUser !== null) {
-      return <PostAJob />;
-    } else {
-      return (
-        <div className={styles.signedOut}>
-          <p>
-            Please{" "}
-            <Link to="/sign-in-organization">sign in as organization</Link> to
-            post a job!
-          </p>
-        </div>
-      );
-    }
-  }
+	function isSignedInOrg() {
+		if (currentUser !== null && userType === "organization") {
+			return <PostAJob />;
+		} else {
+			return <NotOrg />;
+		}
+	}
 
-  return (
-    <>
-      <Header />
-      <MyNavbar isSignedIn={currentUser} />
-      {canPostJob()}
-      <Footer />
-    </>
-  );
+	return (
+		<>
+			<Header />
+			<MyNavbar isSignedIn={currentUser} />
+			{isSignedInOrg()}
+			<Footer />
+		</>
+	);
 };
 export default PostAJobPage;
