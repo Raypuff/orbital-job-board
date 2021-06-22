@@ -39,7 +39,7 @@ export const JobDetailsApplyModal = ({
 }) => {
 	//getting info of currentUser
 	const { currentUser, userType, userVerified } = useAuth();
-
+	const [successful, setSuccessful] = useState(false);
 	const [error, setError] = useState("");
 	const [message, setMessage] = useState("");
 	const [canRetrieve, setCanRetrieve] = useState(false);
@@ -53,8 +53,8 @@ export const JobDetailsApplyModal = ({
 			);
 			const jsonData = await response.json();
 			setStudent(jsonData);
-			const { name, dob, contactNo, course, yearOfStudy } = jsonData;
-			if (name && dob && contactNo && course && yearOfStudy) {
+			const { name, dob, email, contactNo, course, year } = jsonData;
+			if (name && dob && email && contactNo && course && year) {
 				setCanRetrieve(true);
 			}
 		} catch (err) {
@@ -64,7 +64,8 @@ export const JobDetailsApplyModal = ({
 
 	useEffect(() => {
 		getStu();
-	}, [student]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []); //i removed [student] because it was calling infinitely
 
 	const mySubmit = (values, { setSubmitting, resetForm }) => {
 		setSubmitting(true);
@@ -82,12 +83,12 @@ export const JobDetailsApplyModal = ({
 				stuID: currentUser.email,
 				jobID: id,
 				status: "Pending",
-				stuName: values.stuName,
-				stuDob: values.stuDob,
-				stuEmail: values.stuEmail,
-				stuNo: values.stuNo,
-				stuCourse: values.stuCourse,
-				stuYear: values.stuYear,
+				stuName: values.retrieveDetails ? student.name : values.stuName,
+				stuDob: values.retrieveDetails ? student.dob : values.stuDob,
+				stuEmail: values.retrieveDetails ? student.email : values.stuEmail,
+				stuNo: values.retrieveDetails ? student.contactNo : values.stuNo,
+				stuCourse: values.retrieveDetails ? student.course : values.stuCourse,
+				stuYear: values.retrieveDetails ? student.year : values.stuYear,
 				stuAddInfo: values.stuAddInfo,
 			};
 
@@ -101,6 +102,7 @@ export const JobDetailsApplyModal = ({
 				jobID: id,
 			};
 			try {
+				console.log(newApp);
 				await fetch(
 					"https://volunteer-ccsgp-backend.herokuapp.com/job_applications",
 					{
@@ -147,6 +149,7 @@ export const JobDetailsApplyModal = ({
 					body: JSON.stringify(msg),
 				});
 				setMessage("Application succcessful");
+				setSuccessful(true);
 				resetForm();
 				setSubmitting(false);
 			} catch (err) {
@@ -227,6 +230,7 @@ export const JobDetailsApplyModal = ({
 										isValid={touched.stuName && !errors.stuName}
 										isInvalid={touched.stuName && errors.stuName}
 										disabled={values.retrieveDetails}
+										placeholder={values.retrieveDetails ? student.name : ""}
 									/>
 									<Form.Control.Feedback type="invalid">
 										{errors.stuName}
@@ -243,6 +247,7 @@ export const JobDetailsApplyModal = ({
 										isInvalid={touched.stuDob && errors.stuDob}
 										type="date"
 										disabled={values.retrieveDetails}
+										placeholder={values.retrieveDetails ? student.dob : ""}
 									/>
 									<Form.Control.Feedback type="invalid">
 										{errors.stuDob}
@@ -259,6 +264,7 @@ export const JobDetailsApplyModal = ({
 										isInvalid={touched.stuEmail && errors.stuEmail}
 										type="email"
 										disabled={values.retrieveDetails}
+										placeholder={values.retrieveDetails ? student.email : ""}
 									/>
 									<Form.Control.Feedback type="invalid">
 										{errors.stuEmail}
@@ -274,6 +280,9 @@ export const JobDetailsApplyModal = ({
 										isValid={touched.stuNo && !errors.stuNo}
 										isInvalid={touched.stuNo && errors.stuNo}
 										disabled={values.retrieveDetails}
+										placeholder={
+											values.retrieveDetails ? student.contactNo : ""
+										}
 									/>
 									<Form.Control.Feedback type="invalid">
 										{errors.stuNo}
@@ -289,6 +298,7 @@ export const JobDetailsApplyModal = ({
 										isValid={touched.stuCourse && !errors.stuCourse}
 										isInvalid={touched.stuCourse && errors.stuCourse}
 										disabled={values.retrieveDetails}
+										placeholder={values.retrieveDetails ? student.course : ""}
 									/>
 									<Form.Control.Feedback type="invalid">
 										{errors.stuCourse}
@@ -298,13 +308,18 @@ export const JobDetailsApplyModal = ({
 									<Form.Label>Year of study</Form.Label>
 									<Form.Control
 										name="stuYear"
+										values={values.stuYear}
 										onChange={handleChange}
 										onBlur={handleBlur}
 										isValid={touched.stuYear && !errors.stuYear}
 										isInvalid={touched.stuYear && errors.stuYear}
 										as="select"
 										disabled={values.retrieveDetails}
+										placeholder={values.retrieveDetails ? student.year : ""}
 									>
+										<option value="" disabled selected>
+											Select your year
+										</option>
 										<option>Year 1</option>
 										<option>Year 2</option>
 										<option>Year 3</option>
@@ -349,7 +364,7 @@ export const JobDetailsApplyModal = ({
 								<Button
 									type="submit"
 									style={{ margin: "0 auto 0 " }}
-									disabled={isSubmitting}
+									disabled={successful || isSubmitting}
 								>
 									Apply now
 								</Button>
@@ -441,7 +456,9 @@ const validationSchema = Yup.object().shape({
 	stuNo: Yup.string().when(["retrieveDetails"], {
 		is: false,
 		then: Yup.string()
-			.matches(/^[0-9]+$/, "Please enter only numbers")
+			.matches(/^[0-9]+$/, "Please enter a 8 digit number")
+			.min(8, "Please enter a 8 digit number")
+			.max(8, "Please enter a 8 digit number")
 			.required("Please enter your mobile number"),
 	}),
 	stuCourse: Yup.string().when(["retrieveDetails"], {
