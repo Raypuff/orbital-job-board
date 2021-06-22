@@ -9,6 +9,7 @@ const SignInStuForm = () => {
 	const passwordRef = useRef();
 	const { login, currentUser } = useAuth();
 	const [error, setError] = useState("");
+	const [message, setMessage] = useState("");
 	const [loading, setLoading] = useState(false);
 	const history = useHistory();
 
@@ -17,6 +18,7 @@ const SignInStuForm = () => {
 
 		try {
 			setError("");
+			setMessage("");
 			setLoading(true);
 			await login(emailRef.current.value, passwordRef.current.value);
 			history.push("/");
@@ -56,6 +58,7 @@ const SignInStuForm = () => {
 							</Button>
 						</Form>
 						<Card.Text />
+						{loading && <Alert variant="primary">Signing you in...</Alert>}
 						{error && <Alert variant="danger">{error}</Alert>}
 						<Card.Text />
 						<Card.Text />

@@ -53,6 +53,7 @@ const SignInOrgForm = () => {
 							</Button>
 						</Form>
 						<Card.Text />
+						{loading && <Alert variant="primary">Signing you in...</Alert>}
 						{error && <Alert variant="danger">{error}</Alert>}
 						<Card.Text />
 						<Card.Text>
