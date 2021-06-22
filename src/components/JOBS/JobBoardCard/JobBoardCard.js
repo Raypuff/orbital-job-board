@@ -1,5 +1,4 @@
 import { Row, Col, Card } from "react-bootstrap";
-// import { useState } from "react";
 // import JobBoardModal from "../JobBoardModal";
 import {
 	PeopleFill,
@@ -10,7 +9,8 @@ import {
 	CalendarWeekFill,
 	ArrowRight,
 } from "react-bootstrap-icons";
-// import { useState, useEffect } from "react";
+import noImage from "../../../assets/noImage.png";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./JobBoardCard.module.css";
 
@@ -42,6 +42,7 @@ const JobBoardCard = ({
 	pocNo,
 	pocEmail,
 }) => {
+	const [imageSrc, setImageSrc] = useState(imageUrl);
 	//!!!using api to find long lang of postal code (maybe can shift this to postajob so long lang attached to job)
 
 	// const [coord, setCoord] = useState([]);
@@ -67,9 +68,11 @@ const JobBoardCard = ({
 						{/* Image */}
 						<div className={styles.imageContainer}>
 							<Card.Img
+								data-testid="thumbnail"
+								src={imageSrc}
+								alt="organization"
+								onError={() => setImageSrc(noImage)}
 								className={styles.image}
-								src={imageUrl}
-								alt="organization image"
 							/>
 						</div>
 					</Col>
@@ -87,8 +90,9 @@ const JobBoardCard = ({
 							{/* Beneficiaries */}
 							<div className={styles.infoWrapper}>
 								<PeopleFill />
-								{beneficiaries.length <= 3
-									? beneficiaries.map((beneficiary, index) => {
+								{beneficiaries ? (
+									beneficiaries.length <= 3 ? (
+										beneficiaries.map((beneficiary, index) => {
 											if (index + 1 !== beneficiaries.length) {
 												return (
 													<div
@@ -103,8 +107,9 @@ const JobBoardCard = ({
 													</div>
 												);
 											}
-									  })
-									: beneficiaries.map((beneficiary, index) => {
+										})
+									) : (
+										beneficiaries.map((beneficiary, index) => {
 											if (index === 0 || index === 1) {
 												return (
 													<div
@@ -129,13 +134,20 @@ const JobBoardCard = ({
 													</div>
 												);
 											}
-									  })}
+										})
+									)
+								) : (
+									<div className={styles.infoContainer}>
+										No beneficiaries indicated
+									</div>
+								)}
 							</div>
 							{/* Skills */}
 							<div className={styles.infoWrapper}>
 								<PuzzleFill />
-								{skills.length <= 3
-									? skills.map((skill, index) => {
+								{skills ? (
+									skills.length <= 3 ? (
+										skills.map((skill, index) => {
 											if (index + 1 !== skills.length) {
 												return (
 													<div
@@ -148,8 +160,9 @@ const JobBoardCard = ({
 													<div className={styles.infoContainer}>{skill}</div>
 												);
 											}
-									  })
-									: skills.map((skill, index) => {
+										})
+									) : (
+										skills.map((skill, index) => {
 											if (index === 0 || index === 1) {
 												return (
 													<div
@@ -172,7 +185,13 @@ const JobBoardCard = ({
 													</div>
 												);
 											}
-									  })}
+										})
+									)
+								) : (
+									<div className={styles.infoContainer}>
+										No skills indicated
+									</div>
+								)}
 							</div>
 							{/* Location */}
 							<div className={styles.higherInfoWrapper}>
@@ -211,13 +230,23 @@ const JobBoardCard = ({
 								<div className={styles.infoWrapper}>
 									<CalendarWeekFill />
 									<div className={styles.infoContainer}>
-										{type === "Long term"
-											? !flexiDate
-												? `${longStartDate} - ${longEndDate}`
-												: "Flexible dates"
-											: `${adShift[0].date} ${tConvert(
+										{adShift ? (
+											type === "Long term" ? (
+												!flexiDate ? (
+													`${longStartDate} - ${longEndDate}`
+												) : (
+													"Flexible dates"
+												)
+											) : (
+												`${adShift[0].date} ${tConvert(
 													adShift[0].startTime
-											  )} - ${tConvert(adShift[0].endTime)}`}
+												)} - ${tConvert(adShift[0].endTime)}`
+											)
+										) : (
+											<div className={styles.infoContainer}>
+												No shifts indicated
+											</div>
+										)}
 									</div>
 								</div>
 								{/* Rendering other shifts */}
@@ -278,10 +307,6 @@ const JobBoardCard = ({
 
 export default JobBoardCard;
 
-/*function dConvert(date) {
-  //Ch
-}*/
-
 function tConvert(time) {
 	// Check correct time format and split into components
 	time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [
@@ -296,14 +321,3 @@ function tConvert(time) {
 	}
 	return time.join(""); // return adjusted time or original string
 }
-
-// function distance(lat1, lon1, lat2, lon2) {
-//   var p = 0.017453292519943295; // Math.PI / 180
-//   var c = Math.cos;
-//   var a =
-//     0.5 -
-//     c((lat2 - lat1) * p) / 2 +
-//     (c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p))) / 2;
-
-//   return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
-// }

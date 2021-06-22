@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Row, Col, Alert } from "react-bootstrap";
 import { LoadingJobDetails, NotAvailable } from "./EmptyStates";
+import noImage from "../../../assets/noImage.png";
 import {
 	JobDetailsApplyModal,
 	ApplyButton,
@@ -23,6 +24,7 @@ const JobDetails = ({ id }) => {
 	const [org, setOrg] = useState();
 	const [orgLoading, setOrgLoading] = useState(true);
 	const { currentUser, userType } = useAuth();
+	const [imageSrc, setImageSrc] = useState("");
 
 	const getData = async () => {
 		const response = await fetch(
@@ -37,6 +39,7 @@ const JobDetails = ({ id }) => {
 		setJob(jsonData);
 		setOrg(jsonData2);
 		setOrgLoading(false);
+		setImageSrc(jsonData.imageUrl);
 	};
 
 	useEffect(() => {
@@ -74,7 +77,6 @@ const JobDetails = ({ id }) => {
 		datePosted,
 		applicants,
 	} = job;
-
 	const orgType = org.type;
 	const orgName = org.name;
 
@@ -156,9 +158,10 @@ const JobDetails = ({ id }) => {
 								<div className={styles.imageCol}>
 									<img
 										className={styles.image}
-										src={imageUrl}
+										src={imageSrc}
+										onError={() => setImageSrc(noImage)}
 										alt="volunteer"
-									></img>
+									/>
 								</div>
 							</Col>
 							<Col md={6}>
