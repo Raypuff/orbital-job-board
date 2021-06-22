@@ -7,7 +7,7 @@ import styles from "./SignInOrgForm.module.css";
 const SignInOrgForm = () => {
 	const emailRef = useRef();
 	const passwordRef = useRef();
-	const { login, currentUser } = useAuth();
+	const { loginOrg } = useAuth();
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
 	const history = useHistory();
@@ -18,16 +18,20 @@ const SignInOrgForm = () => {
 		try {
 			setError("");
 			setLoading(true);
-			await login(emailRef.current.value, passwordRef.current.value);
+			await loginOrg(emailRef.current.value, passwordRef.current.value);
 			history.push("/");
 			window.location.reload(false);
 		} catch (err) {
 			if (err.code === "auth/wrong-password") {
 				setError("Incorrect password");
-			} else if (err.code === "auth/user-not-found") {
-				setError("There is no account associated with this email");
+			} else if (
+				err.code === "auth/user-not-found" ||
+				err.message === "wrong-account-type"
+			) {
+				setError("There is no organization account associated with this email");
 			} else {
 				setError("Failed to sign in");
+				console.log(err.message);
 			}
 		}
 		setLoading(false);

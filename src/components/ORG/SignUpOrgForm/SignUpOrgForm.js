@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { Form, Button, Alert, Card } from "react-bootstrap";
 import styles from "./SignUpOrgForm.module.css";
 import { useAuth } from "../../../contexts/AuthContext";

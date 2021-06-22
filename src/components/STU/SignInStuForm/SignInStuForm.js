@@ -7,9 +7,8 @@ import { useAuth } from "../../../contexts/AuthContext";
 const SignInStuForm = () => {
 	const emailRef = useRef();
 	const passwordRef = useRef();
-	const { login, currentUser } = useAuth();
+	const { loginStu } = useAuth();
 	const [error, setError] = useState("");
-	const [message, setMessage] = useState("");
 	const [loading, setLoading] = useState(false);
 	const history = useHistory();
 
@@ -18,18 +17,21 @@ const SignInStuForm = () => {
 
 		try {
 			setError("");
-			setMessage("");
 			setLoading(true);
-			await login(emailRef.current.value, passwordRef.current.value);
+			await loginStu(emailRef.current.value, passwordRef.current.value);
 			history.push("/");
 			window.location.reload(false);
 		} catch (err) {
 			if (err.code === "auth/wrong-password") {
 				setError("Incorrect password");
-			} else if (err.code === "auth/user-not-found") {
+			} else if (
+				err.code === "auth/user-not-found" ||
+				err.message === "wrong-account-type"
+			) {
 				setError("There is no student account associated with this email");
 			} else {
 				setError("Failed to sign in");
+				console.log(err.message);
 			}
 		}
 		setLoading(false);
