@@ -26,8 +26,72 @@ export function AuthProvider({ children }) {
     return auth.createUserWithEmailAndPassword(email, password);
   }
 
+  //test if user is signing in from correct place
+  async function tempTester(email) {
+    try {
+      const ref = store.collection("accounts").doc(email);
+      const doc = await ref.get();
+      if (doc.exists) {
+        return doc.data().type;
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  //deprecated - login from anywhere function
+  /*
   function login(email, password) {
     return auth.signInWithEmailAndPassword(email, password);
+  }
+  */
+
+  async function loginAdmin(email, password) {
+    const accType = await tempTester(email);
+
+    if (accType === "admin") {
+      return auth.signInWithEmailAndPassword(email, password);
+    } else {
+      throw new Error("wrong-account-type");
+    }
+  }
+
+  async function loginStu(email, password) {
+    const accType = await tempTester(email);
+
+    if (accType === "student") {
+      return auth.signInWithEmailAndPassword(email, password);
+    } else {
+      throw new Error("wrong-account-type");
+    }
+  }
+
+  async function loginOrg(email, password) {
+    const accType = await tempTester(email);
+
+    if (accType === "organization") {
+      return auth.signInWithEmailAndPassword(email, password);
+    } else {
+      throw new Error("wrong-account-type");
+    }
+  }
+
+  async function resetPasswordOrg(email) {
+    const accType = await tempTester(email);
+    if (accType === "organization") {
+      return auth.sendPasswordResetEmail(email);
+    } else {
+      throw new Error("wrong-account-type");
+    }
+  }
+
+  async function resetPasswordStu(email) {
+    const accType = await tempTester(email);
+    if (accType === "student") {
+      return auth.sendPasswordResetEmail(email);
+    } else {
+      throw new Error("wrong-account-type");
+    }
   }
 
   function logout() {
@@ -67,10 +131,14 @@ export function AuthProvider({ children }) {
     currentUser,
     userType,
     userVerified,
-    login,
+    loginStu,
+    loginOrg,
+    loginAdmin,
     signup,
     logout,
     resetPassword,
+    resetPasswordOrg,
+    resetPasswordStu,
     sendEmailVerification,
   };
   return (
