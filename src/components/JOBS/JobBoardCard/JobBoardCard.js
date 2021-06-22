@@ -1,5 +1,4 @@
 import { Row, Col, Card } from "react-bootstrap";
-// import { useState } from "react";
 // import JobBoardModal from "../JobBoardModal";
 import {
 	PeopleFill,
@@ -10,9 +9,27 @@ import {
 	CalendarWeekFill,
 	ArrowRight,
 } from "react-bootstrap-icons";
-// import { useState, useEffect } from "react";
+import noImage from "../../../assets/noImage.png";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./JobBoardCard.module.css";
+
+const useImageExists = (src, fallback) => {
+	const [error, setError] = useState(false);
+	const onError = () => {
+		setError(true);
+	};
+	return error ? (
+		<Card.Img src={fallback} className={styles.image} alt="fallback" />
+	) : (
+		<Card.Img
+			src={src}
+			alt="organization"
+			onError={onError}
+			className={styles.image}
+		/>
+	);
+};
 
 const JobBoardCard = ({
 	id,
@@ -66,11 +83,7 @@ const JobBoardCard = ({
 					<Col lg={3} className={styles.colContainer}>
 						{/* Image */}
 						<div className={styles.imageContainer}>
-							<Card.Img
-								className={styles.image}
-								src={imageUrl}
-								alt="organization image"
-							/>
+							{useImageExists(imageUrl, noImage)}
 						</div>
 					</Col>
 					<Col lg={7}>
