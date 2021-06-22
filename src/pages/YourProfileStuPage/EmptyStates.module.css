@@ -50,8 +50,9 @@
 	.container {
 		height: calc(100vh - 4rem);
 	}
+
 	.title {
-		font-size: 1.5rem;
+		font-size: 2rem;
 	}
 
 	.buttonText {

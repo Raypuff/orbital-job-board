@@ -3,17 +3,26 @@ import MyNavbar from "../../components/NAVBAR/MyNavbar";
 import YourProfileStu from "../../components/STU/YourProfileStu";
 import Footer from "../../components/Footer";
 import { useAuth } from "../../contexts/AuthContext";
+import { NotStu } from "./EmptyStates";
 
 const YourProfileStuPage = () => {
-	const { currentUser } = useAuth();
+	const { currentUser, userType } = useAuth();
+
+	function isSignedInStu() {
+		if (currentUser !== null && userType === "student") {
+			return <YourProfileStu />;
+		} else {
+			return <NotStu />;
+		}
+	}
 
 	return (
-		<div>
+		<>
 			<Header />
 			<MyNavbar isSignedIn={currentUser} />
-			<YourProfileStu />
+			{isSignedInStu()}
 			<Footer />
-		</div>
+		</>
 	);
 };
 export default YourProfileStuPage;

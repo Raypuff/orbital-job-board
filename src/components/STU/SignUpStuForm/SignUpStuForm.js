@@ -30,13 +30,20 @@ const SignUpStuForm = () => {
 
 			try {
 				//firebase side methods
+				// alert("Sign up successful");
+
 				await signup(values.email, values.password, "student");
 				await sendEmailVerification();
 				await logout();
 
-				const id = values.email;
+				setMessage("Sign up successful");
+				alert(
+					"Sign up successful! Please check your inbox for a verification email"
+				);
 
 				//send account to backend
+				const id = values.email;
+
 				const body = { id };
 				const response = await fetch(
 					"https://volunteer-ccsgp-backend.herokuapp.com/student_accounts",
@@ -46,7 +53,6 @@ const SignUpStuForm = () => {
 						body: JSON.stringify(body),
 					}
 				);
-				setMessage("Sign up successful");
 				resetForm();
 				setSubmitting(false);
 			} catch (err) {
@@ -78,12 +84,7 @@ const SignUpStuForm = () => {
 								handleSubmit,
 								isSubmitting,
 							}) => (
-								<Form
-									onSubmit={(event) => {
-										event.preventDefault();
-										handleSubmit();
-									}}
-								>
+								<Form onSubmit={handleSubmit}>
 									<Form.Group controlId="formBasicEmail">
 										<Form.Label>Email address</Form.Label>
 										<Form.Control
