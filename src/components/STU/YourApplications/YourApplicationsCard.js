@@ -115,6 +115,7 @@ const YourApplicationsCard = ({
 export default YourApplicationsCard;
 
 const CustomDropdown = forwardRef(({ children, onClick }, ref) => (
+	// eslint-disable-next-line jsx-a11y/anchor-is-valid
 	<a
 		href=""
 		ref={ref}

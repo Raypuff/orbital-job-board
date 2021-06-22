@@ -27,6 +27,11 @@ const SignUpOrgForm = () => {
 				//firebase side methods
 				await signup(values.email, values.password, "organization");
 				await sendEmailVerification();
+				setMessage("Sign up successful!");
+				alert(
+					"Sign up successful! Please check your inbox for a verification email"
+				);
+
 				await logout();
 
 				//creating variables to send over through http request
@@ -43,7 +48,6 @@ const SignUpOrgForm = () => {
 					}
 				);
 				//set message to signify signup is successful
-				setMessage("Sign up successful!");
 				resetForm();
 				setSubmitting(false);
 			} catch (err) {

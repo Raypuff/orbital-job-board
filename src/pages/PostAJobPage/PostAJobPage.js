@@ -4,8 +4,6 @@ import Footer from "../../components/Footer";
 import PostAJob from "../../components/ORG/PostAJob";
 import { NotOrg } from "./EmptyStates";
 import { useAuth } from "../../contexts/AuthContext";
-import { Link } from "react-router-dom";
-import styles from "./PostAJobPage.module.css";
 
 const PostAJobPage = () => {
 	const { currentUser, userType } = useAuth();
