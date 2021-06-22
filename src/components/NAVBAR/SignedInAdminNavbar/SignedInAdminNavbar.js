@@ -44,9 +44,9 @@ const SignedInAdminNavbar = () => {
 						Account Type: Admin
 					</NavDropdown.Header>
 					<NavDropdown.Divider />
-					<NavDropdown.Item as={Link} to="/profile-admin">
+					{/* <NavDropdown.Item as={Link} to="/profile-admin">
 						Your profile
-					</NavDropdown.Item>
+					</NavDropdown.Item> */}
 					<NavDropdown.Item onClick={handleLogout}>Sign out</NavDropdown.Item>
 				</NavDropdown>
 			</Nav>
