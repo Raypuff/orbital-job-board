@@ -1016,7 +1016,9 @@ const validationSchema = Yup.object().shape({
 	pocNo: Yup.string().when("retrievePoc", {
 		is: false,
 		then: Yup.string("Please enter only numbers")
-			.matches(/^[0-9]+$/, "Please enter only numbers")
+			.matches(/^[0-9]+$/, "Please enter a 8 digit number")
+			.min(8, "Please enter a 8 digit number")
+			.max(8, "Please enter a 8 digit number")
 			.required("Please enter the mobile number of contact person"),
 	}),
 	pocEmail: Yup.string().when("retrievePoc", {
