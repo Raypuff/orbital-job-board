@@ -44,7 +44,8 @@ const JobDetails = ({ id }) => {
 
 	useEffect(() => {
 		getData();
-	}, [org]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	if (orgLoading) {
 		return <LoadingJobDetails />;
