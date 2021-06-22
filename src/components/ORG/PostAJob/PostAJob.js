@@ -24,13 +24,11 @@ const PostAJob = () => {
 	const [message, setMessage] = useState("");
 	const [error, setError] = useState("");
 	// Form useStates
-	// const [beneficiaries, setBeneficiaries] = useState([]);
-	// const [skills, setSkills] = useState([]);
 	const [canRetrieveOrgDetails, setCanRetrieveOrgDetails] = useState(false);
 	const [canRetrievePocDetails, setCanRetrievePocDetails] = useState(false);
 
 	//finding currentUser that is logged in
-	const { currentUser } = useAuth();
+	const { currentUser, userVerified } = useAuth();
 
 	//to obtain currentUser data from database
 	const [userData, setUserData] = useState(null);
