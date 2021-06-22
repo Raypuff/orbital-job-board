@@ -3,19 +3,18 @@ import MyNavbar from "../../components/NAVBAR/MyNavbar";
 import SignInOrgForm from "../../components/ORG/SignInOrgForm";
 import Footer from "../../components/Footer";
 import { useAuth } from "../../contexts/AuthContext";
-// import styles from "./SignInOrgPage.module.css";
 
 const SignInOrgPage = () => {
-  const { currentUser } = useAuth();
+	const { currentUser } = useAuth();
 
-  return (
-    <div>
-      <Header />
-      <MyNavbar isSignedIn={currentUser} />
-      <SignInOrgForm />
-      <Footer />
-    </div>
-  );
+	return (
+		<div>
+			<Header />
+			<MyNavbar isSignedIn={currentUser} />
+			<SignInOrgForm />
+			<Footer />
+		</div>
+	);
 };
 
 export default SignInOrgPage;

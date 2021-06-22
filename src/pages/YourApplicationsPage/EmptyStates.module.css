@@ -47,6 +47,10 @@
 }
 
 @media screen and (max-width: 576px) {
+	.container {
+		height: calc(100vh - 4rem);
+	}
+
 	.title {
 		font-size: 2rem;
 	}
