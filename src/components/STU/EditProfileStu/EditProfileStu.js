@@ -1,16 +1,14 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useAuth } from "../../../contexts/AuthContext";
-import { useStore } from "../../../contexts/StoreContext";
 import { Card, Button, Form, Alert } from "react-bootstrap";
 import styles from "./EditProfileStu.module.css";
-import { store } from "../../../firebase";
 
 const EditProfileStu = ({ setEdit }) => {
   const [leftButton, setLeftButton] = useState("Cancel");
   const [leftButtonVar, setLeftButtonVar] = useState("light");
   const { currentUser } = useAuth();
-  const { editItem } = useStore();
   const [userData, setUserData] = useState(null);
+  const [userLoading, setUserLoading] = useState(true);
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -26,29 +24,28 @@ const EditProfileStu = ({ setEdit }) => {
   const yearRef = useRef();
 
   const getUser = async () => {
-    store
-      .collection("student_accounts")
-      .doc(currentUser.email)
-      .get()
-      .then((documentSnapshot) => {
-        if (documentSnapshot.exists) {
-          setUserData(documentSnapshot.data());
-        }
-      });
+    const response = await fetch(
+      "https://volunteer-ccsgp-backend.herokuapp.com/student_accounts/" +
+        currentUser.email
+    );
+    const jsonData = await response.json();
+    setUserData(jsonData);
+    setUserLoading(false);
   };
 
   useEffect(() => {
     getUser();
   }, []);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
+    //resetting submit states
+    setSuccessful(false);
+    setMessage("");
+    setError("");
+
     const newAccountInfo = {
-      id:
-        emailRef.current.value.trim() !== ""
-          ? emailRef.current.value
-          : userData.id,
       name:
         nameRef.current.value.trim() !== ""
           ? nameRef.current.value
@@ -69,19 +66,22 @@ const EditProfileStu = ({ setEdit }) => {
         yearRef.current.value.trim() !== ""
           ? yearRef.current.value
           : userData.pocEmail,
-      dateCreated: new Date(),
-      jobsApplied: [], //zech have to change this as it may overwrite their jobsapplied
     };
 
-    console.log(newAccountInfo);
-
     try {
-      setSuccessful(false);
-      setMessage("");
-      setError("");
+      //signify start of update process
       setLoading(true);
 
-      editItem(newAccountInfo, currentUser.email, "student_accounts");
+      const response = await fetch(
+        "https://volunteer-ccsgp-backend.herokuapp.com/student_accounts/" +
+          currentUser.email,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(newAccountInfo),
+        }
+      );
+
       setSuccessful(true);
       setMessage("User profile updated successfully!");
       setLeftButton("Back");
@@ -119,7 +119,7 @@ const EditProfileStu = ({ setEdit }) => {
                 <Form.Group controlId="formEmail">
                   <Form.Label>Email address</Form.Label>
                   <Form.Control
-                    placeholder={userData !== null ? userData.email : ""}
+                    placeholder={userData !== null ? userData.id : ""}
                     ref={emailRef}
                     readOnly
                   />
