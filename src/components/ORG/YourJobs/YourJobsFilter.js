@@ -12,7 +12,7 @@ const YourJobsFilter = ({
   const [statusOpen, setStatusOpen] = useState(true);
   const [typeOpen, setTypeOpen] = useState(true);
   const [platformOpen, setPlatformOpen] = useState(true);
-  const { height, width } = useWindowDimensions();
+  const { width } = useWindowDimensions();
 
   return (
     <Form>

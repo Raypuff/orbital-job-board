@@ -1,0 +1,99 @@
+.container {
+	height: auto;
+	margin: 0 1rem 0.5rem;
+}
+
+.contentContainer {
+	height: 100%;
+	padding: 0.5em 0 0.5em 1em;
+}
+
+.topRowContainer {
+	display: flex;
+}
+
+.titleContainer {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	/* gap: 1em; */
+}
+
+.title {
+	/* white-space: nowrap; */
+	margin-right: 1em;
+}
+
+.dotsContainer {
+	padding-top: 0.5em;
+	margin-left: auto;
+}
+
+.dots {
+	font-size: 1.5em;
+	color: black;
+	margin: 0.5em 0.5em 0 0;
+}
+
+.displayNone {
+	display: none;
+}
+
+.status {
+	/* white-space: nowrap; */
+	display: flex;
+	gap: 0.25em;
+	align-items: baseline;
+}
+
+.pending {
+	composes: status;
+	color: orange;
+}
+
+.rejected {
+	composes: status;
+	color: red;
+}
+
+.accepted {
+	composes: status;
+	color: green;
+}
+
+.icons {
+	font-size: 0.9em;
+}
+
+.applicantsContainer {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.applicants {
+	margin: auto 0 0 auto;
+	padding: 0 1em 0.5em 0;
+}
+
+.dotsContainerMobile {
+	display: none;
+}
+
+@media screen and (max-width: 992px) {
+	.dotsContainer {
+		display: none;
+	}
+	.dotsContainerMobile {
+		margin-left: auto;
+		display: initial;
+	}
+}
+
+@media screen and (max-width: 768px) {
+	.titleContainer {
+		flex-direction: column;
+		gap: 0em;
+	}
+}

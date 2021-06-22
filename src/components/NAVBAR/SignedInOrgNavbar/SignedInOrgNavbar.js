@@ -39,6 +39,9 @@ const SignedInOrgNavbar = () => {
           <NavDropdown.Header className={styles.email}>
             {currentUser.email}
             <br />({isVerified()})
+            <br />
+            <br />
+            Account Type: Organization
           </NavDropdown.Header>
           <NavDropdown.Divider />
           <NavDropdown.Item as={Link} to="/profile-organization">

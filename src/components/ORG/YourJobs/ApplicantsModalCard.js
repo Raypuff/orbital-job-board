@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Card, Button, Col, Row } from "react-bootstrap";
 import {
   HourglassSplit,
@@ -18,7 +19,52 @@ const ApplicantsModalCard = ({
   contactNo,
   course,
   yearOfStudy,
+  title,
 }) => {
+  //const [loading, setLoading] = useState(false);
+  // useState for frontend update of status
+  const [frontEndStatus, setFrontEndStatus] = useState(status);
+
+  const handleAcceptReject = async (choice) => {
+    //setLoading(true);
+    const body = { status: choice };
+    try {
+      const updateAppStatus = await fetch(
+        "https://volunteer-ccsgp-backend.herokuapp.com/job_applications/changestatus/" +
+          id,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        }
+      );
+      setFrontEndStatus(choice);
+
+      const text = `Hello ${name}! There has been an update to your volunteer application. Please click on the link below and log in to view the updates to your application! volunteer-ccsgp-vercel.app`;
+      const html = `Hello ${name}!<br>There has been an update to your volunteer application. <br>Please click on the link below and log in to view the updates to your application! <a href="volunteer-ccsgp-vercel.app">volunteer-ccsgp-vercel.app</a>`;
+      const msg = {
+        msg: {
+          to: email,
+          from: "volunteerccsgp@gmail.com",
+          subject: `[Volunteer CCSGP] Change in status of your job application for ${title}`,
+          text: text,
+          html: html,
+        },
+      };
+      const sendEmail = await fetch(
+        "https://volunteer-ccsgp-backend.herokuapp.com/email",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(msg),
+        }
+      );
+    } catch (err) {
+      console.error(err);
+    }
+    //setLoading(false);
+  };
+
   return (
     <Card>
       <div className={styles.cardContainer}>
@@ -28,7 +74,9 @@ const ApplicantsModalCard = ({
               <h5>{name}</h5>
               <div
                 className={
-                  status === "Pending" ? styles.pending : styles.displayNone
+                  frontEndStatus === "Pending"
+                    ? styles.pending
+                    : styles.displayNone
                 }
               >
                 <HourglassSplit />
@@ -36,7 +84,9 @@ const ApplicantsModalCard = ({
               </div>
               <div
                 className={
-                  status === "Rejected" ? styles.rejected : styles.displayNone
+                  frontEndStatus === "Rejected"
+                    ? styles.rejected
+                    : styles.displayNone
                 }
               >
                 <XCircleFill />
@@ -44,14 +94,16 @@ const ApplicantsModalCard = ({
               </div>
               <div
                 className={
-                  status === "Accepted" ? styles.accepted : styles.displayNone
+                  frontEndStatus === "Accepted"
+                    ? styles.accepted
+                    : styles.displayNone
                 }
               >
                 <CheckCircleFill />
                 Accepted
               </div>
             </div>
-            <h6>Submitted on {dateApplied.toDateString()}</h6>
+            <h6>Submitted on {dateApplied}</h6>
             <h6>Course of study: {course}</h6>
             <h6>Year of study: {yearOfStudy}</h6>
             <h6>Mobile number: {contactNo}</h6>
@@ -65,8 +117,26 @@ const ApplicantsModalCard = ({
           <Col lg={3}>
             <div className={styles.buttonContainer}>
               <div className={styles.buttonWrapper}>
-                <Button variant="outline-danger">Reject</Button>
-                <Button variant="outline-success">Accept</Button>
+                <div
+                  className={
+                    status === "Pending" ? styles.display : styles.displayNone
+                  }
+                >
+                  <Button
+                    variant="outline-danger"
+                    onClick={(event) => handleAcceptReject(event.target.value)}
+                    value="Rejected"
+                  >
+                    Reject
+                  </Button>
+                  <Button
+                    variant="outline-success"
+                    onClick={(event) => handleAcceptReject(event.target.value)}
+                    value="Accepted"
+                  >
+                    Accept
+                  </Button>
+                </div>
               </div>
             </div>
           </Col>

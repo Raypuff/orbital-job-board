@@ -1,0 +1,18 @@
+.modalContainer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.8em;
+}
+
+.button {
+	display: grid;
+	place-items: center;
+	cursor: pointer;
+	background-color: #003d7c;
+	color: #fff;
+	padding: 0.5rem 1.5rem;
+	border: 2px solid #003d7c;
+	border-radius: 10px;
+	width: 100%;
+}
