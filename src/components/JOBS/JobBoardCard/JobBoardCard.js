@@ -91,7 +91,7 @@ const JobBoardCard = ({
 							<div className={styles.infoWrapper}>
 								<PeopleFill />
 								{beneficiaries ? (
-									beneficiaries.length <= 3 ? (
+									beneficiaries.length <= 2 ? (
 										beneficiaries.map((beneficiary, index) => {
 											if (index + 1 !== beneficiaries.length) {
 												return (
@@ -110,25 +110,25 @@ const JobBoardCard = ({
 										})
 									) : (
 										beneficiaries.map((beneficiary, index) => {
-											if (index === 0 || index === 1) {
+											if (index === 0) {
 												return (
 													<div
 														key={index}
 														className={styles.infoContainer}
 													>{`${beneficiary},`}</div>
 												);
-											} else if (index === 2) {
+											} else if (index === 1) {
 												return (
 													<div className={styles.infoContainer}>
 														{beneficiary}
 													</div>
 												);
-											} else if (index === 3) {
+											} else if (index === 2) {
 												return (
 													<div className={styles.extraShiftWrapper}>
 														<div className={styles.extraShiftContainer}>
-															{`+${beneficiaries.length - 3} other beneficiar${
-																beneficiaries.length - 3 > 1 ? "ies" : "y"
+															{`+${beneficiaries.length - 2} other beneficiar${
+																beneficiaries.length - 2 > 1 ? "ies" : "y"
 															}`}
 														</div>
 													</div>
@@ -146,7 +146,7 @@ const JobBoardCard = ({
 							<div className={styles.infoWrapper}>
 								<PuzzleFill />
 								{skills ? (
-									skills.length <= 3 ? (
+									skills.length <= 2 ? (
 										skills.map((skill, index) => {
 											if (index + 1 !== skills.length) {
 												return (
@@ -163,23 +163,23 @@ const JobBoardCard = ({
 										})
 									) : (
 										skills.map((skill, index) => {
-											if (index === 0 || index === 1) {
+											if (index === 0) {
 												return (
 													<div
 														key={index}
 														className={styles.infoContainer}
 													>{`${skill},`}</div>
 												);
-											} else if (index === 2) {
+											} else if (index === 1) {
 												return (
 													<div className={styles.infoContainer}>{skill}</div>
 												);
-											} else if (index === 3) {
+											} else if (index === 2) {
 												return (
 													<div className={styles.extraShiftWrapper}>
 														<div className={styles.extraShiftContainer}>
-															{`+${skills.length - 3} other skill${
-																skills.length - 3 > 1 ? "s" : ""
+															{`+${skills.length - 2} other skill${
+																skills.length - 2 > 1 ? "s" : ""
 															}`}
 														</div>
 													</div>
