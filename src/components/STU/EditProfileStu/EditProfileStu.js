@@ -2,191 +2,258 @@ import React, { useEffect, useState, useRef } from "react";
 import { useAuth } from "../../../contexts/AuthContext";
 import { Card, Button, Form, Alert } from "react-bootstrap";
 import styles from "./EditProfileStu.module.css";
+import { Formik } from "formik";
+import * as Yup from "yup";
 
 const EditProfileStu = ({ setEdit }) => {
-  const [leftButton, setLeftButton] = useState("Cancel");
-  const [leftButtonVar, setLeftButtonVar] = useState("light");
-  const { currentUser } = useAuth();
-  const [userData, setUserData] = useState(null);
-  const [userLoading, setUserLoading] = useState(true);
+	const [leftButton, setLeftButton] = useState("Cancel");
+	const [leftButtonVar, setLeftButtonVar] = useState("light");
+	const { currentUser } = useAuth();
+	const [userData, setUserData] = useState(null);
+	// const [userLoading, setUserLoading] = useState(true);
 
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
-  const [successful, setSuccessful] = useState(false);
-  const [error, setError] = useState("");
+	const [message, setMessage] = useState("");
+	const [successful, setSuccessful] = useState(false);
+	const [error, setError] = useState("");
 
-  //initializing refs for submit function
-  const nameRef = useRef();
-  const dobRef = useRef();
-  const emailRef = useRef();
-  const contactNoRef = useRef();
-  const courseRef = useRef();
-  const yearRef = useRef();
+	const getUser = async () => {
+		const response = await fetch(
+			"https://volunteer-ccsgp-backend.herokuapp.com/student_accounts/" +
+				currentUser.email
+		);
+		const jsonData = await response.json();
+		setUserData(jsonData);
+		// setUserLoading(false);
+	};
 
-  const getUser = async () => {
-    const response = await fetch(
-      "https://volunteer-ccsgp-backend.herokuapp.com/student_accounts/" +
-        currentUser.email
-    );
-    const jsonData = await response.json();
-    setUserData(jsonData);
-    setUserLoading(false);
-  };
+	useEffect(() => {
+		getUser();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
-  useEffect(() => {
-    getUser();
-  }, []);
+	const mySubmit = (values, { setSubmitting, resetForm }) => {
+		setSubmitting(true);
+		handleSubmit(values);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+		async function handleSubmit(values) {
+			//resetting submit states
+			setSuccessful(false);
+			setMessage("");
+			setError("");
 
-    //resetting submit states
-    setSuccessful(false);
-    setMessage("");
-    setError("");
+			const newAccountInfo = {
+				name: values.name,
+				dob: values.dob,
+				contactNo: values.contactNo,
+				course: values.course,
+				year: values.year,
+			};
 
-    const newAccountInfo = {
-      name:
-        nameRef.current.value.trim() !== ""
-          ? nameRef.current.value
-          : userData.type,
-      dob:
-        dobRef.current.value.trim() !== ""
-          ? dobRef.current.value
-          : userData.name,
-      contactNo:
-        contactNoRef.current.value.trim() !== ""
-          ? contactNoRef.current.value
-          : userData.pocName,
-      course:
-        courseRef.current.value.trim() !== ""
-          ? courseRef.current.value
-          : userData.pocNo,
-      year:
-        yearRef.current.value.trim() !== ""
-          ? yearRef.current.value
-          : userData.pocEmail,
-    };
+			try {
+				//signify start of update process
 
-    try {
-      //signify start of update process
-      setLoading(true);
+				await fetch(
+					"https://volunteer-ccsgp-backend.herokuapp.com/student_accounts/" +
+						currentUser.email,
+					{
+						method: "PUT",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify(newAccountInfo),
+					}
+				);
 
-      const response = await fetch(
-        "https://volunteer-ccsgp-backend.herokuapp.com/student_accounts/" +
-          currentUser.email,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(newAccountInfo),
-        }
-      );
+				setSuccessful(true);
+				setMessage("User profile updated successfully!");
+				setLeftButton("Back");
+				setLeftButtonVar("primary");
+				resetForm();
+				setSubmitting(false);
+			} catch (err) {
+				setError("Failed to update user info");
+				console.log(err);
+			}
+		}
+	};
 
-      setSuccessful(true);
-      setMessage("User profile updated successfully!");
-      setLeftButton("Back");
-      setLeftButtonVar("secondary");
-    } catch (err) {
-      setError("Failed to update user info");
-      console.log(err);
-    }
-    setLoading(false);
-  };
+	return (
+		<>
+			<div className={styles.formBG}>
+				<div className={styles.formContainer}>
+					<Card bg="light" text="dark" style={{ width: "23rem" }}>
+						<Card.Header as="h6">Edit your profile</Card.Header>
+						<Card.Body>
+							<Formik
+								enableReinitialize={true}
+								initialValues={{
+									name: userData !== null ? userData.name : "",
+									dob: userData !== null ? userData.dob : "",
+									contactNo: userData !== null ? userData.contactNo : "",
+									course: userData !== null ? userData.course : "",
+									year: userData !== null ? userData.year : "",
+								}}
+								validationSchema={validationSchema}
+								onSubmit={mySubmit}
+							>
+								{({
+									values,
+									touched,
+									errors,
+									handleChange,
+									handleBlur,
+									handleSubmit,
+									isSubmitting,
+								}) => (
+									<Form onSubmit={handleSubmit}>
+										<Form.Group controlId="formName">
+											<Form.Label>Name as in NRIC</Form.Label>{" "}
+											<Form.Control
+												name="name"
+												onChange={handleChange}
+												onBlur={handleBlur}
+												values={values.name}
+												isValid={touched.name && !errors.name}
+												isInvalid={touched.name && errors.name}
+												placeholder={values.name}
+											/>
+											<Form.Control.Feedback type="invalid">
+												{errors.name}
+											</Form.Control.Feedback>
+										</Form.Group>
+										<Form.Group controlId="formDob">
+											<Form.Label>Date of birth</Form.Label>
+											<Form.Control
+												name="dob"
+												onChange={handleChange}
+												onBlur={handleBlur}
+												values={values.dob}
+												isValid={touched.dob && !errors.dob}
+												isInvalid={touched.dob && errors.dob}
+												type="date"
+												placeholder={values.dob}
+											/>
+											<Form.Control.Feedback type="invalid">
+												{errors.dob}
+											</Form.Control.Feedback>
+										</Form.Group>
+										<Form.Group controlId="formEmail">
+											<Form.Label>Email address</Form.Label>
+											<Form.Control
+												placeholder={userData !== null ? userData.id : ""}
+												readOnly
+											/>
+										</Form.Group>
+										<Form.Group controlId="formContactNo">
+											<Form.Label>Mobile number</Form.Label>
+											<Form.Control
+												name="contactNo"
+												onChange={handleChange}
+												onBlur={handleBlur}
+												values={values.contactNo}
+												isValid={touched.contactNo && !errors.contactNo}
+												isInvalid={touched.contactNo && errors.contactNo}
+												placeholder={values.contactNo}
+											/>
+											<Form.Control.Feedback type="invalid">
+												{errors.contactNo}
+											</Form.Control.Feedback>
+										</Form.Group>
+										<Form.Group controlId="formCourse">
+											<Form.Label>Course of study</Form.Label>
+											<Form.Control
+												name="course"
+												onChange={handleChange}
+												onBlur={handleBlur}
+												values={values.course}
+												isValid={touched.course && !errors.course}
+												isInvalid={touched.course && errors.course}
+												placeholder={values.course}
+											/>
+											<Form.Control.Feedback type="invalid">
+												{errors.course}
+											</Form.Control.Feedback>
+										</Form.Group>
+										<Form.Group controlId="formYear">
+											<Form.Label>Year of study</Form.Label>
+											<Form.Control
+												name="year"
+												onChange={handleChange}
+												onBlur={handleBlur}
+												values={values.year}
+												isValid={touched.year && !errors.year}
+												isInvalid={touched.year && errors.year}
+												as="select"
+												placeholder={values.year}
+											>
+												<option>Year 1</option>
+												<option>Year 2</option>
+												<option>Year 3</option>
+												<option>Year 4</option>
+												<option>Year 5</option>
+												<option>Alumni</option>
+											</Form.Control>
+											<Form.Control.Feedback type="invalid">
+												{errors.year}
+											</Form.Control.Feedback>
+										</Form.Group>
+										<div className={styles.buttonContainer}>
+											<div>
+												<Button
+													variant={leftButtonVar}
+													onClick={(event) => setEdit(false)}
+												>
+													{leftButton}
+												</Button>
+											</div>
+											<div className={styles.rightButton}>
+												<Button
+													disabled={isSubmitting || successful}
+													variant="primary"
+													type="submit"
+												>
+													Submit
+												</Button>
+											</div>
+										</div>
 
-  return (
-    <>
-      <div className={styles.formBG}>
-        <div className={styles.formContainer}>
-          <Card bg="light" text="dark" style={{ width: "23rem" }}>
-            <Card.Header as="h6">Edit your profile</Card.Header>
-            <Card.Body>
-              <Form onSubmit={handleSubmit}>
-                <Form.Group controlId="formName">
-                  <Form.Label>Name as in NRIC</Form.Label>{" "}
-                  <Form.Control
-                    placeholder={userData !== null ? userData.name : ""}
-                    ref={nameRef}
-                  />
-                </Form.Group>
-                <Form.Group controlId="formDob">
-                  <Form.Label>Date of birth</Form.Label>
-                  <Form.Control
-                    type="date"
-                    placeholder={userData !== null ? userData.dob : ""}
-                    ref={dobRef}
-                  />
-                </Form.Group>
-                <Form.Group controlId="formEmail">
-                  <Form.Label>Email address</Form.Label>
-                  <Form.Control
-                    placeholder={userData !== null ? userData.id : ""}
-                    ref={emailRef}
-                    readOnly
-                  />
-                </Form.Group>
-                <Form.Group controlId="formContactNo">
-                  <Form.Label>Mobile number</Form.Label>
-                  <Form.Control
-                    placeholder={userData !== null ? userData.contactNo : ""}
-                    ref={contactNoRef}
-                  />
-                </Form.Group>
-                <Form.Group controlId="formCourse">
-                  <Form.Label>Course of study</Form.Label>
-                  <Form.Control
-                    placeholder={userData !== null ? userData.course : ""}
-                    ref={courseRef}
-                  />
-                </Form.Group>
-                <Form.Group controlId="formYear">
-                  <Form.Label>Year of study</Form.Label>
-                  <Form.Control
-                    as="select"
-                    placeholder={userData !== null ? userData.year : ""}
-                    ref={yearRef}
-                  >
-                    <option>Year 1</option>
-                    <option>Year 2</option>
-                    <option>Year 3</option>
-                    <option>Year 4</option>
-                    <option>Year 5</option>
-                    <option>Alumni</option>
-                  </Form.Control>
-                </Form.Group>
+										<Card.Text />
 
-                <div className={styles.buttonContainer}>
-                  <div>
-                    <Button
-                      variant={leftButtonVar}
-                      onClick={(event) => setEdit(false)}
-                    >
-                      {leftButton}
-                    </Button>
-                  </div>
-                  <div className={styles.rightButton}>
-                    <Button
-                      disabled={successful}
-                      variant="primary"
-                      type="submit"
-                    >
-                      Submit
-                    </Button>
-                  </div>
-                </div>
-
-                <Card.Text />
-                {error && <Alert variant="danger">{error}</Alert>}
-                {loading && (
-                  <Alert variant="primary">Updating your profile...</Alert>
-                )}
-                {successful && <Alert variant="success">{message}</Alert>}
-              </Form>
-            </Card.Body>
-          </Card>
-        </div>
-      </div>
-    </>
-  );
+										{error ? (
+											<Alert variant="danger">{error}</Alert>
+										) : isSubmitting ? (
+											<Alert variant="primary">Updating your profile...</Alert>
+										) : successful ? (
+											<Alert variant="success">{message}</Alert>
+										) : (
+											<Alert variant="warning">
+												You can leave the fields you do not want to edit as
+												blank
+											</Alert>
+										)}
+									</Form>
+								)}
+							</Formik>
+						</Card.Body>
+					</Card>
+				</div>
+			</div>
+		</>
+	);
 };
 
 export default EditProfileStu;
+
+const validationSchema = Yup.object().shape({
+	name: Yup.string().required(
+		"Please enter your full name as indicated on your NRIC"
+	),
+	dob: Yup.string().required("Please enter your date of birth"),
+	contactNo: Yup.string()
+		.matches(/^[0-9]+$/, "Please enter a 8 digit number")
+		.min(8, "Please enter a 8 digit number")
+		.max(8, "Please enter a 8 digit number")
+		.required("Please enter your mobile number"),
+	course: Yup.string().required("Please enter your course of study in NUS"),
+	year: Yup.string().required(
+		"Please indicate your year of study or if you are an alumni"
+	),
+});

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../../../contexts/AuthContext";
 import { Card, Button, Form, Alert } from "react-bootstrap";
 import { Formik } from "formik";
@@ -27,6 +27,7 @@ const EditProfileOrg = ({ setEdit }) => {
 
 	useEffect(() => {
 		getUser();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const mySubmit = (values, { setSubmitting, resetForm }) => {
@@ -52,7 +53,7 @@ const EditProfileOrg = ({ setEdit }) => {
 			try {
 				//signify start of update process
 
-				const response = await fetch(
+				await fetch(
 					"https://volunteer-ccsgp-backend.herokuapp.com/organization_accounts/" +
 						currentUser.email,
 					{
@@ -84,13 +85,14 @@ const EditProfileOrg = ({ setEdit }) => {
 						<Card.Header as="h6">Edit your organization profile</Card.Header>
 						<Card.Body>
 							<Formik
+								enableReinitialize
 								initialValues={{
-									type: "",
-									name: "",
-									uen: "",
-									pocName: "",
-									pocNo: "",
-									pocEmail: "",
+									type: userData !== null ? userData.type : "",
+									name: userData !== null ? userData.name : "",
+									uen: userData !== null ? userData.uen : "",
+									pocName: userData !== null ? userData.pocName : "",
+									pocNo: userData !== null ? userData.pocNo : "",
+									pocEmail: userData !== null ? userData.pocEmail : "",
 								}}
 								validationSchema={validationSchema}
 								onSubmit={mySubmit}
@@ -115,7 +117,7 @@ const EditProfileOrg = ({ setEdit }) => {
 												isValid={touched.type && !errors.type}
 												isInvalid={touched.type && errors.type}
 												as="select"
-												// placeholder={userData !== null ? userData.type : ""}
+												placeholder={values.type}
 											>
 												<option>NUS Organization</option>
 												<option>Non-NUS Organization</option>
@@ -133,7 +135,7 @@ const EditProfileOrg = ({ setEdit }) => {
 												values={values.name}
 												isValid={touched.name && !errors.name}
 												isInvalid={touched.name && errors.name}
-												// placeholder={userData !== null ? userData.name : ""}
+												placeholder={values.name}
 											/>
 											<Form.Control.Feedback type="invalid">
 												{errors.name}
@@ -156,7 +158,7 @@ const EditProfileOrg = ({ setEdit }) => {
 												isValid={touched.uen && !errors.uen}
 												isInvalid={touched.uen && errors.uen}
 												readOnly={values.type === "NUS Organization"}
-												// placeholder={userData !== null ? userData.uen : ""}
+												placeholder={values.uen}
 											/>
 											<Form.Control.Feedback type="invalid">
 												{errors.uen}
@@ -178,7 +180,7 @@ const EditProfileOrg = ({ setEdit }) => {
 												values={values.pocName}
 												isValid={touched.pocName && !errors.pocName}
 												isInvalid={touched.pocName && errors.pocName}
-												// placeholder={userData !== null ? userData.pocName : ""}
+												placeholder={values.pocName}
 											/>
 											<Form.Control.Feedback type="invalid">
 												{errors.pocName}
@@ -193,7 +195,7 @@ const EditProfileOrg = ({ setEdit }) => {
 												values={values.pocNo}
 												isValid={touched.pocNo && !errors.pocNo}
 												isInvalid={touched.pocNo && errors.pocNo}
-												// placeholder={userData !== null ? userData.pocNo : ""}
+												placeholder={values.pocNo}
 											/>
 											<Form.Control.Feedback type="invalid">
 												{errors.pocNo}
@@ -208,7 +210,7 @@ const EditProfileOrg = ({ setEdit }) => {
 												values={values.pocEmail}
 												isValid={touched.pocEmail && !errors.pocEmail}
 												isInvalid={touched.pocEmail && errors.pocEmail}
-												// placeholder={userData !== null ? userData.pocEmail : ""}
+												placeholder={values.pocEmail}
 											/>
 											<Form.Control.Feedback type="invalid">
 												{errors.pocEmail}
@@ -236,11 +238,18 @@ const EditProfileOrg = ({ setEdit }) => {
 										</div>
 
 										<Card.Text />
-										{error && <Alert variant="danger">{error}</Alert>}
-										{isSubmitting && (
+										{error ? (
+											<Alert variant="danger">{error}</Alert>
+										) : isSubmitting ? (
 											<Alert variant="primary">Updating your profile...</Alert>
+										) : successful ? (
+											<Alert variant="success">{message}</Alert>
+										) : (
+											<Alert variant="warning">
+												You can leave the fields you do not want to edit as
+												blank
+											</Alert>
 										)}
-										{successful && <Alert variant="success">{message}</Alert>}
 									</Form>
 								)}
 							</Formik>
