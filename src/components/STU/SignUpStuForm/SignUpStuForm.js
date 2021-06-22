@@ -52,6 +52,7 @@ const SignUpStuForm = () => {
 			} catch (err) {
 				if (err.code === "auth/email-already-in-use") {
 					setError("This email address is already in use");
+					setSubmitting(false);
 				}
 			}
 		}
@@ -77,7 +78,12 @@ const SignUpStuForm = () => {
 								handleSubmit,
 								isSubmitting,
 							}) => (
-								<Form onSubmit={handleSubmit}>
+								<Form
+									onSubmit={(event) => {
+										event.preventDefault();
+										handleSubmit();
+									}}
+								>
 									<Form.Group controlId="formBasicEmail">
 										<Form.Label>Email address</Form.Label>
 										<Form.Control

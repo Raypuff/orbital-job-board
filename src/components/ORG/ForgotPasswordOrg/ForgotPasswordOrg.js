@@ -22,10 +22,14 @@ const ForgotPasswordOrg = () => {
 			setMessage(
 				"We have sent you an email with instructions on how to reset your password."
 			);
-			console.log(currentUser);
-		} catch (e) {
-			setError("Failed to reset password");
-			console.log(e);
+		} catch (err) {
+			if (err.code === "auth/user-not-found") {
+				setError(
+					"This is no organization account associated with this email address"
+				);
+			} else {
+				setError("Failed to reset password");
+			}
 		}
 		setLoading(false);
 	}
@@ -33,8 +37,6 @@ const ForgotPasswordOrg = () => {
 	return (
 		<div className={styles.formBG}>
 			<div className={styles.formContainer}>
-				{error && <Alert variant="danger">{error}</Alert>}
-				{message && <Alert variant="success">{message}</Alert>}
 				<Card bg="light" text="dark" style={{ width: "23rem" }}>
 					<Card.Header as="h6">Reset your organization password</Card.Header>
 					<Card.Body>
@@ -55,6 +57,10 @@ const ForgotPasswordOrg = () => {
 								Reset Password
 							</Button>
 						</Form>
+						<Card.Text />
+						{error && <Alert variant="danger">{error}</Alert>}
+						{message && <Alert variant="success">{message}</Alert>}
+
 						<Card.Text />
 						<Card.Footer>
 							Representing your organization and interested in posting a

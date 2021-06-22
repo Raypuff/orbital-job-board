@@ -22,10 +22,17 @@ const ForgotPasswordStu = () => {
 			setMessage(
 				"We have sent you an email with instructions on how to reset your password."
 			);
-			console.log(currentUser);
-		} catch (e) {
-			setError("Failed to reset password");
-			console.log(e);
+		} catch (err) {
+			if (err.code === "auth/user-not-found") {
+				setError(
+					"This is no student account associated with this email address"
+				);
+			} else {
+				setError(
+					"There has been an error in resetting your password. Please contact an administrator for help"
+				);
+				console.log(err);
+			}
 		}
 		setLoading(false);
 	}
@@ -33,8 +40,6 @@ const ForgotPasswordStu = () => {
 	return (
 		<div className={styles.formBG}>
 			<div className={styles.formContainer}>
-				{error && <Alert variant="danger">{error}</Alert>}
-				{message && <Alert variant="success">{message}</Alert>}
 				<Card bg="light" text="dark" style={{ width: "23rem" }}>
 					<Card.Header as="h6">Reset your password</Card.Header>
 					<Card.Body>
@@ -56,6 +61,10 @@ const ForgotPasswordStu = () => {
 								Reset Password
 							</Button>
 						</Form>
+						<Card.Text />
+						{error && <Alert variant="danger">{error}</Alert>}
+						{message && <Alert variant="success">{message}</Alert>}
+
 						<Card.Text />
 						<Card.Footer>
 							Interested in applying for volunteer opportunities?{" "}

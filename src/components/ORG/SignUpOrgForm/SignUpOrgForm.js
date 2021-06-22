@@ -185,7 +185,7 @@ const validationSchema = Yup.object().shape({
 			"Your password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number and one special case character"
 		),
 	passwordConfirm: Yup.string()
-		.required("Please confirm you password")
+		.required("Please confirm your password")
 		.when("password", {
 			is: (password) => password && password.length > 0,
 			then: Yup.string().oneOf(

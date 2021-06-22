@@ -10,7 +10,6 @@ import nusccsgplogo from "../../../assets/nusccsgp.png";
 
 const MyNavbar = ({ isSignedIn }) => {
 	const { userType } = useAuth();
-	console.log(userType);
 
 	const AccountButtons = ({ isSignedIn }) => {
 		if (isSignedIn != null) {
@@ -22,7 +21,6 @@ const MyNavbar = ({ isSignedIn }) => {
 				return <SignedInAdminNavbar />;
 			}
 		}
-		console.log("Signed out Navbar");
 		return <SignedOutNavbar />;
 	};
 

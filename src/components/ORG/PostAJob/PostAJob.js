@@ -138,7 +138,7 @@ const PostAJob = () => {
 						body: JSON.stringify(body2),
 					}
 				);
-				setMessage("Successful");
+				setMessage("Job posting successful");
 				resetForm();
 				setSubmitting(false);
 			} catch (err) {
@@ -754,7 +754,14 @@ const PostAJob = () => {
 						{isSubmitting && (
 							<Alert variant="primary">Posting your job...</Alert>
 						)}
-						{message && <Alert variant="success">{message}</Alert>}
+						{message && (
+							<Alert variant="success">
+								<Alert.Header as="h6">{message}</Alert.Header>
+								<hr />
+								<p className="mb-0"></p>Your job will be publicly available once
+								it has been approved by an administrator
+							</Alert>
+						)}
 					</Form>
 				)}
 			</Formik>

@@ -70,7 +70,7 @@ const YourApplicationsCard = ({
 										</div>
 									</div>
 									<div className={styles.dotsContainerMobile}>
-										<TripleDot id={id} />
+										<TripleDot jobID={jobID} />
 									</div>
 								</div>
 
@@ -101,7 +101,7 @@ const YourApplicationsCard = ({
 						<Col lg={4}>
 							<div className={styles.applicantsContainer}>
 								<div className={styles.dotsContainer}>
-									<TripleDot id={id} />
+									<TripleDot jobID={jobID} />
 								</div>
 							</div>
 						</Col>
@@ -127,12 +127,12 @@ const CustomDropdown = forwardRef(({ children, onClick }, ref) => (
 	</a>
 ));
 
-const TripleDot = ({ id }) => {
+const TripleDot = ({ jobID }) => {
 	return (
 		<Dropdown>
 			<Dropdown.Toggle as={CustomDropdown}></Dropdown.Toggle>
 			<Dropdown.Menu align="right">
-				<Dropdown.Item as={Link} to={`/jobs/${id}`} target="blank">
+				<Dropdown.Item as={Link} to={`/jobs/${jobID}`} target="blank">
 					View listing
 				</Dropdown.Item>
 			</Dropdown.Menu>

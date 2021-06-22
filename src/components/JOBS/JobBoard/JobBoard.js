@@ -22,7 +22,7 @@ const JobBoard = () => {
 		);
 		const jsonData = await response.json();
 
-		setJobs(jsonData);
+		setJobs(jsonData.filter((job) => job.status === "Approved"));
 		setJobLoading(false);
 	};
 
@@ -65,7 +65,6 @@ const JobBoard = () => {
 		}
 	}
 	var filteredJobs = jobs
-		// .filter((job) => job.status === "Approved")
 		.filter((job) => filterState.longTerm || job.type !== "Long term")
 		.filter((job) => filterState.adHoc || job.type !== "Ad hoc")
 		.filter((job) => filterState.physical || job.platform !== "Physical")
