@@ -424,7 +424,9 @@ const validationSchema = Yup.object().shape({
 	retrieveDetails: Yup.bool(),
 	stuName: Yup.string().when(["retrieveDetails"], {
 		is: false,
-		then: Yup.string().required("Please enter your full name"),
+		then: Yup.string().required(
+			"Please enter your full name as indicated on your NRIC"
+		),
 	}),
 	stuDob: Yup.date().when(["retrieveDetails"], {
 		is: false,

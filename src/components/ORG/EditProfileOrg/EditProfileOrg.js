@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../../../contexts/AuthContext";
 import { Card, Button, Form, Alert } from "react-bootstrap";
 import { Formik } from "formik";
@@ -27,9 +27,11 @@ const EditProfileOrg = ({ setEdit }) => {
     setUserLoading(false);
   };
 
-  useEffect(() => {
-    getUser();
-  }, []);
+	useEffect(() => {
+		getUser();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 
   const mySubmit = (values, { setSubmitting, resetForm }) => {
     setSubmitting(true);
@@ -54,15 +56,16 @@ const EditProfileOrg = ({ setEdit }) => {
       try {
         //signify start of update process
 
-        const response = await fetch(
-          "https://volunteer-ccsgp-backend.herokuapp.com/organization_accounts/" +
-            currentUser.email,
-          {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(newAccountInfo),
-          }
-        );
+				await fetch(
+					"https://volunteer-ccsgp-backend.herokuapp.com/organization_accounts/" +
+						currentUser.email,
+					{
+						method: "PUT",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify(newAccountInfo),
+					}
+				);
+
 
         //set success usestate to true
         setSuccessful(true);
@@ -78,144 +81,146 @@ const EditProfileOrg = ({ setEdit }) => {
     }
   };
 
-  return (
-    <>
-      <div className={styles.formBG}>
-        <div className={styles.formContainer}>
-          <Card bg="light" text="dark" style={{ width: "23rem" }}>
-            <Card.Header as="h6">Edit your organization profile</Card.Header>
-            <Card.Body>
-              <Formik
-                initialValues={{
-                  type: "",
-                  name: "",
-                  uen: "",
-                  pocName: "",
-                  pocNo: "",
-                  pocEmail: "",
-                }}
-                validationSchema={validationSchema}
-                onSubmit={mySubmit}
-              >
-                {({
-                  values,
-                  touched,
-                  errors,
-                  handleChange,
-                  handleBlur,
-                  handleSubmit,
-                  isSubmitting,
-                }) => (
-                  <Form onSubmit={handleSubmit}>
-                    <Form.Group controlId="formOrgType">
-                      <Form.Label>Organization type</Form.Label>
-                      <Form.Control
-                        name="type"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        values={values.type}
-                        isValid={touched.type && !errors.type}
-                        isInvalid={touched.type && errors.type}
-                        as="select"
-                        // placeholder={userData !== null ? userData.type : ""}
-                      >
-                        <option>NUS Organization</option>
-                        <option>Non-NUS Organization</option>
-                      </Form.Control>
-                      <Form.Control.Feedback type="invalid">
-                        {errors.type}
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                    <Form.Group controlId="formOrgName">
-                      <Form.Label>Organization name</Form.Label>
-                      <Form.Control
-                        name="name"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        values={values.name}
-                        isValid={touched.name && !errors.name}
-                        isInvalid={touched.name && errors.name}
-                        // placeholder={userData !== null ? userData.name : ""}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {errors.name}
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                    <Form.Group controlId="formuen">
-                      <Form.Label>
-                        Organization UEN, Charity Registration No. or Society
-                        Registration No.
-                        <Form.Text className="text-muted">
-                          Only applicable for Non-NUS Organizations
-                        </Form.Text>
-                      </Form.Label>
+	return (
+		<>
+			<div className={styles.formBG}>
+				<div className={styles.formContainer}>
+					<Card bg="light" text="dark" style={{ width: "23rem" }}>
+						<Card.Header as="h6">Edit your organization profile</Card.Header>
+						<Card.Body>
+							<Formik
+								enableReinitialize
+								initialValues={{
+									type: userData !== null ? userData.type : "",
+									name: userData !== null ? userData.name : "",
+									uen: userData !== null ? userData.uen : "",
+									pocName: userData !== null ? userData.pocName : "",
+									pocNo: userData !== null ? userData.pocNo : "",
+									pocEmail: userData !== null ? userData.pocEmail : "",
+								}}
+								validationSchema={validationSchema}
+								onSubmit={mySubmit}
+							>
+								{({
+									values,
+									touched,
+									errors,
+									handleChange,
+									handleBlur,
+									handleSubmit,
+									isSubmitting,
+								}) => (
+									<Form onSubmit={handleSubmit}>
+										<Form.Group controlId="formOrgType">
+											<Form.Label>Organization type</Form.Label>
+											<Form.Control
+												name="type"
+												onChange={handleChange}
+												onBlur={handleBlur}
+												values={values.type}
+												isValid={touched.type && !errors.type}
+												isInvalid={touched.type && errors.type}
+												as="select"
+												placeholder={values.type}
+											>
+												<option>NUS Organization</option>
+												<option>Non-NUS Organization</option>
+											</Form.Control>
+											<Form.Control.Feedback type="invalid">
+												{errors.type}
+											</Form.Control.Feedback>
+										</Form.Group>
+										<Form.Group controlId="formOrgName">
+											<Form.Label>Organization name</Form.Label>
+											<Form.Control
+												name="name"
+												onChange={handleChange}
+												onBlur={handleBlur}
+												values={values.name}
+												isValid={touched.name && !errors.name}
+												isInvalid={touched.name && errors.name}
+												placeholder={values.name}
+											/>
+											<Form.Control.Feedback type="invalid">
+												{errors.name}
+											</Form.Control.Feedback>
+										</Form.Group>
+										<Form.Group controlId="formuen">
+											<Form.Label>
+												Organization UEN, Charity Registration No. or Society
+												Registration No.
+												<Form.Text className="text-muted">
+													Only applicable for Non-NUS Organizations
+												</Form.Text>
+											</Form.Label>
 
-                      <Form.Control
-                        name="uen"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        values={values.uen}
-                        isValid={touched.uen && !errors.uen}
-                        isInvalid={touched.uen && errors.uen}
-                        readOnly={values.type === "NUS Organization"}
-                        // placeholder={userData !== null ? userData.uen : ""}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {errors.uen}
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                    <Form.Group controlId="formEmail">
-                      <Form.Label>Email address of organization</Form.Label>
-                      <Form.Control
-                        placeholder={userData !== null ? userData.id : ""}
-                        readOnly
-                      />
-                    </Form.Group>
-                    <Form.Group controlId="formPocName">
-                      <Form.Label>Name of contact person</Form.Label>
-                      <Form.Control
-                        name="pocName"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        values={values.pocName}
-                        isValid={touched.pocName && !errors.pocName}
-                        isInvalid={touched.pocName && errors.pocName}
-                        // placeholder={userData !== null ? userData.pocName : ""}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {errors.pocName}
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                    <Form.Group controlId="formPocNum">
-                      <Form.Label>Mobile number of contact person</Form.Label>
-                      <Form.Control
-                        name="pocNo"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        values={values.pocNo}
-                        isValid={touched.pocNo && !errors.pocNo}
-                        isInvalid={touched.pocNo && errors.pocNo}
-                        // placeholder={userData !== null ? userData.pocNo : ""}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {errors.pocNo}
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                    <Form.Group controlId="formPocEmail">
-                      <Form.Label>Email address of contact person</Form.Label>
-                      <Form.Control
-                        name="pocEmail"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        values={values.pocEmail}
-                        isValid={touched.pocEmail && !errors.pocEmail}
-                        isInvalid={touched.pocEmail && errors.pocEmail}
-                        // placeholder={userData !== null ? userData.pocEmail : ""}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {errors.pocEmail}
-                      </Form.Control.Feedback>
-                    </Form.Group>
+											<Form.Control
+												name="uen"
+												onChange={handleChange}
+												onBlur={handleBlur}
+												values={values.uen}
+												isValid={touched.uen && !errors.uen}
+												isInvalid={touched.uen && errors.uen}
+												readOnly={values.type === "NUS Organization"}
+												placeholder={values.uen}
+											/>
+											<Form.Control.Feedback type="invalid">
+												{errors.uen}
+											</Form.Control.Feedback>
+										</Form.Group>
+										<Form.Group controlId="formEmail">
+											<Form.Label>Email address of organization</Form.Label>
+											<Form.Control
+												placeholder={userData !== null ? userData.id : ""}
+												readOnly
+											/>
+										</Form.Group>
+										<Form.Group controlId="formPocName">
+											<Form.Label>Name of contact person</Form.Label>
+											<Form.Control
+												name="pocName"
+												onChange={handleChange}
+												onBlur={handleBlur}
+												values={values.pocName}
+												isValid={touched.pocName && !errors.pocName}
+												isInvalid={touched.pocName && errors.pocName}
+												placeholder={values.pocName}
+											/>
+											<Form.Control.Feedback type="invalid">
+												{errors.pocName}
+											</Form.Control.Feedback>
+										</Form.Group>
+										<Form.Group controlId="formPocNum">
+											<Form.Label>Mobile number of contact person</Form.Label>
+											<Form.Control
+												name="pocNo"
+												onChange={handleChange}
+												onBlur={handleBlur}
+												values={values.pocNo}
+												isValid={touched.pocNo && !errors.pocNo}
+												isInvalid={touched.pocNo && errors.pocNo}
+												placeholder={values.pocNo}
+											/>
+											<Form.Control.Feedback type="invalid">
+												{errors.pocNo}
+											</Form.Control.Feedback>
+										</Form.Group>
+										<Form.Group controlId="formPocEmail">
+											<Form.Label>Email address of contact person</Form.Label>
+											<Form.Control
+												name="pocEmail"
+												onChange={handleChange}
+												onBlur={handleBlur}
+												values={values.pocEmail}
+												isValid={touched.pocEmail && !errors.pocEmail}
+												isInvalid={touched.pocEmail && errors.pocEmail}
+												placeholder={values.pocEmail}
+											/>
+											<Form.Control.Feedback type="invalid">
+												{errors.pocEmail}
+											</Form.Control.Feedback>
+										</Form.Group>
+
 
                     <div className={styles.buttonContainer}>
                       <div>
@@ -236,22 +241,29 @@ const EditProfileOrg = ({ setEdit }) => {
                         </Button>
                       </div>
                     </div>
+										<Card.Text />
+										{error ? (
+											<Alert variant="danger">{error}</Alert>
+										) : isSubmitting ? (
+											<Alert variant="primary">Updating your profile...</Alert>
+										) : successful ? (
+											<Alert variant="success">{message}</Alert>
+										) : (
+											<Alert variant="warning">
+												You can leave the fields you do not want to edit as
+												blank
+											</Alert>
+										)}
+									</Form>
+								)}
+							</Formik>
+						</Card.Body>
+					</Card>
+				</div>
+			</div>
+		</>
+	);
 
-                    <Card.Text />
-                    {error && <Alert variant="danger">{error}</Alert>}
-                    {isSubmitting && (
-                      <Alert variant="primary">Updating your profile...</Alert>
-                    )}
-                    {successful && <Alert variant="success">{message}</Alert>}
-                  </Form>
-                )}
-              </Formik>
-            </Card.Body>
-          </Card>
-        </div>
-      </div>
-    </>
-  );
 };
 
 export default EditProfileOrg;
