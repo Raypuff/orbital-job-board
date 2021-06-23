@@ -33,6 +33,9 @@ const PostAJob = () => {
   //to obtain currentUser data from database
   const [userData, setUserData] = useState(null);
 
+  const [image, setImage] = useState();
+  const [imageLoading, setImageLoading] = useState(false);
+
   //retrieve user from database
   const getUser = async () => {
     const response = await fetch(
@@ -58,6 +61,29 @@ const PostAJob = () => {
   useEffect(() => {
     getUser();
   }, []);
+
+  //image uploader
+  const uploadImage = async (event) => {
+    setImageLoading(true);
+    try {
+      const files = event.target.files;
+      const data = new FormData();
+      data.append("file", files[0]);
+      data.append("upload_preset", "volunteer-ccsgp-images");
+      const res = await fetch(
+        "https://api.cloudinary.com/v1_1/volunteer-ccsgp-job-board/image/upload",
+        {
+          method: "POST",
+          body: data,
+        }
+      );
+      const file = await res.json();
+      setImage(file.secure_url);
+    } catch (err) {
+      console.log(err);
+    }
+    setImageLoading(false);
+  };
 
   const mySubmit = (values, { setSubmitting, resetForm }) => {
     setSubmitting(true);
@@ -699,28 +725,19 @@ const PostAJob = () => {
                           {errors.addInfo}
                         </Form.Control.Feedback>
                       </Form.Group>
-                      <Form.Group controlId="formImageUrl">
-                        <Form.Label>
-                          Image URL
-                          <Form.Text className="text-muted">
-                            If you would like to include an image with your
-                            posting, upload it on an image hosting site and
-                            paste the direct link below
-                          </Form.Text>
-                        </Form.Label>
-                        <Form.Control
-                          name="imageUrl"
-                          type="text"
-                          placeholder="Direct Imgur link to image"
-                          value={values.imageUrl}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          isValid={touched.imageUrl && !errors.imageUrl}
-                          isInvalid={touched.imageUrl && errors.imageUrl}
+                      <Form.Group>
+                        <div>Upload Image</div>
+                        <input
+                          type="file"
+                          name="file"
+                          placeholder="Upload an image"
+                          onChange={uploadImage}
                         />
-                        <Form.Control.Feedback type="invalid">
-                          {errors.imageUrl}
-                        </Form.Control.Feedback>
+                        {imageLoading ? (
+                          <div>Loading...</div>
+                        ) : (
+                          <img src={image} style={{ width: "300px" }} />
+                        )}
                       </Form.Group>
                     </div>
                   </Accordion.Collapse>
@@ -1158,3 +1175,29 @@ const validationSchema = Yup.object().shape({
       "Terms and Conditions of Use must be accepted to post a Job"
     ),
 });
+
+/*
+                      <Form.Group controlId="formImageUrl">
+                        <Form.Label>
+                          Image URL
+                          <Form.Text className="text-muted">
+                            If you would like to include an image with your
+                            posting, upload it on an image hosting site and
+                            paste the direct link below
+                          </Form.Text>
+                        </Form.Label>
+                        <Form.Control
+                          name="imageUrl"
+                          type="text"
+                          placeholder="Direct Imgur link to image"
+                          value={values.imageUrl}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          isValid={touched.imageUrl && !errors.imageUrl}
+                          isInvalid={touched.imageUrl && errors.imageUrl}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.imageUrl}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                      */
