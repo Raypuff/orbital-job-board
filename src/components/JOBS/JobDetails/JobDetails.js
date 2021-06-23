@@ -10,8 +10,8 @@ import {
 import {
 	JobDetailsAdminRejModal,
 	JobDetailsAdminAppModal,
-	AdminRejButton,
-	AdminAppButton,
+	AdminOpenRejModalButton,
+	AdminOpenAppModalButton,
 } from "../JobDetailsAdminModal/JobDetailsAdminModal";
 import { useAuth } from "../../../contexts/AuthContext";
 import styles from "./JobDetails.module.css";
@@ -80,6 +80,7 @@ const JobDetails = ({ id }) => {
 	} = job;
 	const orgType = org.type;
 	const orgName = org.name;
+	const orgUen = org.uen;
 
 	// For display diff displayStates
 	//0: Signed out OR Student haven't apply -> Apply button
@@ -355,10 +356,10 @@ const JobDetails = ({ id }) => {
 										<DisabledButton />
 									) : displayState === 6 ? (
 										<>
-											<AdminRejButton
+											<AdminOpenRejModalButton
 												handleClick={() => setShowAdminRejModal(true)}
 											/>
-											<AdminAppButton
+											<AdminOpenAppModalButton
 												handleClick={() => setShowAdminAppModal(true)}
 											/>
 										</>

@@ -91,7 +91,7 @@ export const JobDetailsAdminAppModal = ({
 	);
 };
 
-export const AdminRejButton = ({ handleClick }) => {
+export const AdminOpenRejModalButton = ({ handleClick }) => {
 	return (
 		<>
 			<Button variant="danger" onClick={handleClick}>
@@ -101,7 +101,7 @@ export const AdminRejButton = ({ handleClick }) => {
 	);
 };
 
-export const AdminAppButton = ({ handleClick }) => {
+export const AdminOpenAppModalButton = ({ handleClick }) => {
 	return (
 		<>
 			<Button variant="success" onClick={handleClick}>
