@@ -3,6 +3,7 @@
 	height: calc(100vh - 155px);
 	display: grid;
 	place-items: center;
+	text-align: center;
 }
 
 .loadingWrapper {
@@ -26,6 +27,7 @@
 	height: calc(100vh - 155px);
 	display: grid;
 	place-items: center;
+	text-align: center;
 }
 
 .noJobWrapper {
@@ -92,6 +94,7 @@
 	width: 100%;
 	display: grid;
 	place-items: center;
+	text-align: center;
 }
 
 .filterNoJobWrapper {
