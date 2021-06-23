@@ -34,6 +34,7 @@ const PostAJob = () => {
   const [userData, setUserData] = useState(null);
 
   const [image, setImage] = useState();
+  const [imageUrl, setImageUrl] = useState("");
   const [imageLoading, setImageLoading] = useState(false);
 
   //retrieve user from database
@@ -79,6 +80,7 @@ const PostAJob = () => {
       );
       const file = await res.json();
       setImage(file.secure_url);
+      setImageUrl(file.secure_url);
     } catch (err) {
       console.log(err);
     }
@@ -147,7 +149,7 @@ const PostAJob = () => {
           values.shift10End
         ),
         addInfo: values.addInfo,
-        imageUrl: values.imageUrl,
+        imageUrl: imageUrl,
         pocName: values.retrievePoc ? userData.pocName : values.pocName,
         pocNo: values.retrievePoc ? userData.pocNo : values.pocNo,
         pocEmail: values.retrievePoc ? userData.pocEmail : values.pocEmail,
@@ -165,6 +167,7 @@ const PostAJob = () => {
         const body2 = {
           newJobID: jobID,
         };
+
         await fetch(
           "https://volunteer-ccsgp-backend.herokuapp.com/organization-accounts/job/" +
             currentUser.email,
@@ -174,6 +177,7 @@ const PostAJob = () => {
             body: JSON.stringify(body2),
           }
         );
+
         setMessage("Job posting successful");
         resetForm();
         setSubmitting(false);
@@ -234,7 +238,6 @@ const PostAJob = () => {
           shift10Start: "",
           shift10End: "",
           addInfo: "",
-          imageUrl: "",
           pocName: "",
           pocNo: "",
           pocEmail: "",
@@ -1146,9 +1149,6 @@ const validationSchema = Yup.object().shape({
     then: Yup.string().required("Please indicate the end time of the shift"),
   }),
   addInfo: Yup.string(),
-  imageUrl: Yup.string().url(
-    "Please enter a valid URL that links directly to an image"
-  ),
   pocName: Yup.string().when("retrievePoc", {
     is: false,
     then: Yup.string().required("Please enter the name of contact person"),
