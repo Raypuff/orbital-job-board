@@ -98,7 +98,10 @@ const JobDetails = ({ id }) => {
 	if (currentUser === null) {
 		displayState = 0;
 	} else if (currentUser !== null && userType === "student") {
-		if (!job.applicants.includes(currentUser.email)) {
+		if (
+			job.applicants === null ||
+			!job.applicants.includes(currentUser.email)
+		) {
 			displayState = 0;
 		} else {
 			displayState = 1;
