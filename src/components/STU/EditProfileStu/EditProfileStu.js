@@ -246,7 +246,7 @@ const validationSchema = Yup.object().shape({
 	name: Yup.string().required(
 		"Please enter your full name as indicated on your NRIC"
 	),
-	dob: Yup.string().required("Please enter your date of birth"),
+	dob: Yup.date().required("Please enter your date of birth"),
 	contactNo: Yup.string()
 		.matches(/^[0-9]+$/, "Please enter a 8 digit number")
 		.min(8, "Please enter a 8 digit number")
