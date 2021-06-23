@@ -324,6 +324,14 @@ const JobDetails = ({ id }) => {
 											{orgType}
 											<br />
 										</h7>
+										{(displayState === 6 ||
+											displayState === 7 ||
+											displayState === 8) && (
+											<h7>
+												{orgUen}
+												<br />
+											</h7>
+										)}
 										<h7>
 											<a href={`mailto:${orgID}`}>{orgID}</a>
 										</h7>
