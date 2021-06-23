@@ -48,7 +48,7 @@ export const JobDetailsApplyModal = ({
   const getStu = async () => {
     try {
       const response = await fetch(
-        "https://volunteer-ccsgp-backend.herokuapp.com/student_accounts/" +
+        "https://volunteer-ccsgp-backend.herokuapp.com/student-accounts/" +
           currentUser.email
       );
       const jsonData = await response.json();
@@ -97,14 +97,14 @@ export const JobDetailsApplyModal = ({
         student_id: currentUser.email,
       };
 
-      //creating object to update jobs_applied in student_accounts;
+      //creating object to update jobs_applied in student-accounts;
       const updateApplied = {
         jobID: id,
       };
       try {
         console.log(newApp);
         await fetch(
-          "https://volunteer-ccsgp-backend.herokuapp.com/job_applications",
+          "https://volunteer-ccsgp-backend.herokuapp.com/job-applications",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -122,7 +122,7 @@ export const JobDetailsApplyModal = ({
         );
 
         await fetch(
-          "https://volunteer-ccsgp-backend.herokuapp.com/student_accounts/apply-job/" +
+          "https://volunteer-ccsgp-backend.herokuapp.com/student-accounts/apply-job/" +
             currentUser.email,
           {
             method: "PUT",

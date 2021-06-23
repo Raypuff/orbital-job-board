@@ -36,7 +36,7 @@ const PostAJob = () => {
   //retrieve user from database
   const getUser = async () => {
     const response = await fetch(
-      "https://volunteer-ccsgp-backend.herokuapp.com/organization_accounts/" +
+      "https://volunteer-ccsgp-backend.herokuapp.comorganization-accounts/" +
         currentUser.email,
       {}
     );
@@ -140,7 +140,7 @@ const PostAJob = () => {
           newJobID: jobID,
         };
         await fetch(
-          "https://volunteer-ccsgp-backend.herokuapp.com/organization_accounts/postjob/" +
+          "https://volunteer-ccsgp-backend.herokuapp.comorganization-accounts/job/" +
             currentUser.email,
           {
             method: "PUT",
