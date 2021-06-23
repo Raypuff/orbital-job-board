@@ -248,7 +248,6 @@ const TripleDot = ({ id, setShowModal }) => {
 
   const handleComplete = async () => {
     //setLoading(true);
-    console.log("Handling Complete");
     try {
       await fetch(
         "https://volunteer-ccsgp-backend.herokuapp.com/jobs/status-complete/" +

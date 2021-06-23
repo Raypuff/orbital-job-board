@@ -51,15 +51,11 @@ const ApplicantsModalCard = ({
           html: html,
         },
       };
-      const sendEmail = await fetch(
-        "https://volunteer-ccsgp-backend.herokuapp.com/email",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(msg),
-        }
-      );
-      console.log(sendEmail);
+      await fetch("https://volunteer-ccsgp-backend.herokuapp.com/email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(msg),
+      });
     } catch (err) {
       console.error(err);
     }
