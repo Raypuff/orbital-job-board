@@ -424,7 +424,7 @@ const SignedOutModal = ({ show, onHide }) => {
 					<Link to="/sign-in-student">sign in as NUS student</Link> first{" "}
 				</h5>
 				<p>
-					Don't have an account? Sign up <Link to="/sign-up-student">here</Link>
+					Don't have an account? <Link to="/sign-up-student">Sign up here</Link>
 					!
 				</p>
 			</Modal.Body>

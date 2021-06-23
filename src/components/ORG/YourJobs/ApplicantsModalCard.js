@@ -30,7 +30,7 @@ const ApplicantsModalCard = ({
     const body = { status: choice };
     try {
       const updateAppStatus = await fetch(
-        "https://volunteer-ccsgp-backend.herokuapp.com/job_applications/changestatus/" +
+        "https://volunteer-ccsgp-backend.herokuapp.com/job_applications/status/" +
           id,
         {
           method: "PUT",
@@ -59,6 +59,7 @@ const ApplicantsModalCard = ({
           body: JSON.stringify(msg),
         }
       );
+      console.log(sendEmail);
     } catch (err) {
       console.error(err);
     }

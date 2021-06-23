@@ -44,21 +44,12 @@ const JobDetails = ({ id }) => {
 
 	useEffect(() => {
 		getData();
-	}, [org]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	if (orgLoading) {
 		return <LoadingJobDetails />;
 	}
-
-	//you can either use these variables or use the right side directly wherever
-	const isMyJob = job.orgID === currentUser.email;
-	const alreadyApplied = job.applicants.includes(currentUser.email);
-
-	console.log("This is my job");
-	console.log(isMyJob);
-
-	console.log("I have already applied");
-	console.log(alreadyApplied);
 
 	const {
 		orgID,
@@ -106,15 +97,13 @@ const JobDetails = ({ id }) => {
 	if (currentUser === null) {
 		displayState = 0;
 	} else if (currentUser !== null && userType === "student") {
-		if (true) {
-			//true if id NOT in student.applications.jobID
+		if (!job.applicants.includes(currentUser.email)) {
 			displayState = 0;
 		} else {
 			displayState = 1;
 		}
 	} else if (currentUser !== null && userType === "organization") {
-		if (false) {
-			//true if id NOT in org.jobs.ID
+		if (job.orgID !== currentUser.email) {
 			displayState = 2;
 		} else if (status === "Pending") {
 			displayState = 3;
