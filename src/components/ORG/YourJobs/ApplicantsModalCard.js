@@ -24,7 +24,6 @@ const ApplicantsModalCard = ({
 }) => {
 	//const [loading, setLoading] = useState(false);
 	// useState for frontend update of status
-	const [frontEndStatus, setFrontEndStatus] = useState(status);
 
 	const handleAcceptReject = async (choice) => {
 		//setLoading(true);
@@ -39,7 +38,6 @@ const ApplicantsModalCard = ({
 					body: JSON.stringify(body),
 				}
 			);
-			// setFrontEndStatus(choice);
 			setChanged(true);
 
 			const text = `Hello ${name}! There has been an update to your volunteer application. Please click on the link below and log in to view the updates to your application! volunteer-ccsgp-vercel.app`;
@@ -76,9 +74,7 @@ const ApplicantsModalCard = ({
 							<h5>{name}</h5>
 							<div
 								className={
-									frontEndStatus === "Pending"
-										? styles.pending
-										: styles.displayNone
+									status === "Pending" ? styles.pending : styles.displayNone
 								}
 							>
 								<HourglassSplit />
@@ -86,9 +82,7 @@ const ApplicantsModalCard = ({
 							</div>
 							<div
 								className={
-									frontEndStatus === "Rejected"
-										? styles.rejected
-										: styles.displayNone
+									status === "Rejected" ? styles.rejected : styles.displayNone
 								}
 							>
 								<XCircleFill />
@@ -96,9 +90,7 @@ const ApplicantsModalCard = ({
 							</div>
 							<div
 								className={
-									frontEndStatus === "Accepted"
-										? styles.accepted
-										: styles.displayNone
+									status === "Accepted" ? styles.accepted : styles.displayNone
 								}
 							>
 								<CheckCircleFill />
