@@ -32,7 +32,7 @@ const JobDetails = ({ id }) => {
     );
     const jsonData = await response.json();
     const response2 = await fetch(
-      "https://volunteer-ccsgp-backend.herokuapp.comorganization-accounts/" +
+      "https://volunteer-ccsgp-backend.herokuapp.com/organization-accounts/" +
         jsonData.orgID
     );
     const jsonData2 = await response2.json();

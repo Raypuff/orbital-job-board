@@ -11,7 +11,7 @@ const YourProfileOrg = () => {
 
   const getUser = async () => {
     const response = await fetch(
-      "https://volunteer-ccsgp-backend.herokuapp.comorganization-accounts/" +
+      "https://volunteer-ccsgp-backend.herokuapp.com/organization-accounts/" +
         currentUser.email,
       {}
     );

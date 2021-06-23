@@ -28,7 +28,7 @@ const JobBoard = () => {
 
   const getOrgs = async () => {
     const response = await fetch(
-      "https://volunteer-ccsgp-backend.herokuapp.comorganization-accounts"
+      "https://volunteer-ccsgp-backend.herokuapp.com/organization-accounts"
     );
     const jsonData = await response.json();
     setOrgs(jsonData);

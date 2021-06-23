@@ -18,7 +18,7 @@ const EditProfileOrg = ({ setEdit }) => {
 
   const getUser = async () => {
     const response = await fetch(
-      "https://volunteer-ccsgp-backend.herokuapp.comorganization-accounts/" +
+      "https://volunteer-ccsgp-backend.herokuapp.com/organization-accounts/" +
         currentUser.email,
       {}
     );
@@ -56,7 +56,7 @@ const EditProfileOrg = ({ setEdit }) => {
         //signify start of update process
 
         await fetch(
-          "https://volunteer-ccsgp-backend.herokuapp.comorganization-accounts/" +
+          "https://volunteer-ccsgp-backend.herokuapp.com/organization-accounts/" +
             currentUser.email,
           {
             method: "PUT",
