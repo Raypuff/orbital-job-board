@@ -33,7 +33,7 @@ const YourApplications = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	if (appLoading || true) {
+	if (appLoading) {
 		return <LoadingApplications />;
 	} else if (apps.length < 1) {
 		return <NoApplications />;
