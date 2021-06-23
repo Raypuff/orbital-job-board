@@ -28,10 +28,6 @@ const YourJobs = () => {
     getYourJobs();
   }, []);
 
-  console.log("Printing YourJobs");
-  console.log(jobs);
-  console.log(new Date().toISOString().slice(0, 10));
-
   if (jobLoading) {
     return <LoadingYourJobs />;
   } else if (jobs.length < 1) {
@@ -58,7 +54,6 @@ const YourJobs = () => {
       !filterState.virtual ? job.platform !== "Virtual" : true
     );
 
-  console.log(filterState);
   // for formik
   var initialValues = {
     pending: true,

@@ -52,8 +52,6 @@ const AllJobs = () => {
     .filter((job) =>
       !filterState.virtual ? job.platform !== "Virtual" : true
     );
-
-  console.log(filterState);
   // for formik
   var initialValues = {
     pending: true,

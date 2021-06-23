@@ -40,6 +40,29 @@ const ApplicantsModalCard = ({
 			);
 			setChanged(true);
 
+<<<<<<< HEAD
+      const text = `Hello ${name}! There has been an update to your volunteer application. Please click on the link below and log in to view the updates to your application! volunteer-ccsgp-vercel.app`;
+      const html = `Hello ${name}!<br>There has been an update to your volunteer application. <br>Please click on the link below and log in to view the updates to your application! <a href="volunteer-ccsgp-vercel.app">volunteer-ccsgp-vercel.app</a>`;
+      const msg = {
+        msg: {
+          to: email,
+          from: "volunteerccsgp@gmail.com",
+          subject: `[Volunteer CCSGP] Change in status of your job application for ${title}`,
+          text: text,
+          html: html,
+        },
+      };
+      await fetch("https://volunteer-ccsgp-backend.herokuapp.com/email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(msg),
+      });
+    } catch (err) {
+      console.error(err);
+    }
+    //setLoading(false);
+  };
+=======
 			const text = `Hello ${name}! There has been an update to your volunteer application. Please click on the link below and log in to view the updates to your application! volunteer-ccsgp-vercel.app`;
 			const html = `Hello ${name}!<br>There has been an update to your volunteer application. <br>Please click on the link below and log in to view the updates to your application! <a href="volunteer-ccsgp-vercel.app">volunteer-ccsgp-vercel.app</a>`;
 			const msg = {
@@ -64,6 +87,7 @@ const ApplicantsModalCard = ({
 			// console.error(err);
 		}
 	};
+>>>>>>> 3ccaf4476dbc3baf58b6f98a3fc608d7f890c3dc
 
 	return (
 		<Card>

@@ -39,8 +39,6 @@ const YourApplications = () => {
 		return <NoApplications />;
 	}
 
-	console.log(apps);
-
 	//filter
 	const filteredApplications = apps.filter
 		? apps
@@ -55,7 +53,6 @@ const YourApplications = () => {
 				)
 		: [];
 
-	console.log(filterState);
 	// for formik
 	var initialValues = {
 		pending: true,
