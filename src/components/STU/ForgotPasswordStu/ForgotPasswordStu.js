@@ -6,7 +6,7 @@ import styles from "./ForgotPasswordStu.module.css";
 
 const ForgotPasswordStu = () => {
   const emailRef = useRef();
-  const { resetPasswordStu, currentUser } = useAuth();
+  const { resetPassword, currentUser } = useAuth();
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -18,7 +18,7 @@ const ForgotPasswordStu = () => {
       setMessage("");
       setError("");
       setLoading(true);
-      await resetPasswordStu(emailRef.current.value);
+      await resetPassword(emailRef.current.value, "student");
       setMessage(
         "We have sent you an email with instructions on how to reset your password."
       );

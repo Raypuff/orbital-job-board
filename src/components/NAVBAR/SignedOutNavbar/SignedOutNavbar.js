@@ -31,6 +31,22 @@ const SignedOutNavbar = () => {
           </NavDropdown.Item>
         </NavDropdown>
       </Nav>
+      <Nav>
+        <NavDropdown title="Sign up" id="collasible-nav-dropdown" alignRight>
+          <NavDropdown.Item>
+            <Nav.Link as={Link} to="/sign-up-student">
+              Sign up as NUS Student
+            </Nav.Link>
+          </NavDropdown.Item>
+          <NavDropdown.Item>
+            <Nav>
+              <Nav.Link as={Link} to="/sign-up-organization">
+                Sign up as Organization
+              </Nav.Link>
+            </Nav>
+          </NavDropdown.Item>
+        </NavDropdown>
+      </Nav>
       <PostAJobButton />
     </>
   );

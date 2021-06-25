@@ -6,7 +6,7 @@ import styles from "./ForgotPasswordOrg.module.css";
 
 const ForgotPasswordOrg = () => {
   const emailRef = useRef();
-  const { resetPasswordOrg, currentUser } = useAuth();
+  const { resetPassword, currentUser } = useAuth();
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -18,7 +18,7 @@ const ForgotPasswordOrg = () => {
       setMessage("");
       setError("");
       setLoading(true);
-      await resetPasswordOrg(emailRef.current.value);
+      await resetPassword(emailRef.current.value, "organization");
       setMessage(
         "We have sent you an email with instructions on how to reset your password."
       );
