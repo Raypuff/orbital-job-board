@@ -98,6 +98,8 @@
 /* margin from text to icon */
 .infoContainer {
 	margin-left: 0.35rem;
+	display: flex;
+	flex-wrap: wrap;
 }
 /* margin from distance to location */
 .distanceContainer {
@@ -178,6 +180,9 @@
 		}
 		.extraShiftWrapper {
 			margin: 0.1rem 0 0 0.35rem;
+		}
+		.extraShiftContainer {
+			margin-left: 0;
 		}
 		.button {
 			color: white;

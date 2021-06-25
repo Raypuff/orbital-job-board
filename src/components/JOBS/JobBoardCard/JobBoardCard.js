@@ -73,6 +73,7 @@ const JobBoardCard = ({
 								alt="organization"
 								onError={() => setImageSrc(noImage)}
 								className={styles.image}
+								loading="lazy"
 							/>
 						</div>
 					</Col>
@@ -90,114 +91,85 @@ const JobBoardCard = ({
 							{/* Beneficiaries */}
 							<div className={styles.infoWrapper}>
 								<PeopleFill />
-								{beneficiaries ? (
-									beneficiaries.length <= 2 ? (
-										beneficiaries.map((beneficiary, index) => {
-											if (index + 1 !== beneficiaries.length) {
-												return (
-													<div
-														key={index}
-														className={styles.infoContainer}
-													>{`${beneficiary},`}</div>
-												);
-											} else if (index + 1 === beneficiaries.length) {
-												return (
-													<div className={styles.infoContainer}>
-														{beneficiary}
-													</div>
-												);
-											}
-										})
-									) : (
-										beneficiaries.map((beneficiary, index) => {
-											if (index === 0) {
-												return (
-													<div
-														key={index}
-														className={styles.infoContainer}
-													>{`${beneficiary},`}</div>
-												);
-											} else if (index === 1) {
-												return (
-													<div className={styles.infoContainer}>
-														{beneficiary}
-													</div>
-												);
-											} else if (index === 2) {
-												return (
-													<div className={styles.extraShiftWrapper}>
-														<div className={styles.extraShiftContainer}>
-															{`+${beneficiaries.length - 2} other beneficiar${
-																beneficiaries.length - 2 > 1 ? "ies" : "y"
-															}`}
-														</div>
-													</div>
-												);
-											}
-										})
-									)
-								) : (
-									<div className={styles.infoContainer}>
-										No beneficiaries indicated
-									</div>
-								)}
+								<div
+									data-testid="beneficiaries"
+									className={styles.infoContainer}
+								>
+									{beneficiaries
+										? beneficiaries.length <= 2
+											? beneficiaries.map((beneficiary, index) => {
+													if (index + 1 !== beneficiaries.length) {
+														return `${beneficiary}, `;
+													} else if (index + 1 === beneficiaries.length) {
+														return beneficiary;
+													}
+											  })
+											: beneficiaries.map((beneficiary, index) => {
+													if (index === 0) {
+														return `${beneficiary}, `;
+													} else if (index === 1) {
+														return beneficiary;
+													} else if (index === 2) {
+														return (
+															<div
+																key={index}
+																className={styles.extraShiftWrapper}
+															>
+																<div className={styles.extraShiftContainer}>
+																	{`+${
+																		beneficiaries.length - 2
+																	} other beneficiar${
+																		beneficiaries.length - 2 > 1 ? "ies" : "y"
+																	}`}
+																</div>
+															</div>
+														);
+													}
+											  })
+										: "No beneficiaries indicated"}
+								</div>
 							</div>
 							{/* Skills */}
 							<div className={styles.infoWrapper}>
 								<PuzzleFill />
-								{skills ? (
-									skills.length <= 2 ? (
-										skills.map((skill, index) => {
-											if (index + 1 !== skills.length) {
-												return (
-													<div
-														key={index}
-														className={styles.infoContainer}
-													>{`${skill},`}</div>
-												);
-											} else if (index + 1 === skills.length) {
-												return (
-													<div className={styles.infoContainer}>{skill}</div>
-												);
-											}
-										})
-									) : (
-										skills.map((skill, index) => {
-											if (index === 0) {
-												return (
-													<div
-														key={index}
-														className={styles.infoContainer}
-													>{`${skill},`}</div>
-												);
-											} else if (index === 1) {
-												return (
-													<div className={styles.infoContainer}>{skill}</div>
-												);
-											} else if (index === 2) {
-												return (
-													<div className={styles.extraShiftWrapper}>
-														<div className={styles.extraShiftContainer}>
-															{`+${skills.length - 2} other skill${
-																skills.length - 2 > 1 ? "s" : ""
-															}`}
-														</div>
-													</div>
-												);
-											}
-										})
-									)
-								) : (
-									<div className={styles.infoContainer}>
-										No skills indicated
-									</div>
-								)}
+								<div data-testid="skills" className={styles.infoContainer}>
+									{skills
+										? skills.length <= 2
+											? skills.map((skill, index) => {
+													if (index + 1 !== skills.length) {
+														return `${skill}, `;
+													} else if (index + 1 === skills.length) {
+														return skill;
+													}
+											  })
+											: skills.map((skill, index) => {
+													if (index === 0) {
+														return `${skill}, `;
+													} else if (index === 1) {
+														return skill;
+													} else if (index === 2) {
+														return (
+															<div
+																key={index}
+																className={styles.extraShiftWrapper}
+															>
+																<div className={styles.extraShiftContainer}>
+																	{`+${skills.length - 2} other skill${
+																		skills.length - 2 > 1 ? "s" : ""
+																	}`}
+																</div>
+															</div>
+														);
+													}
+											  })
+										: "No skills indicated"}
+								</div>
 							</div>
 							{/* Location */}
 							<div className={styles.higherInfoWrapper}>
 								<div className={styles.infoWrapper}>
 									<GeoAltFill />
-									<div className={styles.infoContainer}>
+									<div data-testid="location" className={styles.infoContainer}>
 										{platform === "Virtual"
 											? "Virtual"
 											: multiLocation === true
@@ -215,71 +187,52 @@ const JobBoardCard = ({
 									>
 										<GeoFill />
 										<div
+											data-testid="distance"
 											className={styles.infoContainer}
-										>{`<calculate distance from ${postalCode}>`}</div>
+										>{`${postalCode}m away`}</div>
 									</div>
 								</div>
 							</div>
 							{/* Long term or Ad hoc*/}
 							<div className={styles.infoWrapper}>
 								<ClockFill />
-								<div className={styles.infoContainer}>{type}</div>
+								<div data-testid="type" className={styles.infoContainer}>
+									{type}
+								</div>
 							</div>
 							{/* Dates*/}
 							<div className={styles.higherInfoWrapper}>
 								<div className={styles.infoWrapper}>
 									<CalendarWeekFill />
-									<div className={styles.infoContainer}>
-										{adShift ? (
-											type === "Long term" ? (
-												!flexiDate ? (
-													`${longStartDate} - ${longEndDate}`
-												) : (
-													"Flexible dates"
-												)
+									<div data-testid="shifts" className={styles.infoContainer}>
+										{type === "Long term" ? (
+											!flexiDate ? (
+												`${new Date(longStartDate).toDateString()} - ${new Date(
+													longEndDate
+												).toDateString()}`
 											) : (
-												`${adShift[0].date} ${tConvert(
-													adShift[0].startTime
-												)} - ${tConvert(adShift[0].endTime)}`
+												"Flexible dates"
 											)
+										) : adShift && type === "Ad hoc" ? (
+											`${new Date(adShift[0].date).toDateString()}, ${tConvert(
+												adShift[0].startTime
+											)} - ${tConvert(adShift[0].endTime)}`
 										) : (
 											<div className={styles.infoContainer}>
 												No shifts indicated
 											</div>
 										)}
-									</div>
-								</div>
-								{/* Rendering other shifts */}
-								<div className={styles.extraShiftWrapper}>
-									<div
-										className={
-											type === "Ad hoc"
-												? adShift !== null
-													? adShift.length > 1
-														? styles.extraShiftContainer
-														: styles.extraShiftContainerNone
-													: styles.extraShiftContainerNone
-												: styles.extraShiftContainerNone
-										}
-									>
-										{/* Rendering number of other shifts and (s) */}
-										{`+${
-											type === "Ad hoc"
-												? adShift !== null
-													? adShift.length > 1
-														? adShift.length - 1
-														: ""
-													: ""
-												: ""
-										} other shift${
-											type === "Ad hoc"
-												? adShift !== null
-													? adShift.length > 2
-														? "s"
-														: ""
-													: ""
-												: ""
-										}`}
+										{/* Rendering other shifts */}
+										<div className={styles.extraShiftWrapper}>
+											<div className={styles.extraShiftContainer}>
+												{/* Rendering number of other shifts and (s) */}
+												{adShift && type === "Ad hoc" && adShift.length > 1
+													? `+${adShift.length - 1} other shift${
+															adShift.length > 2 ? "s" : ""
+													  }`
+													: ""}
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
