@@ -12,7 +12,8 @@ const YourProfileStu = () => {
 
   const getUser = async () => {
     const response = await fetch(
-      "https://volunteer-ccsgp-backend.herokuapp.com/student-accounts/" +
+      process.env.REACT_APP_BACKEND_URL +
+        "/student-accounts/" +
         currentUser.email
     );
     const jsonData = await response.json();

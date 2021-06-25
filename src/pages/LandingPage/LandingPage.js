@@ -5,16 +5,19 @@ import Footer from "../../components/Footer";
 import { useAuth } from "../../contexts/AuthContext";
 
 const LandingPage = () => {
-	const { currentUser } = useAuth();
+  const { currentUser } = useAuth();
 
-	return (
-		<>
-			<Header />
-			<MyNavbar isSignedIn={currentUser} />
-			<Landing />
-			<Footer />
-		</>
-	);
+  console.log("Test env");
+  console.log(process.env.REACT_APP_FIREBASE_API_KEY);
+
+  return (
+    <>
+      <Header />
+      <MyNavbar isSignedIn={currentUser} />
+      <Landing />
+      <Footer />
+    </>
+  );
 };
 
 export default LandingPage;

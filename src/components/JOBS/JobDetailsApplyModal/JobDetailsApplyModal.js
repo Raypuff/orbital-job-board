@@ -48,7 +48,8 @@ export const JobDetailsApplyModal = ({
   const getStu = async () => {
     try {
       const response = await fetch(
-        "https://volunteer-ccsgp-backend.herokuapp.com/student-accounts/" +
+        process.env.REACT_APP_BACKEND_URL +
+          "/student-accounts/" +
           currentUser.email
       );
       const jsonData = await response.json();
@@ -103,26 +104,21 @@ export const JobDetailsApplyModal = ({
       };
       try {
         console.log(newApp);
-        await fetch(
-          "https://volunteer-ccsgp-backend.herokuapp.com/job-applications",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(newApp),
-          }
-        );
+        await fetch(process.env.REACT_APP_BACKEND_URL + "/job-applications", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(newApp),
+        });
+
+        await fetch(process.env.REACT_APP_BACKEND_URL + "/jobs/apply/" + id, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updateApplicants),
+        });
 
         await fetch(
-          "https://volunteer-ccsgp-backend.herokuapp.com/jobs/apply/" + id,
-          {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(updateApplicants),
-          }
-        );
-
-        await fetch(
-          "https://volunteer-ccsgp-backend.herokuapp.com/student-accounts/apply-job/" +
+          process.env.REACT_APP_BACKEND_URL +
+            "/student-accounts/apply-job/" +
             currentUser.email,
           {
             method: "PUT",
@@ -143,7 +139,7 @@ export const JobDetailsApplyModal = ({
           },
         };
 
-        await fetch("https://volunteer-ccsgp-backend.herokuapp.com/email", {
+        await fetch(process.env.REACT_APP_BACKEND_URL + "/email", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(msg),

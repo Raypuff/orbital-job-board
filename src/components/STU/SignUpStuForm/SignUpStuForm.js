@@ -46,7 +46,7 @@ const SignUpStuForm = () => {
 
         const body = { id };
         const response = await fetch(
-          "https://volunteer-ccsgp-backend.herokuapp.com/student-accounts",
+          process.env.REACT_APP_BACKEND_URL + "/student-accounts",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },

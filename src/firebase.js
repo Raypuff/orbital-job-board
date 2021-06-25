@@ -3,12 +3,12 @@ import "firebase/auth";
 import "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCCnYK0KUEuGRwXGL4KZsc78Z0ACkIJTgM",
-  authDomain: "nus-orbital-development.firebaseapp.com",
-  projectId: "nus-orbital-development",
-  storageBucket: "nus-orbital-development.appspot.com",
-  messagingSenderId: "395419282206",
-  appId: "1:395419282206:web:5451d1ed6655ea4318370f",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
 };
 
 const app = firebase.initializeApp(firebaseConfig);

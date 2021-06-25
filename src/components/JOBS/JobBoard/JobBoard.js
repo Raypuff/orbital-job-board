@@ -17,9 +17,7 @@ const JobBoard = () => {
   const [orgLoading, setOrgLoading] = useState(true);
 
   const getJobs = async () => {
-    const response = await fetch(
-      "https://volunteer-ccsgp-backend.herokuapp.com/jobs"
-    );
+    const response = await fetch(process.env.REACT_APP_BACKEND_URL + "/jobs");
     const jsonData = await response.json();
 
     setJobs(jsonData.filter((job) => job.status === "Approved"));
@@ -28,7 +26,7 @@ const JobBoard = () => {
 
   const getOrgs = async () => {
     const response = await fetch(
-      "https://volunteer-ccsgp-backend.herokuapp.com/organization-accounts"
+      process.env.REACT_APP_BACKEND_URL + "/organization-accounts"
     );
     const jsonData = await response.json();
     setOrgs(jsonData);

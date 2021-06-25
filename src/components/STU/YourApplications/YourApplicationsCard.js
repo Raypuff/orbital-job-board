@@ -23,7 +23,7 @@ const YourApplicationsCard = ({
 
   const getJob = async () => {
     const response = await fetch(
-      "https://volunteer-ccsgp-backend.herokuapp.com/jobs/" + jobID
+      process.env.REACT_APP_BACKEND_URL + "/jobs/" + jobID
     );
     const jsonData = await response.json();
     setJob(jsonData);
