@@ -39,7 +39,7 @@ const ApplicantsModal = ({
 
   const getApplications = async () => {
     const response = await fetch(
-      "https://volunteer-ccsgp-backend.herokuapp.com/job-applications/job/" + id
+      process.env.REACT_APP_BACKEND_URL + "/job-applications/job/" + id
     );
     const jsonData = await response.json();
     setApplications(jsonData);

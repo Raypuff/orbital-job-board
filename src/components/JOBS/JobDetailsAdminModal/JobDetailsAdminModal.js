@@ -4,14 +4,11 @@ import styles from "./JobDetailsAdminModal.module.css";
 const handleAcceptReject = async (jobId, choice) => {
   const body = { status: choice };
   try {
-    await fetch(
-      "https://volunteer-ccsgp-backend.herokuapp.com/jobs/status/" + jobId,
-      {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      }
-    );
+    await fetch(process.env.REACT_APP_BACKEND_URL + "/jobs/status/" + jobId, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
     window.location.reload(false);
   } catch (err) {
     console.error(err);

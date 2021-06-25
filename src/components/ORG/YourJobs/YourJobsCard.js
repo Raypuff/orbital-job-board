@@ -250,8 +250,7 @@ const TripleDot = ({ id, setShowModal }) => {
     //setLoading(true);
     try {
       await fetch(
-        "https://volunteer-ccsgp-backend.herokuapp.com/jobs/status-complete/" +
-          id,
+        process.env.REACT_APP_BACKEND_URL + "/jobs/status-complete/" + id,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

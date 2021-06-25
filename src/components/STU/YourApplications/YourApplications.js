@@ -20,7 +20,8 @@ const YourApplications = () => {
 
   const getYourApps = async () => {
     const response = await fetch(
-      "https://volunteer-ccsgp-backend.herokuapp.com/job-applications/student/" +
+      process.env.REACT_APP_BACKEND_URL +
+        "/job-applications/student/" +
         currentUser.email
     );
     const jsonData = await response.json();

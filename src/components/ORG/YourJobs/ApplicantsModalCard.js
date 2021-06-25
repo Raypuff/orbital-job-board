@@ -30,8 +30,7 @@ const ApplicantsModalCard = ({
     const body = { status: choice };
     try {
       const updateAppStatus = await fetch(
-        "https://volunteer-ccsgp-backend.herokuapp.com/job-applications/status/" +
-          id,
+        process.env.REACT_APP_BACKEND_URL + "/job-applications/status/" + id,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -51,7 +50,7 @@ const ApplicantsModalCard = ({
           html: html,
         },
       };
-      await fetch("https://volunteer-ccsgp-backend.herokuapp.com/email", {
+      await fetch(process.env.REACT_APP_BACKEND_URL + "/email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(msg),

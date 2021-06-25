@@ -28,11 +28,12 @@ const JobDetails = ({ id }) => {
 
   const getData = async () => {
     const response = await fetch(
-      "https://volunteer-ccsgp-backend.herokuapp.com/jobs/" + id
+      process.env.REACT_APP_BACKEND_URL + "/jobs/" + id
     );
     const jsonData = await response.json();
     const response2 = await fetch(
-      "https://volunteer-ccsgp-backend.herokuapp.com/organization-accounts/" +
+      process.env.REACT_APP_BACKEND_URL +
+        "/organization-accounts/" +
         jsonData.orgID
     );
     const jsonData2 = await response2.json();
