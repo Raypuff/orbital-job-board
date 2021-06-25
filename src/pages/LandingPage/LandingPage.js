@@ -7,9 +7,6 @@ import { useAuth } from "../../contexts/AuthContext";
 const LandingPage = () => {
   const { currentUser } = useAuth();
 
-  console.log("Test env");
-  console.log(process.env.REACT_APP_FIREBASE_API_KEY);
-
   return (
     <>
       <Header />
