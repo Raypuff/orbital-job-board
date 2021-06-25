@@ -46,16 +46,31 @@ const SignInStuForm = () => {
 						<Form onSubmit={handleSubmit}>
 							<Form.Group controlId="formBasicEmail">
 								<Form.Label>Email address</Form.Label>
-								<Form.Control type="email" ref={emailRef} required />
+								<Form.Control
+									data-testid="email"
+									type="email"
+									ref={emailRef}
+									required
+								/>
 								<Form.Text className="text-muted">
 									Please sign in with your NUS email address
 								</Form.Text>
 							</Form.Group>
 							<Form.Group controlId="formBasicPassword">
 								<Form.Label>Password</Form.Label>
-								<Form.Control type="password" ref={passwordRef} required />
+								<Form.Control
+									data-testid="passwrd"
+									type="password"
+									ref={passwordRef}
+									required
+								/>
 							</Form.Group>
-							<Button disabled={loading} variant="primary" type="submit">
+							<Button
+								date-testid="sign in"
+								disabled={loading}
+								variant="primary"
+								type="submit"
+							>
 								Sign in
 							</Button>
 						</Form>

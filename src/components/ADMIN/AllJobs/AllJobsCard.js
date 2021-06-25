@@ -179,7 +179,9 @@ const AllJobsCard = ({
 									<TripleDot id={id} />
 								</div>
 								<div className={styles.applicants}>
-									<h4>Proceed to view listing to approve or reject job</h4>
+									{/* <h5> */}
+									Proceed to view listing to approve or reject job
+									{/* </h5> */}
 								</div>
 							</div>
 						</Col>
