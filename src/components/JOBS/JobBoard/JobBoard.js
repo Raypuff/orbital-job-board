@@ -86,7 +86,7 @@ const JobBoard = () => {
 			return returnValue;
 		})
 		.sort(
-			//sort by recent posted first
+			//sort by recently posted jobs first
 			(job1, job2) => new Date(job2.datePosted) - new Date(job1.datePosted)
 		);
 
