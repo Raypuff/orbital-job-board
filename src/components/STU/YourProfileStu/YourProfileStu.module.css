@@ -1,8 +1,11 @@
 .formBG {
-  display: grid;
-  place-items: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .formContainer {
-  margin: 10vmax 0 12vmax;
+	max-width: 30rem;
+	padding: 0 2rem;
+	flex-basis: 30rem;
 }

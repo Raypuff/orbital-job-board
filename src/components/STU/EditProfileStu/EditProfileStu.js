@@ -81,7 +81,7 @@ const EditProfileStu = ({ setEdit }) => {
 		<>
 			<div className={styles.formBG}>
 				<div className={styles.formContainer}>
-					<Card bg="light" text="dark" style={{ width: "23rem" }}>
+					<Card bg="light" text="dark">
 						<Card.Header as="h6">Edit your profile</Card.Header>
 						<Card.Body>
 							<Formik

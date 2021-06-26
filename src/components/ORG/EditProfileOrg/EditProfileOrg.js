@@ -85,7 +85,7 @@ const EditProfileOrg = ({ setEdit }) => {
 		<>
 			<div className={styles.formBG}>
 				<div className={styles.formContainer}>
-					<Card bg="light" text="dark" style={{ width: "23rem" }}>
+					<Card bg="light" text="dark">
 						<Card.Header as="h6">Edit your organization profile</Card.Header>
 						<Card.Body>
 							<Formik
@@ -146,29 +146,38 @@ const EditProfileOrg = ({ setEdit }) => {
 												{errors.name}
 											</Form.Control.Feedback>
 										</Form.Group>
-										<Form.Group controlId="formuen">
-											<Form.Label>
-												Organization UEN, Charity registration number or Society
-												registration number
-												<Form.Text className="text-muted">
-													Only applicable for Non-NUS Organizations
-												</Form.Text>
-											</Form.Label>
+										<div
+											className={
+												values.type === "Non-NUS Organization"
+													? styles.display
+													: styles.displayNone
+											}
+										>
+											<Form.Group controlId="formuen">
+												<Form.Label>
+													Organization UEN, Charity registration number or
+													Society registration number
+													<Form.Text className="text-muted">
+														Only applicable for Non-NUS Organizations
+													</Form.Text>
+												</Form.Label>
 
-											<Form.Control
-												name="uen"
-												onChange={handleChange}
-												onBlur={handleBlur}
-												values={values.uen}
-												isValid={touched.uen && !errors.uen}
-												isInvalid={touched.uen && errors.uen}
-												disabled={values.type === "NUS Organization"}
-												placeholder={values.uen}
-											/>
-											<Form.Control.Feedback type="invalid">
-												{errors.uen}
-											</Form.Control.Feedback>
-										</Form.Group>
+												<Form.Control
+													name="uen"
+													onChange={handleChange}
+													onBlur={handleBlur}
+													values={values.uen}
+													isValid={touched.uen && !errors.uen}
+													isInvalid={touched.uen && errors.uen}
+													disabled={values.type === "NUS Organization"}
+													placeholder={values.uen}
+												/>
+												<Form.Control.Feedback type="invalid">
+													{errors.uen}
+												</Form.Control.Feedback>
+											</Form.Group>
+										</div>
+
 										<Form.Group controlId="formEmail">
 											<Form.Label>Email address of organization</Form.Label>
 											<Form.Control
