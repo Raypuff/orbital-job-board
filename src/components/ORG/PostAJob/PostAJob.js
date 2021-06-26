@@ -259,6 +259,7 @@ const PostAJob = () => {
 					isSubmitting,
 				}) => (
 					<Form onSubmit={handleSubmit} className={styles.formBox}>
+						{console.log(values.beneficiaries)}
 						<>
 							<Card>
 								<Accordion defaultActiveKey="0">
@@ -352,7 +353,8 @@ const PostAJob = () => {
 												<Form.Label>
 													Target profile of beneficiary
 													<Form.Text className="text-muted">
-														Hold shift and left click to select multiple
+														Hold Ctrl (Windows) or CMD (Mac) to select multiple
+														options
 													</Form.Text>
 												</Form.Label>
 												<Form.Control
@@ -381,7 +383,8 @@ const PostAJob = () => {
 												<Form.Label>
 													Skills required
 													<Form.Text className="text-muted">
-														Hold shift and left click to select multiple
+														Hold Ctrl (Windows) or CMD (Mac) to select multiple
+														options
 													</Form.Text>
 												</Form.Label>
 												<Form.Control
