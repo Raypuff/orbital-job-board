@@ -103,6 +103,15 @@ describe("ensure card renders props correctly", () => {
 			"Sep 10 1999, 8:00AM - 9:00PM"
 		);
 	});
+	test("commitment ad hoc + empty array", () => {
+		const job = render(
+			<StaticRouter>
+				<JobBoardCard type="Ad hoc" adShift={[]} />
+			</StaticRouter>
+		);
+		expect(job.getByTestId("type")).toHaveTextContent("Ad hoc");
+		expect(job.getByTestId("shifts")).toHaveTextContent("No shifts indicated");
+	});
 });
 
 test("clicking learn more leads to job details page", async () => {

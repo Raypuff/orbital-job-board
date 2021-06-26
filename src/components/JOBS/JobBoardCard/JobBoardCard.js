@@ -205,23 +205,23 @@ const JobBoardCard = ({
 								<div className={styles.infoWrapper}>
 									<CalendarWeekFill />
 									<div data-testid="shifts" className={styles.infoContainer}>
-										{type === "Long term" ? (
-											!flexiDate ? (
-												`${new Date(longStartDate).toDateString()} - ${new Date(
-													longEndDate
-												).toDateString()}`
-											) : (
-												"Flexible dates"
-											)
-										) : adShift && type === "Ad hoc" ? (
-											`${new Date(adShift[0].date).toDateString()}, ${tConvert(
-												adShift[0].startTime
-											)} - ${tConvert(adShift[0].endTime)}`
-										) : (
-											<div className={styles.infoContainer}>
-												No shifts indicated
-											</div>
-										)}
+										{type === "Long term"
+											? !flexiDate
+												? `${new Date(
+														longStartDate
+												  ).toDateString()} - ${new Date(
+														longEndDate
+												  ).toDateString()}`
+												: "Flexible dates"
+											: type === "Ad hoc"
+											? adShift && adShift.length > 0
+												? `${new Date(
+														adShift[0].date
+												  ).toDateString()}, ${tConvert(
+														adShift[0].startTime
+												  )} - ${tConvert(adShift[0].endTime)}`
+												: "No shifts indicated"
+											: "No volunteer type indicated"}
 										{/* Rendering other shifts */}
 										<div className={styles.extraShiftWrapper}>
 											<div className={styles.extraShiftContainer}>
