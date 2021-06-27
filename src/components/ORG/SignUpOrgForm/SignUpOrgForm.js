@@ -32,8 +32,6 @@ const SignUpOrgForm = () => {
           "Sign up successful! Please check your inbox for a verification email"
         );
 
-        await logout();
-
         //creating variables to send over through http request
         const id = values.email;
 

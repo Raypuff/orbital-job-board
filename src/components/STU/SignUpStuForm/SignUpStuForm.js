@@ -34,7 +34,6 @@ const SignUpStuForm = () => {
 
         await signup(values.email, values.password, "student");
         await sendEmailVerification();
-        await logout();
 
         setMessage("Sign up successful");
         alert(
