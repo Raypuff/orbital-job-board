@@ -79,8 +79,19 @@
 }
 
 .applicants {
-	margin: auto 0 0 auto;
-	padding: 0 1em 0.5em 0;
+	margin: auto 0.7em 0.7em auto;
+	font-size: 1.4rem;
+	padding: 0.3em 0.8em;
+	border-radius: 1em;
+	background-color: #5cb85c;
+	color: black;
+	cursor: pointer;
+}
+
+.noApplicants {
+	composes: applicants;
+	background-color: #d9534f;
+	cursor: default;
 }
 
 .dotsContainerMobile {

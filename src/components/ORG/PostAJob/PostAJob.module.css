@@ -1,32 +1,43 @@
 .formContainer {
-  display: grid;
-  place-items: center;
+	display: grid;
+	place-items: center;
 }
 
 .formBox {
-  margin: 3vmax 0;
-  width: 75em;
+	margin: 3vmax 0;
+	width: 75em;
 }
 
 @media (max-width: 1234px) {
-  .formBox {
-    width: 95%;
-  }
+	.formBox {
+		width: 95%;
+	}
 }
 
 .terms > li {
-  font-weight: bold;
+	font-weight: bold;
 }
 
 .accordionBox {
-  margin: 1em;
+	margin: 1em;
 }
 
 .typeDisplay {
-  grid-gap: 0px;
-  /* a useless property */
+	grid-gap: 0px;
+	/* a useless property */
 }
 
 .typeDisplayNone {
-  display: none;
+	display: none;
+}
+
+.imageContainer {
+	display: flex;
+	justify-content: center;
+	margin: 0.5rem;
+}
+
+.image {
+	max-width: 75%;
+	max-height: 50vh;
 }

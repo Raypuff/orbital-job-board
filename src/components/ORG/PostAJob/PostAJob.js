@@ -7,6 +7,7 @@ import {
 	Form,
 	Button,
 	Alert,
+	Spinner,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Shifts from "./Shifts";
@@ -501,6 +502,7 @@ const PostAJob = () => {
 													<Col md={4}>
 														<Form.Group controlId="formPostalCode">
 															<Form.Label>Postal code of location</Form.Label>
+
 															<Form.Control
 																type="text"
 																name="postalCode"
@@ -521,6 +523,10 @@ const PostAJob = () => {
 															<Form.Control.Feedback type="invalid">
 																{errors.postalCode}
 															</Form.Control.Feedback>
+															<Form.Text className="text-muted">
+																The postal code will be used to display the
+																distance of the job from volunteers
+															</Form.Text>
 														</Form.Group>
 													</Col>
 												</Row>
@@ -677,7 +683,14 @@ const PostAJob = () => {
 												}
 											>
 												<Form.Group controlId="formShiftNumber">
-													<Form.Label>Ad hoc - Number of shifts</Form.Label>
+													<Form.Label>
+														Ad hoc - Number of shifts
+														<Form.Text className="text-muted">
+															If the shifts are flexible or have not been
+															confirmed yet, you can leave the Number of shifts
+															as 0
+														</Form.Text>
+													</Form.Label>
 													<Form.Control
 														name="shiftNumber"
 														disabled={values.type !== "Ad hoc"}
@@ -735,22 +748,36 @@ const PostAJob = () => {
 												</Form.Control.Feedback>
 											</Form.Group>
 											<Form.Group>
-												<div>Upload Image</div>
-												<input
-													type="file"
+												<Form.Label>
+													Upload image
+													<Form.Text className="text-muted">
+														An image that best captures the essence of the
+														volunteer job would be helpful in attracting more
+														volunteers
+													</Form.Text>
+												</Form.Label>
+												<Form.Control
 													name="file"
-													placeholder="Upload an image"
+													type="file"
 													onChange={uploadImage}
 												/>
-												{imageLoading ? (
-													<div>Loading...</div>
-												) : (
-													<img
-														src={image}
-														style={{ width: "300px" }}
-														alt="Volunteer"
-													/>
-												)}
+												<div className={styles.imageContainer}>
+													{imageLoading ? (
+														<Spinner
+															animation="border"
+															role="status"
+															variant="primary"
+														>
+															<span className="sr-only">Loading...</span>
+														</Spinner>
+													) : image ? (
+														<img
+															src={image}
+															className={styles.image}
+															alt="Volunteer"
+														/>
+													) : null}
+												</div>
 											</Form.Group>
 										</div>
 									</Accordion.Collapse>

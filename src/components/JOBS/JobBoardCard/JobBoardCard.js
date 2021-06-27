@@ -220,7 +220,7 @@ const JobBoardCard = ({
 												  ).toDateString()}, ${tConvert(
 														adShift[0].startTime
 												  )} - ${tConvert(adShift[0].endTime)}`
-												: "No shifts indicated"
+												: "Shifts are flexible"
 											: "No volunteer type indicated"}
 										{/* Rendering other shifts */}
 										<div className={styles.extraShiftWrapper}>
