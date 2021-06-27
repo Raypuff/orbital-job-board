@@ -379,6 +379,10 @@ const PostAJob = () => {
 												<Form.Control.Feedback type="invalid">
 													{errors.beneficiaries}
 												</Form.Control.Feedback>
+												<Form.Text className="text-muted">
+													For 'Other', you can elaborate in the Additional
+													information section
+												</Form.Text>
 											</Form.Group>
 											<Form.Group controlId="formSkills">
 												<Form.Label>
@@ -405,6 +409,10 @@ const PostAJob = () => {
 												<Form.Control.Feedback type="invalid">
 													{errors.skills}
 												</Form.Control.Feedback>
+												<Form.Text className="text-muted">
+													For 'Others', you can elaborate in the Additional
+													information section
+												</Form.Text>
 											</Form.Group>
 											<Form.Group controlId="formPurpose">
 												<Form.Label>
@@ -760,6 +768,7 @@ const PostAJob = () => {
 													name="file"
 													type="file"
 													onChange={uploadImage}
+													accept="image/*"
 												/>
 												<div className={styles.imageContainer}>
 													{imageLoading ? (

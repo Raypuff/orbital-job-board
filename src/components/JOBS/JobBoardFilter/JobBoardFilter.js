@@ -34,36 +34,35 @@ const JobBoardFilter = ({
 					</Accordion.Toggle>
 					<Accordion.Collapse eventKey="1">
 						<Card.Body>
-							{/* SORT BY
-              <Card.Title>Sort by</Card.Title>
-              <Form.Text className="text-muted">
-                              </Form.Text>
-              <Form.Group controlId="formMostRecent" className={styles.input}>
-                <Form.Check
-                  type="radio"
-                  label="Most recent"
-                  name="sort"
-                  value="mostRecent"
-                  checked={values.sort === "mostRecent"}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-              </Form.Group>
-              <Form.Group
-                controlId="formNearestDistance"
-                className={styles.input}
-              >
-                <Form.Check
-                  type="radio"
-                  label="Nearest distance"
-                  name="sort"
-                  value="nearestDistance"
-                  checked={values.sort === "nearestDistance"}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-              </Form.Group>
-              <Dropdown.Divider /> */}
+							{/* SORT BY */}
+							{/* <Card.Title>Sort by</Card.Title>
+							<Form.Text className="text-muted"></Form.Text>
+							<Form.Group controlId="formMostRecent" className={styles.input}>
+								<Form.Check
+									type="radio"
+									label="Most recent"
+									name="sort"
+									value="mostRecent"
+									checked={values.sort === "mostRecent"}
+									onChange={handleChange}
+									onBlur={handleBlur}
+								/>
+							</Form.Group>
+							<Form.Group
+								controlId="formNearestDistance"
+								className={styles.input}
+							>
+								<Form.Check
+									type="radio"
+									label="Nearest distance"
+									name="sort"
+									value="nearestDistance"
+									checked={values.sort === "nearestDistance"}
+									onChange={handleChange}
+									onBlur={handleBlur}
+								/>
+							</Form.Group>
+							<Dropdown.Divider /> */}
 							{/* FILTER BY */}
 							<Card.Title>Filter by</Card.Title>
 							{/* Type */}
