@@ -5,7 +5,9 @@ const Shifts = ({ handleChange, handleBlur, values, touched, errors }) => {
 	return (
 		<div
 			className={
-				values.type === "Ad hoc" ? styles.typeDisplay : styles.typeDisplayNone
+				values.type === "Ad hoc" && values.flexiShifts !== true
+					? styles.typeDisplay
+					: styles.typeDisplayNone
 			}
 		>
 			<div

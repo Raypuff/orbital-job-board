@@ -117,6 +117,7 @@ const PostAJob = () => {
 				longEndDate: values.longEndDate,
 				flexiHours: values.flexiHours,
 				longHours: values.longHours,
+				flexiShifts: values.flexiShifts,
 				adShift: adShiftProcessor(
 					values.shiftNumber,
 					values.shift1Date,
@@ -152,6 +153,8 @@ const PostAJob = () => {
 				),
 				addInfo: values.addInfo,
 				imageUrl: imageUrl,
+				closingDate: values.closingDate,
+				noClosingDate: values.noClosingDate,
 				pocName: values.retrievePoc ? userData.pocName : values.pocName,
 				pocNo: values.retrievePoc ? userData.pocNo : values.pocNo,
 				pocEmail: values.retrievePoc ? userData.pocEmail : values.pocEmail,
@@ -209,6 +212,7 @@ const PostAJob = () => {
 					longEndDate: "",
 					flexiHours: false,
 					longHours: "",
+					flexiShifts: false,
 					shiftNumber: 0,
 					shift1Date: "",
 					shift1Start: "",
@@ -241,6 +245,8 @@ const PostAJob = () => {
 					shift10Start: "",
 					shift10End: "",
 					addInfo: "",
+					closingDate: "",
+					noClosingDate: false,
 					pocName: "",
 					pocNo: "",
 					pocEmail: "",
@@ -260,7 +266,7 @@ const PostAJob = () => {
 					isSubmitting,
 				}) => (
 					<Form onSubmit={handleSubmit} className={styles.formBox}>
-						{console.log(values.beneficiaries)}
+						{console.log(values)}
 						<>
 							<Card>
 								<Accordion defaultActiveKey="0">
@@ -691,21 +697,26 @@ const PostAJob = () => {
 												}
 											>
 												<Form.Group controlId="formShiftNumber">
-													<Form.Label>
-														Ad hoc - Number of shifts
-														<Form.Text className="text-muted">
-															If the shifts are flexible or have not been
-															confirmed yet, you can leave the Number of shifts
-															as 0
-														</Form.Text>
-													</Form.Label>
+													<Form.Label>Ad hoc - Number of shifts</Form.Label>
 													<Form.Control
 														name="shiftNumber"
-														disabled={values.type !== "Ad hoc"}
+														disabled={
+															values.type !== "Ad hoc" ||
+															values.flexiShifts === true
+														}
 														placeholder={
 															values.type !== "Ad hoc"
 																? null
-																: values.shiftNumber
+																: values.flexiShifts === false
+																? values.shiftNumber
+																: 0
+														}
+														value={
+															values.type !== "Ad hoc"
+																? null
+																: values.flexiShifts === false
+																? values.shiftNumber
+																: 0
 														}
 														type="number"
 														min="0"
@@ -720,6 +731,23 @@ const PostAJob = () => {
 													<Form.Control.Feedback type="invalid">
 														{errors.shiftNumber}
 													</Form.Control.Feedback>
+													<Form.Text>
+														<Form.Group controlId="formFlexiShifts">
+															<Form.Check
+																name="flexiShifts"
+																label="Flexible shifts"
+																disabled={values.type === "Long term"}
+																checked={
+																	values.type === "Long term"
+																		? false
+																		: values.flexiShifts
+																}
+																onChange={handleChange}
+																onBlur={handleBlur}
+																feedback={errors.flexiShifts}
+															/>
+														</Form.Group>
+													</Form.Text>
 												</Form.Group>
 											</div>
 
@@ -787,6 +815,43 @@ const PostAJob = () => {
 														/>
 													) : null}
 												</div>
+											</Form.Group>
+											<Form.Group controlId="formClosingDate">
+												<Form.Label>
+													Closing date
+													<Form.Text className="text-muted">
+														Indicating a closing date would give volunteers a
+														better sense of the application timeframe
+													</Form.Text>
+												</Form.Label>
+												<Form.Control
+													type="date"
+													name="closingDate"
+													value={values.closingDate}
+													onChange={handleChange}
+													onBlur={handleBlur}
+													isValid={touched.closingDate && !errors.closingDate}
+													isInvalid={touched.closingDate && errors.closingDate}
+													min={new Date().toISOString().substring(0, 10)}
+													disabled={values.noClosingDate}
+												/>
+												<Form.Control.Feedback type="invalid">
+													{errors.closingDate}
+												</Form.Control.Feedback>
+												<Form.Text>
+													<Form>
+														<Form.Group>
+															<Form.Check
+																name="noClosingDate"
+																label="There is no closing date"
+																checked={values.noClosingDate}
+																onChange={handleChange}
+																onBlur={handleBlur}
+																feedback={errors.noClosingDate}
+															/>
+														</Form.Group>
+													</Form>
+												</Form.Text>
 											</Form.Group>
 										</div>
 									</Accordion.Collapse>
@@ -1065,6 +1130,7 @@ const validationSchema = Yup.object().shape({
 			.positive("Please only enter a positive number")
 			.required("Please indicate the number of hours to commit"),
 	}),
+	flexiShifts: Yup.bool(),
 	shiftNumber: Yup.number("Please only enter numbers"),
 	shift1Date: Yup.date().when("shiftNumber", {
 		is: (shiftNumber) => shiftNumber >= 1,
@@ -1197,6 +1263,13 @@ const validationSchema = Yup.object().shape({
 		then: Yup.string().required("Please indicate the end time of the shift"),
 	}),
 	addInfo: Yup.string(),
+	closingDate: Yup.date().when("noClosingDate", {
+		is: false,
+		then: Yup.date().required(
+			"Please indicate the closing date of volunteer applications"
+		),
+	}),
+	noClosingDate: Yup.bool(),
 	pocName: Yup.string().when("retrievePoc", {
 		is: false,
 		then: Yup.string().required("Please enter the name of contact person"),

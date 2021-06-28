@@ -114,9 +114,12 @@ const YourJobs = () => {
 								longEndDate={job.longEndDate}
 								flexiHours={job.flexiHours}
 								longHours={job.longHours}
+								flexiShifts={job.flexiShifts}
 								adShift={job.adShift}
 								addInfo={job.addInfo}
 								imageUrl={job.imageUrl}
+								closingDate={job.closingDate}
+								noClosingDate={job.noClosingDate}
 								pocName={job.pocName}
 								pocNo={job.pocNo}
 								pocEmail={job.pocEmail}

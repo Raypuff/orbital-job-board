@@ -69,9 +69,12 @@ const JobDetails = ({ id }) => {
 		longEndDate,
 		flexiHours,
 		longHours,
+		flexiShifts,
 		adShift,
 		addInfo,
 		imageUrl,
+		closingDate,
+		noClosingDate,
 		pocName,
 		pocNo,
 		pocEmail,
@@ -177,6 +180,14 @@ const JobDetails = ({ id }) => {
 											{`Posted on: ${new Date(datePosted).toDateString()}`}
 											<br />
 										</h7>
+										<h7>
+											{noClosingDate
+												? "No closing date for applications"
+												: `Applications close on: ${new Date(
+														closingDate
+												  ).toDateString()}`}
+										</h7>
+										<hr />
 										<h5>About</h5>
 										<div className={styles.lineWrapper}>
 											<h7>
@@ -265,7 +276,7 @@ const JobDetails = ({ id }) => {
 											<h7>Dates: </h7>
 											<h7>
 												{type === "Long term"
-													? flexiDate === false
+													? !flexiDate
 														? `${new Date(
 																longStartDate
 														  ).toDateString()} - ${new Date(
@@ -295,19 +306,23 @@ const JobDetails = ({ id }) => {
 												</h7>
 												<ol>
 													{type === "Ad hoc"
-														? adShift.map((shift, index) => {
-																return (
-																	<li key={index}>
-																		<h7>
-																			{`${new Date(
-																				shift.date
-																			).toDateString()} ${tConvert(
-																				shift.startTime
-																			)} - ${tConvert(shift.endTime)}`}
-																		</h7>
-																	</li>
-																);
-														  })
+														? !flexiShifts
+															? adShift && adShift.length > 0
+																? adShift.map((shift, index) => {
+																		return (
+																			<li key={index}>
+																				<h7>
+																					{`${new Date(
+																						shift.date
+																					).toDateString()} ${tConvert(
+																						shift.startTime
+																					)} - ${tConvert(shift.endTime)}`}
+																				</h7>
+																			</li>
+																		);
+																  })
+																: "No shifts indicated"
+															: "Flexible shifts"
 														: ""}
 												</ol>
 											</div>
