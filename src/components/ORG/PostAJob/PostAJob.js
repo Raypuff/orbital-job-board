@@ -706,14 +706,14 @@ const PostAJob = () => {
 														}
 														placeholder={
 															values.type !== "Ad hoc"
-																? null
+																? 0
 																: values.flexiShifts === false
 																? values.shiftNumber
 																: 0
 														}
 														value={
 															values.type !== "Ad hoc"
-																? null
+																? 0
 																: values.flexiShifts === false
 																? values.shiftNumber
 																: 0
