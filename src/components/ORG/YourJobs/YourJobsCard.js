@@ -1,5 +1,5 @@
 import { useState, forwardRef } from "react";
-import { Row, Col, Card, Dropdown } from "react-bootstrap";
+import { Row, Col, Card, Dropdown, Button, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import {
 	ThreeDotsVertical,
@@ -41,7 +41,26 @@ const YourJobsCard = ({
 	datePosted,
 	applicants,
 }) => {
-	const [showModal, setShowModal] = useState(false);
+	const [showApplicantsModal, setShowApplicantsModal] = useState(false);
+	const [showCompleteModal, setShowCompleteModal] = useState(false);
+
+	const handleComplete = async () => {
+		//setLoading(true);
+		try {
+			await fetch(
+				process.env.REACT_APP_BACKEND_URL + "/jobs/status-complete/" + id,
+				{
+					method: "PUT",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({}),
+				}
+			);
+		} catch (err) {
+			console.error(err);
+		}
+		//setLoading(false);
+		window.location.reload(false);
+	};
 
 	return (
 		<>
@@ -105,7 +124,12 @@ const YourJobsCard = ({
 										</div>
 									</div>
 									<div className={styles.dotsContainerMobile}>
-										<TripleDot id={id} setShowModal={setShowModal} />
+										<TripleDot
+											id={id}
+											status={status}
+											setShowApplicantsModal={setShowApplicantsModal}
+											setShowCompleteModal={setShowCompleteModal}
+										/>
 									</div>
 								</div>
 
@@ -193,14 +217,19 @@ const YourJobsCard = ({
 						<Col lg={4}>
 							<div className={styles.applicantsContainer}>
 								<div className={styles.dotsContainer}>
-									<TripleDot id={id} setShowModal={setShowModal} />
+									<TripleDot
+										id={id}
+										status={status}
+										setShowApplicantsModal={setShowApplicantsModal}
+										setShowCompleteModal={setShowCompleteModal}
+									/>
 								</div>
 
 								<div
 									className={
 										applicants ? styles.applicants : styles.noApplicants
 									}
-									onClick={() => setShowModal(true)}
+									onClick={() => setShowApplicantsModal(true)}
 								>
 									Applicants: {applicants ? applicants.length : "0"}
 								</div>
@@ -210,8 +239,8 @@ const YourJobsCard = ({
 				</Card>
 			</div>
 			<ApplicantsModal
-				show={showModal}
-				onHide={() => setShowModal(false)}
+				show={showApplicantsModal}
+				onHide={() => setShowApplicantsModal(false)}
 				key={id}
 				id={id}
 				status={status}
@@ -239,6 +268,26 @@ const YourJobsCard = ({
 				datePosted={datePosted}
 				applicants={applicants}
 			/>
+			<Modal
+				show={showCompleteModal}
+				onHide={() => setShowCompleteModal(false)}
+				size="md"
+				centered
+			>
+				<Modal.Header closeButton>
+					<Modal.Title>Mark as completed</Modal.Title>
+				</Modal.Header>
+				<Modal.Body>
+					You are about to mark {title} as complete. Your job will no longer be
+					publicly available on the job board. You will not be able to undo this
+					action. Are you sure you want to perform this action?
+				</Modal.Body>
+				<Modal.Footer className="justify-content-center">
+					<Button variant="danger" onClick={() => handleComplete()}>
+						Mark as completed
+					</Button>
+				</Modal.Footer>
+			</Modal>
 		</>
 	);
 };
@@ -258,40 +307,28 @@ const CustomDropdown = forwardRef(({ children, onClick }, ref) => (
 	</a>
 ));
 
-const TripleDot = ({ id, setShowModal }) => {
-	//const [loading, setLoading] = useState(false);
-
-	const handleComplete = async () => {
-		//setLoading(true);
-		try {
-			await fetch(
-				process.env.REACT_APP_BACKEND_URL + "/jobs/status-complete/" + id,
-				{
-					method: "PUT",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({}),
-				}
-			);
-		} catch (err) {
-			console.error(err);
-		}
-		//setLoading(false);
-		window.location.reload(false);
-	};
+const TripleDot = ({
+	id,
+	status,
+	setShowApplicantsModal,
+	setShowCompleteModal,
+}) => {
 	return (
 		<Dropdown>
 			<Dropdown.Toggle as={CustomDropdown}></Dropdown.Toggle>
 			<Dropdown.Menu align="right">
 				{/* <Dropdown.Item>Edit job</Dropdown.Item> */}
-				<Dropdown.Item onClick={() => setShowModal(true)}>
+				<Dropdown.Item onClick={() => setShowApplicantsModal(true)}>
 					View applicants
 				</Dropdown.Item>
 				<Dropdown.Item as={Link} to={`/jobs/${id}`} target="blank">
 					View listing
 				</Dropdown.Item>
-				<Dropdown.Item onClick={(event) => handleComplete()}>
-					Mark as completed
-				</Dropdown.Item>
+				{status === "Approved" && (
+					<Dropdown.Item onClick={() => setShowCompleteModal(true)}>
+						Mark as completed
+					</Dropdown.Item>
+				)}
 			</Dropdown.Menu>
 		</Dropdown>
 	);
