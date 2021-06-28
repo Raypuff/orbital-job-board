@@ -12,7 +12,7 @@ const AllJobs = () => {
 	const { currentUser } = useAuth();
 
 	const [jobs, setJobs] = useState([]);
-	const [jobLoading, setJobLoading] = useState(false);
+	const [jobLoading, setJobLoading] = useState(true);
 
 	const getAllJobs = async () => {
 		const response = await fetch(process.env.REACT_APP_BACKEND_URL + "/jobs/");
