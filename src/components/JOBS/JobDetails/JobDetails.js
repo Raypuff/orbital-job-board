@@ -99,6 +99,7 @@ const JobDetails = ({ id }) => {
 	//6: Admin Job Pending -> Reject or Approve job
 	//7: Admin Job Approved -> Alert at the top that the job is approved
 	//8: Admin Job Rejected -> Alert at the top that the job is rejected
+	//13: Admin Job Completed -> Alert at the top that the job is completed
 	//9: Not available
 
 	var displayState;
@@ -142,6 +143,8 @@ const JobDetails = ({ id }) => {
 			displayState = 7;
 		} else if (status === "Rejected") {
 			displayState = 8;
+		} else if (status === "Completed") {
+			displayState = 13;
 		} else {
 			displayState = 9;
 		}
@@ -186,6 +189,10 @@ const JobDetails = ({ id }) => {
 								Contact the organization to understand the situation
 							</Alert>
 						) : displayState === 12 ? (
+							<Alert variant="primary">
+								This job has been completed and is not publicly visible
+							</Alert>
+						) : displayState === 13 ? (
 							<Alert variant="primary">
 								This job has been completed and is not publicly visible
 							</Alert>
