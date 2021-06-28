@@ -88,11 +88,14 @@ const JobDetails = ({ id }) => {
 
 	// For display diff displayStates
 	//0: Signed out OR Student haven't apply -> Apply button
-	//1: Student applied -> Disabled Apply button
+	//1: Student applied & Job Approved -> Disabled Apply button
+	//11: Student successfully applied & Job Taken down -> Disabled Apply Button + Alert at top that job is taken down
+	//12: Student successfully applied & Job Completd ->  Disabled Apply Button + Alert at top that job is completed
 	//2: Org Not Your Job -> No button
 	//3: Org Job Pending -> Alert at top that job is still pending
 	//4: Org Job Approved -> Alert at top that job is visible
-	//5: Org Job Rejected -> Alert at top that job is rejectd
+	//5: Org Job Rejected -> Alert at top that job is rejected
+	//10: Org Job Completed -> Alert at top that job is completed
 	//6: Admin Job Pending -> Reject or Approve job
 	//7: Admin Job Approved -> Alert at the top that the job is approved
 	//8: Admin Job Rejected -> Alert at the top that the job is rejected
@@ -103,15 +106,23 @@ const JobDetails = ({ id }) => {
 		displayState = 0;
 	} else if (currentUser !== null && userType === "student") {
 		if (
-			job.applicants === null ||
-			!job.applicants.includes(currentUser.email)
+			(applicants === null || !applicants.includes(currentUser.email)) &&
+			status === "Approved"
 		) {
 			displayState = 0;
-		} else {
+		} else if (
+			applicants !== null &&
+			applicants.includes(currentUser.email) &&
+			status === "Approved"
+		) {
 			displayState = 1;
 		}
+		// include retrieval of my application status (state 11 and 12)
+		else {
+			displayState = 9;
+		}
 	} else if (currentUser !== null && userType === "organization") {
-		if (job.orgID !== currentUser.email) {
+		if (orgID !== currentUser.email) {
 			displayState = 2;
 		} else if (status === "Pending") {
 			displayState = 3;
@@ -119,6 +130,10 @@ const JobDetails = ({ id }) => {
 			displayState = 4;
 		} else if (status === "Rejected") {
 			displayState = 5;
+		} else if (status === "Completed") {
+			displayState = 10;
+		} else {
+			displayState = 9;
 		}
 	} else if (currentUser !== null && userType === "admin") {
 		if (status === "Pending") {
@@ -127,6 +142,8 @@ const JobDetails = ({ id }) => {
 			displayState = 7;
 		} else if (status === "Rejected") {
 			displayState = 8;
+		} else {
+			displayState = 9;
 		}
 	} else {
 		displayState = 9;
@@ -158,6 +175,19 @@ const JobDetails = ({ id }) => {
 						) : displayState === 8 ? (
 							<Alert variant="danger">
 								This job has been rejected and is not publicly visible
+							</Alert>
+						) : displayState === 10 ? (
+							<Alert variant="primary">
+								This job has been completed and is not publicly visible
+							</Alert>
+						) : displayState === 11 ? (
+							<Alert variant="danger">
+								This job has been taken down and is not publicly visible.
+								Contact the organization to understand the situation
+							</Alert>
+						) : displayState === 12 ? (
+							<Alert variant="primary">
+								This job has been completed and is not publicly visible
 							</Alert>
 						) : null}
 						<Row>
@@ -379,7 +409,9 @@ const JobDetails = ({ id }) => {
 								<div className={styles.buttonRow}>
 									{displayState === 0 ? (
 										<ApplyButton handleClick={() => setShowApplyModal(true)} />
-									) : displayState === 1 ? (
+									) : displayState === 1 ||
+									  displayState === 11 ||
+									  displayState === 12 ? (
 										<DisabledButton />
 									) : displayState === 6 ? (
 										<>
