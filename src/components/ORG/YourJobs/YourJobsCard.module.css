@@ -106,6 +106,9 @@
 		margin-left: auto;
 		display: initial;
 	}
+	.applicants {
+		margin: auto auto 0.7em 0.7em;
+	}
 }
 
 @media screen and (max-width: 768px) {
