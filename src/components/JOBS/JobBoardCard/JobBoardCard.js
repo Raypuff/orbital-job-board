@@ -1,6 +1,7 @@
 import { Row, Col, Card } from "react-bootstrap";
 // import JobBoardModal from "../JobBoardModal";
 import {
+	ExclamationSquareFill,
 	PeopleFill,
 	PuzzleFill,
 	GeoAltFill,
@@ -35,9 +36,12 @@ const JobBoardCard = ({
 	longEndDate,
 	flexiHours,
 	longHours,
+	flexiShifts,
 	adShift,
 	addInfo,
 	imageUrl,
+	closingDate,
+	noClosingDate,
 	pocName,
 	pocNo,
 	pocEmail,
@@ -86,6 +90,17 @@ const JobBoardCard = ({
 								</div>
 								<div>
 									<h6 className={styles.orgContainer}>by {orgName}</h6>
+								</div>
+							</div>
+							{/* Closing date */}
+							<div className={styles.infoWrapper}>
+								<ExclamationSquareFill />
+								<div className={styles.infoContainer}>
+									{noClosingDate
+										? "No closing date for applications"
+										: `Applications close on: ${new Date(
+												closingDate
+										  ).toDateString()}`}
 								</div>
 							</div>
 							{/* Beneficiaries */}
@@ -214,13 +229,15 @@ const JobBoardCard = ({
 												  ).toDateString()}`
 												: "Flexible dates"
 											: type === "Ad hoc"
-											? adShift && adShift.length > 0
-												? `${new Date(
-														adShift[0].date
-												  ).toDateString()}, ${tConvert(
-														adShift[0].startTime
-												  )} - ${tConvert(adShift[0].endTime)}`
-												: "Shifts are flexible"
+											? !flexiShifts
+												? adShift && adShift.length > 0
+													? `${new Date(
+															adShift[0].date
+													  ).toDateString()}, ${tConvert(
+															adShift[0].startTime
+													  )} - ${tConvert(adShift[0].endTime)}`
+													: "No shifts indicated"
+												: "Flexible shifts"
 											: "No volunteer type indicated"}
 										{/* Rendering other shifts */}
 										<div className={styles.extraShiftWrapper}>

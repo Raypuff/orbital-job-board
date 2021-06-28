@@ -27,9 +27,12 @@ const AllJobsCard = ({
 	longEndDate,
 	flexiHours,
 	longHours,
+	flexiShifts,
 	adShift,
 	addInfo,
 	imageUrl,
+	closingDate,
+	noClosingDate,
 	pocName,
 	pocNo,
 	pocEmail,
@@ -113,6 +116,13 @@ const AllJobsCard = ({
 									Posted on: {new Date(datePosted).toDateString()}
 								</h6>
 								<h6>
+									Applications close on:{" "}
+									{noClosingDate
+										? "No closing date for applications"
+										: new Date(closingDate).toDateString()}
+								</h6>
+
+								<h6>
 									Location:{" "}
 									{platform === "Virtual"
 										? "Virtual"
@@ -159,17 +169,21 @@ const AllJobsCard = ({
 									}
 								>
 									<h6>Shifts:</h6>
-									{type === "Ad hoc" &&
-										adShift !== null &&
-										adShift.map((shift, index) => {
-											return (
-												<h6>{`Shift ${index + 1}: ${new Date(
-													shift.date
-												).toDateString()} | ${tConvert(
-													shift.startTime
-												)} - ${tConvert(shift.endTime)}`}</h6>
-											);
-										})}
+									{type === "Ad hoc"
+										? !flexiShifts
+											? adShift && adShift.length > 1
+												? adShift.map((shift, index) => {
+														return (
+															<h6>{`Shift ${index + 1}: ${new Date(
+																shift.date
+															).toDateString()} | ${tConvert(
+																shift.startTime
+															)} - ${tConvert(shift.endTime)}`}</h6>
+														);
+												  })
+												: "No shifts indicated"
+											: "Flexible shifts"
+										: ""}
 								</div>
 							</div>
 						</Col>
