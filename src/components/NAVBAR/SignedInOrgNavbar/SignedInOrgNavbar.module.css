@@ -1,3 +1,28 @@
 .email {
-  color: #193f76;
+	color: #193f76;
+}
+
+.modalBody {
+	height: 34rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.image {
+	width: 100%;
+	padding: 0 3rem 1rem;
+}
+
+.modalFooter {
+	justify-content: center;
+}
+
+.pagesRow {
+	display: flex;
+	justify-content: center;
+}
+
+.pages {
+	margin-bottom: 0;
 }
