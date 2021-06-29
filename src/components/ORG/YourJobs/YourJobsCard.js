@@ -353,7 +353,7 @@ const YourJobsCard = ({
 					<Modal.Footer className="justify-content-center">
 						<CSVLink
 							data={applications.map((app) => Object.values(app))}
-							filename={`Volunteers for ${title}`}
+							filename={`Volunteers for ${title}.csv`}
 						>
 							<Button variant="primary" disabled={!applications}>
 								Export applicants
