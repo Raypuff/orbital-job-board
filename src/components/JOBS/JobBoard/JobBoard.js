@@ -38,6 +38,22 @@ const JobBoard = () => {
 
 	const filterJobs = () => {
 		if (jobs !== null) {
+			// filtering
+			var benFilter = []; //records the beneficiaries filters in place
+			for (var k = 0; k < BeneficiaryTags.length; k++) {
+				const benTag = BeneficiaryTags[k];
+				if (filterState[benTag]) {
+					benFilter.push(benTag);
+				}
+			}
+			var skillFilter = []; //records the skills filters in place
+			for (var l = 0; l < SkillTags.length; l++) {
+				const skillTag = SkillTags[l];
+				if (filterState[skillTag]) {
+					skillFilter.push(skillTag);
+				}
+			}
+
 			setFilteredJobs(
 				jobs
 					.filter((job) => filterState.longTerm || job.type !== "Long term")
@@ -64,8 +80,21 @@ const JobBoard = () => {
 					})
 					.sort(
 						//sort by recently posted jobs first
-						(job1, job2) =>
-							new Date(job2.datePosted) - new Date(job1.datePosted)
+						(job1, job2) => {
+							if (filterState.sort === "mostRecent") {
+								return new Date(job2.datePosted) - new Date(job1.datePosted);
+							} else {
+								return 0;
+							}
+						}
+					)
+					.sort(
+						//sort by nearest distance (not implemented)
+						(job1, job2) => {
+							if (filterState.sort === "nearestDistance") {
+								return -1;
+							}
+						}
 					)
 			);
 		} else {
@@ -89,22 +118,6 @@ const JobBoard = () => {
 		return <LoadingJobs />;
 	} else if (jobs.length < 1) {
 		return <NoJobs />;
-	}
-
-	// filtering
-	var benFilter = []; //records the beneficiaries filters in place
-	for (var k = 0; k < BeneficiaryTags.length; k++) {
-		const benTag = BeneficiaryTags[k];
-		if (filterState[benTag]) {
-			benFilter.push(benTag);
-		}
-	}
-	var skillFilter = []; //records the skills filters in place
-	for (var l = 0; l < SkillTags.length; l++) {
-		const skillTag = SkillTags[l];
-		if (filterState[skillTag]) {
-			skillFilter.push(skillTag);
-		}
 	}
 
 	//processing pages
@@ -160,6 +173,7 @@ const JobBoard = () => {
 
 	return (
 		<div className={styles.container}>
+			{console.log(filterState.sort)}
 			<Row className={styles.rowContainer}>
 				<Col md={4} lg={3} className={styles.firstColContainer}>
 					<div className={styles.filterContainer}>
