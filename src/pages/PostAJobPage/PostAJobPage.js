@@ -1,6 +1,3 @@
-import Header from "../../components/Header";
-import MyNavbar from "../../components/NAVBAR/MyNavbar";
-import Footer from "../../components/Footer";
 import PostAJob from "../../components/ORG/PostAJob";
 import { NotVerifiedOrg, NotOrg } from "./EmptyStates";
 import { useAuth } from "../../contexts/AuthContext";
@@ -22,13 +19,6 @@ const PostAJobPage = () => {
 		}
 	}
 
-	return (
-		<>
-			<Header />
-			<MyNavbar isSignedIn={currentUser} />
-			{isSignedInOrg()}
-			<Footer />
-		</>
-	);
+	return <>{isSignedInOrg()}</>;
 };
 export default PostAJobPage;

@@ -2,6 +2,15 @@
 	color: #193f76;
 }
 
+.dropdown:hover {
+	text-decoration: none;
+}
+
+.activeNavLink {
+	background-color: #eeeeee;
+	border-bottom: 2px solid #ef7c00;
+}
+
 .modalBody {
 	height: 34rem;
 	display: flex;

@@ -1,3 +1,7 @@
+// header, navbar and footer
+import Header from "./components/Header";
+import MyNavbar from "./components/NAVBAR/MyNavbar";
+import Footer from "./components/Footer";
 //student pages
 import SignInStuPage from "./pages/SignInStuPage";
 import SignUpStuPage from "./pages/SignUpStuPage";
@@ -28,6 +32,8 @@ function App() {
 		<StoreProvider>
 			<AuthProvider>
 				<Router>
+					<Header />
+					<MyNavbar />
 					<Switch>
 						{/* Student Pages */}
 						<Route path="/sign-in-student">
@@ -82,6 +88,7 @@ function App() {
 							<LandingPage />
 						</Route>
 					</Switch>
+					<Footer />
 				</Router>
 			</AuthProvider>
 		</StoreProvider>

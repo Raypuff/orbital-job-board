@@ -1,7 +1,4 @@
-import Header from "../../components/Header";
-import MyNavbar from "../../components/NAVBAR/MyNavbar";
 import YourApplications from "../../components/STU/YourApplications";
-import Footer from "../../components/Footer";
 import { useAuth } from "../../contexts/AuthContext";
 import { NotStu } from "./EmptyStates";
 
@@ -16,13 +13,6 @@ const YourApplicationsPage = () => {
 		}
 	}
 
-	return (
-		<>
-			<Header />
-			<MyNavbar isSignedIn={currentUser} />
-			{isSignedInStu()}
-			<Footer />
-		</>
-	);
+	return <>{isSignedInStu()}</>;
 };
 export default YourApplicationsPage;
