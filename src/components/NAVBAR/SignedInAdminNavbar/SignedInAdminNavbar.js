@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { NavDropdown, Nav } from "react-bootstrap";
 import PostAJobButton from "../PostAJobButton";
-import { Link, useHistory } from "react-router-dom";
+import { NavLink, Link, useHistory } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 
 import styles from "./SignedInAdminNavbar.module.css";
@@ -51,7 +51,12 @@ const SignedInAdminNavbar = () => {
 				</NavDropdown>
 			</Nav>
 			<Nav>
-				<Nav.Link as={Link} to="/all-jobs">
+				<Nav.Link
+					as={NavLink}
+					exact
+					activeClassName={styles.activeNavLink}
+					to="/all-jobs"
+				>
 					All Jobs
 				</Nav.Link>
 			</Nav>

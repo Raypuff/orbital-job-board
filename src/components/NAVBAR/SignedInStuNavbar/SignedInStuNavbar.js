@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NavDropdown, Nav, Modal, Button, Pagination } from "react-bootstrap";
-import { Link, useHistory } from "react-router-dom";
+import { NavLink, Link, useHistory } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 import styles from "./SignedInStuNavbar.module.css";
 import stu1 from "../../../assets/getting_started/stu1.png";
@@ -69,7 +69,16 @@ const SignedInStuNavbar = () => {
 				</Nav.Link>
 			</Nav>
 			<Nav>
-				<NavDropdown title="Profile" id="collasible-nav-dropdown" alignRight>
+				<NavDropdown
+					as={NavLink}
+					exact
+					to="/profile-student"
+					title="Profile"
+					id="collasible-nav-dropdown"
+					alignRight
+					className={styles.dropdown}
+					activeClassName={styles.activeNavLink}
+				>
 					<NavDropdown.Header className={styles.email}>
 						{currentUser.email}
 						<br />({isVerified()})
@@ -84,7 +93,12 @@ const SignedInStuNavbar = () => {
 				</NavDropdown>
 			</Nav>
 			<Nav>
-				<Nav.Link as={Link} to="/your-applications">
+				<Nav.Link
+					as={NavLink}
+					exact
+					activeClassName={styles.activeNavLink}
+					to="/your-applications"
+				>
 					Your Applications
 				</Nav.Link>
 			</Nav>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { NavDropdown, Nav, Modal, Button, Pagination } from "react-bootstrap";
 import PostAJobButton from "../PostAJobButton";
-import { Link, useHistory } from "react-router-dom";
+import { NavLink, Link, useHistory } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 import styles from "./SignedInOrgNavbar.module.css";
 import stu1 from "../../../assets/getting_started/stu1.png";
@@ -71,7 +71,16 @@ const SignedInOrgNavbar = () => {
 				</Nav.Link>
 			</Nav>
 			<Nav>
-				<NavDropdown title="Profile" id="collasible-nav-dropdown" alignRight>
+				<NavDropdown
+					as={NavLink}
+					exact
+					to="/profile-organization"
+					title="Profile"
+					id="collasible-nav-dropdown"
+					alignRight
+					className={styles.dropdown}
+					activeClassName={styles.activeNavLink}
+				>
 					<NavDropdown.Header className={styles.email}>
 						{currentUser.email}
 						<br />({isVerified()})
@@ -87,7 +96,12 @@ const SignedInOrgNavbar = () => {
 				</NavDropdown>
 			</Nav>
 			<Nav>
-				<Nav.Link as={Link} to="/your-jobs">
+				<Nav.Link
+					as={NavLink}
+					exact
+					activeClassName={styles.activeNavLink}
+					to="/your-jobs"
+				>
 					Your Jobs
 				</Nav.Link>
 			</Nav>

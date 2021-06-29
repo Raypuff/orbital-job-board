@@ -1,5 +1,5 @@
 import { Navbar, Nav } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import SignedOutNavbar from "../SignedOutNavbar";
 import SignedInStuNavbar from "../SignedInStuNavbar";
 import SignedInOrgNavbar from "../SignedInOrgNavbar";
@@ -8,11 +8,11 @@ import { useAuth } from "../../../contexts/AuthContext";
 import styles from "./MyNavbar.module.css";
 import nusccsgplogo from "../../../assets/nusccsgp.png";
 
-const MyNavbar = ({ isSignedIn }) => {
-	const { userType } = useAuth();
+const MyNavbar = () => {
+	const { currentUser, userType } = useAuth();
 
-	const AccountButtons = ({ isSignedIn }) => {
-		if (isSignedIn != null) {
+	const AccountButtons = () => {
+		if (currentUser != null) {
 			if (userType === "student") {
 				return <SignedInStuNavbar />;
 			} else if (userType === "organization") {
@@ -38,10 +38,20 @@ const MyNavbar = ({ isSignedIn }) => {
 						</Link>
 					</Navbar.Brand>
 					<Nav className={styles.mobileDisplayNone}>
-						<Nav.Link as={Link} to="/">
+						<Nav.Link
+							as={NavLink}
+							activeClassName={styles.activeNavLink}
+							exact
+							to="/"
+						>
 							Home
 						</Nav.Link>
-						<Nav.Link as={Link} to="/jobs">
+						<Nav.Link
+							as={NavLink}
+							activeClassName={styles.activeNavLink}
+							exact
+							to="/jobs"
+						>
 							Job Board
 						</Nav.Link>
 					</Nav>
@@ -49,14 +59,24 @@ const MyNavbar = ({ isSignedIn }) => {
 					<Navbar.Toggle aria-controls="responsive-navbar-nav" />
 					<Navbar.Collapse className="justify-content-end">
 						<Nav className={styles.desktopDisplayNone}>
-							<Nav.Link as={Link} to="/">
+							<Nav.Link
+								as={NavLink}
+								activeClassName={styles.activeNavLink}
+								exact
+								to="/"
+							>
 								Home
 							</Nav.Link>
-							<Nav.Link as={Link} to="/jobs">
+							<Nav.Link
+								as={NavLink}
+								activeClassName={styles.activeNavLink}
+								exact
+								to="/jobs"
+							>
 								Job Board
 							</Nav.Link>
 						</Nav>
-						<AccountButtons isSignedIn={isSignedIn} />
+						<AccountButtons />
 					</Navbar.Collapse>
 				</Navbar>
 			</div>

@@ -80,7 +80,7 @@
 
 .applicants {
 	margin: auto 0 0 auto;
-	padding: 0 1em 0.5em 0;
+	padding: 0 1rem 0.5rem 0;
 	font-size: 1.2rem;
 }
 
@@ -95,6 +95,10 @@
 	.dotsContainerMobile {
 		margin-left: auto;
 		display: initial;
+	}
+	.applicants {
+		margin: auto auto 0 0;
+		padding: 0 0 0.5rem 1rem;
 	}
 }
 
