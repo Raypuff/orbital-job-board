@@ -35,7 +35,7 @@ const JobBoardFilter = ({
 					<Accordion.Collapse eventKey="1">
 						<Card.Body>
 							{/* SORT BY */}
-							{/* <Card.Title>Sort by</Card.Title>
+							<Card.Title>Sort by</Card.Title>
 							<Form.Text className="text-muted"></Form.Text>
 							<Form.Group controlId="formMostRecent" className={styles.input}>
 								<Form.Check
@@ -62,7 +62,7 @@ const JobBoardFilter = ({
 									onBlur={handleBlur}
 								/>
 							</Form.Group>
-							<Dropdown.Divider /> */}
+							<Dropdown.Divider />
 							{/* FILTER BY */}
 							<Card.Title>Filter by</Card.Title>
 							{/* Type */}
