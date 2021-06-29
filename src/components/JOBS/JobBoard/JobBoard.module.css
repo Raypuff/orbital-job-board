@@ -43,3 +43,8 @@
 		margin: 0;
 	}
 }
+
+.pageRow {
+	display: flex;
+	justify-content: center;
+}

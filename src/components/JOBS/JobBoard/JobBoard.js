@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Pagination } from "react-bootstrap";
 import JobBoardFilter from "../JobBoardFilter";
 import JobBoardCard from "../JobBoardCard";
 import styles from "./JobBoard.module.css";
@@ -11,15 +11,18 @@ import { LoadingJobs, NoJobs, FilterNoJobs } from "./EmptyStates";
 
 const JobBoard = () => {
 	const [filterState, setFilterState] = useState({});
-	const [jobs, setJobs] = useState({});
+	const [jobs, setJobs] = useState([]);
+	const [filteredJobs, setFilteredJobs] = useState([]);
 	const [orgs, setOrgs] = useState({});
 	const [jobLoading, setJobLoading] = useState(true);
 	const [orgLoading, setOrgLoading] = useState(true);
+	// const [setupLoading, setSetupLoading] = useState(true);
+	// const [filteredJobsLength, setFilteredJobsLength] = useState(0);
+	const [activePage, setActivePage] = useState(1);
 
 	const getJobs = async () => {
 		const response = await fetch(process.env.REACT_APP_BACKEND_URL + "/jobs");
 		const jsonData = await response.json();
-
 		setJobs(jsonData.filter((job) => job.status === "Approved"));
 		setJobLoading(false);
 	};
@@ -33,6 +36,43 @@ const JobBoard = () => {
 		setOrgLoading(false);
 	};
 
+	const filterJobs = () => {
+		if (jobs !== null) {
+			setFilteredJobs(
+				jobs
+					.filter((job) => filterState.longTerm || job.type !== "Long term")
+					.filter((job) => filterState.adHoc || job.type !== "Ad hoc")
+					.filter((job) => filterState.physical || job.platform !== "Physical")
+					.filter((job) => filterState.virtual || job.platform !== "Virtual")
+					.filter((job) => {
+						var returnValue = false;
+						for (const ben in job.beneficiaries) {
+							if (benFilter.includes(job.beneficiaries[ben])) {
+								returnValue = true;
+							}
+						}
+						return returnValue;
+					})
+					.filter((job) => {
+						var returnValue = false;
+						for (const skill in job.skills) {
+							if (skillFilter.includes(job.skills[skill])) {
+								returnValue = true;
+							}
+						}
+						return returnValue;
+					})
+					.sort(
+						//sort by recently posted jobs first
+						(job1, job2) =>
+							new Date(job2.datePosted) - new Date(job1.datePosted)
+					)
+			);
+		} else {
+			setFilteredJobs([]);
+		}
+	};
+
 	useEffect(() => {
 		getJobs();
 	}, []);
@@ -40,6 +80,10 @@ const JobBoard = () => {
 	useEffect(() => {
 		getOrgs();
 	}, []);
+
+	useEffect(() => {
+		filterJobs();
+	}, [filterState]);
 
 	if (jobLoading || orgLoading) {
 		return <LoadingJobs />;
@@ -62,33 +106,42 @@ const JobBoard = () => {
 			skillFilter.push(skillTag);
 		}
 	}
-	var filteredJobs = jobs
-		.filter((job) => filterState.longTerm || job.type !== "Long term")
-		.filter((job) => filterState.adHoc || job.type !== "Ad hoc")
-		.filter((job) => filterState.physical || job.platform !== "Physical")
-		.filter((job) => filterState.virtual || job.platform !== "Virtual")
-		.filter((job) => {
-			var returnValue = false;
-			for (const ben in job.beneficiaries) {
-				if (benFilter.includes(job.beneficiaries[ben])) {
-					returnValue = true;
-				}
-			}
-			return returnValue;
-		})
-		.filter((job) => {
-			var returnValue = false;
-			for (const skill in job.skills) {
-				if (skillFilter.includes(job.skills[skill])) {
-					returnValue = true;
-				}
-			}
-			return returnValue;
-		})
-		.sort(
-			//sort by recently posted jobs first
-			(job1, job2) => new Date(job2.datePosted) - new Date(job1.datePosted)
+
+	//processing pages
+	const jobsPerPage = 3;
+	var numberOfPages = Math.ceil(filteredJobs.length / jobsPerPage);
+	let pages = [
+		<Pagination.First onClick={() => setActivePage(1)} />,
+		<Pagination.Prev
+			onClick={() => (activePage > 1 ? setActivePage(activePage - 1) : null)}
+		/>,
+	];
+	for (let number = 1; number <= numberOfPages; number++) {
+		pages.push(
+			<Pagination.Item
+				key={number}
+				active={activePage === number}
+				onClick={() => setActivePage(number)}
+			>
+				{number}
+			</Pagination.Item>
 		);
+	}
+	pages = pages.concat([
+		<Pagination.Next
+			onClick={() =>
+				activePage < numberOfPages ? setActivePage(activePage + 1) : null
+			}
+		/>,
+		<Pagination.Last onClick={() => setActivePage(numberOfPages)} />,
+	]);
+	var startIndex = jobsPerPage * (activePage - 1);
+	var endIndex;
+	if (activePage === numberOfPages) {
+		endIndex = filteredJobs.length;
+	} else {
+		endIndex = jobsPerPage * activePage;
+	}
 
 	// For Formik
 	var initialValues = {
@@ -126,49 +179,54 @@ const JobBoard = () => {
 				</Col>
 				<Col md={8} lg={9} className={styles.secondColContainer}>
 					{filteredJobs.length >= 1 ? (
-						filteredJobs.map((job) => {
-							const orgType = orgs[job.orgID].type;
-							const orgName = orgs[job.orgID].name;
-							const orgUen = orgs[job.orgID].uen;
-							const orgEmail = orgs[job.orgID].email;
+						<>
+							{filteredJobs.slice(startIndex, endIndex).map((job) => {
+								const orgType = orgs[job.orgID].type;
+								const orgName = orgs[job.orgID].name;
+								const orgUen = orgs[job.orgID].uen;
+								const orgEmail = orgs[job.orgID].email;
 
-							return (
-								<JobBoardCard
-									key={job.id}
-									id={job.id}
-									orgType={orgType}
-									orgName={orgName}
-									orgUen={orgUen}
-									orgEmail={orgEmail}
-									status={job.status}
-									title={job.title}
-									beneficiaries={job.beneficiaries}
-									skills={job.skills}
-									purpose={job.purpose}
-									platform={job.platform}
-									multiLocation={job.multiLocation}
-									location={job.location}
-									postalCode={job.postalCode}
-									type={job.type}
-									flexiDate={job.flexiDate}
-									longStartDate={job.longStartDate}
-									longEndDate={job.longEndDate}
-									flexiHours={job.flexiHours}
-									longHours={job.longHours}
-									flexiShifts={job.flexiShifts}
-									adShift={job.adShift}
-									addInfo={job.addInfo}
-									imageUrl={job.imageUrl}
-									closingDate={job.closingDate}
-									noClosingDate={job.noClosingDate}
-									pocName={job.pocName}
-									pocNo={job.pocNo}
-									pocEmail={job.pocEmail}
-									dateCreated={job.dateCreated}
-									datePosted={job.datePosted}
-								/>
-							);
-						})
+								return (
+									<JobBoardCard
+										key={job.id}
+										id={job.id}
+										orgType={orgType}
+										orgName={orgName}
+										orgUen={orgUen}
+										orgEmail={orgEmail}
+										status={job.status}
+										title={job.title}
+										beneficiaries={job.beneficiaries}
+										skills={job.skills}
+										purpose={job.purpose}
+										platform={job.platform}
+										multiLocation={job.multiLocation}
+										location={job.location}
+										postalCode={job.postalCode}
+										type={job.type}
+										flexiDate={job.flexiDate}
+										longStartDate={job.longStartDate}
+										longEndDate={job.longEndDate}
+										flexiHours={job.flexiHours}
+										longHours={job.longHours}
+										flexiShifts={job.flexiShifts}
+										adShift={job.adShift}
+										addInfo={job.addInfo}
+										imageUrl={job.imageUrl}
+										closingDate={job.closingDate}
+										noClosingDate={job.noClosingDate}
+										pocName={job.pocName}
+										pocNo={job.pocNo}
+										pocEmail={job.pocEmail}
+										dateCreated={job.dateCreated}
+										datePosted={job.datePosted}
+									/>
+								);
+							})}
+							<div className={styles.pageRow}>
+								<Pagination>{pages}</Pagination>
+							</div>
+						</>
 					) : (
 						<FilterNoJobs />
 					)}
