@@ -5,6 +5,7 @@ import styles from "./SignUpStuForm.module.css";
 import { useAuth } from "../../../contexts/AuthContext";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { EyeFill, EyeSlashFill } from "react-bootstrap-icons";
 
 const SignUpStuForm = () => {
 	//importing methods from auth and store
@@ -13,6 +14,10 @@ const SignUpStuForm = () => {
 	//useStates for form
 	const [error, setError] = useState("");
 	const [message, setMessage] = useState("");
+
+	//useStates for showing password
+	const [showPassword, setShowPassword] = useState(false);
+	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
 	const mySubmit = (values, { setSubmitting, resetForm }) => {
 		setSubmitting(true);
