@@ -69,6 +69,16 @@ const SignedInStuNavbar = () => {
 				</Nav.Link>
 			</Nav>
 			<Nav>
+				<Nav.Link
+					as={NavLink}
+					exact
+					activeClassName={styles.activeNavLink}
+					to="/chat-student"
+				>
+					Chat
+				</Nav.Link>
+			</Nav>
+			<Nav>
 				<NavDropdown
 					as={NavLink}
 					exact

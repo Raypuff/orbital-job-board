@@ -8,6 +8,7 @@ import SignUpStuPage from "./pages/SignUpStuPage";
 import ForgotPasswordStuPage from "./pages/ForgotPasswordStuPage";
 import YourProfileStuPage from "./pages/YourProfileStuPage";
 import YourApplicationsPage from "./pages/YourApplicationsPage";
+import ChatStuPage from "./pages/ChatStuPage";
 //org pages
 import SignInOrgPage from "./pages/SignInOrgPage";
 import SignUpOrgPage from "./pages/SignUpOrgPage";
@@ -50,6 +51,9 @@ function App() {
 						</Route>
 						<Route path="/your-applications">
 							<YourApplicationsPage />
+						</Route>
+						<Route path="/chat-student">
+							<ChatStuPage />
 						</Route>
 						{/* Organization Pages */}
 						<Route path="/sign-in-organization">
