@@ -12,8 +12,7 @@ const ChatStu = () => {
 	const [currentChat, setCurrentChat] = useState();
 	// const [chats, setChats] = useState([]);
 	const chats = dummyChats;
-	// const [currentMessages, setCurrentMessage] = useState([])
-	const currentMessages = dummyMessages;
+	const [currentMessages, setCurrentMessages] = useState(dummyMessages);
 	const [loadingChats, setLoadingChats] = useState(true);
 	const [loadingMessages, setLoadingMessages] = useState(false);
 	const newMessageRef = useRef();
@@ -30,11 +29,11 @@ const ChatStu = () => {
 			fromID: currentUser.email,
 			// toID: currentOrgID, //do we need this??
 			message: newMessageRef.current.value,
-			dateTime: new Date().toGMTString(),
+			dateTime: new Date().toUTCString(),
 		};
 
 		//push shit here
-		console.log(newMessage);
+		setCurrentMessages(currentMessages.concat([newMessage]));
 		//push new message into messages
 		//update the chat where chat.id === currentChat to have chat.lastDateTime = newMessage.dateTime and chat.lastContent = newMessage.message
 
@@ -107,7 +106,7 @@ const ChatStu = () => {
 								className={currentChat ? styles.formRow : styles.displayNone}
 							>
 								<Form.Control ref={newMessageRef} />
-								<Button>
+								<Button type="submit">
 									<Telegram style={{ color: "white" }} />
 								</Button>
 							</div>
@@ -140,7 +139,7 @@ const dummyChats = [
 		stuName: "Loh Jia Ming, Rayner",
 		orgID: "testing@test.com",
 		orgName: "Code in the Community",
-		lastDateTime: "Wed, 30 Jun 2021 23:10:30 GMT",
+		lastDateTime: "Wed, 30 Jun 2021 20:10:30 GMT",
 		lastContent:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vehicula eu mi nec maximus. Aliquam non interdum eros, nec scelerisque.",
 	},
@@ -153,7 +152,7 @@ const dummyMessages = [
 		fromID: "raynerljm@u.nus.edu",
 		toID: "zecharyajw@gmail.com",
 		message: "hi!!",
-		dateTime: "Wed, 30 Jun 2021 23:10:30 GMT",
+		dateTime: "Wed, 30 Jun 2021 19:10:30 GMT",
 	},
 	{
 		id: "122",
@@ -161,7 +160,7 @@ const dummyMessages = [
 		fromID: "raynerljm@u.nus.edu",
 		toID: "zecharyajw@gmail.com",
 		message: "hi lol who are u ",
-		dateTime: "Wed, 30 Jun 2021 23:09:30 GMT",
+		dateTime: "Wed, 30 Jun 2021 15:09:30 GMT",
 	},
 	{
 		id: "124",
@@ -170,7 +169,7 @@ const dummyMessages = [
 		toID: "raynerljm@u.nus.edu",
 		message: "idk LOL",
 
-		dateTime: "Wed, 30 Jun 2021 23:08:30 GMT",
+		dateTime: "Wed, 30 Jun 2021 14:08:30 GMT",
 	},
 	{
 		id: "125",
@@ -179,7 +178,7 @@ const dummyMessages = [
 		fromID: "raynerljm@u.nus.edu",
 		toID: "zecharyajw@gmail.com",
 		message: "hi!! this is a test",
-		dateTime: "Wed, 30 Jun 2021 23:00:30 GMT",
+		dateTime: "Wed, 30 Jun 2021 12:00:30 GMT",
 	},
 	{
 		id: "126",
@@ -188,7 +187,7 @@ const dummyMessages = [
 		toID: "zecharyajw@gmail.com",
 		message:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et egestas leo. Nullam malesuada tortor viverra, facilisis massa quis, accumsan tortor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent sodales neque quis lorem consectetur, id ultrices ipsum mollis. Curabitur leo eros, tempus et malesuada quis, accumsan ac dolor. Proin pretium ipsum eu nisi sagittis dapibus. In ut turpis fringilla, commodo mauris quis, lobortis nunc.",
-		dateTime: "Wed, 30 Jun 2021 23:15:30 GMT",
+		dateTime: "Wed, 30 Jun 2021 05:15:30 GMT",
 	},
 	{
 		id: "127",
@@ -197,7 +196,7 @@ const dummyMessages = [
 		toID: "raynerljm@u.nus.edu",
 		message:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et egestas leo. Nullam malesuada tortor viverra, facilisis massa quis, accumsan tortor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent sodales neque quis lorem consectetur, id ultrices ipsum mollis. Curabitur leo eros, tempus et malesuada quis, accumsan ac dolor. Proin pretium ipsum eu nisi sagittis dapibus. In ut turpis fringilla, commodo mauris quis, lobortis nunc.",
-		dateTime: "Wed, 30 Jun 2021 23:59:30 GMT",
+		dateTime: "Wed, 30 Jun 2021 03:59:30 GMT",
 	},
 	{
 		id: "128",
@@ -206,7 +205,7 @@ const dummyMessages = [
 		toID: "zecharyajw@gmail.com",
 		message:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et egestas leo. Nullam malesuada tortor viverra, facilisis massa quis, accumsan tortor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent sodales neque quis lorem consectetur, id ultrices ipsum mollis. Curabitur leo eros, tempus et malesuada quis, accumsan ac dolor. Proin pretium ipsum eu nisi sagittis dapibus. In ut turpis fringilla, commodo mauris quis, lobortis nunc.",
-		dateTime: "Wed, 30 Jun 2021 23:15:30 GMT",
+		dateTime: "Wed, 30 Jun 2021 02:15:30 GMT",
 	},
 	{
 		id: "129",
@@ -215,6 +214,6 @@ const dummyMessages = [
 		toID: "raynerljm@u.nus.edu",
 		message:
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et egestas leo. Nullam malesuada tortor viverra, facilisis massa quis, accumsan tortor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent sodales neque quis lorem consectetur, id ultrices ipsum mollis. Curabitur leo eros, tempus et malesuada quis, accumsan ac dolor. Proin pretium ipsum eu nisi sagittis dapibus. In ut turpis fringilla, commodo mauris quis, lobortis nunc.",
-		dateTime: "Wed, 30 Jun 2021 23:59:30 GMT",
+		dateTime: "Wed, 30 Jun 2021 02:59:30 GMT",
 	},
 ];
