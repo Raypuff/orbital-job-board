@@ -31,6 +31,11 @@
 	overflow-y: scroll;
 }
 
+.noMessageContainer {
+	height: 100%;
+	border-radius: 0;
+}
+
 .messageContainer {
 	height: calc(100% - 38px);
 	background-color: rgb(126, 126, 126);
@@ -41,4 +46,8 @@
 
 .formRow {
 	display: flex;
+}
+
+.displayNone {
+	display: none;
 }

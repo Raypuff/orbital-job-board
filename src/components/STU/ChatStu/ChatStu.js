@@ -58,7 +58,11 @@ const ChatStu = () => {
 					</Card>
 				</Col>
 				<Col lg={8} className={styles.messageCol}>
-					<Card className={styles.messageContainer}>
+					<Card
+						className={
+							currentChat ? styles.messageContainer : styles.noMessageContainer
+						}
+					>
 						{currentChat ? (
 							dummyMessages
 								.filter((msg) => msg.chatID === currentChat)
@@ -81,7 +85,7 @@ const ChatStu = () => {
 						)}
 					</Card>
 					<Form onSubmit={handleSubmit}>
-						<div className={styles.formRow}>
+						<div className={currentChat ? styles.formRow : styles.displayNone}>
 							<Form.Control ref={newMessageRef} />
 							<Button>
 								<Telegram style={{ color: "white" }} />
