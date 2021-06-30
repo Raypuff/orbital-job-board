@@ -10,11 +10,16 @@ var uniqid = require("uniqid");
 const ChatStu = () => {
 	const { currentUser } = useAuth();
 	const [currentChat, setCurrentChat] = useState();
-	const [chats, setChats] = useState([]);
+	// const [chats, setChats] = useState([]);
+	const chats = dummyChats;
+	// const [currentMessages, setCurrentMessage] = useState([])
+	const currentMessages = dummyMessages;
+	const [loadingChats, setLoadingChats] = useState(true);
+	const [loadingMessages, setLoadingMessages] = useState(false);
 	const newMessageRef = useRef();
 
-	//fetch chats where stuID === currentUser.email
-	//fetch messages where id === currentChat, call everytime currentChat changes
+	//fetch chats where chat.stuID === currentUser.email
+	//fetch messages where message.id === currentChat (set loadingMessages true then false), call everytime currentChat changes (dont replace currentMessages, just append to it)
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
@@ -31,69 +36,87 @@ const ChatStu = () => {
 		//push shit here
 		console.log(newMessage);
 		//push new message into messages
-		//update the chat where chat.id === currentChat to have
-		//chat.lastDateTime = newMessage.dateTime and chat.lastContent = newMessage.message
+		//update the chat where chat.id === currentChat to have chat.lastDateTime = newMessage.dateTime and chat.lastContent = newMessage.message
 
 		newMessageRef.current.value = "";
 	};
 
+	// if (loadingChats) {
+	// 	return <div>im loading!</div>
+	// }
 	return (
 		<div className={styles.container}>
-			<Row>
-				<Col lg={4} className={styles.chatCol}>
-					<Card className={styles.chatContainer}>
-						{dummyChats.map((chat) => (
-							<ChatStuChat
-								key={chat.id}
-								id={chat.id}
-								stuID={chat.stuID}
-								stuName={chat.stuName}
-								orgID={chat.orgID}
-								orgName={chat.orgName}
-								lastDateTime={chat.lastDateTime}
-								lastContent={chat.lastContent}
-								setCurrentChat={setCurrentChat}
-							/>
-						))}
-					</Card>
-				</Col>
-				<Col lg={8} className={styles.messageCol}>
-					<Card
-						className={
-							currentChat ? styles.messageContainer : styles.noMessageContainer
-						}
-					>
-						{currentChat ? (
-							dummyMessages
-								.filter((msg) => msg.chatID === currentChat)
-								.sort((msg1, msg2) => {
-									return new Date(msg1.dateTime) - new Date(msg2.dateTime);
-								})
-								.map((msg) => (
-									<ChatStuMessage
-										key={msg.id}
-										id={msg.id}
-										chatID={msg.chatID}
-										fromID={msg.fromID}
-										toID={msg.toID}
-										message={msg.message}
-										dateTime={msg.dateTime}
-									/>
-								))
-						) : (
-							<div>this is an empty state!</div>
-						)}
-					</Card>
-					<Form onSubmit={handleSubmit}>
-						<div className={currentChat ? styles.formRow : styles.displayNone}>
-							<Form.Control ref={newMessageRef} />
-							<Button>
-								<Telegram style={{ color: "white" }} />
-							</Button>
-						</div>
-					</Form>
-				</Col>
-			</Row>
+			{chats && chats.length > 0 ? (
+				<Row>
+					<Col lg={4} className={styles.chatCol}>
+						<Card className={styles.chatContainer}>
+							{chats.map((chat) => (
+								<ChatStuChat
+									key={chat.id}
+									id={chat.id}
+									stuID={chat.stuID}
+									stuName={chat.stuName}
+									orgID={chat.orgID}
+									orgName={chat.orgName}
+									lastDateTime={chat.lastDateTime}
+									lastContent={chat.lastContent}
+									setCurrentChat={setCurrentChat}
+								/>
+							))}
+						</Card>
+					</Col>
+					<Col lg={8} className={styles.messageCol}>
+						<Card
+							className={
+								currentChat
+									? styles.messageContainer
+									: styles.noMessageContainer
+							}
+						>
+							{!currentChat ? (
+								<div>select a msg lol</div>
+							) : currentChat && loadingMessages ? (
+								<div>loading messages lol</div>
+							) : currentChat && currentMessages ? (
+								currentMessages.length === 0 ? (
+									<div>send a msg or smth!!</div>
+								) : (
+									currentMessages
+										.filter((msg) => msg.chatID === currentChat)
+										.sort((msg1, msg2) => {
+											return new Date(msg1.dateTime) - new Date(msg2.dateTime);
+										})
+										.map((msg) => (
+											<ChatStuMessage
+												key={msg.id}
+												id={msg.id}
+												chatID={msg.chatID}
+												fromID={msg.fromID}
+												toID={msg.toID}
+												message={msg.message}
+												dateTime={msg.dateTime}
+											/>
+										))
+								)
+							) : (
+								<div>this is a state i was not prepared for</div>
+							)}
+						</Card>
+						<Form onSubmit={handleSubmit}>
+							<div
+								className={currentChat ? styles.formRow : styles.displayNone}
+							>
+								<Form.Control ref={newMessageRef} />
+								<Button>
+									<Telegram style={{ color: "white" }} />
+								</Button>
+							</div>
+						</Form>
+					</Col>
+				</Row>
+			) : (
+				<div> u got no chats lol</div>
+			)}
 		</div>
 	);
 };
