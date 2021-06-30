@@ -5,7 +5,7 @@
 
 .contentContainer {
 	height: 100%;
-	padding: 0.5em 0 0.5em 1em;
+	padding: 0.5em 1em;
 }
 
 .topRowContainer {
@@ -99,6 +99,9 @@
 }
 
 @media screen and (max-width: 992px) {
+	.dots {
+		margin-right: -0.5rem;
+	}
 	.dotsContainer {
 		display: none;
 	}
