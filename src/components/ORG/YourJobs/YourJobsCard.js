@@ -1,5 +1,15 @@
 import { useState, forwardRef, useEffect, useRef } from "react";
-import { Row, Col, Card, Dropdown, Button, Modal, Form } from "react-bootstrap";
+import {
+	Row,
+	Col,
+	Card,
+	Dropdown,
+	Button,
+	Modal,
+	Form,
+	OverlayTrigger,
+	Tooltip,
+} from "react-bootstrap";
 import { Link } from "react-router-dom";
 import {
 	ThreeDotsVertical,
@@ -370,6 +380,7 @@ export default YourJobsCard;
 
 const CustomDropdown = forwardRef(({ children, onClick }, ref) => (
 	// eslint-disable-next-line jsx-a11y/anchor-is-valid
+
 	<a
 		href=""
 		ref={ref}
@@ -378,9 +389,21 @@ const CustomDropdown = forwardRef(({ children, onClick }, ref) => (
 			onClick(event);
 		}}
 	>
-		<ThreeDotsVertical className={styles.dots} />
+		<OverlayTrigger
+			placement="left"
+			// delay={{ show: 250, hide: 400 }}
+			overlay={renderTooltip}
+		>
+			<ThreeDotsVertical className={styles.dots} />
+		</OverlayTrigger>
 	</a>
 ));
+
+const renderTooltip = (props) => (
+	<Tooltip id="button-tooltip" {...props}>
+		More actions
+	</Tooltip>
+);
 
 function tConvert(time) {
 	// Check correct time format and split into components
