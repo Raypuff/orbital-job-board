@@ -56,9 +56,10 @@ const YourJobsCard = ({
 	const [showCompleteModal, setShowCompleteModal] = useState(false);
 	const [showExportModal, setShowExportModal] = useState(false);
 	const [applications, setApplications] = useState([]);
-	// const [accepted, setAccepted] = useState(false);
-	// const [pending, setPending] = useState(false);
-	// const [rejected, setRejected] = useState(false);
+
+	const acceptedRef = useRef();
+	const pendingRef = useRef();
+	const rejectedRef = useRef();
 
 	const handleComplete = async () => {
 		//setLoading(true);
@@ -349,20 +350,61 @@ const YourJobsCard = ({
 					<Modal.Body>
 						{/* <Form.Group controlId="formAccepted">
 							<Form.Label>Accepted applicants</Form.Label>
-							<Form.Control type="checkbox" onClick={setAccepted(!accepted)} />
+							<Form.Control type="checkbox" ref={acceptedRef} />
 						</Form.Group>
 						<Form.Group controlId="formPending">
 							<Form.Label>Pending applicants</Form.Label>
-							<Form.Control type="checkbox" onClick={setPending(!pending)} />
+							<Form.Control type="checkbox" ref={pendingRef} />
 						</Form.Group>
 						<Form.Group controlId="formRejected">
 							<Form.Label>Rejected applicants</Form.Label>
-							<Form.Control type="checkbox" onClick={setRejected(!rejected)} />
+							<Form.Control type="checkbox" ref={rejectedRef} />
 						</Form.Group> */}
+						Click the button below to export your applicants' details into a CSV
+						spreadsheet
 					</Modal.Body>
 					<Modal.Footer className="justify-content-center">
 						<CSVLink
-							data={applications.map((app) => Object.values(app))}
+							data={
+								applications
+								// .filter((app) => {
+								// 	if (app.status === "Accepted") {
+
+								// 		if (
+								// 			acceptedRef.current &&
+								// 			acceptedRef.current.checked === true
+								// 		) {
+								// 			return true;
+								// 		} else {
+								// 			return false;
+								// 		}
+								// 	} else {
+								// 		return true;
+								// 	}
+								// })
+								// .filter((app) => {
+								// 	if (app.status === "Pending") {
+								// 		if (pendingRef.current.checked === true) {
+								// 			return true;
+								// 		} else {
+								// 			return false;
+								// 		}
+								// 	} else {
+								// 		return true;
+								// 	}
+								// })
+								// .filter((app) => {
+								// 	if (app.status === "Rejected") {
+								// 		if (rejectedRef.current.checked === true) {
+								// 			return true;
+								// 		} else {
+								// 			return false;
+								// 		}
+								// 	} else {
+								// 		return true;
+								// 	}
+								// })
+							}
 							filename={`Volunteers for ${title}.csv`}
 						>
 							<Button variant="primary" disabled={!applications}>
