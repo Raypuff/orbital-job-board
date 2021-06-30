@@ -43,7 +43,3 @@
 	justify-content: flex-start;
 	composes: time;
 }
-
-.formRow {
-	display: flex;
-}
