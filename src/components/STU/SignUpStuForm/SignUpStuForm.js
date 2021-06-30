@@ -17,7 +17,7 @@ const SignUpStuForm = () => {
 
 	//useStates for showing password
 	const [showPassword, setShowPassword] = useState(false);
-	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+	const [showCfmPassword, setShowCfmPassword] = useState(false);
 
 	const mySubmit = (values, { setSubmitting, resetForm }) => {
 		setSubmitting(true);
@@ -111,13 +111,21 @@ const SignUpStuForm = () => {
 										<Form.Label>Password</Form.Label>
 										<Form.Control
 											name="password"
-											type="password"
+											type={showPassword ? "text" : "password"}
 											value={values.password}
 											onChange={handleChange}
 											onBlur={handleBlur}
 											isValid={touched.password && !errors.password}
 											isInvalid={touched.password && errors.password}
 										/>
+										<div
+											className={
+												touched.password ? styles.eyeError : styles.eye
+											}
+											onClick={() => setShowPassword(!showPassword)}
+										>
+											{showPassword ? <EyeSlashFill /> : <EyeFill />}
+										</div>
 										<Form.Control.Feedback type="invalid">
 											{errors.password}
 										</Form.Control.Feedback>
@@ -126,7 +134,7 @@ const SignUpStuForm = () => {
 										<Form.Label>Confirm password</Form.Label>
 										<Form.Control
 											name="passwordConfirm"
-											type="password"
+											type={showCfmPassword ? "text" : "password"}
 											value={values.passwordConfirm}
 											onChange={handleChange}
 											onBlur={handleBlur}
@@ -137,6 +145,14 @@ const SignUpStuForm = () => {
 												touched.passwordConfirm && errors.passwordConfirm
 											}
 										/>
+										<div
+											className={
+												touched.passwordConfirm ? styles.eyeError : styles.eye
+											}
+											onClick={() => setShowCfmPassword(!showPassword)}
+										>
+											{showCfmPassword ? <EyeSlashFill /> : <EyeFill />}
+										</div>
 										<Form.Control.Feedback type="invalid">
 											{errors.passwordConfirm}
 										</Form.Control.Feedback>

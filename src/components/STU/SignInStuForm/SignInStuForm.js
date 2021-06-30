@@ -66,12 +66,12 @@ const SignInStuForm = () => {
 									ref={passwordRef}
 									required
 								/>
-								<span
+								<div
 									className={styles.eye}
 									onClick={() => setShowPassword(!showPassword)}
 								>
 									{showPassword ? <EyeSlashFill /> : <EyeFill />}
-								</span>
+								</div>
 							</Form.Group>
 							<Button
 								date-testid="sign in"

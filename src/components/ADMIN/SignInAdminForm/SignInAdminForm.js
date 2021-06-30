@@ -69,12 +69,12 @@ const SignInAdminForm = () => {
 									ref={passwordRef}
 									required
 								/>
-								<span
+								<div
 									className={styles.eye}
 									onClick={() => setShowPassword(!showPassword)}
 								>
 									{showPassword ? <EyeSlashFill /> : <EyeFill />}
-								</span>
+								</div>
 							</Form.Group>
 							<Button disabled={loading} variant="primary" type="submit">
 								Sign in
