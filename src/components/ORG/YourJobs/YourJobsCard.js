@@ -1,5 +1,15 @@
-import { useState, forwardRef } from "react";
-import { Row, Col, Card, Dropdown, Button, Modal } from "react-bootstrap";
+import { useState, forwardRef, useEffect, useRef } from "react";
+import {
+	Row,
+	Col,
+	Card,
+	Dropdown,
+	Button,
+	Modal,
+	Form,
+	OverlayTrigger,
+	Tooltip,
+} from "react-bootstrap";
 import { Link } from "react-router-dom";
 import {
 	ThreeDotsVertical,
@@ -9,6 +19,7 @@ import {
 } from "react-bootstrap-icons";
 import styles from "./YourJobsCard.module.css";
 import ApplicantsModal from "./ApplicantsModal";
+import { CSVLink, CSVDownload } from "react-csv";
 
 const YourJobsCard = ({
 	key,
@@ -43,6 +54,12 @@ const YourJobsCard = ({
 }) => {
 	const [showApplicantsModal, setShowApplicantsModal] = useState(false);
 	const [showCompleteModal, setShowCompleteModal] = useState(false);
+	const [showExportModal, setShowExportModal] = useState(false);
+	const [applications, setApplications] = useState([]);
+
+	const acceptedRef = useRef();
+	const pendingRef = useRef();
+	const rejectedRef = useRef();
 
 	const handleComplete = async () => {
 		//setLoading(true);
@@ -60,6 +77,45 @@ const YourJobsCard = ({
 		}
 		//setLoading(false);
 		window.location.reload(false);
+	};
+
+	useEffect(() => {
+		const getApplications = async () => {
+			const response = await fetch(
+				process.env.REACT_APP_BACKEND_URL + "/job-applications/job/" + id
+			);
+			const jsonData = await response.json();
+			setApplications(jsonData);
+			console.log(jsonData.map((app) => Object.values(app)));
+		};
+		getApplications();
+	}, [showApplicantsModal]);
+
+	const TripleDot = () => {
+		return (
+			<Dropdown>
+				<Dropdown.Toggle as={CustomDropdown}></Dropdown.Toggle>
+				<Dropdown.Menu align="right">
+					{/* <Dropdown.Item>Edit job</Dropdown.Item> */}
+					<Dropdown.Item onClick={() => setShowApplicantsModal(true)}>
+						View applicants
+					</Dropdown.Item>
+					{applications.length > 0 && (
+						<Dropdown.Item onClick={() => setShowExportModal(true)}>
+							Export applicants
+						</Dropdown.Item>
+					)}
+					<Dropdown.Item as={Link} to={`/jobs/${id}`} target="blank">
+						View listing
+					</Dropdown.Item>
+					{status === "Approved" && (
+						<Dropdown.Item onClick={() => setShowCompleteModal(true)}>
+							Mark as completed
+						</Dropdown.Item>
+					)}
+				</Dropdown.Menu>
+			</Dropdown>
+		);
 	};
 
 	return (
@@ -124,12 +180,7 @@ const YourJobsCard = ({
 										</div>
 									</div>
 									<div className={styles.dotsContainerMobile}>
-										<TripleDot
-											id={id}
-											status={status}
-											setShowApplicantsModal={setShowApplicantsModal}
-											setShowCompleteModal={setShowCompleteModal}
-										/>
+										<TripleDot />
 									</div>
 								</div>
 
@@ -217,12 +268,7 @@ const YourJobsCard = ({
 						<Col lg={4}>
 							<div className={styles.applicantsContainer}>
 								<div className={styles.dotsContainer}>
-									<TripleDot
-										id={id}
-										status={status}
-										setShowApplicantsModal={setShowApplicantsModal}
-										setShowCompleteModal={setShowCompleteModal}
-									/>
+									<TripleDot />
 								</div>
 
 								<div
@@ -268,6 +314,7 @@ const YourJobsCard = ({
 				datePosted={datePosted}
 				applicants={applicants}
 			/>
+			{/* Mark as complete modal */}
 			<Modal
 				show={showCompleteModal}
 				onHide={() => setShowCompleteModal(false)}
@@ -288,6 +335,85 @@ const YourJobsCard = ({
 					</Button>
 				</Modal.Footer>
 			</Modal>
+			{/* Export applicants modal */}
+			<Modal
+				show={showExportModal}
+				onHide={() => setShowExportModal(false)}
+				size="md"
+				centered
+			>
+				<Form>
+					{/* {console.log(`${accepted} ${pending} ${rejected}`)} */}
+					<Modal.Header closeButton>
+						<Modal.Title>Export applicants</Modal.Title>
+					</Modal.Header>
+					<Modal.Body>
+						{/* <Form.Group controlId="formAccepted">
+							<Form.Label>Accepted applicants</Form.Label>
+							<Form.Control type="checkbox" ref={acceptedRef} />
+						</Form.Group>
+						<Form.Group controlId="formPending">
+							<Form.Label>Pending applicants</Form.Label>
+							<Form.Control type="checkbox" ref={pendingRef} />
+						</Form.Group>
+						<Form.Group controlId="formRejected">
+							<Form.Label>Rejected applicants</Form.Label>
+							<Form.Control type="checkbox" ref={rejectedRef} />
+						</Form.Group> */}
+						Click the button below to export your applicants' details into a CSV
+						spreadsheet
+					</Modal.Body>
+					<Modal.Footer className="justify-content-center">
+						<CSVLink
+							data={
+								applications
+								// .filter((app) => {
+								// 	if (app.status === "Accepted") {
+
+								// 		if (
+								// 			acceptedRef.current &&
+								// 			acceptedRef.current.checked === true
+								// 		) {
+								// 			return true;
+								// 		} else {
+								// 			return false;
+								// 		}
+								// 	} else {
+								// 		return true;
+								// 	}
+								// })
+								// .filter((app) => {
+								// 	if (app.status === "Pending") {
+								// 		if (pendingRef.current.checked === true) {
+								// 			return true;
+								// 		} else {
+								// 			return false;
+								// 		}
+								// 	} else {
+								// 		return true;
+								// 	}
+								// })
+								// .filter((app) => {
+								// 	if (app.status === "Rejected") {
+								// 		if (rejectedRef.current.checked === true) {
+								// 			return true;
+								// 		} else {
+								// 			return false;
+								// 		}
+								// 	} else {
+								// 		return true;
+								// 	}
+								// })
+							}
+							filename={`Volunteers for ${title}.csv`}
+						>
+							<Button variant="primary" disabled={!applications}>
+								Export applicants
+							</Button>
+						</CSVLink>
+					</Modal.Footer>
+				</Form>
+			</Modal>
 		</>
 	);
 };
@@ -295,6 +421,8 @@ const YourJobsCard = ({
 export default YourJobsCard;
 
 const CustomDropdown = forwardRef(({ children, onClick }, ref) => (
+	// eslint-disable-next-line jsx-a11y/anchor-is-valid
+
 	<a
 		href=""
 		ref={ref}
@@ -303,36 +431,21 @@ const CustomDropdown = forwardRef(({ children, onClick }, ref) => (
 			onClick(event);
 		}}
 	>
-		<ThreeDotsVertical className={styles.dots} />
+		<OverlayTrigger
+			placement="left"
+			// delay={{ show: 250, hide: 400 }}
+			overlay={renderTooltip}
+		>
+			<ThreeDotsVertical className={styles.dots} />
+		</OverlayTrigger>
 	</a>
 ));
 
-const TripleDot = ({
-	id,
-	status,
-	setShowApplicantsModal,
-	setShowCompleteModal,
-}) => {
-	return (
-		<Dropdown>
-			<Dropdown.Toggle as={CustomDropdown}></Dropdown.Toggle>
-			<Dropdown.Menu align="right">
-				{/* <Dropdown.Item>Edit job</Dropdown.Item> */}
-				<Dropdown.Item onClick={() => setShowApplicantsModal(true)}>
-					View applicants
-				</Dropdown.Item>
-				<Dropdown.Item as={Link} to={`/jobs/${id}`} target="blank">
-					View listing
-				</Dropdown.Item>
-				{status === "Approved" && (
-					<Dropdown.Item onClick={() => setShowCompleteModal(true)}>
-						Mark as completed
-					</Dropdown.Item>
-				)}
-			</Dropdown.Menu>
-		</Dropdown>
-	);
-};
+const renderTooltip = (props) => (
+	<Tooltip id="button-tooltip" {...props}>
+		More actions
+	</Tooltip>
+);
 
 function tConvert(time) {
 	// Check correct time format and split into components

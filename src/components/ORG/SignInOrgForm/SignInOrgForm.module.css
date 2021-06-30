@@ -1,8 +1,16 @@
 .formBG {
-  display: grid;
-  place-items: center;
+	display: grid;
+	place-items: center;
 }
 
 .formContainer {
-  margin: 10vmax 0 12vmax;
+	margin: 10vmax 0 12vmax;
+}
+
+.eye {
+	font-size: 1.2rem;
+	position: relative;
+	bottom: 33px;
+	left: 295px;
+	height: 0;
 }

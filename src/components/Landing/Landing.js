@@ -2,6 +2,7 @@ import { Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import landingbg from "../../assets/landingbg.png";
+import { Fade } from "react-reveal";
 import styles from "./Landing.module.css";
 
 const Landing = () => {
@@ -21,7 +22,9 @@ const Landing = () => {
 				<Col>
 					<div className={styles.hookWrapper}>
 						<div className={styles.hook1}>It is time to get</div>
-						<div className={styles.hook2}>involved.</div>
+						<Fade left>
+							<div className={styles.hook2}>involved.</div>
+						</Fade>
 						<div className={styles.hook3}>
 							We connect volunteers from NUS with charities and organizations.
 							Join us as we make Singapore a more loving, gracious and accepting
@@ -36,6 +39,7 @@ const Landing = () => {
 							>
 								<div className={styles.buttonText1}>Volunteer now</div>
 							</Link>
+
 							<Link
 								to="/post-a-job"
 								className={

@@ -18,6 +18,12 @@
 	justify-content: center;
 }
 
+@media screen and (max-width: 480px) {
+	.modalBody {
+		height: auto;
+	}
+}
+
 .image {
 	width: 100%;
 	padding: 0 3rem 1rem;

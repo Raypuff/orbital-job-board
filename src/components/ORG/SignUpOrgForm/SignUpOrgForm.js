@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Form, Button, Alert, Card } from "react-bootstrap";
+import { EyeFill, EyeSlashFill } from "react-bootstrap-icons";
 import styles from "./SignUpOrgForm.module.css";
 import { useAuth } from "../../../contexts/AuthContext";
 import { Link } from "react-router-dom";
@@ -13,6 +14,10 @@ const SignUpOrgForm = () => {
 	//initializing useStates for signup
 	const [error, setError] = useState("");
 	const [message, setMessage] = useState("");
+
+	//for showing password
+	const [showPassword, setShowPassword] = useState(false);
+	const [showCfmPassword, setShowCfmPassword] = useState(false);
 
 	const mySubmit = (values, { setSubmitting, resetForm }) => {
 		setSubmitting(true);
@@ -98,13 +103,21 @@ const SignUpOrgForm = () => {
 										<Form.Label>Password</Form.Label>
 										<Form.Control
 											name="password"
-											type="password"
+											type={showPassword ? "text" : "password"}
 											value={values.password}
 											onChange={handleChange}
 											onBlur={handleBlur}
 											isValid={touched.password && !errors.password}
 											isInvalid={touched.password && errors.password}
 										/>
+										<div
+											className={
+												touched.password ? styles.eyeError : styles.eye
+											}
+											onClick={() => setShowPassword(!showPassword)}
+										>
+											{showPassword ? <EyeSlashFill /> : <EyeFill />}
+										</div>
 										<Form.Control.Feedback type="invalid">
 											{errors.password}
 										</Form.Control.Feedback>
@@ -113,7 +126,7 @@ const SignUpOrgForm = () => {
 										<Form.Label>Confirm password</Form.Label>
 										<Form.Control
 											name="passwordConfirm"
-											type="password"
+											type={showCfmPassword ? "text" : "password"}
 											value={values.passwordConfirm}
 											onChange={handleChange}
 											onBlur={handleBlur}
@@ -124,6 +137,14 @@ const SignUpOrgForm = () => {
 												touched.passwordConfirm && errors.passwordConfirm
 											}
 										/>
+										<div
+											className={
+												touched.passwordConfirm ? styles.eyeError : styles.eye
+											}
+											onClick={() => setShowCfmPassword(!showPassword)}
+										>
+											{showCfmPassword ? <EyeSlashFill /> : <EyeFill />}
+										</div>
 										<Form.Control.Feedback type="invalid">
 											{errors.passwordConfirm}
 										</Form.Control.Feedback>

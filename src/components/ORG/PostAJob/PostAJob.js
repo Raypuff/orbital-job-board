@@ -16,7 +16,8 @@ import styles from "./PostAJob.module.css";
 import { useAuth } from "../../../contexts/AuthContext";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { BeneficiaryTags, SkillTags } from "../../../assets/Tags";
+import { SelectBeneficiaryTags, SelectSkillTags } from "../../../assets/Tags";
+import Select from "react-select";
 
 var uniqid = require("uniqid");
 
@@ -199,8 +200,8 @@ const PostAJob = () => {
 				enableReinitialize
 				initialValues={{
 					title: "",
-					beneficiaries: "",
-					skills: "",
+					beneficiaries: [],
+					skills: [],
 					purpose: "",
 					platform: "",
 					multiLocation: false,
@@ -266,7 +267,7 @@ const PostAJob = () => {
 					isSubmitting,
 				}) => (
 					<Form onSubmit={handleSubmit} className={styles.formBox}>
-						{console.log(values)}
+						{console.log(values.beneficiaries)}
 						<>
 							<Card>
 								<Accordion defaultActiveKey="0">
@@ -359,12 +360,22 @@ const PostAJob = () => {
 											<Form.Group controlId="formBeneficiary">
 												<Form.Label>
 													Target profile of beneficiary
-													<Form.Text className="text-muted">
+													{/* <Form.Text className="text-muted">
 														Hold Ctrl (Windows) or CMD (Mac) to select multiple
 														options
-													</Form.Text>
+													</Form.Text> */}
 												</Form.Label>
-												<Form.Control
+												<Select
+													isMulti
+													name="beneficiaries"
+													options={SelectBeneficiaryTags}
+													onChange={(inputValue) => {
+														values.beneficiaries = inputValue.map(
+															(e) => e.value
+														);
+													}}
+												/>
+												{/* <Form.Control
 													name="beneficiaries"
 													onChange={handleChange}
 													onBlur={handleBlur}
@@ -384,7 +395,7 @@ const PostAJob = () => {
 												</Form.Control>
 												<Form.Control.Feedback type="invalid">
 													{errors.beneficiaries}
-												</Form.Control.Feedback>
+												</Form.Control.Feedback> */}
 												<Form.Text className="text-muted">
 													For 'Other', you can elaborate in the Additional
 													information section
@@ -393,12 +404,20 @@ const PostAJob = () => {
 											<Form.Group controlId="formSkills">
 												<Form.Label>
 													Skills required
-													<Form.Text className="text-muted">
+													{/* <Form.Text className="text-muted">
 														Hold Ctrl (Windows) or CMD (Mac) to select multiple
 														options
-													</Form.Text>
+													</Form.Text> */}
 												</Form.Label>
-												<Form.Control
+												<Select
+													isMulti
+													name="skills"
+													options={SelectSkillTags}
+													onChange={(inputValue) => {
+														values.skill = inputValue.map((e) => e.value);
+													}}
+												/>
+												{/* <Form.Control
 													name="skills"
 													onChange={handleChange}
 													onBlur={handleBlur}
@@ -414,7 +433,7 @@ const PostAJob = () => {
 												</Form.Control>
 												<Form.Control.Feedback type="invalid">
 													{errors.skills}
-												</Form.Control.Feedback>
+												</Form.Control.Feedback> */}
 												<Form.Text className="text-muted">
 													For 'Others', you can elaborate in the Additional
 													information section
