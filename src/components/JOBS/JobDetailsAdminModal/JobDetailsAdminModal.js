@@ -2,8 +2,13 @@ import { useRef } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import styles from "./JobDetailsAdminModal.module.css";
 
-const handleAcceptReject = async (jobId, choice) => {
-	const body = { status: choice };
+const handleAcceptReject = async (jobId, choice, reason) => {
+	var body;
+	if (choice === "Approved") {
+		body = { status: choice };
+	} else if (choice === "Rejected") {
+		body = { status: choice, removalReason: reason };
+	}
 	try {
 		await fetch(process.env.REACT_APP_BACKEND_URL + "/jobs/status/" + jobId, {
 			method: "PUT",
@@ -59,7 +64,9 @@ export const JobDetailsAdminRejModal = ({
 						<Form.Label>Please provide a reason why</Form.Label>
 						<Form.Control type="text" ref={rejReasonRef} required />
 						<Button
-							onClick={(event) => handleAcceptReject(id, "Rejected")}
+							onClick={(event) =>
+								handleAcceptReject(id, "Rejected", rejReasonRef.current.value)
+							}
 							variant="danger"
 						>
 							Reject posting
@@ -120,7 +127,7 @@ export const JobDetailsAdminAppModal = ({
 				<div className={styles.modalContainer}>
 					Are you sure you want to approve this posting?
 					<Button
-						onClick={(event) => handleAcceptReject(id, "Approved")}
+						onClick={(event) => handleAcceptReject(id, "Approved", "")}
 						variant="success"
 					>
 						Approve posting
@@ -188,7 +195,7 @@ export const JobDetailsAdminTDModal = ({
 							onClick={(event) => {
 								// event.preventDefault();
 								console.log(
-									`i am taking down this shit because ${tdReasonRef.current.value}`
+									`i am taking down this because ${tdReasonRef.current.value}`
 								);
 							}}
 							variant="danger"
