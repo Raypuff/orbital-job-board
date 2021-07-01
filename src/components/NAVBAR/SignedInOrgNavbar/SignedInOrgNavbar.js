@@ -1,5 +1,13 @@
-import React, { useState } from "react";
-import { NavDropdown, Nav, Modal, Button, Pagination } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import {
+	NavDropdown,
+	Nav,
+	Modal,
+	Button,
+	Pagination,
+	Tooltip,
+	OverlayTrigger,
+} from "react-bootstrap";
 import PostAJobButton from "../PostAJobButton";
 import { NavLink, Link, useHistory } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
@@ -8,12 +16,14 @@ import stu1 from "../../../assets/getting_started/stu1.png";
 import stu2 from "../../../assets/getting_started/stu2.png";
 import stu3 from "../../../assets/getting_started/stu3.png";
 import stu4 from "../../../assets/getting_started/stu4.png";
+import { InfoLg, PersonFill, BriefcaseFill } from "react-bootstrap-icons";
 
 const SignedInOrgNavbar = () => {
 	const [error, setError] = useState("");
 	const { currentUser, logout } = useAuth();
 	const [showGettingStarted, setShowGettingStarted] = useState(false);
 	const history = useHistory();
+	const { width } = useWindowDimensions();
 
 	// page functionality
 	const [activePage, setActivePage] = useState(1);
@@ -66,16 +76,38 @@ const SignedInOrgNavbar = () => {
 	return (
 		<>
 			<Nav>
-				<Nav.Link onClick={() => setShowGettingStarted(true)}>
-					Getting Started
-				</Nav.Link>
+				<OverlayTrigger
+					placement="bottom"
+					overlay={renderGettingStartedTooltip}
+				>
+					<Nav.Link onClick={() => setShowGettingStarted(true)}>
+						<InfoLg style={{ marginBottom: "0.3rem" }} />
+						{width < 576 && (
+							<span style={{ marginLeft: "0.4rem" }}>Getting Started</span>
+						)}
+					</Nav.Link>
+				</OverlayTrigger>
 			</Nav>
 			<Nav>
 				<NavDropdown
 					as={NavLink}
 					exact
 					to="/profile-organization"
-					title="Profile"
+					title={
+						<OverlayTrigger placement="bottom" overlay={renderProfileTooltip}>
+							<span>
+								<PersonFill
+									style={{
+										fontSize: "1.3rem",
+										marginBottom: "0.2rem",
+									}}
+								/>
+								{width < 576 && (
+									<span style={{ marginLeft: "0.4rem" }}>Profile</span>
+								)}
+							</span>
+						</OverlayTrigger>
+					}
 					id="collasible-nav-dropdown"
 					alignRight
 					className={styles.dropdown}
@@ -96,14 +128,24 @@ const SignedInOrgNavbar = () => {
 				</NavDropdown>
 			</Nav>
 			<Nav>
-				<Nav.Link
-					as={NavLink}
-					exact
-					activeClassName={styles.activeNavLink}
-					to="/your-jobs"
-				>
-					Your Jobs
-				</Nav.Link>
+				<OverlayTrigger placement="bottom" overlay={renderYourJobsTooltip}>
+					<Nav.Link
+						as={NavLink}
+						exact
+						activeClassName={styles.activeNavLink}
+						to="/your-jobs"
+					>
+						<BriefcaseFill
+							style={{
+								fontSize: "1.2rem",
+								marginBottom: "0.2rem",
+							}}
+						/>
+						{width < 576 && (
+							<span style={{ marginLeft: "0.4rem" }}>Your Jobs</span>
+						)}
+					</Nav.Link>
+				</OverlayTrigger>
 			</Nav>
 			<PostAJobButton />
 			<Modal
@@ -257,3 +299,46 @@ const SignedInOrgNavbar = () => {
 };
 
 export default SignedInOrgNavbar;
+
+function getWindowDimensions() {
+	const { innerWidth: width, innerHeight: height } = window;
+	return {
+		width,
+		height,
+	};
+}
+
+function useWindowDimensions() {
+	const [windowDimensions, setWindowDimensions] = useState(
+		getWindowDimensions()
+	);
+
+	useEffect(() => {
+		function handleResize() {
+			setWindowDimensions(getWindowDimensions());
+		}
+
+		window.addEventListener("resize", handleResize);
+		return () => window.removeEventListener("resize", handleResize);
+	}, []);
+
+	return windowDimensions;
+}
+
+const renderGettingStartedTooltip = (props) => (
+	<Tooltip id="getting-started-tooltip" {...props}>
+		Getting Started
+	</Tooltip>
+);
+
+const renderProfileTooltip = (props) => (
+	<Tooltip id="profile-tooltip" {...props}>
+		Profile
+	</Tooltip>
+);
+
+const renderYourJobsTooltip = (props) => (
+	<Tooltip id="your-jobs-tooltip" {...props}>
+		Your Jobs
+	</Tooltip>
+);

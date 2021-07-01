@@ -447,11 +447,7 @@ const CustomDropdown = forwardRef(({ children, onClick }, ref) => (
 			onClick(event);
 		}}
 	>
-		<OverlayTrigger
-			placement="left"
-			// delay={{ show: 250, hide: 400 }}
-			overlay={renderTooltip}
-		>
+		<OverlayTrigger placement="left" overlay={renderTooltip}>
 			<ThreeDotsVertical className={styles.dots} />
 		</OverlayTrigger>
 	</a>

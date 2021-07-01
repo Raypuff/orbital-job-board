@@ -1,0 +1,8 @@
+.dropdown:hover {
+	text-decoration: none;
+}
+
+.activeNavLink {
+	background-color: #eeeeee;
+	border-bottom: 2px solid #ef7c00;
+}
