@@ -7,6 +7,7 @@ import {
 	Pagination,
 	Tooltip,
 	OverlayTrigger,
+	Toast,
 } from "react-bootstrap";
 import PostAJobButton from "../PostAJobButton";
 import { NavLink, Link, useHistory } from "react-router-dom";
@@ -16,7 +17,12 @@ import stu1 from "../../../assets/getting_started/stu1.png";
 import stu2 from "../../../assets/getting_started/stu2.png";
 import stu3 from "../../../assets/getting_started/stu3.png";
 import stu4 from "../../../assets/getting_started/stu4.png";
-import { InfoLg, PersonFill, BriefcaseFill } from "react-bootstrap-icons";
+import {
+	InfoLg,
+	PersonFill,
+	BriefcaseFill,
+	BellFill,
+} from "react-bootstrap-icons";
 
 const SignedInOrgNavbar = () => {
 	const [error, setError] = useState("");
@@ -24,6 +30,7 @@ const SignedInOrgNavbar = () => {
 	const [showGettingStarted, setShowGettingStarted] = useState(false);
 	const history = useHistory();
 	const { width } = useWindowDimensions();
+	const [notifications, setNotifications] = useState(dummyNotifications);
 
 	// page functionality
 	const [activePage, setActivePage] = useState(1);
@@ -88,6 +95,47 @@ const SignedInOrgNavbar = () => {
 					</Nav.Link>
 				</OverlayTrigger>
 			</Nav>
+			<Nav>
+				<NavDropdown
+					title={
+						<OverlayTrigger
+							placement="bottom"
+							overlay={renderNotificationsTooltip}
+						>
+							<span>
+								<BellFill
+									style={{
+										fontSize: "1.2rem",
+										marginBottom: "0.2rem",
+									}}
+								/>
+								{width < 576 && (
+									<span style={{ marginLeft: "0.4rem" }}>Notifications</span>
+								)}
+							</span>
+						</OverlayTrigger>
+					}
+					id="collasible-nav-dropdown"
+					alignRight
+				>
+					{notifications.map((notif) => {
+						return (
+							<Toast
+								style={{
+									minWidth: "20rem",
+								}}
+							>
+								<Toast.Header>
+									<strong className="mr-auto">{notif.header}</strong>
+									<small>11 mins ago</small>
+								</Toast.Header>
+								<Toast.Body>{notif.message}</Toast.Body>
+							</Toast>
+						);
+					})}
+				</NavDropdown>
+			</Nav>
+
 			<Nav>
 				<NavDropdown
 					as={NavLink}
@@ -331,6 +379,12 @@ const renderGettingStartedTooltip = (props) => (
 	</Tooltip>
 );
 
+const renderNotificationsTooltip = (props) => (
+	<Tooltip id="notifications-tooltip" {...props}>
+		Notifications
+	</Tooltip>
+);
+
 const renderProfileTooltip = (props) => (
 	<Tooltip id="profile-tooltip" {...props}>
 		Profile
@@ -342,3 +396,24 @@ const renderYourJobsTooltip = (props) => (
 		Your Jobs
 	</Tooltip>
 );
+
+const dummyNotifications = [
+	{
+		id: "123",
+		receiverID: "raynerljm@gmail.com",
+		header: "Jobs",
+		message: "I am a notification",
+		dateTime: "Thu, 01 Jul 2021 03:52:01 GMT",
+		read: false,
+		dismissed: false,
+	},
+	{
+		id: "124",
+		receiverID: "raynerljm@gmail.com",
+		header: "Applicants",
+		message: "I am a notification",
+		dateTime: "Thu, 01 Jul 2021 03:52:01 GMT",
+		read: false,
+		dismissed: false,
+	},
+];
