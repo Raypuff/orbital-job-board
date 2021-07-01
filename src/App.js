@@ -14,6 +14,7 @@ import SignUpOrgPage from "./pages/SignUpOrgPage";
 import ForgotPasswordOrgPage from "./pages/ForgotPasswordOrgPage";
 import YourProfileOrgPage from "./pages/YourProfileOrgPage";
 import PostAJobPage from "./pages/PostAJobPage";
+import EditJobsPage from "./pages/EditJobsPage";
 import YourJobsPage from "./pages/YourJobsPage";
 // admin pages
 import SignInAdminPage from "./pages/SignInAdminPage";
@@ -65,6 +66,9 @@ function App() {
 					</Route>
 					<Route path="/post-a-job">
 						<PostAJobPage />
+					</Route>
+					<Route path="/your-jobs/edit/:id">
+						<EditJobsPage />
 					</Route>
 					<Route path="/your-jobs">
 						<YourJobsPage />

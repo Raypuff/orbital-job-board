@@ -136,7 +136,11 @@ const YourJobsCard = ({
 			<Dropdown>
 				<Dropdown.Toggle as={CustomDropdown}></Dropdown.Toggle>
 				<Dropdown.Menu align="right">
-					{status !== "Completed" && <Dropdown.Item>Edit job</Dropdown.Item>}
+					{status !== "Completed" && (
+						<Dropdown.Item as={Link} to={`/your-jobs/edit/${id}`}>
+							Edit job
+						</Dropdown.Item>
+					)}
 					{applications && applications.length > 0 && (
 						<Dropdown.Item onClick={() => setShowApplicantsModal(true)}>
 							View applicants
