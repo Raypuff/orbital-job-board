@@ -19,7 +19,7 @@ const ChatStu = () => {
 	const newMessageRef = useRef();
 
 	//fetch chats where chat.stuID === currentUser.email
-	//fetch messages where message.id === currentChat (set loadingMessages true then false), call everytime currentChat changes
+	//fetch messages where message.id === currentChat (set loadingMessages true then false), call everytime currentChat changes, if message.status === "Sent", update to "Read"
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
@@ -58,7 +58,7 @@ const ChatStu = () => {
 									title={chat.orgName}
 									subtitle={chat.lastContent}
 									date={new Date(chat.lastDateTime)}
-									unread={0}
+									unread={5}
 									onClick={() => setCurrentChat(chat.id)}
 								/>
 							))}
@@ -80,7 +80,22 @@ const ChatStu = () => {
 								currentMessages.length === 0 ? (
 									<div>send a msg or smth!!</div>
 								) : (
-									<MessageList />
+									currentMessages
+										.filter((msg) => msg.chatID === currentChat)
+										.sort((msg1, msg2) => {
+											return new Date(msg1.dateTime) - new Date(msg2.dateTime);
+										})
+										.map((msg) => (
+											<ChatStuMessage
+												key={msg.id}
+												id={msg.id}
+												chatID={msg.chatID}
+												fromID={msg.fromID}
+												toID={msg.toID}
+												message={msg.message}
+												dateTime={msg.dateTime}
+											/>
+										))
 								)
 							) : (
 								<div>this is a state i was not prepared for</div>
@@ -107,116 +122,54 @@ const ChatStu = () => {
 
 export default ChatStu;
 
-/* currentMessages
-										.filter((msg) => msg.chatID === currentChat)
-										.sort((msg1, msg2) => {
-											return new Date(msg1.dateTime) - new Date(msg2.dateTime);
-										})
-										.map((msg) => (
-											<ChatStuMessage
-												key={msg.id}
-												id={msg.id}
-												chatID={msg.chatID}
-												fromID={msg.fromID}
-												toID={msg.toID}
-												message={msg.message}
-												dateTime={msg.dateTime}
-											/>
-										))
-								) */
+const databaseChat = {
+	id: "1",
+	stuAvatar: "url",
+	orgAvatar: "url",
+	alt: "avatar",
+	stuID: "",
+	orgID: "",
+	//stuTitle: "", //fetch student_account.name where student_account.ID === stuID
+	//orgTitle: "", //fetch organization_account.name where organization_account.ID === orgID
+	subtitle: "lastMessage", //if fromID === currentUser.email ? "You:" : ""
+	fromID: "", //who the last message is from
+	date: "lastDate",
+	unread: "", //+=1 everytime a new message is sent
+};
 
-const dummyChats = [
-	{
-		id: "1",
-		stuID: "raynerljm@u.nus.edu",
-		stuName: "Loh Jia Ming, Rayner",
-		orgID: "zecharyajw@gmail.com",
-		orgName: "Saturday Kids",
-		lastDateTime: "Wed, 30 Jun 2021 11:15:30 GMT",
-		lastContent:
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vehicula eu mi nec maximus. Aliquam non interdum eros, nec scelerisque.",
-	},
-	{
-		id: "2",
-		stuID: "raynerljm@u.nus.edu",
-		stuName: "Loh Jia Ming, Rayner",
-		orgID: "testing@test.com",
-		orgName: "Code in the Community",
-		lastDateTime: "Wed, 30 Jun 2021 20:10:30 GMT",
-		lastContent:
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vehicula eu mi nec maximus. Aliquam non interdum eros, nec scelerisque.",
-	},
-];
+const frontendChat = {
+	id: "1",
+	avatar: "url",
+	alt: "avatar",
+	stuID: "",
+	orgID: "",
+	title: "",
+	subtitle: "lastMessage", //if fromID === currentUser.email ? "You:" : ""
+	fromID: "", //who the last message is from
+	date: "lastDate",
+	unread: "", //+=1 everytime a new message is sent
+};
 
-const dummyMessages = [
-	{
-		id: "123",
-		chatID: "1",
-		fromID: "raynerljm@u.nus.edu",
-		toID: "zecharyajw@gmail.com",
-		message: "hi!!",
-		dateTime: "Wed, 30 Jun 2021 19:10:30 GMT",
-	},
-	{
-		id: "122",
-		chatID: "1",
-		fromID: "raynerljm@u.nus.edu",
-		toID: "zecharyajw@gmail.com",
-		message: "hi lol who are u ",
-		dateTime: "Wed, 30 Jun 2021 15:09:30 GMT",
-	},
-	{
-		id: "124",
-		chatID: "1",
-		fromID: "zecharyajw@gmail.com",
-		toID: "raynerljm@u.nus.edu",
-		message: "idk LOL",
+const databaseMessage = {
+	id: "1",
+	chatID: "1",
+	//position: "", //fromID === currentUser.email ? "right" : "left"
+	fromID: "", //sender's ID
+	type: "text",
+	text: "message",
+	date: "", //new Date().toGMTString() (tentatively)
+};
 
-		dateTime: "Wed, 30 Jun 2021 14:08:30 GMT",
-	},
-	{
-		id: "125",
+const frontendMessage = {
+	id: "1",
+	chatID: "1",
+	position: "", //fromID === currentUser.email ? "right" : "left"
+	fromID: "", //sender's ID
+	type: "text",
+	text: "message",
+	date: "", //new Date().toGMTString() (tentatively)
+};
 
-		chatID: "1",
-		fromID: "raynerljm@u.nus.edu",
-		toID: "zecharyajw@gmail.com",
-		message: "hi!! this is a test",
-		dateTime: "Wed, 30 Jun 2021 12:00:30 GMT",
-	},
-	{
-		id: "126",
-		chatID: "1",
-		fromID: "raynerljm@u.nus.edu",
-		toID: "zecharyajw@gmail.com",
-		message:
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et egestas leo. Nullam malesuada tortor viverra, facilisis massa quis, accumsan tortor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent sodales neque quis lorem consectetur, id ultrices ipsum mollis. Curabitur leo eros, tempus et malesuada quis, accumsan ac dolor. Proin pretium ipsum eu nisi sagittis dapibus. In ut turpis fringilla, commodo mauris quis, lobortis nunc.",
-		dateTime: "Wed, 30 Jun 2021 05:15:30 GMT",
-	},
-	{
-		id: "127",
-		chatID: "1",
-		fromID: "zecharyajw@gmail.com",
-		toID: "raynerljm@u.nus.edu",
-		message:
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et egestas leo. Nullam malesuada tortor viverra, facilisis massa quis, accumsan tortor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent sodales neque quis lorem consectetur, id ultrices ipsum mollis. Curabitur leo eros, tempus et malesuada quis, accumsan ac dolor. Proin pretium ipsum eu nisi sagittis dapibus. In ut turpis fringilla, commodo mauris quis, lobortis nunc.",
-		dateTime: "Wed, 30 Jun 2021 03:59:30 GMT",
-	},
-	{
-		id: "128",
-		chatID: "2",
-		fromID: "raynerljm@u.nus.edu",
-		toID: "zecharyajw@gmail.com",
-		message:
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et egestas leo. Nullam malesuada tortor viverra, facilisis massa quis, accumsan tortor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent sodales neque quis lorem consectetur, id ultrices ipsum mollis. Curabitur leo eros, tempus et malesuada quis, accumsan ac dolor. Proin pretium ipsum eu nisi sagittis dapibus. In ut turpis fringilla, commodo mauris quis, lobortis nunc.",
-		dateTime: "Wed, 30 Jun 2021 02:15:30 GMT",
-	},
-	{
-		id: "129",
-		chatID: "2",
-		fromID: "zecharyajw@gmail.com",
-		toID: "raynerljm@u.nus.edu",
-		message:
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et egestas leo. Nullam malesuada tortor viverra, facilisis massa quis, accumsan tortor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent sodales neque quis lorem consectetur, id ultrices ipsum mollis. Curabitur leo eros, tempus et malesuada quis, accumsan ac dolor. Proin pretium ipsum eu nisi sagittis dapibus. In ut turpis fringilla, commodo mauris quis, lobortis nunc.",
-		dateTime: "Wed, 30 Jun 2021 02:59:30 GMT",
-	},
-];
+const dummyChats = [];
+
+const dummyMessages = [];
