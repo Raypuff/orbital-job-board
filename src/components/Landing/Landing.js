@@ -22,7 +22,7 @@ const Landing = () => {
 				<Col>
 					<div className={styles.hookWrapper}>
 						<div className={styles.hook1}>It is time to get</div>
-						<Fade left>
+						<Fade>
 							<div className={styles.hook2}>involved.</div>
 						</Fade>
 						<div className={styles.hook3}>
