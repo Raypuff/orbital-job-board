@@ -4,21 +4,22 @@ import ChatStuMessage from "./ChatStuMessage";
 import { Row, Col, Card, Form, Button } from "react-bootstrap";
 import { Telegram } from "react-bootstrap-icons";
 import { useAuth } from "../../../contexts/AuthContext";
+import { ChatItem, MessageList } from "react-chat-elements";
 import styles from "./ChatStu.module.css";
+import image from "../../../assets/noImage.png";
 var uniqid = require("uniqid");
 
 const ChatStu = () => {
 	const { currentUser } = useAuth();
-	const [currentChat, setCurrentChat] = useState();
-	// const [chats, setChats] = useState([]);
-	const chats = dummyChats;
-	const [currentMessages, setCurrentMessages] = useState(dummyMessages);
+	const [currentChat, setCurrentChat] = useState(); //currentChat is the ID of the current open chat
+	const [chats, setChats] = useState(dummyChats); //chats store all MY chats
+	const [currentMessages, setCurrentMessages] = useState(dummyMessages); //currentMessages store all messages of current chat
 	const [loadingChats, setLoadingChats] = useState(true);
 	const [loadingMessages, setLoadingMessages] = useState(false);
 	const newMessageRef = useRef();
 
 	//fetch chats where chat.stuID === currentUser.email
-	//fetch messages where message.id === currentChat (set loadingMessages true then false), call everytime currentChat changes (dont replace currentMessages, just append to it)
+	//fetch messages where message.id === currentChat (set loadingMessages true then false), call everytime currentChat changes
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
@@ -43,6 +44,7 @@ const ChatStu = () => {
 	// if (loadingChats) {
 	// 	return <div>im loading!</div>
 	// }
+
 	return (
 		<div className={styles.container}>
 			{chats && chats.length > 0 ? (
@@ -50,16 +52,14 @@ const ChatStu = () => {
 					<Col lg={4} className={styles.chatCol}>
 						<Card className={styles.chatContainer}>
 							{chats.map((chat) => (
-								<ChatStuChat
-									key={chat.id}
-									id={chat.id}
-									stuID={chat.stuID}
-									stuName={chat.stuName}
-									orgID={chat.orgID}
-									orgName={chat.orgName}
-									lastDateTime={chat.lastDateTime}
-									lastContent={chat.lastContent}
-									setCurrentChat={setCurrentChat}
+								<ChatItem
+									avatar={image}
+									alt="placeholder"
+									title={chat.orgName}
+									subtitle={chat.lastContent}
+									date={new Date(chat.lastDateTime)}
+									unread={0}
+									onClick={() => setCurrentChat(chat.id)}
 								/>
 							))}
 						</Card>
@@ -80,22 +80,7 @@ const ChatStu = () => {
 								currentMessages.length === 0 ? (
 									<div>send a msg or smth!!</div>
 								) : (
-									currentMessages
-										.filter((msg) => msg.chatID === currentChat)
-										.sort((msg1, msg2) => {
-											return new Date(msg1.dateTime) - new Date(msg2.dateTime);
-										})
-										.map((msg) => (
-											<ChatStuMessage
-												key={msg.id}
-												id={msg.id}
-												chatID={msg.chatID}
-												fromID={msg.fromID}
-												toID={msg.toID}
-												message={msg.message}
-												dateTime={msg.dateTime}
-											/>
-										))
+									<MessageList />
 								)
 							) : (
 								<div>this is a state i was not prepared for</div>
@@ -121,6 +106,24 @@ const ChatStu = () => {
 };
 
 export default ChatStu;
+
+/* currentMessages
+										.filter((msg) => msg.chatID === currentChat)
+										.sort((msg1, msg2) => {
+											return new Date(msg1.dateTime) - new Date(msg2.dateTime);
+										})
+										.map((msg) => (
+											<ChatStuMessage
+												key={msg.id}
+												id={msg.id}
+												chatID={msg.chatID}
+												fromID={msg.fromID}
+												toID={msg.toID}
+												message={msg.message}
+												dateTime={msg.dateTime}
+											/>
+										))
+								) */
 
 const dummyChats = [
 	{
