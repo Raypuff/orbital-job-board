@@ -56,10 +56,50 @@ const YourJobsCard = ({
 	const [showCompleteModal, setShowCompleteModal] = useState(false);
 	const [showExportModal, setShowExportModal] = useState(false);
 	const [applications, setApplications] = useState([]);
+	const [exportApplications, setExportApplications] = useState([]);
 
 	const acceptedRef = useRef();
 	const pendingRef = useRef();
 	const rejectedRef = useRef();
+
+	const processApplications = () => {
+		setExportApplications(
+			applications
+				.filter((app) => {
+					if (app.status === "Accepted") {
+						if (acceptedRef.current && acceptedRef.current.checked === true) {
+							return true;
+						} else {
+							return false;
+						}
+					} else {
+						return true;
+					}
+				})
+				.filter((app) => {
+					if (app.status === "Pending") {
+						if (pendingRef.current.checked === true) {
+							return true;
+						} else {
+							return false;
+						}
+					} else {
+						return true;
+					}
+				})
+				.filter((app) => {
+					if (app.status === "Rejected") {
+						if (rejectedRef.current.checked === true) {
+							return true;
+						} else {
+							return false;
+						}
+					} else {
+						return true;
+					}
+				})
+		);
+	};
 
 	const handleComplete = async () => {
 		//setLoading(true);
@@ -348,66 +388,42 @@ const YourJobsCard = ({
 						<Modal.Title>Export applicants</Modal.Title>
 					</Modal.Header>
 					<Modal.Body>
-						{/* <Form.Group controlId="formAccepted">
-							<Form.Label>Accepted applicants</Form.Label>
-							<Form.Control type="checkbox" ref={acceptedRef} />
-						</Form.Group>
-						<Form.Group controlId="formPending">
-							<Form.Label>Pending applicants</Form.Label>
-							<Form.Control type="checkbox" ref={pendingRef} />
-						</Form.Group>
-						<Form.Group controlId="formRejected">
-							<Form.Label>Rejected applicants</Form.Label>
-							<Form.Control type="checkbox" ref={rejectedRef} />
-						</Form.Group> */}
-						Click the button below to export your applicants' details into a CSV
-						spreadsheet
+						Select the types of applicants that you would like to export into a
+						CSV spreadsheet
+						<div className="d-flex flex-column align-items-center">
+							<Form.Group controlId="formAccepted">
+								<Form.Check
+									type="checkbox"
+									ref={acceptedRef}
+									label="Accepted applicants"
+								/>
+							</Form.Group>
+							<Form.Group controlId="formPending">
+								<Form.Check
+									type="checkbox"
+									ref={pendingRef}
+									label="Pending applicants"
+								/>
+							</Form.Group>
+							<Form.Group controlId="formRejected">
+								<Form.Check
+									type="checkbox"
+									ref={rejectedRef}
+									label="Rejected applicants"
+								/>
+							</Form.Group>
+						</div>
 					</Modal.Body>
 					<Modal.Footer className="justify-content-center">
 						<CSVLink
-							data={
-								applications
-								// .filter((app) => {
-								// 	if (app.status === "Accepted") {
-
-								// 		if (
-								// 			acceptedRef.current &&
-								// 			acceptedRef.current.checked === true
-								// 		) {
-								// 			return true;
-								// 		} else {
-								// 			return false;
-								// 		}
-								// 	} else {
-								// 		return true;
-								// 	}
-								// })
-								// .filter((app) => {
-								// 	if (app.status === "Pending") {
-								// 		if (pendingRef.current.checked === true) {
-								// 			return true;
-								// 		} else {
-								// 			return false;
-								// 		}
-								// 	} else {
-								// 		return true;
-								// 	}
-								// })
-								// .filter((app) => {
-								// 	if (app.status === "Rejected") {
-								// 		if (rejectedRef.current.checked === true) {
-								// 			return true;
-								// 		} else {
-								// 			return false;
-								// 		}
-								// 	} else {
-								// 		return true;
-								// 	}
-								// })
-							}
+							data={exportApplications}
 							filename={`Volunteers for ${title}.csv`}
 						>
-							<Button variant="primary" disabled={!applications}>
+							<Button
+								variant="primary"
+								disabled={!applications}
+								onClick={processApplications}
+							>
 								Export applicants
 							</Button>
 						</CSVLink>
@@ -431,11 +447,7 @@ const CustomDropdown = forwardRef(({ children, onClick }, ref) => (
 			onClick(event);
 		}}
 	>
-		<OverlayTrigger
-			placement="left"
-			// delay={{ show: 250, hide: 400 }}
-			overlay={renderTooltip}
-		>
+		<OverlayTrigger placement="left" overlay={renderTooltip}>
 			<ThreeDotsVertical className={styles.dots} />
 		</OverlayTrigger>
 	</a>
