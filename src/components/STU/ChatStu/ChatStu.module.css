@@ -38,7 +38,7 @@
 
 .messageContainer {
 	height: calc(100% - 38px);
-	background-color: rgb(126, 126, 126);
+	background-color: #f8f8f8;
 	border-radius: 0;
 	overflow-y: scroll;
 	/* background-color: red; */
