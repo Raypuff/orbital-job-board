@@ -2,19 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { Row, Col, Card, Form, Button } from "react-bootstrap";
 import { Telegram } from "react-bootstrap-icons";
 import { useAuth } from "../../../contexts/AuthContext";
-import {
-	ChatList,
-	MessageList,
-	Input as ChatInput,
-	Button as ChatButton,
-} from "react-chat-elements";
-import {
-	LoadingChats,
-	NoChats,
-	LoadingMessages,
-	SelectMessage,
-	NoMessage,
-} from "./EmptyStates";
+import { ChatList, MessageList } from "react-chat-elements";
+import { LoadingChats, NoChats, SelectMessage, NoMessage } from "./EmptyStates";
 import styles from "./ChatStu.module.css";
 var uniqid = require("uniqid");
 
@@ -24,7 +13,6 @@ const ChatStu = () => {
 	const [chats, setChats] = useState(); //chats store all MY chats
 	const [currentMessages, setCurrentMessages] = useState([]); //currentMessages store all messages of current chat
 	const [loadingChats, setLoadingChats] = useState(true);
-	const [loadingMessages, setLoadingMessages] = useState(false);
 	const newMessageRef = useRef();
 	const messageBottomRef = useRef();
 
@@ -69,14 +57,14 @@ const ChatStu = () => {
 		});
 	};
 
-	useEffect(() => {
-		scrollToBottom();
-	}, [currentMessages]);
+	// useEffect(() => {
+	// 	scrollToBottom();
+	// }, []);
 
 	//fetch messages where message.id === currentChat (set loadingMessages true then false), call everytime currentChat changes, if message.status === "Sent", update to "Read"
-	const getMessages = async (chatID) => {
+	const getMessages = async () => {
 		const messagesData = await fetch(
-			process.env.REACT_APP_BACKEND_URL + "/chats/messages/" + chatID
+			process.env.REACT_APP_BACKEND_URL + "/chats/messages/" + currentChat
 		);
 		const messages = await messagesData.json();
 		var processedMessages = messages;
@@ -90,26 +78,26 @@ const ChatStu = () => {
 				msg.position = "left";
 			}
 		});
-		setCurrentMessages(processedMessages);
-		setLoadingMessages(false);
+		if (currentMessages !== processedMessages) {
+			setCurrentMessages(processedMessages);
+			// scrollToBottom();
+		}
 	};
+
+	useEffect(() => {
+		if (currentChat) {
+			getMessages();
+		}
+	});
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
+		scrollToBottom();
 		const newMessageID = uniqid();
 		const currentChatID = currentChat;
 		const newMessage = newMessageRef.current.value;
 		const newDate = new Date();
 		event.target.reset();
-		const frontendMessage = {
-			id: newMessageID,
-			chatID: currentChatID,
-			position: "right",
-			fromID: currentUser.email,
-			type: "text",
-			text: newMessage,
-			date: newDate,
-		};
 		const backendMessage = {
 			id: newMessageID,
 			chatID: currentChatID,
@@ -119,7 +107,6 @@ const ChatStu = () => {
 			date: newDate.toUTCString(),
 		};
 
-		setCurrentMessages(currentMessages.concat([frontendMessage]));
 		//update the chat where chat.id === currentChat to have chat.lastDateTime = newMessage.dateTime and chat.lastContent = newMessage.message and unread +=1
 		var updateChats = chats;
 		updateChats.forEach((chat) => {
@@ -162,8 +149,7 @@ const ChatStu = () => {
 									)}
 									onClick={(chat) => {
 										setCurrentChat(chat.id);
-										setLoadingMessages(true);
-										getMessages(chat.id);
+										// scrollToBottom();
 									}}
 								/>
 							</Card>
@@ -178,8 +164,6 @@ const ChatStu = () => {
 							>
 								{!currentChat ? (
 									<SelectMessage />
-								) : currentChat && loadingMessages ? (
-									<LoadingMessages />
 								) : currentChat && currentMessages ? (
 									currentMessages.length === 0 ? (
 										<NoMessage />
@@ -187,8 +171,6 @@ const ChatStu = () => {
 										<>
 											<MessageList
 												className="message-list"
-												// lockable={true}
-												// toBottomHeight={"100%"}
 												dataSource={currentMessages
 													.filter((msg) => msg.chatID === currentChat)
 													.sort((msg1, msg2) => msg1.date - msg2.date)}
@@ -227,128 +209,3 @@ const ChatStu = () => {
 };
 
 export default ChatStu;
-
-const databaseChat = {
-	id: "1",
-	stuAvatar: "url",
-	orgAvatar: "url",
-	alt: "avatar",
-	stuID: "",
-	orgID: "",
-	//stuTitle: "", //fetch student_account.name where student_account.ID === stuID
-	//orgTitle: "", //fetch organization_account.name where organization_account.ID === orgID
-	subtitle: "lastMessage", //if fromID === currentUser.email ? "You:" : ""
-	fromID: "", //who the last message is from
-	date: "lastDate",
-	unread: "", //+=1 everytime a new message is sent
-};
-
-const frontendChat = {
-	id: "1",
-	avatar: "url",
-	alt: "avatar",
-	stuID: "",
-	orgID: "",
-	title: "",
-	subtitle: "lastMessage", //if fromID === currentUser.email ? "You:" : ""
-	fromID: "", //who the last message is from
-	date: "lastDate",
-	unread: "", //+=1 everytime a new message is sent
-};
-
-const databaseMessage = {
-	id: "1",
-	chatID: "1",
-	//position: "", //fromID === currentUser.email ? "right" : "left"
-	fromID: "", //sender's ID
-	type: "text",
-	text: "message",
-	date: "", //new Date().toGMTString() (tentatively)
-};
-
-const frontendMessage = {
-	id: "1",
-	chatID: "1",
-	position: "", //fromID === currentUser.email ? "right" : "left"
-	fromID: "", //sender's ID
-	type: "text",
-	text: "message",
-	date: "", //new Date().toGMTString() (tentatively)
-};
-
-const dummyChats = [
-	{
-		id: "bcd",
-		avatar:
-			"https://toppng.com/uploads/preview/roger-berry-avatar-placeholder-11562991561rbrfzlng6h.png",
-		alt: "chat avatar",
-		stuID: "raynerljm@u.nus.edu",
-		orgID: "zecharyajw@gmail.com",
-		title: "Zechary's Charities",
-		subtitle: "You: What is the minimum required hours for this job?",
-		fromID: "zechary@gmail.com",
-		date: "Fri, 01 Jul 2021 21:00:00 GMT",
-		unread: "1",
-	},
-	{
-		id: "abc",
-		avatar:
-			"https://toppng.com/uploads/preview/roger-berry-avatar-placeholder-11562991561rbrfzlng6h.png",
-		alt: "chat avatar",
-		stuID: "raynerljm@u.nus.edu",
-		orgID: "raynerljm@gmail.com",
-		title: "Saturday Kids",
-		subtitle: "So what's your question for me?",
-		fromID: "raynerljm@gmail.com",
-		date: "Fri, 02 Jul 2021 03:00:00 GMT",
-		unread: "2",
-	},
-];
-
-const dummyMessages = [
-	{
-		id: "1",
-		chatID: "abc",
-		position: "right",
-		fromID: "raynerljm@u.nus.edu",
-		type: "text",
-		text: "Hi Saturday Kids, can I ask a question?",
-		date: "Fri, 02 Jul 2021 02:00:00 GMT",
-	},
-	{
-		id: "2",
-		chatID: "abc",
-		position: "left",
-		fromID: "raynerljm@gmail.com",
-		type: "text",
-		text: "Of course you can!",
-		date: "Fri, 02 Jul 2021 02:02:00 GMT",
-	},
-	{
-		id: "3",
-		chatID: "abc",
-		position: "left",
-		fromID: "raynerljm@gmail.com",
-		type: "text",
-		text: "So what's your question for me?",
-		date: "Fri, 02 Jul 2021 02:02:20 GMT",
-	},
-	{
-		id: "4",
-		chatID: "bcd",
-		position: "right",
-		fromID: "raynerljm@u.nus.edu",
-		type: "text",
-		text: "Hey Zechary - I have a question...",
-		date: "Fri, 01 Jul 2021 20:59:30 GMT",
-	},
-	{
-		id: "5",
-		chatID: "bcd",
-		position: "right",
-		fromID: "raynerljm@u.nus.edu",
-		type: "text",
-		text: "What is the minimum required hours for this job?",
-		date: "Fri, 01 Jul 2021 21:00:00 GMT",
-	},
-];

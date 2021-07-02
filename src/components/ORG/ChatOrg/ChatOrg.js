@@ -2,19 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { Row, Col, Card, Form, Button } from "react-bootstrap";
 import { Telegram } from "react-bootstrap-icons";
 import { useAuth } from "../../../contexts/AuthContext";
-import {
-	ChatList,
-	MessageList,
-	Input as ChatInput,
-	Button as ChatButton,
-} from "react-chat-elements";
-import {
-	LoadingChats,
-	NoChats,
-	LoadingMessages,
-	SelectMessage,
-	NoMessage,
-} from "./EmptyStates";
+import { ChatList, MessageList } from "react-chat-elements";
+import { LoadingChats, NoChats, SelectMessage, NoMessage } from "./EmptyStates";
 import styles from "./ChatOrg.module.css";
 var uniqid = require("uniqid");
 
@@ -24,7 +13,6 @@ const ChatOrg = () => {
 	const [chats, setChats] = useState(); //chats store all MY chats
 	const [currentMessages, setCurrentMessages] = useState([]); //currentMessages store all messages of current chat
 	const [loadingChats, setLoadingChats] = useState(true);
-	const [loadingMessages, setLoadingMessages] = useState(false);
 	const newMessageRef = useRef();
 	const messageBottomRef = useRef();
 
@@ -69,14 +57,14 @@ const ChatOrg = () => {
 		});
 	};
 
-	useEffect(() => {
-		scrollToBottom();
-	}, [currentMessages]);
+	// useEffect(() => {
+	// 	scrollToBottom();
+	// }, [currentMessages]);
 
 	//fetch messages where message.id === currentChat (set loadingMessages true then false), call everytime currentChat changes, if message.status === "Sent", update to "Read"
-	const getMessages = async (chatID) => {
+	const getMessages = async () => {
 		const messagesData = await fetch(
-			process.env.REACT_APP_BACKEND_URL + "/chats/messages/" + chatID
+			process.env.REACT_APP_BACKEND_URL + "/chats/messages/" + currentChat
 		);
 		const messages = await messagesData.json();
 		var processedMessages = messages;
@@ -90,26 +78,26 @@ const ChatOrg = () => {
 				msg.position = "left";
 			}
 		});
-		setCurrentMessages(processedMessages);
-		setLoadingMessages(false);
+		if (currentMessages !== processedMessages) {
+			setCurrentMessages(processedMessages);
+			// scrollToBottom();
+		}
 	};
+
+	useEffect(() => {
+		if (currentChat) {
+			getMessages();
+		}
+	});
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
+		scrollToBottom();
 		const newMessageID = uniqid();
 		const currentChatID = currentChat;
 		const newMessage = newMessageRef.current.value;
 		const newDate = new Date();
 		event.target.reset();
-		const frontendMessage = {
-			id: newMessageID,
-			chatID: currentChatID,
-			position: "right",
-			fromID: currentUser.email,
-			type: "text",
-			text: newMessage,
-			date: newDate,
-		};
 		const backendMessage = {
 			id: newMessageID,
 			chatID: currentChatID,
@@ -119,7 +107,6 @@ const ChatOrg = () => {
 			date: newDate.toUTCString(),
 		};
 
-		setCurrentMessages(currentMessages.concat([frontendMessage]));
 		//update the chat where chat.id === currentChat to have chat.lastDateTime = newMessage.dateTime and chat.lastContent = newMessage.message and unread +=1
 		var updateChats = chats;
 		updateChats.forEach((chat) => {
@@ -162,8 +149,6 @@ const ChatOrg = () => {
 									)}
 									onClick={(chat) => {
 										setCurrentChat(chat.id);
-										setLoadingMessages(true);
-										getMessages(chat.id);
 									}}
 								/>
 							</Card>
@@ -178,8 +163,6 @@ const ChatOrg = () => {
 							>
 								{!currentChat ? (
 									<SelectMessage />
-								) : currentChat && loadingMessages ? (
-									<LoadingMessages />
 								) : currentChat && currentMessages ? (
 									currentMessages.length === 0 ? (
 										<NoMessage />
@@ -187,8 +170,6 @@ const ChatOrg = () => {
 										<>
 											<MessageList
 												className="message-list"
-												// lockable={true}
-												// toBottomHeight={"100%"}
 												dataSource={currentMessages
 													.filter((msg) => msg.chatID === currentChat)
 													.sort((msg1, msg2) => msg1.date - msg2.date)}
