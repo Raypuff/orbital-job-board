@@ -9,9 +9,11 @@ import {
 } from "../JobDetailsApplyModal/JobDetailsApplyModal";
 import {
 	JobDetailsAdminRejModal,
-	JobDetailsAdminAppModal,
 	AdminOpenRejModalButton,
+	JobDetailsAdminAppModal,
 	AdminOpenAppModalButton,
+	JobDetailsAdminTDModal,
+	AdminOpenTDModalButton,
 } from "../JobDetailsAdminModal/JobDetailsAdminModal";
 import { useAuth } from "../../../contexts/AuthContext";
 import styles from "./JobDetails.module.css";
@@ -20,33 +22,46 @@ const JobDetails = ({ id }) => {
 	const [showApplyModal, setShowApplyModal] = useState(false);
 	const [showAdminRejModal, setShowAdminRejModal] = useState(false);
 	const [showAdminAppModal, setShowAdminAppModal] = useState(false);
+	const [showAdminTDModal, setShowAdminTDModal] = useState(false);
 	const [job, setJob] = useState();
 	const [org, setOrg] = useState();
+	const [applications, setApplications] = useState();
 	const [orgLoading, setOrgLoading] = useState(true);
 	const { currentUser, userType } = useAuth();
 	const [imageSrc, setImageSrc] = useState("");
 
-	const getData = async () => {
-		const response = await fetch(
-			process.env.REACT_APP_BACKEND_URL + "/jobs/" + id
-		);
-		const jsonData = await response.json();
-		const response2 = await fetch(
-			process.env.REACT_APP_BACKEND_URL +
-				"/organization-accounts/" +
-				jsonData.orgID
-		);
-		const jsonData2 = await response2.json();
-		setJob(jsonData);
-		setOrg(jsonData2);
-		setOrgLoading(false);
-		setImageSrc(jsonData.imageUrl);
-	};
-
 	useEffect(() => {
+		const getData = async () => {
+			const response = await fetch(
+				process.env.REACT_APP_BACKEND_URL + "/jobs/" + id
+			);
+			const jsonData = await response.json();
+			const response2 = await fetch(
+				process.env.REACT_APP_BACKEND_URL +
+					"/organization-accounts/" +
+					jsonData.orgID
+			);
+			const jsonData2 = await response2.json();
+			setJob(jsonData);
+			setOrg(jsonData2);
+			setOrgLoading(false);
+			setImageSrc(jsonData.imageUrl);
+		};
 		getData();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [showApplyModal]);
+
+	useEffect(() => {
+		const getApplications = async () => {
+			const response = await fetch(
+				process.env.REACT_APP_BACKEND_URL + "/job-applications/job/" + id
+			);
+			const jsonData = await response.json();
+			setApplications(jsonData);
+		};
+
+		getApplications();
+	}, []);
 
 	if (orgLoading) {
 		return <LoadingJobDetails />;
@@ -97,29 +112,47 @@ const JobDetails = ({ id }) => {
 	//5: Org Job Rejected -> Alert at top that job is rejected
 	//10: Org Job Completed -> Alert at top that job is completed
 	//6: Admin Job Pending -> Reject or Approve job
-	//7: Admin Job Approved -> Alert at the top that the job is approved
+	//7: Admin Job Approved -> Alert at the top that the job is approved and button below to takedown
 	//8: Admin Job Rejected -> Alert at the top that the job is rejected
 	//13: Admin Job Completed -> Alert at the top that the job is completed
 	//9: Not available
 
 	var displayState;
 	if (currentUser === null) {
-		displayState = 0;
-	} else if (currentUser !== null && userType === "student") {
-		if (
-			(applicants === null || !applicants.includes(currentUser.email)) &&
-			status === "Approved"
-		) {
+		if (status === "Approved") {
 			displayState = 0;
-		} else if (
-			applicants !== null &&
-			applicants.includes(currentUser.email) &&
-			status === "Approved"
-		) {
-			displayState = 1;
+		} else {
+			displayState = 9;
 		}
-		// include retrieval of my application status (state 11 and 12)
-		else {
+	} else if (currentUser !== null && userType === "student") {
+		if (status === "Approved") {
+			if (applicants === null || !applicants.includes(currentUser.email)) {
+				displayState = 0;
+			} else if (
+				applicants !== null &&
+				applicants.includes(currentUser.email)
+			) {
+				displayState = 1;
+			}
+		} else if (status === "TakenDown") {
+			const myApp = applications.filter(
+				(app) => app.stuID === currentUser.email
+			);
+			if (myApp && myApp[0].status === "Accepted") {
+				displayState = 11;
+			} else {
+				displayState = 9;
+			}
+		} else if (status === "Completed") {
+			const myApp = applications.filter(
+				(app) => app.stuID === currentUser.email
+			);
+			if (myApp && myApp[0].status === "Accepted") {
+				displayState = 12;
+			} else {
+				displayState = 9;
+			}
+		} else {
 			displayState = 9;
 		}
 	} else if (currentUser !== null && userType === "organization") {
@@ -185,8 +218,8 @@ const JobDetails = ({ id }) => {
 							</Alert>
 						) : displayState === 11 ? (
 							<Alert variant="danger">
-								This job has been taken down and is not publicly visible.
-								Contact the organization to understand the situation
+								This job has been taken down and is not publicly visible. Please
+								contact the organization if you have further queries.
 							</Alert>
 						) : displayState === 12 ? (
 							<Alert variant="primary">
@@ -382,12 +415,13 @@ const JobDetails = ({ id }) => {
 										</h7>
 										{(displayState === 6 ||
 											displayState === 7 ||
-											displayState === 8) && (
-											<h7>
-												{orgUen}
-												<br />
-											</h7>
-										)}
+											displayState === 8) &&
+											orgType === "Non-NUS Organization" && (
+												<h7 className="text-muted">
+													UEN: {orgUen}
+													<br />
+												</h7>
+											)}
 										<h7>
 											<a href={`mailto:${orgID}`}>{orgID}</a>
 										</h7>
@@ -429,6 +463,10 @@ const JobDetails = ({ id }) => {
 												handleClick={() => setShowAdminAppModal(true)}
 											/>
 										</>
+									) : displayState === 7 ? (
+										<AdminOpenTDModalButton
+											handleClick={() => setShowAdminTDModal(true)}
+										/>
 									) : null}
 								</div>
 							</Col>
@@ -530,6 +568,37 @@ const JobDetails = ({ id }) => {
 							applicants={applicants}
 						/>
 					</>
+				) : displayState === 7 ? (
+					<JobDetailsAdminTDModal
+						show={showAdminTDModal}
+						onHide={() => setShowAdminTDModal(false)}
+						id={id}
+						orgType={orgType}
+						orgName={orgName}
+						orgEmail={orgID}
+						status={status}
+						title={title}
+						beneficiaries={beneficiaries}
+						skills={skills}
+						purpose={purpose}
+						platform={platform}
+						multiLocation={multiLocation}
+						location={location}
+						postalCode={postalCode}
+						type={type}
+						flexiDate={flexiDate}
+						longStartDate={longStartDate}
+						longEndDate={longEndDate}
+						flexiHours={flexiHours}
+						longHours={longHours}
+						adShift={adShift}
+						addInfo={addInfo}
+						imageUrl={imageUrl}
+						pocName={pocName}
+						pocNo={pocNo}
+						pocEmail={pocEmail}
+						applicants={applicants}
+					/>
 				) : null}
 			</>
 		);

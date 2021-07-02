@@ -192,11 +192,16 @@ const AllJobsCard = ({
 								<div className={styles.dotsContainer}>
 									<TripleDot id={id} />
 								</div>
-								<div className={styles.applicants}>
-									{/* <h5> */}
-									Proceed to view listing to approve or reject job
-									{/* </h5> */}
-								</div>
+								{status === "Pending" && (
+									<div className={styles.applicants}>
+										View listing to approve or reject job
+									</div>
+								)}
+								{status === "Approved" && (
+									<div className={styles.applicants}>
+										View listing if you would like to take down this job
+									</div>
+								)}
 							</div>
 						</Col>
 					</Row>
