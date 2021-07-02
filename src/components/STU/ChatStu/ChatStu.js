@@ -38,18 +38,18 @@ const ChatStu = () => {
 				currentUser.email
 		);
 		const chats = await chatData.json();
-		console.log(`Printing Chats:`);
+		console.log(`Backend Chats:`);
 		console.log(chats);
 		var processedChats = chats;
 		processedChats.forEach((chat) => {
 			chat.date = new Date(chat.date);
 		});
+		processedChats.forEach((chat) => {
+			chat.avatar = chat.orgAvatar;
+		});
 		setChats(processedChats);
-		// var processedDummyChats = dummyChats;
-		// processedDummyChats.forEach((chat) => {
-		// 	chat.date = new Date(chat.date);
-		// });
-		// setChats(processedDummyChats);
+		console.log("Processed Chats:");
+		console.log(processedChats);
 		setLoadingChats(false);
 	};
 
@@ -67,12 +67,14 @@ const ChatStu = () => {
 		processedMessages.forEach((msg) => {
 			msg.date = new Date(msg.date);
 		});
+		processedMessages.forEach((msg) => {
+			if (currentUser.email === msg.fromID) {
+				msg.position = "right";
+			} else {
+				msg.position = "left";
+			}
+		});
 		setCurrentMessages(processedMessages);
-		// var processedDummyMessages = dummyMessages;
-		// processedDummyMessages.forEach((msg) => {
-		// 	msg.date = new Date(msg.date);
-		// });
-		// setCurrentMessages(processedDummyMessages);
 		setLoadingMessages(false);
 	};
 
@@ -96,6 +98,7 @@ const ChatStu = () => {
 			text: newMessageRef.current.value,
 			date: new Date().toUTCString(),
 		};
+		event.target.reset();
 
 		setCurrentMessages(currentMessages.concat([frontendMessage]));
 		//update the chat where chat.id === currentChat to have chat.lastDateTime = newMessage.dateTime and chat.lastContent = newMessage.message and unread +=1
@@ -109,8 +112,6 @@ const ChatStu = () => {
 		} catch (err) {
 			console.error(err);
 		}
-
-		newMessageRef.current.value = "";
 	};
 
 	if (loadingChats) {
