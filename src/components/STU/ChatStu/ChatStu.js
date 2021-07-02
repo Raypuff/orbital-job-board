@@ -18,7 +18,6 @@ import {
 	NoMessage,
 } from "./EmptyStates";
 import styles from "./ChatStu.module.css";
-import image from "../../../assets/noImage.png";
 var uniqid = require("uniqid");
 
 const ChatStu = () => {
@@ -35,7 +34,7 @@ const ChatStu = () => {
 	const getChats = async () => {
 		const chatData = await fetch(
 			process.env.REACT_APP_BACKEND_URL +
-				"/chats/all-chats/" +
+				"/chats/all-chats/student/" +
 				currentUser.email
 		);
 		const chats = await chatData.json();
@@ -57,11 +56,24 @@ const ChatStu = () => {
 		console.log("Processed Chats:");
 		console.log(processedChats);
 		setLoadingChats(false);
+		scrollToBottom();
 	};
 
 	useEffect(() => {
 		getChats();
 	}, [currentChat]);
+
+	const scrollToBottom = () => {
+		messageBottomRef.current?.scrollIntoView({
+			behavior: "smooth",
+			block: "nearest",
+			inline: "start",
+		});
+	};
+
+	useEffect(() => {
+		scrollToBottom();
+	}, [currentMessages]);
 
 	//fetch messages where message.id === currentChat (set loadingMessages true then false), call everytime currentChat changes, if message.status === "Sent", update to "Read"
 	const getMessages = async (chatID) => {
