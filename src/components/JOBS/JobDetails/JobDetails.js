@@ -168,8 +168,8 @@ const JobDetails = ({ id }) => {
 			displayState = 5;
 		} else if (status === "Completed") {
 			displayState = 10;
-		} else if (status === "Completed") {
-			displayState = 10;
+		} else if (status === "TakenDown") {
+			displayState = 14;
 		} else {
 			displayState = 9;
 		}
@@ -206,8 +206,9 @@ const JobDetails = ({ id }) => {
 							</Alert>
 						) : displayState === 5 ? (
 							<Alert variant="danger">
-								Your job has been rejected and is not publicly visible. Reason:
-								{removalReason}
+								Your job has been rejected and is not publicly visible.
+								<hr />
+								Reason for rejection: {removalReason}
 							</Alert>
 						) : displayState === 7 ? (
 							<Alert variant="success">
@@ -233,6 +234,12 @@ const JobDetails = ({ id }) => {
 						) : displayState === 13 ? (
 							<Alert variant="primary">
 								This job has been completed and is not publicly visible
+							</Alert>
+						) : displayState === 14 ? (
+							<Alert variant="danger">
+								Your job has been taken down and is not publicly visible.
+								<hr />
+								Reason for takedown: {removalReason}
 							</Alert>
 						) : null}
 						<Row>
