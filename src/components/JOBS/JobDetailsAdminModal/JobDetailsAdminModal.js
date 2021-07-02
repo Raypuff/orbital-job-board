@@ -3,12 +3,8 @@ import { Modal, Button, Form } from "react-bootstrap";
 import styles from "./JobDetailsAdminModal.module.css";
 
 const handleAcceptReject = async (jobId, choice, reason) => {
-  var body;
-  if (choice === "Approved") {
-    body = { status: choice, removalReason: "" };
-  } else if (choice === "Rejected" || "TakenDown") {
-    body = { status: choice, removalReason: reason };
-  }
+  const body = { status: choice, removalReason: reason };
+
   try {
     await fetch(process.env.REACT_APP_BACKEND_URL + "/jobs/status/" + jobId, {
       method: "PUT",
