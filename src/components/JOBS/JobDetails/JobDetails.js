@@ -95,6 +95,7 @@ const JobDetails = ({ id }) => {
 		pocEmail,
 		dateCreated,
 		datePosted,
+		removalReason,
 		applicants,
 	} = job;
 	const orgType = org.type;
@@ -111,6 +112,7 @@ const JobDetails = ({ id }) => {
 	//4: Org Job Approved -> Alert at top that job is visible
 	//5: Org Job Rejected -> Alert at top that job is rejected
 	//10: Org Job Completed -> Alert at top that job is completed
+	//14: Org Job Taken down --> Alert at top that job is taken down
 	//6: Admin Job Pending -> Reject or Approve job
 	//7: Admin Job Approved -> Alert at the top that the job is approved and button below to takedown
 	//8: Admin Job Rejected -> Alert at the top that the job is rejected
@@ -166,6 +168,8 @@ const JobDetails = ({ id }) => {
 			displayState = 5;
 		} else if (status === "Completed") {
 			displayState = 10;
+		} else if (status === "Completed") {
+			displayState = 10;
 		} else {
 			displayState = 9;
 		}
@@ -202,7 +206,8 @@ const JobDetails = ({ id }) => {
 							</Alert>
 						) : displayState === 5 ? (
 							<Alert variant="danger">
-								Your job has been rejected and is not publicly visible
+								Your job has been rejected and is not publicly visible. Reason:
+								{removalReason}
 							</Alert>
 						) : displayState === 7 ? (
 							<Alert variant="success">
