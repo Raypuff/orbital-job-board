@@ -16,6 +16,7 @@ import ForgotPasswordOrgPage from "./pages/ForgotPasswordOrgPage";
 import YourProfileOrgPage from "./pages/YourProfileOrgPage";
 import PostAJobPage from "./pages/PostAJobPage";
 import YourJobsPage from "./pages/YourJobsPage";
+import ChatOrgPage from "./pages/ChatOrgPage";
 // admin pages
 import SignInAdminPage from "./pages/SignInAdminPage";
 import AllJobsPage from "./pages/AllJobsPage";
@@ -72,6 +73,9 @@ function App() {
 					</Route>
 					<Route path="/your-jobs">
 						<YourJobsPage />
+					</Route>
+					<Route path="/chat-organization">
+						<ChatOrgPage />
 					</Route>
 					{/* Admin Pages */}
 					<Route path="/sign-in-admin">

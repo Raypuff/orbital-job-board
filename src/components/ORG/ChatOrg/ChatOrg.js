@@ -15,10 +15,10 @@ import {
 	SelectMessage,
 	NoMessage,
 } from "./EmptyStates";
-import styles from "./ChatStu.module.css";
+import styles from "./ChatOrg.module.css";
 var uniqid = require("uniqid");
 
-const ChatStu = () => {
+const ChatOrg = () => {
 	const { currentUser } = useAuth();
 	const [currentChat, setCurrentChat] = useState(""); //currentChat is the ID of the current open chat
 	const [chats, setChats] = useState(); //chats store all MY chats
@@ -32,7 +32,7 @@ const ChatStu = () => {
 	const getChats = async () => {
 		const chatData = await fetch(
 			process.env.REACT_APP_BACKEND_URL +
-				"/chats/all-chats/student/" +
+				"/chats/all-chats/organization/" +
 				currentUser.email
 		);
 		const chats = await chatData.json();
@@ -43,7 +43,7 @@ const ChatStu = () => {
 			chat.date = new Date(chat.date);
 		});
 		processedChats.forEach((chat) => {
-			chat.avatar = chat.orgAvatar;
+			chat.avatar = chat.stuAvatar;
 		});
 		processedChats.forEach((chat) => {
 			if (currentUser.email === chat.fromID) {
@@ -226,129 +226,4 @@ const ChatStu = () => {
 	}
 };
 
-export default ChatStu;
-
-const databaseChat = {
-	id: "1",
-	stuAvatar: "url",
-	orgAvatar: "url",
-	alt: "avatar",
-	stuID: "",
-	orgID: "",
-	//stuTitle: "", //fetch student_account.name where student_account.ID === stuID
-	//orgTitle: "", //fetch organization_account.name where organization_account.ID === orgID
-	subtitle: "lastMessage", //if fromID === currentUser.email ? "You:" : ""
-	fromID: "", //who the last message is from
-	date: "lastDate",
-	unread: "", //+=1 everytime a new message is sent
-};
-
-const frontendChat = {
-	id: "1",
-	avatar: "url",
-	alt: "avatar",
-	stuID: "",
-	orgID: "",
-	title: "",
-	subtitle: "lastMessage", //if fromID === currentUser.email ? "You:" : ""
-	fromID: "", //who the last message is from
-	date: "lastDate",
-	unread: "", //+=1 everytime a new message is sent
-};
-
-const databaseMessage = {
-	id: "1",
-	chatID: "1",
-	//position: "", //fromID === currentUser.email ? "right" : "left"
-	fromID: "", //sender's ID
-	type: "text",
-	text: "message",
-	date: "", //new Date().toGMTString() (tentatively)
-};
-
-const frontendMessage = {
-	id: "1",
-	chatID: "1",
-	position: "", //fromID === currentUser.email ? "right" : "left"
-	fromID: "", //sender's ID
-	type: "text",
-	text: "message",
-	date: "", //new Date().toGMTString() (tentatively)
-};
-
-const dummyChats = [
-	{
-		id: "bcd",
-		avatar:
-			"https://toppng.com/uploads/preview/roger-berry-avatar-placeholder-11562991561rbrfzlng6h.png",
-		alt: "chat avatar",
-		stuID: "raynerljm@u.nus.edu",
-		orgID: "zecharyajw@gmail.com",
-		title: "Zechary's Charities",
-		subtitle: "You: What is the minimum required hours for this job?",
-		fromID: "zechary@gmail.com",
-		date: "Fri, 01 Jul 2021 21:00:00 GMT",
-		unread: "1",
-	},
-	{
-		id: "abc",
-		avatar:
-			"https://toppng.com/uploads/preview/roger-berry-avatar-placeholder-11562991561rbrfzlng6h.png",
-		alt: "chat avatar",
-		stuID: "raynerljm@u.nus.edu",
-		orgID: "raynerljm@gmail.com",
-		title: "Saturday Kids",
-		subtitle: "So what's your question for me?",
-		fromID: "raynerljm@gmail.com",
-		date: "Fri, 02 Jul 2021 03:00:00 GMT",
-		unread: "2",
-	},
-];
-
-const dummyMessages = [
-	{
-		id: "1",
-		chatID: "abc",
-		position: "right",
-		fromID: "raynerljm@u.nus.edu",
-		type: "text",
-		text: "Hi Saturday Kids, can I ask a question?",
-		date: "Fri, 02 Jul 2021 02:00:00 GMT",
-	},
-	{
-		id: "2",
-		chatID: "abc",
-		position: "left",
-		fromID: "raynerljm@gmail.com",
-		type: "text",
-		text: "Of course you can!",
-		date: "Fri, 02 Jul 2021 02:02:00 GMT",
-	},
-	{
-		id: "3",
-		chatID: "abc",
-		position: "left",
-		fromID: "raynerljm@gmail.com",
-		type: "text",
-		text: "So what's your question for me?",
-		date: "Fri, 02 Jul 2021 02:02:20 GMT",
-	},
-	{
-		id: "4",
-		chatID: "bcd",
-		position: "right",
-		fromID: "raynerljm@u.nus.edu",
-		type: "text",
-		text: "Hey Zechary - I have a question...",
-		date: "Fri, 01 Jul 2021 20:59:30 GMT",
-	},
-	{
-		id: "5",
-		chatID: "bcd",
-		position: "right",
-		fromID: "raynerljm@u.nus.edu",
-		type: "text",
-		text: "What is the minimum required hours for this job?",
-		date: "Fri, 01 Jul 2021 21:00:00 GMT",
-	},
-];
+export default ChatOrg;

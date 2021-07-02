@@ -16,7 +16,12 @@ import stu1 from "../../../assets/getting_started/stu1.png";
 import stu2 from "../../../assets/getting_started/stu2.png";
 import stu3 from "../../../assets/getting_started/stu3.png";
 import stu4 from "../../../assets/getting_started/stu4.png";
-import { InfoLg, PersonFill, BriefcaseFill } from "react-bootstrap-icons";
+import {
+	InfoLg,
+	PersonFill,
+	BriefcaseFill,
+	ChatSquareDotsFill,
+} from "react-bootstrap-icons";
 
 const SignedInOrgNavbar = () => {
 	const [error, setError] = useState("");
@@ -88,6 +93,25 @@ const SignedInOrgNavbar = () => {
 					</Nav.Link>
 				</OverlayTrigger>
 			</Nav>
+			<Nav>
+				<OverlayTrigger placement="bottom" overlay={renderChatTooltip}>
+					<Nav.Link
+						as={NavLink}
+						exact
+						activeClassName={styles.activeNavLink}
+						to="/chat-organization"
+					>
+						<ChatSquareDotsFill
+							style={{
+								fontSize: "1.1rem",
+								marginBottom: "0.2rem",
+							}}
+						/>
+						{width < 576 && <span style={{ marginLeft: "0.4rem" }}>Chat</span>}
+					</Nav.Link>
+				</OverlayTrigger>
+			</Nav>
+
 			<Nav>
 				<NavDropdown
 					as={NavLink}
@@ -328,6 +352,12 @@ function useWindowDimensions() {
 const renderGettingStartedTooltip = (props) => (
 	<Tooltip id="getting-started-tooltip" {...props}>
 		Getting Started
+	</Tooltip>
+);
+
+const renderChatTooltip = (props) => (
+	<Tooltip id="chat-tooltip" {...props}>
+		Chat
 	</Tooltip>
 );
 
