@@ -192,8 +192,6 @@ export const JobDetailsAdminTDModal = ({
 								handleAcceptReject(id, "TakenDown", tdReasonRef.current.value)
 							}
 							variant="danger"
-							type="submit"
-							required
 						>
 							Take down posting
 						</Button>

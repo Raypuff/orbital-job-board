@@ -110,13 +110,14 @@ const JobDetails = ({ id }) => {
 	//2: Org Not Your Job -> No button
 	//3: Org Job Pending -> Alert at top that job is still pending
 	//4: Org Job Approved -> Alert at top that job is visible
-	//5: Org Job Rejected -> Alert at top that job is rejected
+	//5: Org Job Rejected -> Alert at top that job is rejected with reason
 	//10: Org Job Completed -> Alert at top that job is completed
-	//14: Org Job Taken down --> Alert at top that job is taken down
+	//14: Org Job TakenDown --> Alert at top that job is taken down with reason
 	//6: Admin Job Pending -> Reject or Approve job
 	//7: Admin Job Approved -> Alert at the top that the job is approved and button below to takedown
-	//8: Admin Job Rejected -> Alert at the top that the job is rejected
+	//8: Admin Job Rejected -> Alert at the top that the job is rejected with reason
 	//13: Admin Job Completed -> Alert at the top that the job is completed
+	//15: Admin Job TakenDown --> Alert at the top that job is taken down with reason
 	//9: Not available
 
 	var displayState;
@@ -177,11 +178,14 @@ const JobDetails = ({ id }) => {
 		if (status === "Pending") {
 			displayState = 6;
 		} else if (status === "Approved") {
+			console.log("yeet");
 			displayState = 7;
 		} else if (status === "Rejected") {
 			displayState = 8;
 		} else if (status === "Completed") {
 			displayState = 13;
+		} else if (status === "TakenDown") {
+			displayState = 15;
 		} else {
 			displayState = 9;
 		}
@@ -206,7 +210,7 @@ const JobDetails = ({ id }) => {
 							</Alert>
 						) : displayState === 5 ? (
 							<Alert variant="danger">
-								Your job has been rejected and is not publicly visible.
+								Your job has been rejected and is not publicly visible
 								<hr />
 								Reason for rejection: {removalReason}
 							</Alert>
@@ -217,6 +221,8 @@ const JobDetails = ({ id }) => {
 						) : displayState === 8 ? (
 							<Alert variant="danger">
 								This job has been rejected and is not publicly visible
+								<hr />
+								Reason for rejection: {removalReason}
 							</Alert>
 						) : displayState === 10 ? (
 							<Alert variant="primary">
@@ -238,6 +244,12 @@ const JobDetails = ({ id }) => {
 						) : displayState === 14 ? (
 							<Alert variant="danger">
 								Your job has been taken down and is not publicly visible.
+								<hr />
+								Reason for takedown: {removalReason}
+							</Alert>
+						) : displayState === 15 ? (
+							<Alert variant="danger">
+								This job has been taken down and is not publicly visible.
 								<hr />
 								Reason for takedown: {removalReason}
 							</Alert>
