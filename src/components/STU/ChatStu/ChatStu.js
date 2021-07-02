@@ -29,6 +29,7 @@ const ChatStu = () => {
 	const [loadingChats, setLoadingChats] = useState(true);
 	const [loadingMessages, setLoadingMessages] = useState(false);
 	const newMessageRef = useRef();
+	const messageBottomRef = useRef();
 
 	//fetch chats where chat.stuID === currentUser.email
 	const getChats = async () => {
@@ -173,14 +174,17 @@ const ChatStu = () => {
 									currentMessages.length === 0 ? (
 										<NoMessage />
 									) : (
-										<MessageList
-											className="message-list"
-											lockable={true}
-											toBottomHeight={"100%"}
-											dataSource={currentMessages
-												.filter((msg) => msg.chatID === currentChat)
-												.sort((msg1, msg2) => msg1.date - msg2.date)}
-										/>
+										<>
+											<MessageList
+												className="message-list"
+												// lockable={true}
+												// toBottomHeight={"100%"}
+												dataSource={currentMessages
+													.filter((msg) => msg.chatID === currentChat)
+													.sort((msg1, msg2) => msg1.date - msg2.date)}
+											/>
+											<div ref={messageBottomRef} />
+										</>
 									)
 								) : (
 									<div>this is a state i was not prepared for</div>
