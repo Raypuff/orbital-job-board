@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Row, Col, Card } from "react-bootstrap";
 // import JobBoardModal from "../JobBoardModal";
 import {
@@ -11,16 +12,12 @@ import {
 	ArrowRight,
 } from "react-bootstrap-icons";
 import noImage from "../../../assets/noImage.png";
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./JobBoardCard.module.css";
 
 const JobBoardCard = ({
 	id,
-	orgType,
-	orgName,
-	orgUen,
-	orgEmail,
+	orgID,
 	status,
 	title,
 	beneficiaries,
@@ -46,7 +43,22 @@ const JobBoardCard = ({
 	pocNo,
 	pocEmail,
 }) => {
+	const [orgName, setOrgName] = useState("Loading...");
+
 	const [imageSrc, setImageSrc] = useState(imageUrl);
+
+	const getOrg = async () => {
+		const response = await fetch(
+			process.env.REACT_APP_BACKEND_URL + "/organization-accounts/" + orgID
+		);
+		const jsonData = await response.json();
+		setOrgName(jsonData.name);
+	};
+
+	useEffect(() => {
+		getOrg();
+	}, []);
+
 	//!!!using api to find long lang of postal code (maybe can shift this to postajob so long lang attached to job)
 
 	// const [coord, setCoord] = useState([]);
