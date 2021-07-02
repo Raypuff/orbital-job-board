@@ -80,7 +80,7 @@ const ChatOrg = () => {
 		});
 		if (currentMessages !== processedMessages) {
 			setCurrentMessages(processedMessages);
-			// scrollToBottom();
+			scrollToBottom();
 		}
 	};
 

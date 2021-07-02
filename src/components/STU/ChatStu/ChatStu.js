@@ -80,7 +80,7 @@ const ChatStu = () => {
 		});
 		if (currentMessages !== processedMessages) {
 			setCurrentMessages(processedMessages);
-			// scrollToBottom();
+			scrollToBottom();
 		}
 	};
 
