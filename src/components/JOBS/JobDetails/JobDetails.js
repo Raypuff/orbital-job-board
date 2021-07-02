@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { Row, Col, Alert } from "react-bootstrap";
 import { LoadingJobDetails, NotAvailable } from "./EmptyStates";
 import noImage from "../../../assets/noImage.png";
@@ -29,6 +30,7 @@ const JobDetails = ({ id }) => {
 	const [orgLoading, setOrgLoading] = useState(true);
 	const { currentUser, userType } = useAuth();
 	const [imageSrc, setImageSrc] = useState("");
+	const history = useHistory();
 
 	useEffect(() => {
 		const getData = async () => {
@@ -62,6 +64,20 @@ const JobDetails = ({ id }) => {
 
 		getApplications();
 	}, []);
+
+	const ChatNowButton = () => {
+		return (
+			<div
+				className={styles.button}
+				onClick={() => {
+					console.log("insert logic for creating a new chat here");
+					history.push("/chat-student");
+				}}
+			>
+				Chat now
+			</div>
+		);
+	};
 
 	if (orgLoading) {
 		return <LoadingJobDetails />;
@@ -103,10 +119,11 @@ const JobDetails = ({ id }) => {
 	const orgUen = org.uen;
 
 	// For display diff displayStates
-	//0: Signed out OR Student haven't apply -> Apply button
-	//1: Student applied & Job Approved -> Disabled Apply button
-	//11: Student successfully applied & Job Taken down -> Disabled Apply Button + Alert at top that job is taken down
-	//12: Student successfully applied & Job Completd ->  Disabled Apply Button + Alert at top that job is completed
+	//0: Signed out -> Apply button
+	//16: Student haven't apply --> Apply button + Chat now
+	//1: Student applied & Job Approved -> Disabled Apply button + Chat now
+	//11: Student successfully applied & Job Taken down -> Disabled Apply Button + Alert at top that job is taken down + Chat now
+	//12: Student successfully applied & Job Completd ->  Disabled Apply Button + Alert at top that job is completed + Chat now
 	//2: Org Not Your Job -> No button
 	//3: Org Job Pending -> Alert at top that job is still pending
 	//4: Org Job Approved -> Alert at top that job is visible
@@ -130,7 +147,7 @@ const JobDetails = ({ id }) => {
 	} else if (currentUser !== null && userType === "student") {
 		if (status === "Approved") {
 			if (applicants === null || !applicants.includes(currentUser.email)) {
-				displayState = 0;
+				displayState = 16;
 			} else if (
 				applicants !== null &&
 				applicants.includes(currentUser.email)
@@ -465,6 +482,14 @@ const JobDetails = ({ id }) => {
 											<a href={`mailto:${pocEmail}`}>{pocEmail}</a>
 										</h7>
 									</div>
+									{(displayState === 16 ||
+										displayState === 1 ||
+										displayState === 11 ||
+										displayState === 12) && (
+										<div className={styles.buttonRow}>
+											<ChatNowButton />
+										</div>
+									)}
 								</div>
 							</Col>
 						</Row>
@@ -472,7 +497,7 @@ const JobDetails = ({ id }) => {
 							<Col md={2} />
 							<Col md={6}>
 								<div className={styles.buttonRow}>
-									{displayState === 0 ? (
+									{displayState === 0 || displayState === 16 ? (
 										<ApplyButton handleClick={() => setShowApplyModal(true)} />
 									) : displayState === 1 ||
 									  displayState === 11 ||
@@ -498,7 +523,7 @@ const JobDetails = ({ id }) => {
 						</Row>
 					</div>
 				</div>
-				{displayState === 0 ? (
+				{displayState === 0 || displayState === 16 ? (
 					<JobDetailsApplyModal
 						show={showApplyModal}
 						onHide={() => setShowApplyModal(false)}
