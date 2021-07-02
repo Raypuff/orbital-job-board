@@ -25,7 +25,7 @@ const ChatStu = () => {
 	const { currentUser } = useAuth();
 	const [currentChat, setCurrentChat] = useState(""); //currentChat is the ID of the current open chat
 	const [chats, setChats] = useState(); //chats store all MY chats
-	const [currentMessages, setCurrentMessages] = useState(); //currentMessages store all messages of current chat
+	const [currentMessages, setCurrentMessages] = useState([]); //currentMessages store all messages of current chat
 	const [loadingChats, setLoadingChats] = useState(true);
 	const [loadingMessages, setLoadingMessages] = useState(false);
 	const newMessageRef = useRef();
@@ -40,8 +40,16 @@ const ChatStu = () => {
 		const chats = await chatData.json();
 		console.log(`Printing Chats:`);
 		console.log(chats);
-		// setChats(chats);
-		setChats(dummyChats);
+		var processedChats = chats;
+		processedChats.forEach((chat) => {
+			chat.date = new Date(chat.date);
+		});
+		setChats(processedChats);
+		// var processedDummyChats = dummyChats;
+		// processedDummyChats.forEach((chat) => {
+		// 	chat.date = new Date(chat.date);
+		// });
+		// setChats(processedDummyChats);
 		setLoadingChats(false);
 	};
 
@@ -50,13 +58,21 @@ const ChatStu = () => {
 	}, [currentChat]);
 
 	//fetch messages where message.id === currentChat (set loadingMessages true then false), call everytime currentChat changes, if message.status === "Sent", update to "Read"
-	const getMessages = async () => {
+	const getMessages = async (chatID) => {
 		const messagesData = await fetch(
-			process.env.REACT_APP_BACKEND_URL + "/chats/messages/" + currentChat
+			process.env.REACT_APP_BACKEND_URL + "/chats/messages/" + chatID
 		);
 		const messages = await messagesData.json();
-		// setCurrentMessages(messages);
-		setCurrentMessages(dummyMessages);
+		var processedMessages = messages;
+		processedMessages.forEach((msg) => {
+			msg.date = new Date(msg.date);
+		});
+		setCurrentMessages(processedMessages);
+		// var processedDummyMessages = dummyMessages;
+		// processedDummyMessages.forEach((msg) => {
+		// 	msg.date = new Date(msg.date);
+		// });
+		// setCurrentMessages(processedDummyMessages);
 		setLoadingMessages(false);
 	};
 
@@ -101,7 +117,7 @@ const ChatStu = () => {
 		return <LoadingChats />;
 	}
 
-	if (chats.length > 0) {
+	if (chats && chats.length > 0) {
 		return (
 			<div className={styles.container}>
 				{chats && chats.length > 0 ? (
@@ -116,7 +132,7 @@ const ChatStu = () => {
 									onClick={(chat) => {
 										setCurrentChat(chat.id);
 										setLoadingMessages(true);
-										getMessages();
+										getMessages(chat.id);
 									}}
 								/>
 							</Card>
@@ -236,7 +252,7 @@ const dummyChats = [
 		title: "Zechary's Charities",
 		subtitle: "You: What is the minimum required hours for this job?",
 		fromID: "zechary@gmail.com",
-		date: new Date("Fri, 01 Jul 2021 21:00:00 GMT"),
+		date: "Fri, 01 Jul 2021 21:00:00 GMT",
 		unread: "1",
 	},
 	{
@@ -249,7 +265,7 @@ const dummyChats = [
 		title: "Saturday Kids",
 		subtitle: "So what's your question for me?",
 		fromID: "raynerljm@gmail.com",
-		date: new Date("Fri, 02 Jul 2021 03:00:00 GMT"),
+		date: "Fri, 02 Jul 2021 03:00:00 GMT",
 		unread: "2",
 	},
 ];
@@ -262,7 +278,7 @@ const dummyMessages = [
 		fromID: "raynerljm@u.nus.edu",
 		type: "text",
 		text: "Hi Saturday Kids, can I ask a question?",
-		date: new Date("Fri, 02 Jul 2021 02:00:00 GMT"),
+		date: "Fri, 02 Jul 2021 02:00:00 GMT",
 	},
 	{
 		id: "2",
@@ -271,7 +287,7 @@ const dummyMessages = [
 		fromID: "raynerljm@gmail.com",
 		type: "text",
 		text: "Of course you can!",
-		date: new Date("Fri, 02 Jul 2021 02:02:00 GMT"),
+		date: "Fri, 02 Jul 2021 02:02:00 GMT",
 	},
 	{
 		id: "3",
@@ -280,7 +296,7 @@ const dummyMessages = [
 		fromID: "raynerljm@gmail.com",
 		type: "text",
 		text: "So what's your question for me?",
-		date: new Date("Fri, 02 Jul 2021 02:02:20 GMT"),
+		date: "Fri, 02 Jul 2021 02:02:20 GMT",
 	},
 	{
 		id: "4",
@@ -289,7 +305,7 @@ const dummyMessages = [
 		fromID: "raynerljm@u.nus.edu",
 		type: "text",
 		text: "Hey Zechary - I have a question...",
-		date: new Date("Fri, 01 Jul 2021 20:59:30 GMT"),
+		date: "Fri, 01 Jul 2021 20:59:30 GMT",
 	},
 	{
 		id: "5",
@@ -298,6 +314,6 @@ const dummyMessages = [
 		fromID: "raynerljm@u.nus.edu",
 		type: "text",
 		text: "What is the minimum required hours for this job?",
-		date: new Date("Fri, 01 Jul 2021 21:00:00 GMT"),
+		date: "Fri, 01 Jul 2021 21:00:00 GMT",
 	},
 ];
