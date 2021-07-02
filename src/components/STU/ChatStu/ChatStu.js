@@ -47,6 +47,11 @@ const ChatStu = () => {
 		processedChats.forEach((chat) => {
 			chat.avatar = chat.orgAvatar;
 		});
+		processedChats.forEach((chat) => {
+			if (currentUser.email === chat.fromID) {
+				chat.subtitle = `You: ${chat.subtitle}`;
+			}
+		});
 		setChats(processedChats);
 		console.log("Processed Chats:");
 		console.log(processedChats);
@@ -81,37 +86,51 @@ const ChatStu = () => {
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		const newMessageID = uniqid();
+		const currentChatID = currentChat;
+		const newMessage = newMessageRef.current.value;
+		const newDate = new Date();
+		event.target.reset();
 		const frontendMessage = {
 			id: newMessageID,
-			chatID: currentChat,
+			chatID: currentChatID,
 			position: "right",
 			fromID: currentUser.email,
 			type: "text",
-			text: newMessageRef.current.value,
-			date: new Date(),
+			text: newMessage,
+			date: newDate,
 		};
 		const backendMessage = {
 			id: newMessageID,
-			chatID: currentChat,
+			chatID: currentChatID,
 			fromID: currentUser.email,
 			type: "text",
-			text: newMessageRef.current.value,
-			date: new Date().toUTCString(),
+			text: newMessage,
+			date: newDate.toUTCString(),
 		};
-		event.target.reset();
 
 		setCurrentMessages(currentMessages.concat([frontendMessage]));
 		//update the chat where chat.id === currentChat to have chat.lastDateTime = newMessage.dateTime and chat.lastContent = newMessage.message and unread +=1
+		var updateChats = chats;
+		updateChats.forEach((chat) => {
+			if (chat.id === currentChatID) {
+				chat.subtitle = `You: ${newMessage}`;
+				chat.date = newDate;
+			}
+		});
 
 		try {
-			await fetch(process.env.REACT_APP_BACKEND_URL + "/chats/" + currentChat, {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(backendMessage),
-			});
+			await fetch(
+				process.env.REACT_APP_BACKEND_URL + "/chats/" + currentChatID,
+				{
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify(backendMessage),
+				}
+			);
 		} catch (err) {
 			console.error(err);
 		}
+		console.log("Successfully sent chat");
 	};
 
 	if (loadingChats) {
@@ -174,6 +193,7 @@ const ChatStu = () => {
 									<Form.Control
 										placeholder="Write a message..."
 										ref={newMessageRef}
+										required
 									/>
 									<Button type="submit">
 										<Telegram style={{ color: "white" }} />
