@@ -9,9 +9,11 @@ import {
 } from "../JobDetailsApplyModal/JobDetailsApplyModal";
 import {
 	JobDetailsAdminRejModal,
-	JobDetailsAdminAppModal,
 	AdminOpenRejModalButton,
+	JobDetailsAdminAppModal,
 	AdminOpenAppModalButton,
+	JobDetailsAdminTDModal,
+	AdminOpenTDModalButton,
 } from "../JobDetailsAdminModal/JobDetailsAdminModal";
 import { useAuth } from "../../../contexts/AuthContext";
 import styles from "./JobDetails.module.css";
@@ -20,33 +22,46 @@ const JobDetails = ({ id }) => {
 	const [showApplyModal, setShowApplyModal] = useState(false);
 	const [showAdminRejModal, setShowAdminRejModal] = useState(false);
 	const [showAdminAppModal, setShowAdminAppModal] = useState(false);
+	const [showAdminTDModal, setShowAdminTDModal] = useState(false);
 	const [job, setJob] = useState();
 	const [org, setOrg] = useState();
+	const [applications, setApplications] = useState();
 	const [orgLoading, setOrgLoading] = useState(true);
 	const { currentUser, userType } = useAuth();
 	const [imageSrc, setImageSrc] = useState("");
 
-	const getData = async () => {
-		const response = await fetch(
-			process.env.REACT_APP_BACKEND_URL + "/jobs/" + id
-		);
-		const jsonData = await response.json();
-		const response2 = await fetch(
-			process.env.REACT_APP_BACKEND_URL +
-				"/organization-accounts/" +
-				jsonData.orgID
-		);
-		const jsonData2 = await response2.json();
-		setJob(jsonData);
-		setOrg(jsonData2);
-		setOrgLoading(false);
-		setImageSrc(jsonData.imageUrl);
-	};
-
 	useEffect(() => {
+		const getData = async () => {
+			const response = await fetch(
+				process.env.REACT_APP_BACKEND_URL + "/jobs/" + id
+			);
+			const jsonData = await response.json();
+			const response2 = await fetch(
+				process.env.REACT_APP_BACKEND_URL +
+					"/organization-accounts/" +
+					jsonData.orgID
+			);
+			const jsonData2 = await response2.json();
+			setJob(jsonData);
+			setOrg(jsonData2);
+			setOrgLoading(false);
+			setImageSrc(jsonData.imageUrl);
+		};
 		getData();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [showApplyModal]);
+
+	useEffect(() => {
+		const getApplications = async () => {
+			const response = await fetch(
+				process.env.REACT_APP_BACKEND_URL + "/job-applications/job/" + id
+			);
+			const jsonData = await response.json();
+			setApplications(jsonData);
+		};
+
+		getApplications();
+	}, []);
 
 	if (orgLoading) {
 		return <LoadingJobDetails />;
@@ -80,6 +95,7 @@ const JobDetails = ({ id }) => {
 		pocEmail,
 		dateCreated,
 		datePosted,
+		removalReason,
 		applicants,
 	} = job;
 	const orgType = org.type;
@@ -94,32 +110,52 @@ const JobDetails = ({ id }) => {
 	//2: Org Not Your Job -> No button
 	//3: Org Job Pending -> Alert at top that job is still pending
 	//4: Org Job Approved -> Alert at top that job is visible
-	//5: Org Job Rejected -> Alert at top that job is rejected
+	//5: Org Job Rejected -> Alert at top that job is rejected with reason
 	//10: Org Job Completed -> Alert at top that job is completed
+	//14: Org Job TakenDown --> Alert at top that job is taken down with reason
 	//6: Admin Job Pending -> Reject or Approve job
-	//7: Admin Job Approved -> Alert at the top that the job is approved
-	//8: Admin Job Rejected -> Alert at the top that the job is rejected
+	//7: Admin Job Approved -> Alert at the top that the job is approved and button below to takedown
+	//8: Admin Job Rejected -> Alert at the top that the job is rejected with reason
 	//13: Admin Job Completed -> Alert at the top that the job is completed
+	//15: Admin Job TakenDown --> Alert at the top that job is taken down with reason
 	//9: Not available
 
 	var displayState;
 	if (currentUser === null) {
-		displayState = 0;
-	} else if (currentUser !== null && userType === "student") {
-		if (
-			(applicants === null || !applicants.includes(currentUser.email)) &&
-			status === "Approved"
-		) {
+		if (status === "Approved") {
 			displayState = 0;
-		} else if (
-			applicants !== null &&
-			applicants.includes(currentUser.email) &&
-			status === "Approved"
-		) {
-			displayState = 1;
+		} else {
+			displayState = 9;
 		}
-		// include retrieval of my application status (state 11 and 12)
-		else {
+	} else if (currentUser !== null && userType === "student") {
+		if (status === "Approved") {
+			if (applicants === null || !applicants.includes(currentUser.email)) {
+				displayState = 0;
+			} else if (
+				applicants !== null &&
+				applicants.includes(currentUser.email)
+			) {
+				displayState = 1;
+			}
+		} else if (status === "TakenDown") {
+			const myApp = applications.filter(
+				(app) => app.stuID === currentUser.email
+			);
+			if (myApp && myApp[0].status === "Accepted") {
+				displayState = 11;
+			} else {
+				displayState = 9;
+			}
+		} else if (status === "Completed") {
+			const myApp = applications.filter(
+				(app) => app.stuID === currentUser.email
+			);
+			if (myApp && myApp[0].status === "Accepted") {
+				displayState = 12;
+			} else {
+				displayState = 9;
+			}
+		} else {
 			displayState = 9;
 		}
 	} else if (currentUser !== null && userType === "organization") {
@@ -133,6 +169,8 @@ const JobDetails = ({ id }) => {
 			displayState = 5;
 		} else if (status === "Completed") {
 			displayState = 10;
+		} else if (status === "TakenDown") {
+			displayState = 14;
 		} else {
 			displayState = 9;
 		}
@@ -140,11 +178,14 @@ const JobDetails = ({ id }) => {
 		if (status === "Pending") {
 			displayState = 6;
 		} else if (status === "Approved") {
+			console.log("yeet");
 			displayState = 7;
 		} else if (status === "Rejected") {
 			displayState = 8;
 		} else if (status === "Completed") {
 			displayState = 13;
+		} else if (status === "TakenDown") {
+			displayState = 15;
 		} else {
 			displayState = 9;
 		}
@@ -170,6 +211,8 @@ const JobDetails = ({ id }) => {
 						) : displayState === 5 ? (
 							<Alert variant="danger">
 								Your job has been rejected and is not publicly visible
+								<hr />
+								Reason for rejection: {removalReason}
 							</Alert>
 						) : displayState === 7 ? (
 							<Alert variant="success">
@@ -178,6 +221,8 @@ const JobDetails = ({ id }) => {
 						) : displayState === 8 ? (
 							<Alert variant="danger">
 								This job has been rejected and is not publicly visible
+								<hr />
+								Reason for rejection: {removalReason}
 							</Alert>
 						) : displayState === 10 ? (
 							<Alert variant="primary">
@@ -185,8 +230,8 @@ const JobDetails = ({ id }) => {
 							</Alert>
 						) : displayState === 11 ? (
 							<Alert variant="danger">
-								This job has been taken down and is not publicly visible.
-								Contact the organization to understand the situation
+								This job has been taken down and is not publicly visible. Please
+								contact the organization if you have further queries.
 							</Alert>
 						) : displayState === 12 ? (
 							<Alert variant="primary">
@@ -195,6 +240,18 @@ const JobDetails = ({ id }) => {
 						) : displayState === 13 ? (
 							<Alert variant="primary">
 								This job has been completed and is not publicly visible
+							</Alert>
+						) : displayState === 14 ? (
+							<Alert variant="danger">
+								Your job has been taken down and is not publicly visible.
+								<hr />
+								Reason for takedown: {removalReason}
+							</Alert>
+						) : displayState === 15 ? (
+							<Alert variant="danger">
+								This job has been taken down and is not publicly visible.
+								<hr />
+								Reason for takedown: {removalReason}
 							</Alert>
 						) : null}
 						<Row>
@@ -382,12 +439,13 @@ const JobDetails = ({ id }) => {
 										</h7>
 										{(displayState === 6 ||
 											displayState === 7 ||
-											displayState === 8) && (
-											<h7>
-												{orgUen}
-												<br />
-											</h7>
-										)}
+											displayState === 8) &&
+											orgType === "Non-NUS Organization" && (
+												<h7 className="text-muted">
+													UEN: {orgUen}
+													<br />
+												</h7>
+											)}
 										<h7>
 											<a href={`mailto:${orgID}`}>{orgID}</a>
 										</h7>
@@ -429,6 +487,10 @@ const JobDetails = ({ id }) => {
 												handleClick={() => setShowAdminAppModal(true)}
 											/>
 										</>
+									) : displayState === 7 ? (
+										<AdminOpenTDModalButton
+											handleClick={() => setShowAdminTDModal(true)}
+										/>
 									) : null}
 								</div>
 							</Col>
@@ -530,6 +592,37 @@ const JobDetails = ({ id }) => {
 							applicants={applicants}
 						/>
 					</>
+				) : displayState === 7 ? (
+					<JobDetailsAdminTDModal
+						show={showAdminTDModal}
+						onHide={() => setShowAdminTDModal(false)}
+						id={id}
+						orgType={orgType}
+						orgName={orgName}
+						orgEmail={orgID}
+						status={status}
+						title={title}
+						beneficiaries={beneficiaries}
+						skills={skills}
+						purpose={purpose}
+						platform={platform}
+						multiLocation={multiLocation}
+						location={location}
+						postalCode={postalCode}
+						type={type}
+						flexiDate={flexiDate}
+						longStartDate={longStartDate}
+						longEndDate={longEndDate}
+						flexiHours={flexiHours}
+						longHours={longHours}
+						adShift={adShift}
+						addInfo={addInfo}
+						imageUrl={imageUrl}
+						pocName={pocName}
+						pocNo={pocNo}
+						pocEmail={pocEmail}
+						applicants={applicants}
+					/>
 				) : null}
 			</>
 		);

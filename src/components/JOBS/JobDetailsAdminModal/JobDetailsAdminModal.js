@@ -1,8 +1,10 @@
-import { Modal, Button } from "react-bootstrap";
+import { useRef } from "react";
+import { Modal, Button, Form } from "react-bootstrap";
 import styles from "./JobDetailsAdminModal.module.css";
 
-const handleAcceptReject = async (jobId, choice) => {
-	const body = { status: choice };
+const handleAcceptReject = async (jobId, choice, reason) => {
+	const body = { status: choice, removalReason: reason };
+
 	try {
 		await fetch(process.env.REACT_APP_BACKEND_URL + "/jobs/status/" + jobId, {
 			method: "PUT",
@@ -45,23 +47,40 @@ export const JobDetailsAdminRejModal = ({
 	pocEmail,
 	applicants,
 }) => {
+	const rejReasonRef = useRef();
 	return (
 		<Modal show={show} onHide={onHide} centered>
 			<Modal.Header closeButton>
 				<Modal.Title>You are rejecting {title}</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-				<div className={styles.modalContainer}>
-					Are you sure you want to reject this posting?
-					<Button
-						onClick={(event) => handleAcceptReject(id, "Rejected")}
-						variant="danger"
-					>
-						Reject posting
-					</Button>
-				</div>
+				<Form>
+					<div className={styles.modalContainer}>
+						Are you sure you want to reject this posting?
+						<Form.Label>Please provide a reason why</Form.Label>
+						<Form.Control type="text" ref={rejReasonRef} required />
+						<Button
+							onClick={(event) =>
+								handleAcceptReject(id, "Rejected", rejReasonRef.current.value)
+							}
+							variant="danger"
+						>
+							Reject posting
+						</Button>
+					</div>
+				</Form>
 			</Modal.Body>
 		</Modal>
+	);
+};
+
+export const AdminOpenRejModalButton = ({ handleClick }) => {
+	return (
+		<>
+			<Button variant="danger" onClick={handleClick}>
+				Reject posting
+			</Button>
+		</>
 	);
 };
 
@@ -104,7 +123,7 @@ export const JobDetailsAdminAppModal = ({
 				<div className={styles.modalContainer}>
 					Are you sure you want to approve this posting?
 					<Button
-						onClick={(event) => handleAcceptReject(id, "Approved")}
+						onClick={(event) => handleAcceptReject(id, "Approved", "")}
 						variant="success"
 					>
 						Approve posting
@@ -115,21 +134,79 @@ export const JobDetailsAdminAppModal = ({
 	);
 };
 
-export const AdminOpenRejModalButton = ({ handleClick }) => {
-	return (
-		<>
-			<Button variant="danger" onClick={handleClick}>
-				Reject posting
-			</Button>
-		</>
-	);
-};
-
 export const AdminOpenAppModalButton = ({ handleClick }) => {
 	return (
 		<>
 			<Button variant="success" onClick={handleClick}>
 				Approve posting
+			</Button>
+		</>
+	);
+};
+
+export const JobDetailsAdminTDModal = ({
+	show,
+	onHide,
+	id,
+	orgType,
+	orgName,
+	orgEmail,
+	status,
+	title,
+	beneficiaries,
+	skills,
+	purpose,
+	platform,
+	multiLocation,
+	location,
+	postalCode,
+	type,
+	flexiDate,
+	longStartDate,
+	longEndDate,
+	flexiHours,
+	longHours,
+	adShift,
+	addInfo,
+	imageUrl,
+	pocName,
+	pocNo,
+	pocEmail,
+	applicants,
+}) => {
+	const tdReasonRef = useRef();
+
+	return (
+		<Modal show={show} onHide={onHide} centered>
+			<Modal.Header closeButton>
+				<Modal.Title>You are taking down {title}</Modal.Title>
+			</Modal.Header>
+			<Modal.Body>
+				<Form controlId="formTakedownReason">
+					<div className={styles.modalContainer}>
+						Are you sure you want to take down this posting?
+						<Form.Label>Please provide a reason why</Form.Label>
+						<Form.Control type="text" ref={tdReasonRef} required />
+						<Button
+							onClick={(event) =>
+								handleAcceptReject(id, "TakenDown", tdReasonRef.current.value)
+							}
+							variant="danger"
+						>
+							Take down posting
+						</Button>
+					</div>
+				</Form>
+			</Modal.Body>
+		</Modal>
+	);
+};
+
+export const AdminOpenTDModalButton = ({ handleClick }) => {
+	return (
+		<>
+			<Button variant="danger" onClick={handleClick}>
+				Take down posting
 			</Button>
 		</>
 	);
