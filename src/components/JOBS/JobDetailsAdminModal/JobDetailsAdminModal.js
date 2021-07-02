@@ -3,12 +3,8 @@ import { Modal, Button, Form } from "react-bootstrap";
 import styles from "./JobDetailsAdminModal.module.css";
 
 const handleAcceptReject = async (jobId, choice, reason) => {
-	var body;
-	if (choice === "Approved") {
-		body = { status: choice, removalReason: "" };
-	} else if (choice === "Rejected" || "TakenDown") {
-		body = { status: choice, removalReason: reason };
-	}
+	const body = { status: choice, removalReason: reason };
+
 	try {
 		await fetch(process.env.REACT_APP_BACKEND_URL + "/jobs/status/" + jobId, {
 			method: "PUT",
@@ -59,8 +55,8 @@ export const JobDetailsAdminRejModal = ({
 			</Modal.Header>
 			<Modal.Body>
 				<Form>
-					Are you sure you want to reject this posting?
 					<div className={styles.modalContainer}>
+						Are you sure you want to reject this posting?
 						<Form.Label>Please provide a reason why</Form.Label>
 						<Form.Control type="text" ref={rejReasonRef} required />
 						<Button
@@ -192,12 +188,12 @@ export const JobDetailsAdminTDModal = ({
 						<Form.Label>Please provide a reason why</Form.Label>
 						<Form.Control type="text" ref={tdReasonRef} required />
 						<Button
-							onClick={(event) => {
-								console.log("yeet");
-								handleAcceptReject(id, "TakenDown", tdReasonRef.current.value);
-							}}
+							onClick={(event) =>
+								handleAcceptReject(id, "TakenDown", tdReasonRef.current.value)
+							}
 							variant="danger"
 							type="submit"
+							required
 						>
 							Take down posting
 						</Button>
