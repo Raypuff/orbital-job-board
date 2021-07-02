@@ -13,9 +13,7 @@ const JobBoard = () => {
 	const [filterState, setFilterState] = useState({});
 	const [jobs, setJobs] = useState([]);
 	const [filteredJobs, setFilteredJobs] = useState([]);
-	const [orgs, setOrgs] = useState({});
 	const [jobLoading, setJobLoading] = useState(true);
-	const [orgLoading, setOrgLoading] = useState(true);
 	// const [setupLoading, setSetupLoading] = useState(true);
 	// const [filteredJobsLength, setFilteredJobsLength] = useState(0);
 	const [activePage, setActivePage] = useState(1);
@@ -25,15 +23,6 @@ const JobBoard = () => {
 		const jsonData = await response.json();
 		setJobs(jsonData.filter((job) => job.status === "Approved"));
 		setJobLoading(false);
-	};
-
-	const getOrgs = async () => {
-		const response = await fetch(
-			process.env.REACT_APP_BACKEND_URL + "/organization-accounts"
-		);
-		const jsonData = await response.json();
-		setOrgs(jsonData);
-		setOrgLoading(false);
 	};
 
 	const filterJobs = () => {
@@ -107,14 +96,10 @@ const JobBoard = () => {
 	}, []);
 
 	useEffect(() => {
-		getOrgs();
-	}, []);
-
-	useEffect(() => {
 		filterJobs();
 	}, [filterState]);
 
-	if (jobLoading || orgLoading) {
+	if (jobLoading) {
 		return <LoadingJobs />;
 	} else if (jobs.length < 1) {
 		return <NoJobs />;
@@ -195,19 +180,11 @@ const JobBoard = () => {
 					{filteredJobs.length >= 1 ? (
 						<>
 							{filteredJobs.slice(startIndex, endIndex).map((job) => {
-								const orgType = orgs[job.orgID].type;
-								const orgName = orgs[job.orgID].name;
-								const orgUen = orgs[job.orgID].uen;
-								const orgEmail = orgs[job.orgID].email;
-
 								return (
 									<JobBoardCard
 										key={job.id}
 										id={job.id}
-										orgType={orgType}
-										orgName={orgName}
-										orgUen={orgUen}
-										orgEmail={orgEmail}
+										orgID={job.orgID}
 										status={job.status}
 										title={job.title}
 										beneficiaries={job.beneficiaries}
