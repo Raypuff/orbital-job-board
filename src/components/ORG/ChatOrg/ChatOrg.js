@@ -9,7 +9,7 @@ var uniqid = require("uniqid");
 
 const ChatOrg = () => {
 	const { currentUser } = useAuth();
-	const [currentChat, setCurrentChat] = useState(""); //currentChat is the ID of the current open chat
+	const [currentChat, setCurrentChat] = useState(); //currentChat is the ID of the current open chat
 	const [chats, setChats] = useState(); //chats store all MY chats
 	const [currentMessages, setCurrentMessages] = useState([]); //currentMessages store all messages of current chat
 	const [loadingChats, setLoadingChats] = useState(true);
@@ -39,8 +39,6 @@ const ChatOrg = () => {
 			}
 		});
 		setChats(processedChats);
-		console.log("Processed Chats:");
-		console.log(processedChats);
 		setLoadingChats(false);
 		scrollToBottom();
 	};
@@ -85,7 +83,8 @@ const ChatOrg = () => {
 	};
 
 	useEffect(() => {
-		if (currentChat) {
+		if (currentChat !== null) {
+			console.log("Getting msgs");
 			getMessages();
 		}
 	});
