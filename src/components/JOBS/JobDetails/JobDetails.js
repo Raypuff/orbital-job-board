@@ -29,7 +29,7 @@ const JobDetails = ({ id }) => {
 	const [org, setOrg] = useState();
 	const [applications, setApplications] = useState();
 	const [orgLoading, setOrgLoading] = useState(true);
-	const { currentUser, userType } = useAuth();
+	const { currentUser, userType, userVerified } = useAuth();
 	const [imageSrc, setImageSrc] = useState("");
 	const [loadingChatButton, setLoadingChatButton] = useState(true);
 	const [buttonMakesNewChat, setButtonMakesNewChat] = useState(false);
@@ -105,27 +105,33 @@ const JobDetails = ({ id }) => {
 
 		if (loadingChatButton) {
 			return <div className={styles.button}>Loading...</div>;
-		} else if (buttonMakesNewChat) {
-			return (
-				<div
-					className={styles.button}
-					onClick={() => {
-						createChats();
-						history.push("/");
-						history.replace("/chat-student");
-					}}
-				>
-					Chat now
-				</div>
-			);
+		} else if (currentUser && userType === "student" && userVerified) {
+			if (buttonMakesNewChat) {
+				return (
+					<div
+						className={styles.button}
+						onClick={() => {
+							createChats();
+							history.push("/");
+							history.replace("/chat-student");
+						}}
+					>
+						Chat now
+					</div>
+				);
+			} else {
+				return (
+					<div
+						className={styles.button}
+						onClick={() => history.push("/chat-student")}
+					>
+						Go to existing chat
+					</div>
+				);
+			}
 		} else {
 			return (
-				<div
-					className={styles.button}
-					onClick={() => history.push("/chat-student")}
-				>
-					Go to existing chat
-				</div>
+				<div className={styles.disabledButton}>Please verify your email</div>
 			);
 		}
 	};
