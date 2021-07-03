@@ -37,7 +37,7 @@ const Footer = () => {
 						</li>
 						<li>
 							<img className={styles.addSvg} src={email} alt="email svg" />
-							<a href="mailto:ccsgp@nus.edu.sg">Contact Us</a>
+							<a href="mailto:ccsgp@nus.edu.sg">Email Us</a>
 						</li>
 						<br />
 						<li>
@@ -149,7 +149,7 @@ const Footer = () => {
 							<li>•</li>
 							<li>
 								<a href="https://www.ccsgp.comp.nus.edu.sg/contact-us">
-									Contact us
+									Contact Us
 								</a>
 							</li>
 						</ul>
