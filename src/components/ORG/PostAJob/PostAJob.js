@@ -28,6 +28,7 @@ const PostAJob = () => {
 	// Form useStates
 	const [canRetrieveOrgDetails, setCanRetrieveOrgDetails] = useState(false);
 	const [canRetrievePocDetails, setCanRetrievePocDetails] = useState(false);
+	const [funToggle, setFunToggle] = useState(false);
 
 	//finding currentUser that is logged in
 	const { currentUser, userVerified } = useAuth();
@@ -98,6 +99,15 @@ const PostAJob = () => {
 			//resetting useStates
 			setMessage("");
 			setError("");
+
+			if (values.skills.length === 0) {
+				setError("Please select at least one beneficiary before submitting");
+				return;
+			}
+			if (values.skills.length === 0) {
+				setError("Please select at least one skill before submitting");
+				return;
+			}
 
 			const jobID = uniqid();
 			const newJob = {
@@ -200,8 +210,8 @@ const PostAJob = () => {
 				enableReinitialize
 				initialValues={{
 					title: "",
-					beneficiaries: [],
-					skills: [],
+					beneficiaries: "untouched",
+					skills: "untouched",
 					purpose: "",
 					platform: "",
 					multiLocation: false,
@@ -369,12 +379,26 @@ const PostAJob = () => {
 													isMulti
 													name="beneficiaries"
 													options={SelectBeneficiaryTags}
+													onBlur={handleBlur}
 													onChange={(inputValue) => {
 														values.beneficiaries = inputValue.map(
 															(e) => e.value
 														);
 													}}
 												/>
+
+												{values.beneficiaries !== "untouched" ? (
+													values.beneficiaries.length === 0 ? (
+														<Form.Text className="text-danger">
+															Please select at least one beneficiary
+														</Form.Text>
+													) : (
+														""
+													)
+												) : (
+													""
+												)}
+
 												{/* <Form.Control
 													name="beneficiaries"
 													onChange={handleChange}
@@ -413,8 +437,9 @@ const PostAJob = () => {
 													isMulti
 													name="skills"
 													options={SelectSkillTags}
+													onBlur={handleBlur}
 													onChange={(inputValue) => {
-														values.skill = inputValue.map((e) => e.value);
+														values.skills = inputValue.map((e) => e.value);
 													}}
 												/>
 												{/* <Form.Control
@@ -434,6 +459,17 @@ const PostAJob = () => {
 												<Form.Control.Feedback type="invalid">
 													{errors.skills}
 												</Form.Control.Feedback> */}
+												{values.skills !== "untouched" ? (
+													values.skills.length === 0 ? (
+														<Form.Text className="text-danger">
+															Please select at least one skill
+														</Form.Text>
+													) : (
+														""
+													)
+												) : (
+													""
+												)}
 												<Form.Text className="text-muted">
 													For 'Others', you can elaborate in the Additional
 													information section
