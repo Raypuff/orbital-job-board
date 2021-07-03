@@ -141,7 +141,7 @@ const SignUpOrgForm = () => {
 											className={
 												touched.passwordConfirm ? styles.eyeError : styles.eye
 											}
-											onClick={() => setShowCfmPassword(!showPassword)}
+											onClick={() => setShowCfmPassword(!showCfmPassword)}
 										>
 											{showCfmPassword ? <EyeSlashFill /> : <EyeFill />}
 										</div>

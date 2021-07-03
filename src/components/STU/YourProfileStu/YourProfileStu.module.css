@@ -1,11 +1,35 @@
-.formBG {
-	display: flex;
-	justify-content: center;
-	align-items: center;
+.container {
+	max-width: 75rem;
+	padding: 0 1rem;
+	margin: 0 auto;
 }
 
-.formContainer {
-	max-width: 30rem;
-	padding: 2rem;
-	flex-basis: 30rem;
+@media screen and (max-width: 576px) {
+	.container {
+		padding: 1rem;
+		height: calc(100vh - 4rem);
+	}
+	.navLink {
+		display: flex;
+		justify-content: center;
+		font-size: 1.5rem;
+	}
+}
+
+.displayNone {
+	display: none;
+}
+
+.eye {
+	font-size: 1.2rem;
+	position: relative;
+	bottom: 33px;
+	left: 295px;
+	width: 0;
+	height: 0;
+}
+
+.eyeError {
+	composes: eye;
+	left: 270px;
 }
