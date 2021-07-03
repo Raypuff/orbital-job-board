@@ -23,12 +23,22 @@ import Select from "react-select";
 var uniqid = require("uniqid");
 
 const PostAJob = () => {
+<<<<<<< HEAD
   // Database useStates
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   // Form useStates
   const [canRetrieveOrgDetails, setCanRetrieveOrgDetails] = useState(false);
   const [canRetrievePocDetails, setCanRetrievePocDetails] = useState(false);
+=======
+	// Database useStates
+	const [message, setMessage] = useState("");
+	const [error, setError] = useState("");
+	// Form useStates
+	const [canRetrieveOrgDetails, setCanRetrieveOrgDetails] = useState(false);
+	const [canRetrievePocDetails, setCanRetrievePocDetails] = useState(false);
+	const [funToggle, setFunToggle] = useState(false);
+>>>>>>> 95ca447029381e30caa7c56117c6b1314c574021
 
   //finding currentUser that is logged in
   const { currentUser, userVerified } = useAuth();
@@ -103,6 +113,76 @@ const PostAJob = () => {
       setError("");
       var lat;
       var lng;
+			if (values.skills.length === 0) {
+				setError("Please select at least one beneficiary before submitting");
+				return;
+			}
+			if (values.skills.length === 0) {
+				setError("Please select at least one skill before submitting");
+				return;
+			}
+
+			const jobID = uniqid();
+			const newJob = {
+				id: jobID,
+				orgID: currentUser.email,
+				status: "Pending",
+				title: values.title,
+				beneficiaries: values.beneficiaries,
+				skills: values.skills,
+				purpose: values.purpose,
+				platform: values.platform,
+				multiLocation: values.multiLocation,
+				location: values.location,
+				postalCode: values.postalCode,
+				type: values.type,
+				flexiDate: values.flexiDate,
+				longStartDate: values.longStartDate,
+				longEndDate: values.longEndDate,
+				flexiHours: values.flexiHours,
+				longHours: values.longHours,
+				flexiShifts: values.flexiShifts,
+				adShift: adShiftProcessor(
+					values.shiftNumber,
+					values.shift1Date,
+					values.shift1Start,
+					values.shift1End,
+					values.shift2Date,
+					values.shift2Start,
+					values.shift2End,
+					values.shift3Date,
+					values.shift3Start,
+					values.shift3End,
+					values.shift4Date,
+					values.shift4Start,
+					values.shift4End,
+					values.shift5Date,
+					values.shift5Start,
+					values.shift5End,
+					values.shift6Date,
+					values.shift6Start,
+					values.shift6End,
+					values.shift7Date,
+					values.shift7Start,
+					values.shift7End,
+					values.shift8Date,
+					values.shift8Start,
+					values.shift8End,
+					values.shift9Date,
+					values.shift9Start,
+					values.shift9End,
+					values.shift10Date,
+					values.shift10Start,
+					values.shift10End
+				),
+				addInfo: values.addInfo,
+				imageUrl: imageUrl,
+				closingDate: values.closingDate,
+				noClosingDate: values.noClosingDate,
+				pocName: values.retrievePoc ? userData.pocName : values.pocName,
+				pocNo: values.retrievePoc ? userData.pocNo : values.pocNo,
+				pocEmail: values.retrievePoc ? userData.pocEmail : values.pocEmail,
+			};
 
       if (values.postalCode) {
         const result = await getGeocode(`${values.postalCode}`);
@@ -187,208 +267,202 @@ const PostAJob = () => {
           newJobID: jobID,
         };
 
-        await fetch(
-          process.env.REACT_APP_BACKEND_URL +
-            "/organization-accounts/job/" +
-            currentUser.email,
-          {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body2),
-          }
-        );
-
-        setMessage("Job posting successful");
-        resetForm();
-        setSubmitting(false);
-      } catch (err) {
-        setError("Failed to post due to internal error");
-      }
-    }
-  };
-
-  return (
-    <div className={styles.formContainer}>
-      <Formik
-        enableReinitialize
-        initialValues={{
-          title: "",
-          beneficiaries: [],
-          skills: [],
-          purpose: "",
-          platform: "",
-          multiLocation: false,
-          location: "",
-          postalCode: "",
-          type: "",
-          flexiDate: false,
-          longStartDate: "",
-          longEndDate: "",
-          flexiHours: false,
-          longHours: "",
-          flexiShifts: false,
-          shiftNumber: 0,
-          shift1Date: "",
-          shift1Start: "",
-          shift1End: "",
-          shift2Date: "",
-          shift2Start: "",
-          shift2End: "",
-          shift3Date: "",
-          shift3Start: "",
-          shift3End: "",
-          shift4Date: "",
-          shift4Start: "",
-          shift4End: "",
-          shift5Date: "",
-          shift5Start: "",
-          shift5End: "",
-          shift6Date: "",
-          shift6Start: "",
-          shift6End: "",
-          shift7Date: "",
-          shift7Start: "",
-          shift7End: "",
-          shift8Date: "",
-          shift8Start: "",
-          shift8End: "",
-          shift9Date: "",
-          shift9Start: "",
-          shift9End: "",
-          shift10Date: "",
-          shift10Start: "",
-          shift10End: "",
-          addInfo: "",
-          closingDate: "",
-          noClosingDate: false,
-          pocName: "",
-          pocNo: "",
-          pocEmail: "",
-          retrievePoc: false,
-          terms: false,
-        }}
-        validationSchema={validationSchema}
-        onSubmit={mySubmit}
-      >
-        {({
-          values,
-          touched,
-          errors,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          isSubmitting,
-        }) => (
-          <Form onSubmit={handleSubmit} className={styles.formBox}>
-            {console.log(values.beneficiaries)}
-            <>
-              <Card>
-                <Accordion defaultActiveKey="0">
-                  {/* Accordion 1: Organization Details (These details are not collected in this form) */}
-                  <Accordion.Toggle as={Card.Header} eventKey="0">
-                    <h5>Organization Details</h5>
-                  </Accordion.Toggle>
-                  <Accordion.Collapse eventKey="0">
-                    <div className={styles.accordionBox}>
-                      {!canRetrieveOrgDetails && (
-                        <Alert variant="danger">
-                          <Alert.Heading as="h6">
-                            Missing organization details
-                          </Alert.Heading>
-                          <hr />
-                          <p>
-                            Please{" "}
-                            <Link to="/profile-organization">
-                              fill in your organization details
-                            </Link>{" "}
-                            on your profile before proceeding to post a job.
-                            Thank you!
-                          </p>
-                        </Alert>
-                      )}
-                      <Form.Group controlId="formOrgType">
-                        <Form.Label>Organization type</Form.Label>
-                        <Form.Control
-                          required
-                          placeholder={userData !== null ? userData.type : ""}
-                          readOnly
-                        />
-                      </Form.Group>
-                      <Form.Group controlId="formOrgName">
-                        <Form.Label>Organization name</Form.Label>
-                        <Form.Control
-                          required
-                          placeholder={userData !== null ? userData.name : ""}
-                          readOnly
-                        />
-                      </Form.Group>
-                      <Form.Group controlId="formOrgUen">
-                        <Form.Label>
-                          Organization UEN, Charity registration number or
-                          Society registration number
-                          <Form.Text className="text-muted">
-                            Only applicable for Non-NUS Organizations
-                          </Form.Text>
-                        </Form.Label>
-                        <Form.Control
-                          required
-                          placeholder={userData !== null ? userData.uen : ""}
-                          readOnly
-                        />
-                      </Form.Group>
-                      <Form.Group controlId="formOrgEmail">
-                        <Form.Label>Email address of Organization</Form.Label>
-                        <Form.Control
-                          required
-                          placeholder={userData !== null ? userData.id : ""}
-                          readOnly
-                        />
-                      </Form.Group>
-                    </div>
-                  </Accordion.Collapse>
-                </Accordion>
-                {/* Accordion 2: Job Details */}
-                <Accordion>
-                  <Accordion.Toggle as={Card.Header} eventKey="1">
-                    <h5>Job Details</h5>
-                  </Accordion.Toggle>
-                  <Accordion.Collapse eventKey="1">
-                    <div className={styles.accordionBox}>
-                      {/* About the job */}
-                      <Form.Group controlId="formTitle">
-                        <Form.Label>Title of volunteer work</Form.Label>
-                        <Form.Control
-                          type="text"
-                          name="title"
-                          value={values.title}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          isValid={touched.title && !errors.title}
-                          isInvalid={touched.title && errors.title}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          {errors.title}
-                        </Form.Control.Feedback>
-                      </Form.Group>
-                      <Form.Group controlId="formBeneficiary">
-                        <Form.Label>
-                          Target profile of beneficiary
-                          {/* <Form.Text className="text-muted">
+	return (
+		<div className={styles.formContainer}>
+			<Formik
+				enableReinitialize
+				initialValues={{
+					title: "",
+					beneficiaries: "untouched",
+					skills: "untouched",
+					purpose: "",
+					platform: "",
+					multiLocation: false,
+					location: "",
+					postalCode: "",
+					type: "",
+					flexiDate: false,
+					longStartDate: "",
+					longEndDate: "",
+					flexiHours: false,
+					longHours: "",
+					flexiShifts: false,
+					shiftNumber: 0,
+					shift1Date: "",
+					shift1Start: "",
+					shift1End: "",
+					shift2Date: "",
+					shift2Start: "",
+					shift2End: "",
+					shift3Date: "",
+					shift3Start: "",
+					shift3End: "",
+					shift4Date: "",
+					shift4Start: "",
+					shift4End: "",
+					shift5Date: "",
+					shift5Start: "",
+					shift5End: "",
+					shift6Date: "",
+					shift6Start: "",
+					shift6End: "",
+					shift7Date: "",
+					shift7Start: "",
+					shift7End: "",
+					shift8Date: "",
+					shift8Start: "",
+					shift8End: "",
+					shift9Date: "",
+					shift9Start: "",
+					shift9End: "",
+					shift10Date: "",
+					shift10Start: "",
+					shift10End: "",
+					addInfo: "",
+					closingDate: "",
+					noClosingDate: false,
+					pocName: "",
+					pocNo: "",
+					pocEmail: "",
+					retrievePoc: false,
+					terms: false,
+				}}
+				validationSchema={validationSchema}
+				onSubmit={mySubmit}
+			>
+				{({
+					values,
+					touched,
+					errors,
+					handleChange,
+					handleBlur,
+					handleSubmit,
+					isSubmitting,
+				}) => (
+					<Form onSubmit={handleSubmit} className={styles.formBox}>
+						{console.log(values.beneficiaries)}
+						<>
+							<Card>
+								<Accordion defaultActiveKey="0">
+									{/* Accordion 1: Organization Details (These details are not collected in this form) */}
+									<Accordion.Toggle as={Card.Header} eventKey="0">
+										<h5>Organization Details</h5>
+									</Accordion.Toggle>
+									<Accordion.Collapse eventKey="0">
+										<div className={styles.accordionBox}>
+											{!canRetrieveOrgDetails && (
+												<Alert variant="danger">
+													<Alert.Heading as="h6">
+														Missing organization details
+													</Alert.Heading>
+													<hr />
+													<p>
+														Please{" "}
+														<Link to="/profile-organization">
+															fill in your organization details
+														</Link>{" "}
+														on your profile before proceeding to post a job.
+														Thank you!
+													</p>
+												</Alert>
+											)}
+											<Form.Group controlId="formOrgType">
+												<Form.Label>Organization type</Form.Label>
+												<Form.Control
+													required
+													placeholder={userData !== null ? userData.type : ""}
+													readOnly
+												/>
+											</Form.Group>
+											<Form.Group controlId="formOrgName">
+												<Form.Label>Organization name</Form.Label>
+												<Form.Control
+													required
+													placeholder={userData !== null ? userData.name : ""}
+													readOnly
+												/>
+											</Form.Group>
+											<Form.Group controlId="formOrgUen">
+												<Form.Label>
+													Organization UEN, Charity registration number or
+													Society registration number
+													<Form.Text className="text-muted">
+														Only applicable for Non-NUS Organizations
+													</Form.Text>
+												</Form.Label>
+												<Form.Control
+													required
+													placeholder={userData !== null ? userData.uen : ""}
+													readOnly
+												/>
+											</Form.Group>
+											<Form.Group controlId="formOrgEmail">
+												<Form.Label>Email address of Organization</Form.Label>
+												<Form.Control
+													required
+													placeholder={userData !== null ? userData.id : ""}
+													readOnly
+												/>
+											</Form.Group>
+										</div>
+									</Accordion.Collapse>
+								</Accordion>
+								{/* Accordion 2: Job Details */}
+								<Accordion>
+									<Accordion.Toggle as={Card.Header} eventKey="1">
+										<h5>Job Details</h5>
+									</Accordion.Toggle>
+									<Accordion.Collapse eventKey="1">
+										<div className={styles.accordionBox}>
+											{/* About the job */}
+											<Form.Group controlId="formTitle">
+												<Form.Label>Title of volunteer work</Form.Label>
+												<Form.Control
+													type="text"
+													name="title"
+													value={values.title}
+													onChange={handleChange}
+													onBlur={handleBlur}
+													isValid={touched.title && !errors.title}
+													isInvalid={touched.title && errors.title}
+												/>
+												<Form.Control.Feedback type="invalid">
+													{errors.title}
+												</Form.Control.Feedback>
+											</Form.Group>
+											<Form.Group controlId="formBeneficiary">
+												<Form.Label>
+													Target profile of beneficiary
+													{/* <Form.Text className="text-muted">
 														Hold Ctrl (Windows) or CMD (Mac) to select multiple
 														options
 													</Form.Text> */}
-                        </Form.Label>
-                        <Select
-                          isMulti
-                          name="beneficiaries"
-                          options={SelectBeneficiaryTags}
-                          onChange={(inputValue) => {
-                            values.beneficiaries = inputValue.map(
-                              (e) => e.value
-                            );
-                          }}
-                        />
-                        {/* <Form.Control
+												</Form.Label>
+												<Select
+													isMulti
+													name="beneficiaries"
+													options={SelectBeneficiaryTags}
+													onBlur={handleBlur}
+													onChange={(inputValue) => {
+														values.beneficiaries = inputValue.map(
+															(e) => e.value
+														);
+													}}
+												/>
+
+												{values.beneficiaries !== "untouched" ? (
+													values.beneficiaries.length === 0 ? (
+														<Form.Text className="text-danger">
+															Please select at least one beneficiary
+														</Form.Text>
+													) : (
+														""
+													)
+												) : (
+													""
+												)}
+
+												{/* <Form.Control
 													name="beneficiaries"
 													onChange={handleChange}
 													onBlur={handleBlur}
@@ -421,16 +495,17 @@ const PostAJob = () => {
 														Hold Ctrl (Windows) or CMD (Mac) to select multiple
 														options
 													</Form.Text> */}
-                        </Form.Label>
-                        <Select
-                          isMulti
-                          name="skills"
-                          options={SelectSkillTags}
-                          onChange={(inputValue) => {
-                            values.skill = inputValue.map((e) => e.value);
-                          }}
-                        />
-                        {/* <Form.Control
+												</Form.Label>
+												<Select
+													isMulti
+													name="skills"
+													options={SelectSkillTags}
+													onBlur={handleBlur}
+													onChange={(inputValue) => {
+														values.skills = inputValue.map((e) => e.value);
+													}}
+												/>
+												{/* <Form.Control
 													name="skills"
 													onChange={handleChange}
 													onBlur={handleBlur}
@@ -447,68 +522,79 @@ const PostAJob = () => {
 												<Form.Control.Feedback type="invalid">
 													{errors.skills}
 												</Form.Control.Feedback> */}
-                        <Form.Text className="text-muted">
-                          For 'Others', you can elaborate in the Additional
-                          information section
-                        </Form.Text>
-                      </Form.Group>
-                      <Form.Group controlId="formPurpose">
-                        <Form.Label>
-                          Purpose of volunteer work
-                          <Form.Text className="text-muted">
-                            Do explain what volunteers would be doing and why
-                            they are doing it. It would also be useful to
-                            elaborate how volunteers can benefit from the
-                            experience.
-                          </Form.Text>
-                        </Form.Label>
-                        <Form.Control
-                          type="text"
-                          as="textarea"
-                          rows={2}
-                          name="purpose"
-                          value={values.purpose}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          isValid={touched.purpose && !errors.purpose}
-                          isInvalid={touched.purpose && errors.purpose}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          {errors.purpose}
-                        </Form.Control.Feedback>
-                      </Form.Group>
-                      {/* Platform and Location */}
-                      <Form.Group controlId="formPlatform">
-                        <Form.Label>Platform of volunteer work</Form.Label>
-                        <Form.Control
-                          name="platform"
-                          as="select"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          isValid={touched.platform && !errors.platform}
-                          isInvalid={touched.platform && errors.platform}
-                        >
-                          <option value="" disabled selected />
-                          <option>Physical</option>
-                          <option>Virtual</option>
-                        </Form.Control>
-                        <Form.Control.Feedback type="invalid">
-                          {errors.platform}
-                        </Form.Control.Feedback>
-                      </Form.Group>
-                      <div
-                        className={
-                          values.platform !== "Physical"
-                            ? styles.typeDisplayNone
-                            : styles.typeDisplay
-                        }
-                      >
-                        <Row>
-                          <Col md={8}>
-                            <Form.Group controlId="formLocation">
-                              <Form.Label>
-                                Location of volunteer work
-                              </Form.Label>
+												{values.skills !== "untouched" ? (
+													values.skills.length === 0 ? (
+														<Form.Text className="text-danger">
+															Please select at least one skill
+														</Form.Text>
+													) : (
+														""
+													)
+												) : (
+													""
+												)}
+												<Form.Text className="text-muted">
+													For 'Others', you can elaborate in the Additional
+													information section
+												</Form.Text>
+											</Form.Group>
+											<Form.Group controlId="formPurpose">
+												<Form.Label>
+													Purpose of volunteer work
+													<Form.Text className="text-muted">
+														Do explain what volunteers would be doing and why
+														they are doing it. It would also be useful to
+														elaborate how volunteers can benefit from the
+														experience.
+													</Form.Text>
+												</Form.Label>
+												<Form.Control
+													type="text"
+													as="textarea"
+													rows={2}
+													name="purpose"
+													value={values.purpose}
+													onChange={handleChange}
+													onBlur={handleBlur}
+													isValid={touched.purpose && !errors.purpose}
+													isInvalid={touched.purpose && errors.purpose}
+												/>
+												<Form.Control.Feedback type="invalid">
+													{errors.purpose}
+												</Form.Control.Feedback>
+											</Form.Group>
+											{/* Platform and Location */}
+											<Form.Group controlId="formPlatform">
+												<Form.Label>Platform of volunteer work</Form.Label>
+												<Form.Control
+													name="platform"
+													as="select"
+													onChange={handleChange}
+													onBlur={handleBlur}
+													isValid={touched.platform && !errors.platform}
+													isInvalid={touched.platform && errors.platform}
+												>
+													<option value="" disabled selected />
+													<option>Physical</option>
+													<option>Virtual</option>
+												</Form.Control>
+												<Form.Control.Feedback type="invalid">
+													{errors.platform}
+												</Form.Control.Feedback>
+											</Form.Group>
+											<div
+												className={
+													values.platform !== "Physical"
+														? styles.typeDisplayNone
+														: styles.typeDisplay
+												}
+											>
+												<Row>
+													<Col md={8}>
+														<Form.Group controlId="formLocation">
+															<Form.Label>
+																Location of volunteer work
+															</Form.Label>
 
                               <Form.Control
                                 type="text"
