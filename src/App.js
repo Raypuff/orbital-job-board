@@ -8,6 +8,7 @@ import SignUpStuPage from "./pages/SignUpStuPage";
 import ForgotPasswordStuPage from "./pages/ForgotPasswordStuPage";
 import YourProfileStuPage from "./pages/YourProfileStuPage";
 import YourApplicationsPage from "./pages/YourApplicationsPage";
+import ChatStuPage from "./pages/ChatStuPage";
 //org pages
 import SignInOrgPage from "./pages/SignInOrgPage";
 import SignUpOrgPage from "./pages/SignUpOrgPage";
@@ -16,6 +17,7 @@ import YourProfileOrgPage from "./pages/YourProfileOrgPage";
 import PostAJobPage from "./pages/PostAJobPage";
 import EditJobsPage from "./pages/EditJobsPage";
 import YourJobsPage from "./pages/YourJobsPage";
+import ChatOrgPage from "./pages/ChatOrgPage";
 // admin pages
 import SignInAdminPage from "./pages/SignInAdminPage";
 import AllJobsPage from "./pages/AllJobsPage";
@@ -51,6 +53,9 @@ function App() {
 					<Route path="/your-applications">
 						<YourApplicationsPage />
 					</Route>
+					<Route path="/chat-student">
+						<ChatStuPage />
+					</Route>
 					{/* Organization Pages */}
 					<Route path="/sign-in-organization">
 						<SignInOrgPage />
@@ -72,6 +77,9 @@ function App() {
 					</Route>
 					<Route path="/your-jobs">
 						<YourJobsPage />
+					</Route>
+					<Route path="/chat-organization">
+						<ChatOrgPage />
 					</Route>
 					{/* Admin Pages */}
 					<Route path="/sign-in-admin">

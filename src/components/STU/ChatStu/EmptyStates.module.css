@@ -1,0 +1,90 @@
+/* loading */
+.loadingContainer {
+	height: calc(100vh - 155px);
+	display: grid;
+	place-items: center;
+	text-align: center;
+}
+
+.loadingWrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1em;
+}
+
+.spinner {
+	width: 5rem;
+	height: 5rem;
+}
+.loadingTitle {
+	font-size: 2.5rem;
+	color: #193f76;
+}
+
+/* noJobs */
+.noJobContainer {
+	height: calc(100vh - 155px);
+	display: grid;
+	place-items: center;
+	text-align: center;
+}
+
+.noJobWrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding-bottom: 7rem;
+}
+
+.noJobImage {
+	max-height: 50vh;
+	max-width: 85vw;
+}
+
+.noJobTitle {
+	font-size: 4.5vmin;
+	color: #193f76;
+	margin: 0 1rem;
+	text-align: center;
+}
+
+.noJobOrg {
+	font-size: 1.8vmin;
+	margin-top: 1rem;
+	text-align: center;
+}
+.noJobButton {
+	margin-top: 1rem;
+	background-color: #193f76;
+	border-radius: 4em;
+	padding: 1em 2em;
+	cursor: pointer;
+	display: grid;
+	place-items: center;
+	transition: 0.5s ease-in;
+	text-decoration: none;
+}
+.noJobButtonText {
+	font-size: 2.5vmin;
+	color: #f8f8f8;
+}
+.noJobButton:hover {
+	transform: translateY(-1rem);
+	background-color: #122f57;
+	transition: 0.25s ease;
+	text-decoration: none;
+}
+
+@media screen and (max-width: 576px) {
+	.noJobTitle {
+		font-size: 2rem;
+	}
+
+	.noJobOrg {
+		font-size: 1rem;
+	}
+	.noJobButtonText {
+		font-size: 1.2rem;
+	}
+}

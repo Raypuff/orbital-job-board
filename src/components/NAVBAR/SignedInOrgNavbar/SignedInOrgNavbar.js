@@ -22,6 +22,7 @@ import {
 	PersonFill,
 	BriefcaseFill,
 	BellFill,
+	ChatSquareDotsFill,
 } from "react-bootstrap-icons";
 
 const SignedInOrgNavbar = () => {
@@ -95,6 +96,25 @@ const SignedInOrgNavbar = () => {
 					</Nav.Link>
 				</OverlayTrigger>
 			</Nav>
+			<Nav>
+				<OverlayTrigger placement="bottom" overlay={renderChatTooltip}>
+					<Nav.Link
+						as={NavLink}
+						exact
+						activeClassName={styles.activeNavLink}
+						to="/chat-organization"
+					>
+						<ChatSquareDotsFill
+							style={{
+								fontSize: "1.1rem",
+								marginBottom: "0.2rem",
+							}}
+						/>
+						{width < 576 && <span style={{ marginLeft: "0.4rem" }}>Chat</span>}
+					</Nav.Link>
+				</OverlayTrigger>
+			</Nav>
+
 			<Nav>
 				<NavDropdown
 					title={
@@ -382,6 +402,12 @@ const renderGettingStartedTooltip = (props) => (
 const renderNotificationsTooltip = (props) => (
 	<Tooltip id="notifications-tooltip" {...props}>
 		Notifications
+	</Tooltip>
+);
+
+const renderChatTooltip = (props) => (
+	<Tooltip id="chat-tooltip" {...props}>
+		Chat
 	</Tooltip>
 );
 
