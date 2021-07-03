@@ -7,16 +7,19 @@ header {
 	display: flex;
 	max-width: 75em;
 	margin: 0 auto;
+	align-items: center;
 }
 
-.headerLogo {
+.nusLogo {
 	height: 50px;
-	margin: 25px 2em;
+	margin: 25px 0;
+	margin-left: 2em;
 }
 
-.rightlogo {
-	composes: headerLogo;
-	margin-left: auto;
+.ccsgpLogo {
+	height: 64px;
+	margin: 18px 0;
+	margin-right: 2em;
 }
 
 @media (max-width: 576px) {
