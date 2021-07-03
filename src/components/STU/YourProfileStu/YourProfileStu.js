@@ -71,6 +71,7 @@ const YourProfileStu = () => {
 								<Nav.Link
 									eventKey="first"
 									className={styles.navLink}
+									active={width < 576 ? false : null}
 									onClick={() => {
 										if (width < 576) {
 											setMobileActiveView(true);
@@ -84,6 +85,7 @@ const YourProfileStu = () => {
 								<Nav.Link
 									eventKey="second"
 									className={styles.navLink}
+									active={width < 576 ? false : null}
 									onClick={() => {
 										if (width < 576) {
 											setMobileActiveView(true);
@@ -97,6 +99,7 @@ const YourProfileStu = () => {
 								<Nav.Link
 									eventKey="third"
 									className={styles.navLink}
+									active={width < 576 ? false : null}
 									onClick={() => {
 										if (width < 576) {
 											setMobileActiveView(true);
@@ -328,17 +331,19 @@ const YourProfileStu = () => {
 																	{errors.passwordConfirm}
 																</Form.Control.Feedback>
 															</Form.Group>
-															<Button
-																variant="primary"
-																type="submit"
-																disabled={isSubmitting || successPassword}
-															>
-																{isSubmitting
-																	? "Submitting..."
-																	: successPassword
-																	? "Password changed"
-																	: "Change password"}
-															</Button>
+															<div className="d-flex justify-content-center align-items-center">
+																<Button
+																	variant="primary"
+																	type="submit"
+																	disabled={isSubmitting || successPassword}
+																>
+																	{isSubmitting
+																		? "Submitting..."
+																		: successPassword
+																		? "Password changed"
+																		: "Change password"}
+																</Button>
+															</div>
 														</Form>
 													)}
 												</Formik>

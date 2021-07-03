@@ -28,6 +28,7 @@ const SignedInStuNavbar = () => {
 	const [error, setError] = useState("");
 	const { currentUser, logout } = useAuth();
 	const [showGettingStarted, setShowGettingStarted] = useState(false);
+	const [showSignOut, setShowSignOut] = useState(false);
 	const history = useHistory();
 	const { width } = useWindowDimensions();
 	//page functionality
@@ -153,7 +154,7 @@ const SignedInStuNavbar = () => {
 			</Nav>
 			<Nav>
 				<OverlayTrigger placement="bottom" overlay={renderSignOutTooltip}>
-					<Nav.Link onClick={handleLogout}>
+					<Nav.Link onClick={() => setShowSignOut(true)}>
 						<DoorOpenFill
 							style={{
 								fontSize: "1.2rem",
@@ -273,6 +274,23 @@ const SignedInStuNavbar = () => {
 						<Pagination className={styles.pages}>{pages}</Pagination>
 					</div>
 				</Modal.Footer>
+			</Modal>
+			<Modal
+				show={showSignOut}
+				onHide={() => setShowSignOut(false)}
+				size="md"
+				aria-labelledby="contained-modal-title-vcenter"
+				centered
+			>
+				<Modal.Header closeButton>
+					<Modal.Title>Are you sure you want to sign out?</Modal.Title>
+				</Modal.Header>
+				<Modal.Body className="d-flex flex-column justify-content-center align-items-center">
+					We hope to see you again soon!
+					<Button variant="danger" onClick={handleLogout} className="mt-3">
+						Sign out
+					</Button>
+				</Modal.Body>
 			</Modal>
 		</>
 	);
