@@ -1,10 +1,11 @@
 .formBG {
+	min-height: calc(100vh - 620px);
 	display: grid;
 	place-items: center;
 }
 
 .formContainer {
-	margin: 10vmax 0 12vmax;
+	margin: 5.5vmax 0 6.5vmax;
 }
 
 .eye {

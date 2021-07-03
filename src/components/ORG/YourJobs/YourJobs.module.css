@@ -1,6 +1,7 @@
 .container {
 	max-width: 76rem;
 	margin: 2rem auto;
+	min-height: calc(100vh - 670px);
 }
 
 .rowContainer {

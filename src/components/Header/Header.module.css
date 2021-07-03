@@ -24,7 +24,8 @@ header {
 
 @media (max-width: 576px) {
 	header,
-	.headerLogo {
+	.nusLogo,
+	.ccsgpLogo {
 		height: 0;
 	}
 }
