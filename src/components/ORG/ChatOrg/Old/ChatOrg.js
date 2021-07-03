@@ -1,20 +1,23 @@
 import { useState, useEffect, useRef } from "react";
 import { Row, Col, Card, Form, Button } from "react-bootstrap";
-import { Telegram, ArrowLeft } from "react-bootstrap-icons";
+import { Telegram } from "react-bootstrap-icons";
 import { useAuth } from "../../../contexts/AuthContext";
 import { ChatList, MessageList } from "react-chat-elements";
-import { LoadingChats, NoChats, SelectMessage, NoMessage } from "./EmptyStates";
+import {
+	LoadingChats,
+	NoChats,
+	SelectMessage,
+	NoMessage,
+} from "../EmptyStates";
 import styles from "./ChatOrg.module.css";
 var uniqid = require("uniqid");
 
 const ChatOrg = () => {
 	const { currentUser } = useAuth();
-	const [currentChat, setCurrentChat] = useState(""); //currentChat is the ID of the current open chat
+	const [currentChat, setCurrentChat] = useState(); //currentChat is the ID of the current open chat
 	const [chats, setChats] = useState(); //chats store all MY chats
 	const [currentMessages, setCurrentMessages] = useState([]); //currentMessages store all messages of current chat
 	const [loadingChats, setLoadingChats] = useState(true);
-	const [mobileViewMessages, setMobileViewMessages] = useState(false);
-	const { width } = useWindowDimensions();
 	const newMessageRef = useRef();
 	const messageBottomRef = useRef();
 
@@ -41,8 +44,6 @@ const ChatOrg = () => {
 			}
 		});
 		setChats(processedChats);
-		console.log("Processed Chats:");
-		console.log(processedChats);
 		setLoadingChats(false);
 		scrollToBottom();
 	};
@@ -61,8 +62,9 @@ const ChatOrg = () => {
 
 	// useEffect(() => {
 	// 	scrollToBottom();
-	// }, []);
+	// }, [currentMessages]);
 
+	//fetch messages where message.id === currentChat (set loadingMessages true then false), call everytime currentChat changes, if message.status === "Sent", update to "Read"
 	const getMessages = async () => {
 		const messagesData = await fetch(
 			process.env.REACT_APP_BACKEND_URL + "/chats/messages/" + currentChat
@@ -86,7 +88,8 @@ const ChatOrg = () => {
 	};
 
 	useEffect(() => {
-		if (currentChat) {
+		if (currentChat !== null) {
+			console.log("Getting msgs");
 			getMessages();
 		}
 	});
@@ -109,8 +112,7 @@ const ChatOrg = () => {
 		};
 
 		//update the chat where chat.id === currentChat to have chat.lastDateTime = newMessage.dateTime and chat.lastContent = newMessage.message and unread +=1
-		var updateChats = chats;
-		updateChats.forEach((chat) => {
+		chats.forEach((chat) => {
 			if (chat.id === currentChatID) {
 				chat.subtitle = `You: ${newMessage}`;
 				chat.date = newDate;
@@ -139,101 +141,68 @@ const ChatOrg = () => {
 	if (chats && chats.length > 0) {
 		return (
 			<div className={styles.container}>
-				<Row>
-					<Col
-						lg={4}
-						className={
-							!mobileViewMessages ? styles.chatCol : styles.chatColMobile
-						}
-					>
-						<div className={styles.searchContainer}>
-							<div className={styles.searchHeader}>Chats</div>
-							<Form.Control
-								size="sm"
-								placeholder="Search..."
-								className={styles.searchbar}
-							/>
-						</div>
-
-						<Card className={styles.chatContainer}>
-							<ChatList
-								className="chat-list"
-								dataSource={chats.sort(
-									(chat1, chat2) => chat2.date - chat1.date
-								)}
-								onClick={(chat) => {
-									setCurrentChat(chat.id);
-									if (width < 992) {
-										setMobileViewMessages(true);
-									}
-									// scrollToBottom();
-								}}
-							/>
-						</Card>
-					</Col>
-					<Col
-						lg={8}
-						className={
-							!mobileViewMessages ? styles.messageCol : styles.messageColMobile
-						}
-					>
-						<div className={styles.messageHeader}>
-							{mobileViewMessages && (
-								<ArrowLeft onClick={() => setMobileViewMessages(false)} />
-							)}
-							{chats && currentChat
-								? chats.find((chat) => chat.id === currentChat).title
-								: ""}
-						</div>
-						<Card
-							className={
-								!!currentChat
-									? styles.messageContainer
-									: styles.noMessageContainer
-							}
-						>
-							{!currentChat ? (
-								<SelectMessage />
-							) : currentChat && currentMessages ? (
-								currentMessages.length === 0 ? (
-									<NoMessage />
-								) : (
-									<>
-										<MessageList
-											className="message-list"
-											dataSource={currentMessages
-												.filter((msg) => msg.chatID === currentChat)
-												.sort((msg1, msg2) => msg1.date - msg2.date)}
-										/>
-										<div ref={messageBottomRef} />
-									</>
-								)
-							) : (
-								<div className="h-100 d-flex justify-content-center align-items-center">
-									<div className="bg-white text-primary px-4 py-2 mb-4 rounded-pill text-center">
-										This is a state I was not prepared for
-									</div>
-								</div>
-							)}
-						</Card>
-						<Form onSubmit={handleSubmit}>
-							<div
-								className={currentChat ? styles.formRow : styles.displayNone}
-							>
-								<Form.Control
-									placeholder="Write a message..."
-									ref={newMessageRef}
-									required
+				{chats && chats.length > 0 ? (
+					<Row>
+						<Col lg={4} className={styles.chatCol}>
+							<Card className={styles.chatContainer}>
+								<ChatList
+									className="chat-list"
+									dataSource={chats.sort(
+										(chat1, chat2) => chat2.date - chat1.date
+									)}
+									onClick={(chat) => {
+										setCurrentChat(chat.id);
+									}}
 								/>
-								<Button type="submit">
-									{/* <Telegram style={{ color: "white" }} /> */}
-									Send
-								</Button>
-							</div>
-						</Form>
-					</Col>
-				</Row>
-				)
+							</Card>
+						</Col>
+						<Col lg={8} className={styles.messageCol}>
+							<Card
+								className={
+									currentChat
+										? styles.messageContainer
+										: styles.noMessageContainer
+								}
+							>
+								{!currentChat ? (
+									<SelectMessage />
+								) : currentChat && currentMessages ? (
+									currentMessages.length === 0 ? (
+										<NoMessage />
+									) : (
+										<>
+											<MessageList
+												className="message-list"
+												dataSource={currentMessages
+													.filter((msg) => msg.chatID === currentChat)
+													.sort((msg1, msg2) => msg1.date - msg2.date)}
+											/>
+											<div ref={messageBottomRef} />
+										</>
+									)
+								) : (
+									<div>this is a state i was not prepared for</div>
+								)}
+							</Card>
+							<Form onSubmit={handleSubmit}>
+								<div
+									className={currentChat ? styles.formRow : styles.displayNone}
+								>
+									<Form.Control
+										placeholder="Write a message..."
+										ref={newMessageRef}
+										required
+									/>
+									<Button type="submit">
+										<Telegram style={{ color: "white" }} />
+									</Button>
+								</div>
+							</Form>
+						</Col>
+					</Row>
+				) : (
+					<div> u got no chats lol</div>
+				)}
 			</div>
 		);
 	} else {
@@ -242,28 +211,3 @@ const ChatOrg = () => {
 };
 
 export default ChatOrg;
-
-function getWindowDimensions() {
-	const { innerWidth: width, innerHeight: height } = window;
-	return {
-		width,
-		height,
-	};
-}
-
-function useWindowDimensions() {
-	const [windowDimensions, setWindowDimensions] = useState(
-		getWindowDimensions()
-	);
-
-	useEffect(() => {
-		function handleResize() {
-			setWindowDimensions(getWindowDimensions());
-		}
-
-		window.addEventListener("resize", handleResize);
-		return () => window.removeEventListener("resize", handleResize);
-	}, []);
-
-	return windowDimensions;
-}

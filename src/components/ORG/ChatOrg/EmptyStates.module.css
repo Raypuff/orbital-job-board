@@ -50,7 +50,7 @@
 }
 
 .noJobOrg {
-	font-size: 2vmin;
+	font-size: 1.8vmin;
 	margin-top: 1rem;
 	text-align: center;
 }
@@ -86,40 +86,5 @@
 	}
 	.noJobButtonText {
 		font-size: 1.2rem;
-	}
-}
-
-/* filter no job  */
-.filterNoJobContainer {
-	width: 100%;
-	display: grid;
-	place-items: center;
-	text-align: center;
-}
-
-.filterNoJobWrapper {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	padding-bottom: 7rem;
-}
-
-.filterNoJobImage {
-	max-height: 50vh;
-	max-width: 85vw;
-}
-
-.filterNoJobTitle {
-	font-size: 1.5rem;
-	color: #193f76;
-	max-width: 70%;
-	text-align: center;
-	margin: 0 1rem;
-}
-
-@media screen and (max-width: 576px) {
-	.loadingContainer,
-	.noJobContainer {
-		height: calc(100vh - 4rem);
 	}
 }
