@@ -40,13 +40,12 @@ const ChatOrg = () => {
       }
     });
     setChats(processedChats);
-
-    setLoadingChats(false);
     scrollToBottom();
   };
 
   useEffect(() => {
     getChats();
+    setLoadingChats(false);
   }, []);
 
   const scrollToBottom = () => {

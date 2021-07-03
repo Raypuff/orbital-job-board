@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 import { Row, Col, Alert } from "react-bootstrap";
 import { LoadingJobDetails, NotAvailable } from "./EmptyStates";
 import noImage from "../../../assets/noImage.png";
@@ -111,7 +111,8 @@ const JobDetails = ({ id }) => {
           className={styles.button}
           onClick={() => {
             createChats();
-            history.push("/chat-student");
+            history.push("/");
+            history.replace("/chat-student");
           }}
         >
           Chat now

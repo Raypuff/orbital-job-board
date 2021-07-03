@@ -24,8 +24,6 @@ const ChatStu = () => {
       `${process.env.REACT_APP_BACKEND_URL}/chats/all-chats/student/${currentUser.email}`
     );
     const chats = await chatData.json();
-    console.log(`Backend Chats:`);
-    console.log(chats);
     var processedChats = chats;
     processedChats.forEach((chat) => {
       chat.date = new Date(chat.date);
@@ -39,14 +37,13 @@ const ChatStu = () => {
       }
     });
     setChats(processedChats);
-    console.log("Processed Chats:");
-    console.log(processedChats);
-    setLoadingChats(false);
+
     scrollToBottom();
   };
 
   useEffect(() => {
     getChats();
+    setLoadingChats(false);
   }, []);
 
   const scrollToBottom = () => {
