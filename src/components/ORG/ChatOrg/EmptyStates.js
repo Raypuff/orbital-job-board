@@ -20,22 +20,6 @@ export const LoadingChats = () => {
 };
 
 export const NoChats = () => {
-	return <div>u have no chats </div>;
-};
-
-export const LoadingMessages = () => {
-	return <div>im loading messages</div>;
-};
-
-export const SelectMessage = () => {
-	return <div>select a message</div>;
-};
-
-export const NoMessage = () => {
-	return <div>u have no msg send one?</div>;
-};
-
-export const NoApplications = () => {
 	return (
 		<div className={styles.noJobContainer}>
 			<div className={styles.noJobWrapper}>
@@ -44,33 +28,34 @@ export const NoApplications = () => {
 					src={emptyState_noJobs}
 					alt="No jobs mountains"
 				/>
-				<div className={styles.noJobTitle}>
-					You do not have any applications available for viewing...
-				</div>
+				<div className={styles.noJobTitle}>You do not have any chats yet </div>
 				<div className={styles.noJobOrg}>
-					Ready to get involved and make a difference?
+					If you would like volunteers to have the option to ask you a question,
+					make sure to enable the option when posting a job!
 				</div>
-				<Link to="/jobs" className={styles.noJobButton}>
-					<div className={styles.noJobButtonText}>Volunteer now</div>
+				<Link to="/post-a-job" className={styles.noJobButton}>
+					<div className={styles.noJobButtonText}>Post A Job</div>
 				</Link>
 			</div>
 		</div>
 	);
 };
 
-export const FilterNoApplications = () => {
+export const SelectMessage = () => {
 	return (
-		<div className={styles.filterNoJobContainer}>
-			<div className={styles.filterNoJobWrapper}>
-				<img
-					src={emptyState_noJobs}
-					alt="Filter no jobs mountains"
-					className={styles.filterNoJobImage}
-				/>
-				<div className={styles.filterNoJobTitle}>
-					Hmm... You do not have any applications with the filters you selected.
-					Perhaps try a different filter?
-				</div>
+		<div className="h-100 d-flex justify-content-center align-items-center">
+			<div className="bg-white text-primary px-4 py-2 mb-4 rounded-pill text-center">
+				Select a chat to start messaging
+			</div>
+		</div>
+	);
+};
+
+export const NoMessage = () => {
+	return (
+		<div className="h-100 d-flex justify-content-center align-items-center">
+			<div className="bg-white text-primary px-4 py-2 mb-4 rounded-pill text-center">
+				You have no messages with this volunteer
 			</div>
 		</div>
 	);

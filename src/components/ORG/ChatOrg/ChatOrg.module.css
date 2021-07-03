@@ -1,39 +1,61 @@
 .container {
 	max-width: 75rem;
 	margin: 0 auto;
-	padding: 0 1rem;
+	padding: 0.5rem 1rem;
 	height: calc(100vh - 156px);
 }
 
-@media screen and (max-width: 991px) {
+.chatCol {
+	height: calc(100vh - 253px);
+	padding-right: 0;
+}
+
+.searchContainer {
+	background-color: #f8f8f8;
+	padding: 0.25rem 1.125rem 0.25rem 0.5rem;
+}
+
+.searchHeader {
+	font-size: 1.5rem;
+	color: #193f76;
+	margin-left: 0.5rem;
+}
+
+.searchbar {
+	border-radius: 1rem;
+}
+
+.messageCol {
+	height: calc(100vh - 253px);
+	padding-left: 0;
+}
+
+@media screen and (max-width: 992px) {
+	.container {
+		height: calc(100vh - 4.0625rem);
+		padding: 0 1rem;
+	}
 	.chatCol {
-		width: 100vw;
+		padding-right: 15px;
+		height: calc(100vh - 8.625rem);
 	}
 	.messageCol {
 		display: none;
 	}
-}
-
-.chatCol {
-	height: calc(100vh-164px);
-	padding-right: 0;
-}
-
-.messageCol {
-	height: calc(100vh - 164px);
-	padding-left: 0;
+	.chatColMobile {
+		display: none;
+	}
+	.messageColMobile {
+		height: calc(100vh - 8.625rem);
+	}
 }
 
 .chatContainer {
 	height: 100%;
-	background-color: #193f76;
-	border-radius: 0;
+	background-color: #f8f8f8;
+	padding: 0;
+	border-top-left-radius: 0.75rem;
 	overflow-y: scroll;
-}
-
-.noMessageContainer {
-	height: 100%;
-	border-radius: 0;
 }
 
 .messageContainer {
@@ -42,6 +64,22 @@
 	border-radius: 0;
 	overflow-y: scroll;
 	/* background-color: red; */
+}
+
+.noMessageContainer {
+	composes: messageContainer;
+	height: 100%;
+}
+
+.messageHeader {
+	display: flex;
+	align-items: center;
+	font-size: 1.5rem;
+	background-color: #f8f8f8;
+	color: #193f76;
+	padding-left: 1.5rem;
+	height: 73px;
+	gap: 1.5rem;
 }
 
 .formRow {

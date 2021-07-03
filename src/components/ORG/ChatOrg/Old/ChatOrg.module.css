@@ -1,0 +1,53 @@
+.container {
+	max-width: 75rem;
+	margin: 0 auto;
+	padding: 0 1rem;
+	height: calc(100vh - 156px);
+}
+
+@media screen and (max-width: 991px) {
+	.chatCol {
+		width: 100vw;
+	}
+	.messageCol {
+		display: none;
+	}
+}
+
+.chatCol {
+	height: calc(100vh-164px);
+	padding-right: 0;
+}
+
+.messageCol {
+	height: calc(100vh - 164px);
+	padding-left: 0;
+}
+
+.chatContainer {
+	height: 100%;
+	background-color: #193f76;
+	border-radius: 0;
+	overflow-y: scroll;
+}
+
+.noMessageContainer {
+	height: 100%;
+	border-radius: 0;
+}
+
+.messageContainer {
+	height: calc(100% - 38px);
+	background-color: #f8f8f8;
+	border-radius: 0;
+	overflow-y: scroll;
+	/* background-color: red; */
+}
+
+.formRow {
+	display: flex;
+}
+
+.displayNone {
+	display: none;
+}
