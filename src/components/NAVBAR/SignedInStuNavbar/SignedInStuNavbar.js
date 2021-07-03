@@ -64,7 +64,6 @@ const SignedInStuNavbar = () => {
 		try {
 			await logout();
 			history.push("/");
-			alert("Signed out successfully");
 		} catch {
 			setError("Failed to log out");
 			console.log(error);
