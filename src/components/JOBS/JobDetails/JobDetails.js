@@ -368,10 +368,13 @@ const JobDetails = ({ id }) => {
 									<div className={styles.detailContainer}>
 										<h4>{title}</h4>
 										<hr className={styles.divider} />
-										<h7>
-											{`Posted on: ${new Date(datePosted).toDateString()}`}
-											<br />
-										</h7>
+										{datePosted && (
+											<h7>
+												`Posted on: ${new Date(datePosted).toDateString()}`
+												<br />
+											</h7>
+										)}
+
 										<h7>
 											{noClosingDate
 												? "No closing date for applications"
