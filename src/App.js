@@ -30,81 +30,84 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import { StoreProvider } from "./contexts/StoreContext";
 import { DistProvider } from "./contexts/DistContext";
+import { JobProvider } from "./contexts/JobContext";
 
 function App() {
   return (
-    <DistProvider>
-      <StoreProvider>
-        <AuthProvider>
-          <Header />
-          <MyNavbar />
-          <Switch>
-            {/* Student Pages */}
-            <Route path="/sign-in-student">
-              <SignInStuPage />
-            </Route>
-            <Route path="/sign-up-student">
-              <SignUpStuPage />
-            </Route>
-            <Route path="/forgot-password-student">
-              <ForgotPasswordStuPage />
-            </Route>
-            <Route path="/profile-student">
-              <YourProfileStuPage />
-            </Route>
-            <Route path="/your-applications">
-              <YourApplicationsPage />
-            </Route>
-            <Route path="/chat-student">
-              <ChatStuPage />
-            </Route>
-            {/* Organization Pages */}
-            <Route path="/sign-in-organization">
-              <SignInOrgPage />
-            </Route>
-            <Route path="/sign-up-organization">
-              <SignUpOrgPage />
-            </Route>
-            <Route path="/forgot-password-organization">
-              <ForgotPasswordOrgPage />
-            </Route>
-            <Route path="/profile-organization">
-              <YourProfileOrgPage />
-            </Route>
-            <Route path="/post-a-job">
-              <PostAJobPage />
-            </Route>
-            <Route path="/your-jobs/edit/:id">
-              <EditJobsPage />
-            </Route>
-            <Route path="/your-jobs">
-              <YourJobsPage />
-            </Route>
-            <Route path="/chat-organization">
-              <ChatOrgPage />
-            </Route>
-            {/* Admin Pages */}
-            <Route path="/sign-in-admin">
-              <SignInAdminPage />
-            </Route>
-            <Route path="/all-jobs">
-              <AllJobsPage />
-            </Route>
-            {/* General Pages */}
-            <Route path="/jobs/:id">
-              <JobDetailsPage />
-            </Route>
-            <Route path="/jobs">
-              <JobBoardPage />
-            </Route>
-            <Route path="/">
-              <LandingPage />
-            </Route>
-          </Switch>
-          <Footer />
-        </AuthProvider>
-      </StoreProvider>
-    </DistProvider>
+    <JobProvider>
+      <DistProvider>
+        <StoreProvider>
+          <AuthProvider>
+            <Header />
+            <MyNavbar />
+            <Switch>
+              {/* Student Pages */}
+              <Route path="/sign-in-student">
+                <SignInStuPage />
+              </Route>
+              <Route path="/sign-up-student">
+                <SignUpStuPage />
+              </Route>
+              <Route path="/forgot-password-student">
+                <ForgotPasswordStuPage />
+              </Route>
+              <Route path="/profile-student">
+                <YourProfileStuPage />
+              </Route>
+              <Route path="/your-applications">
+                <YourApplicationsPage />
+              </Route>
+              <Route path="/chat-student">
+                <ChatStuPage />
+              </Route>
+              {/* Organization Pages */}
+              <Route path="/sign-in-organization">
+                <SignInOrgPage />
+              </Route>
+              <Route path="/sign-up-organization">
+                <SignUpOrgPage />
+              </Route>
+              <Route path="/forgot-password-organization">
+                <ForgotPasswordOrgPage />
+              </Route>
+              <Route path="/profile-organization">
+                <YourProfileOrgPage />
+              </Route>
+              <Route path="/post-a-job">
+                <PostAJobPage />
+              </Route>
+              <Route path="/your-jobs/edit/:id">
+                <EditJobsPage />
+              </Route>
+              <Route path="/your-jobs">
+                <YourJobsPage />
+              </Route>
+              <Route path="/chat-organization">
+                <ChatOrgPage />
+              </Route>
+              {/* Admin Pages */}
+              <Route path="/sign-in-admin">
+                <SignInAdminPage />
+              </Route>
+              <Route path="/all-jobs">
+                <AllJobsPage />
+              </Route>
+              {/* General Pages */}
+              <Route path="/jobs/:id">
+                <JobDetailsPage />
+              </Route>
+              <Route path="/jobs">
+                <JobBoardPage />
+              </Route>
+              <Route path="/">
+                <LandingPage />
+              </Route>
+            </Switch>
+            <Footer />
+          </AuthProvider>
+        </StoreProvider>
+      </DistProvider>
+    </JobProvider>
   );
 }
 
