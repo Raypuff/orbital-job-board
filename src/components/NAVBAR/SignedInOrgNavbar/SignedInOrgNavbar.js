@@ -481,13 +481,13 @@ const renderNotificationsTooltip = (props) => (
 
 const renderChatTooltip = (props) => (
 	<Tooltip id="chat-tooltip" {...props}>
-		Chat
+		Your Chats
 	</Tooltip>
 );
 
 const renderProfileTooltip = (props) => (
 	<Tooltip id="profile-tooltip" {...props}>
-		Profile
+		Your Profile
 	</Tooltip>
 );
 

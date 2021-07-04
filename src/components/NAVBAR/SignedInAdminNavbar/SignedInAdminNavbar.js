@@ -147,7 +147,7 @@ function useWindowDimensions() {
 
 const renderProfileTooltip = (props) => (
 	<Tooltip id="profile-tooltip" {...props}>
-		Profile
+		Your Profile
 	</Tooltip>
 );
 

@@ -10,7 +10,7 @@ import { store } from "../../../firebase";
 
 const YourProfileStu = () => {
 	const [edit, setEdit] = useState(false);
-	const { currentUser } = useAuth();
+	const { currentUser, userVerified } = useAuth();
 	const [userData, setUserData] = useState(null);
 	const { width } = useWindowDimensions();
 	const [mobileActiveView, setMobileActiveView] = useState(false);
@@ -123,85 +123,120 @@ const YourProfileStu = () => {
 											width={width}
 										/>
 									) : (
-										<Card bg="light" text="dark">
-											<Card.Header
-												as="h5"
-												className="d-flex align-items-center"
-											>
-												{mobileActiveView && width < 576 && (
-													<ArrowLeft
-														style={{ marginRight: "1rem" }}
-														onClick={() => setMobileActiveView(false)}
-													/>
-												)}
-												Your profile
-											</Card.Header>
-											<Card.Body>
-												<Form onSubmit={onEdit}>
-													<Form.Group controlId="formName">
-														<Form.Label>Name as in NRIC</Form.Label>{" "}
-														<Form.Control
-															placeholder={
-																userData !== null ? userData.name : ""
-															}
-															readOnly
-															onClick={onEdit}
+										<>
+											<Card bg="light" text="dark">
+												<Card.Header
+													as="h5"
+													className="d-flex align-items-center"
+												>
+													{mobileActiveView && width < 576 && (
+														<ArrowLeft
+															style={{ marginRight: "1rem" }}
+															onClick={() => setMobileActiveView(false)}
 														/>
-													</Form.Group>
-													<Form.Group controlId="formDob">
-														<Form.Label>Date of birth</Form.Label>
-														<Form.Control
-															placeholder={
-																userData !== null ? userData.dob : ""
-															}
-															readOnly
-															onClick={onEdit}
+													)}
+													Details
+												</Card.Header>
+												<Card.Body>
+													<Form onSubmit={onEdit}>
+														<Form.Group controlId="formName">
+															<Form.Label>Name as in NRIC</Form.Label>{" "}
+															<Form.Control
+																placeholder={
+																	userData !== null ? userData.name : ""
+																}
+																readOnly
+																onClick={onEdit}
+															/>
+														</Form.Group>
+														<Form.Group controlId="formDob">
+															<Form.Label>Date of birth</Form.Label>
+															<Form.Control
+																placeholder={
+																	userData !== null ? userData.dob : ""
+																}
+																readOnly
+																onClick={onEdit}
+															/>
+														</Form.Group>
+														<Form.Group controlId="formEmail">
+															<Form.Label>Email address</Form.Label>
+															<Form.Control
+																placeholder={
+																	userData !== null ? userData.id : ""
+																}
+																readOnly
+																onClick={onEdit}
+															/>
+														</Form.Group>
+														<Form.Group controlId="formContactNo">
+															<Form.Label>Mobile number</Form.Label>
+															<Form.Control
+																placeholder={
+																	userData !== null ? userData.contactNo : ""
+																}
+																readOnly
+																onClick={onEdit}
+															/>
+														</Form.Group>
+														<Form.Group controlId="formCourse">
+															<Form.Label>Course of study</Form.Label>
+															<Form.Control
+																placeholder={
+																	userData !== null ? userData.course : ""
+																}
+																readOnly
+																onClick={onEdit}
+															/>
+														</Form.Group>
+														<Form.Group controlId="formYear">
+															<Form.Label>Year of study</Form.Label>
+															<Form.Control
+																placeholder={
+																	userData !== null ? userData.year : ""
+																}
+																readOnly
+																onClick={onEdit}
+															/>
+														</Form.Group>
+														<Button variant="primary" type="submit">
+															Edit profile
+														</Button>
+													</Form>
+												</Card.Body>
+											</Card>
+											<Card className="mt-4">
+												<Card.Header
+													as="h5"
+													className="d-flex align-items-center"
+												>
+													{mobileActiveView && width < 576 && (
+														<ArrowLeft
+															style={{ marginRight: "1rem" }}
+															onClick={() => setMobileActiveView(false)}
 														/>
-													</Form.Group>
-													<Form.Group controlId="formEmail">
-														<Form.Label>Email address</Form.Label>
-														<Form.Control
-															placeholder={userData !== null ? userData.id : ""}
-															readOnly
-															onClick={onEdit}
-														/>
-													</Form.Group>
-													<Form.Group controlId="formContactNo">
-														<Form.Label>Mobile number</Form.Label>
-														<Form.Control
-															placeholder={
-																userData !== null ? userData.contactNo : ""
-															}
-															readOnly
-															onClick={onEdit}
-														/>
-													</Form.Group>
-													<Form.Group controlId="formCourse">
-														<Form.Label>Course of study</Form.Label>
-														<Form.Control
-															placeholder={
-																userData !== null ? userData.course : ""
-															}
-															readOnly
-															onClick={onEdit}
-														/>
-													</Form.Group>
-													<Form.Group controlId="formYear">
-														<Form.Label>Year of study</Form.Label>
-														<Form.Control
-															placeholder={
-																userData !== null ? userData.year : ""
-															}
-															readOnly
-															onClick={onEdit}
-														/>
-													</Form.Group>
-													<Button variant="primary" type="submit">
-														Edit profile
-													</Button>
-												</Form>
-											</Card.Body>
-										</Card>
+													)}
+													Additional Information
+												</Card.Header>
+												<Card.Body>
+													Verification status:{" "}
+													<span style={{ fontWeight: 600 }}>
+														{userVerified ? "Verified" : "Unverified"}
+													</span>
+													{!userVerified && (
+														<div
+															style={{
+																textDecoration: "underline",
+																color: "#193f76",
+															}}
+															onClick={() => console.log("zech")}
+														>
+															Click here to resend a verification email
+														</div>
+													)}
+												</Card.Body>
+											</Card>
+										</>
 									)}
 								</Tab.Pane>
 								<Tab.Pane eventKey="second">
