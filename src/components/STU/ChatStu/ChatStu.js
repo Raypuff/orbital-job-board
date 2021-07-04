@@ -14,6 +14,7 @@ const ChatStu = () => {
 	const [currentMessages, setCurrentMessages] = useState([]); //currentMessages store all messages of current chat
 	const [loadingChats, setLoadingChats] = useState(true);
 	const [mobileViewMessages, setMobileViewMessages] = useState(false);
+	const [search, setSearch] = useState("");
 	const { width } = useWindowDimensions();
 	const newMessageRef = useRef();
 	const messageBottomRef = useRef();
@@ -62,7 +63,7 @@ const ChatStu = () => {
 			process.env.REACT_APP_BACKEND_URL + "/chats/messages/" + currentChat
 		);
 		const messages = await messagesData.json();
-		var processedMessages = messages;
+		var processedMessages = [...messages];
 		processedMessages.forEach((msg) => {
 			msg.date = new Date(msg.date);
 		});
@@ -73,7 +74,7 @@ const ChatStu = () => {
 				msg.position = "left";
 			}
 		});
-		if (currentMessages !== processedMessages) {
+		if (true) {
 			setCurrentMessages(processedMessages);
 			scrollToBottom();
 		}
@@ -145,21 +146,23 @@ const ChatStu = () => {
 								size="sm"
 								placeholder="Search..."
 								className={styles.searchbar}
+								onChange={(e) => setSearch(e.target.value)}
 							/>
 						</div>
 
 						<Card className={styles.chatContainer}>
 							<ChatList
 								className="chat-list"
-								dataSource={chats.sort(
-									(chat1, chat2) => chat2.date - chat1.date
-								)}
+								dataSource={chats
+									.sort((chat1, chat2) => chat2.date - chat1.date)
+									.filter((chat) =>
+										chat.title.toLowerCase().includes(search.toLowerCase())
+									)}
 								onClick={(chat) => {
 									setCurrentChat(chat.id);
 									if (width < 992) {
 										setMobileViewMessages(true);
 									}
-									// scrollToBottom();
 								}}
 							/>
 						</Card>
@@ -260,3 +263,11 @@ function useWindowDimensions() {
 
 	return windowDimensions;
 }
+
+// function arrayEquals(a, b) {
+// 	return (
+// 		a.length === b.length
+// 		&&
+// 		a.every((val, index) => JSON.stringify(val) === JSON.stringify(b[index]))
+// 	);
+// }
