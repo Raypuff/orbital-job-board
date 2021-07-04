@@ -9,14 +9,12 @@ import { useJob } from "../../../contexts/JobContext";
 
 const AllJobs = () => {
   const [filterState, setFilterState] = useState({});
-  const { getAllJobs } = useJob();
+  const { getAllJobs, jobLoading } = useJob();
 
   const [jobs, setJobs] = useState([]);
-  const [jobLoading, setJobLoading] = useState(true);
 
   useEffect(() => {
     getAllJobs(setJobs);
-    setJobLoading(false);
   }, []);
 
   if (jobLoading) {
