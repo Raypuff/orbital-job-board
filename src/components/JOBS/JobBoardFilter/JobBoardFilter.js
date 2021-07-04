@@ -54,6 +54,7 @@ const JobBoardFilter = ({
 							>
 								<Form.Check
 									type="radio"
+									disabled={true}
 									label="Nearest distance"
 									name="sort"
 									value="nearestDistance"
