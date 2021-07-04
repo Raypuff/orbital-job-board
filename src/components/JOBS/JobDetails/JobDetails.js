@@ -34,7 +34,25 @@ const JobDetails = ({ id }) => {
 	const [loadingChatButton, setLoadingChatButton] = useState(true);
 	const [buttonMakesNewChat, setButtonMakesNewChat] = useState(false);
 	const history = useHistory();
-	const [chatAlreadyExists, setAlreadyExists] = useState(false);
+	const [myLng, setMyLng] = useState();
+	const [myLat, setMyLat] = useState();
+
+	useEffect(() => {
+		getLocation();
+	}, []);
+
+	const getLocation = async () => {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition((position) => {
+				setMyLng(position.coords.longitude);
+				setMyLat(position.coords.latitude);
+			});
+		} else {
+			setMyLng(false);
+			setMyLat(false);
+		}
+		console.log(`This is my lat: ${myLat} and this is my lng: ${myLng}`);
+	};
 
 	useEffect(() => {
 		const getData = async () => {
@@ -170,10 +188,16 @@ const JobDetails = ({ id }) => {
 		datePosted,
 		removalReason,
 		applicants,
+		lat,
+		lng,
 	} = job;
 	const orgType = org.type;
 	const orgName = org.name;
 	const orgUen = org.uen;
+
+	if (platform === "Physical" && !multiLocation) {
+		getLocation();
+	}
 
 	// For display diff displayStates
 	//0: Signed out -> Apply button
@@ -419,9 +443,11 @@ const JobDetails = ({ id }) => {
 												<h7>Postal code: </h7>
 												<h7>{`S(${postalCode}) `}</h7>
 												<h7>
-													{platform !== "Physical" || multiLocation === true
-														? ""
-														: `<Calculate distance from ${postalCode}`}
+													{platform === "Physical" &&
+														!multiLocation &&
+														myLat &&
+														myLng &&
+														`<Calculate distance from ${myLat}, ${myLng} to ${lat}, ${lng}>`}
 													<br />
 												</h7>
 											</div>

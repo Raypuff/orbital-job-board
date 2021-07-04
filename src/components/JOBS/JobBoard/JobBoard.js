@@ -14,9 +14,27 @@ const JobBoard = () => {
 	const [jobs, setJobs] = useState([]);
 	const [filteredJobs, setFilteredJobs] = useState([]);
 	const [jobLoading, setJobLoading] = useState(true);
-	// const [setupLoading, setSetupLoading] = useState(true);
-	// const [filteredJobsLength, setFilteredJobsLength] = useState(0);
 	const [activePage, setActivePage] = useState(1);
+	const [myLng, setMyLng] = useState();
+	const [myLat, setMyLat] = useState();
+
+	useEffect(() => {
+		getLocation();
+	}, []);
+
+	const getLocation = async () => {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition((position) => {
+				setMyLng(position.coords.longitude);
+				setMyLat(position.coords.latitude);
+			});
+		} else {
+			setMyLng(false);
+			setMyLat(false);
+		}
+		console.log(`This is my lat: ${myLat} and this is my lng: ${myLng}`);
+	};
+	getLocation();
 
 	const getJobs = async () => {
 		const response = await fetch(process.env.REACT_APP_BACKEND_URL + "/jobs");
@@ -211,6 +229,10 @@ const JobBoard = () => {
 										pocEmail={job.pocEmail}
 										dateCreated={job.dateCreated}
 										datePosted={job.datePosted}
+										lat={job.lat}
+										lng={job.lng}
+										myLat={myLat}
+										myLng={myLng}
 									/>
 								);
 							})}
