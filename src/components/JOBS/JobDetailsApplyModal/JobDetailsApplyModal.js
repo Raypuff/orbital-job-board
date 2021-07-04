@@ -396,10 +396,15 @@ const UnverifiedModal = ({ show, onHide }) => {
 				<Modal.Title>Please verify your account</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-				<h5>
+				<h5 className="text-center mb-4">
 					To apply for volunteer jobs, please verify your account by clicking
 					the link in your email first. Thank you!
 				</h5>
+				<p className="text-center">
+					Didn't receive a verification email? Proceed to{" "}
+					<Link to="/profile-student">your profile details </Link>
+					to resend a verification email!
+				</p>
 			</Modal.Body>
 			<Modal.Footer>
 				<Button onClick={onHide}>Close</Button>

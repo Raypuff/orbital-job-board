@@ -370,7 +370,7 @@ const JobDetails = ({ id }) => {
 										<hr className={styles.divider} />
 										{datePosted && (
 											<h7>
-												`Posted on: ${new Date(datePosted).toDateString()}`
+												{`Posted on: ${new Date(datePosted).toDateString()}`}
 												<br />
 											</h7>
 										)}
