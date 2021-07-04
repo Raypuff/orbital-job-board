@@ -7,15 +7,16 @@ export function useJob() {
 }
 
 export function JobProvider({ children }) {
-  const [getJobLoading, setGetJobLoading] = useState(false);
+  const [jobLoading, setJobLoading] = useState(false);
+  const [appLoading, setAppLoading] = useState(false);
 
   /**
-   * Used in AllJobs.js component and JobBoard.js component
+   * Used in AllJobs.js component
    * @param {useState function} setJobs
    * @returns {null}
    */
   async function getAllJobs(setJobs) {
-    setGetJobLoading(true);
+    setJobLoading(true);
     try {
       const response = await fetch(
         process.env.REACT_APP_BACKEND_URL + "/jobs/"
@@ -25,7 +26,21 @@ export function JobProvider({ children }) {
     } catch (err) {
       console.error(err);
     }
-    setGetJobLoading(false);
+    setJobLoading(false);
+  }
+
+  async function getAllApprovedJobs(setJobs) {
+    setJobLoading(true);
+    try {
+      const response = await fetch(
+        process.env.REACT_APP_BACKEND_URL + "/jobs/"
+      );
+      const jsonData = await response.json();
+      setJobs(jsonData.filter((job) => job.status === "Approved"));
+    } catch (err) {
+      console.error(err);
+    }
+    setJobLoading(false);
   }
 
   /**
@@ -34,7 +49,7 @@ export function JobProvider({ children }) {
    * @param {Object storing information of current user} currentUser
    */
   async function getYourJobs(setJobs, currentUser) {
-    setGetJobLoading(true);
+    setJobLoading(true);
     try {
       const response = await fetch(
         process.env.REACT_APP_BACKEND_URL +
@@ -46,7 +61,23 @@ export function JobProvider({ children }) {
     } catch (err) {
       console.error(err);
     }
-    setGetJobLoading(false);
+    setJobLoading(false);
+  }
+
+  async function getYourApps(setApps, currentUser) {
+    setAppLoading(true);
+    try {
+      const response = await fetch(
+        process.env.REACT_APP_BACKEND_URL +
+          "/job-applications/student/" +
+          currentUser.email
+      );
+      const jsonData = await response.json();
+      setApps(jsonData);
+    } catch (err) {
+      console.error(err);
+    }
+    setAppLoading(false);
   }
 
   /**
@@ -81,9 +112,12 @@ export function JobProvider({ children }) {
 
   const value = {
     getAllJobs,
+    getAllApprovedJobs,
     PostAJob,
     getYourJobs,
-    getJobLoading,
+    getYourApps,
+    jobLoading,
+    appLoading,
   };
 
   return <JobContext.Provider value={value}>{children}</JobContext.Provider>;

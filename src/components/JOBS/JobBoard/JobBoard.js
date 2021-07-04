@@ -6,9 +6,10 @@ import styles from "./JobBoard.module.css";
 import { BeneficiaryTags, SkillTags } from "../../../assets/Tags";
 import { Formik } from "formik";
 import { LoadingJobs, NoJobs, FilterNoJobs } from "./EmptyStates";
+
+import { useJob } from "../../../contexts/JobContext";
 // import { useStore } from "../../../contexts/StoreContext";
 // import { getDefaultNormalizer } from "@testing-library/dom";
-import { useJob } from "../../../contexts/JobContext";
 
 const JobBoard = () => {
   const [filterState, setFilterState] = useState({});
@@ -18,7 +19,7 @@ const JobBoard = () => {
   const [myLng, setMyLng] = useState();
   const [myLat, setMyLat] = useState();
 
-  const { getAllJobs, getJobLoading } = useJob();
+  const { getAllApprovedJobs, jobLoading } = useJob();
 
   useEffect(() => {
     getLocation();
@@ -37,11 +38,6 @@ const JobBoard = () => {
     console.log(`This is my lat: ${myLat} and this is my lng: ${myLng}`);
   };
   getLocation();
-
-  useEffect(() => {
-    getAllJobs(setJobs);
-    setJobs(jobs.filter((job) => job.status === "Approved"));
-  }, []);
 
   const filterJobs = () => {
     if (jobs !== null) {
@@ -110,10 +106,14 @@ const JobBoard = () => {
   };
 
   useEffect(() => {
+    getAllApprovedJobs(setJobs);
+  }, []);
+
+  useEffect(() => {
     filterJobs();
   }, [filterState]);
 
-  if (getJobLoading) {
+  if (jobLoading) {
     return <LoadingJobs />;
   } else if (jobs.length < 1) {
     return <NoJobs />;

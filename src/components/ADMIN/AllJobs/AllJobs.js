@@ -9,7 +9,7 @@ import { useJob } from "../../../contexts/JobContext";
 
 const AllJobs = () => {
   const [filterState, setFilterState] = useState({});
-  const { getAllJobs, getJobLoading } = useJob();
+  const { getAllJobs, jobLoading } = useJob();
 
   const [jobs, setJobs] = useState([]);
 
@@ -17,7 +17,7 @@ const AllJobs = () => {
     getAllJobs(setJobs);
   }, []);
 
-  if (getJobLoading) {
+  if (jobLoading) {
     return <LoadingAllJobs />;
   } else if (jobs.length < 1) {
     return <NoAllJobs />;
