@@ -1,11 +1,17 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useAuth } from "../../../contexts/AuthContext";
 import { Card, Button, Form, Alert } from "react-bootstrap";
+import { ArrowLeft } from "react-bootstrap-icons";
 import styles from "./EditProfileStu.module.css";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
-const EditProfileStu = ({ setEdit }) => {
+const EditProfileStu = ({
+	setEdit,
+	mobileActiveView,
+	setMobileActiveView,
+	width,
+}) => {
 	const [leftButton, setLeftButton] = useState("Cancel");
 	const [leftButtonVar, setLeftButtonVar] = useState("light");
 	const { currentUser } = useAuth();
@@ -79,166 +85,173 @@ const EditProfileStu = ({ setEdit }) => {
 
 	return (
 		<>
-			<div className={styles.formBG}>
-				<div className={styles.formContainer}>
-					<Card bg="light" text="dark">
-						<Card.Header as="h6">Edit your profile</Card.Header>
-						<Card.Body>
-							<Formik
-								enableReinitialize={true}
-								initialValues={{
-									name: userData !== null ? userData.name : "",
-									dob: userData !== null ? userData.dob : "",
-									contactNo: userData !== null ? userData.contactNo : "",
-									course: userData !== null ? userData.course : "",
-									year: userData !== null ? userData.year : "",
-								}}
-								validationSchema={validationSchema}
-								onSubmit={mySubmit}
-							>
-								{({
-									values,
-									touched,
-									errors,
-									handleChange,
-									handleBlur,
-									handleSubmit,
-									isSubmitting,
-								}) => (
-									<Form onSubmit={handleSubmit}>
-										<Form.Group controlId="formName">
-											<Form.Label>Name as in NRIC</Form.Label>{" "}
-											<Form.Control
-												name="name"
-												onChange={handleChange}
-												onBlur={handleBlur}
-												values={values.name}
-												isValid={touched.name && !errors.name}
-												isInvalid={touched.name && errors.name}
-												placeholder={values.name}
-											/>
-											<Form.Control.Feedback type="invalid">
-												{errors.name}
-											</Form.Control.Feedback>
-										</Form.Group>
-										<Form.Group controlId="formDob">
-											<Form.Label>Date of birth</Form.Label>
-											<Form.Control
-												name="dob"
-												onChange={handleChange}
-												onBlur={handleBlur}
-												values={values.dob}
-												isValid={touched.dob && !errors.dob}
-												isInvalid={touched.dob && errors.dob}
-												type="date"
-												placeholder={values.dob}
-											/>
-											<Form.Control.Feedback type="invalid">
-												{errors.dob}
-											</Form.Control.Feedback>
-										</Form.Group>
-										<Form.Group controlId="formEmail">
-											<Form.Label>Email address</Form.Label>
-											<Form.Control
-												placeholder={userData !== null ? userData.id : ""}
-												disabled
-											/>
-										</Form.Group>
-										<Form.Group controlId="formContactNo">
-											<Form.Label>Mobile number</Form.Label>
-											<Form.Control
-												name="contactNo"
-												onChange={handleChange}
-												onBlur={handleBlur}
-												values={values.contactNo}
-												isValid={touched.contactNo && !errors.contactNo}
-												isInvalid={touched.contactNo && errors.contactNo}
-												placeholder={values.contactNo}
-											/>
-											<Form.Control.Feedback type="invalid">
-												{errors.contactNo}
-											</Form.Control.Feedback>
-										</Form.Group>
-										<Form.Group controlId="formCourse">
-											<Form.Label>Course of study</Form.Label>
-											<Form.Control
-												name="course"
-												onChange={handleChange}
-												onBlur={handleBlur}
-												values={values.course}
-												isValid={touched.course && !errors.course}
-												isInvalid={touched.course && errors.course}
-												placeholder={values.course}
-											/>
-											<Form.Control.Feedback type="invalid">
-												{errors.course}
-											</Form.Control.Feedback>
-										</Form.Group>
-										<Form.Group controlId="formYear">
-											<Form.Label>Year of study</Form.Label>
-											<Form.Control
-												name="year"
-												onChange={handleChange}
-												onBlur={handleBlur}
-												values={values.year}
-												isValid={touched.year && !errors.year}
-												isInvalid={touched.year && errors.year}
-												as="select"
-												placeholder={values.year}
-											>
-												<option disabled selected value=""></option>
-												<option>Year 1</option>
-												<option>Year 2</option>
-												<option>Year 3</option>
-												<option>Year 4</option>
-												<option>Year 5</option>
-												<option>Alumni</option>
-											</Form.Control>
-											<Form.Control.Feedback type="invalid">
-												{errors.year}
-											</Form.Control.Feedback>
-										</Form.Group>
-										<div className={styles.buttonContainer}>
-											<div>
-												<Button
-													variant={leftButtonVar}
-													onClick={(event) => setEdit(false)}
-												>
-													{leftButton}
-												</Button>
-											</div>
-											<div className={styles.rightButton}>
-												<Button
-													disabled={isSubmitting || successful}
-													variant="primary"
-													type="submit"
-												>
-													Submit
-												</Button>
-											</div>
-										</div>
+			<Card bg="light" text="dark">
+				<Card.Header
+					as="h5"
+					className="d-flex align-items-center
+"
+				>
+					{mobileActiveView && width < 576 && (
+						<ArrowLeft
+							style={{ marginRight: "1rem" }}
+							onClick={() => setMobileActiveView(false)}
+						/>
+					)}
+					Edit profile
+				</Card.Header>
+				<Card.Body>
+					<Formik
+						enableReinitialize={true}
+						initialValues={{
+							name: userData !== null ? userData.name : "",
+							dob: userData !== null ? userData.dob : "",
+							contactNo: userData !== null ? userData.contactNo : "",
+							course: userData !== null ? userData.course : "",
+							year: userData !== null ? userData.year : "",
+						}}
+						validationSchema={validationSchema}
+						onSubmit={mySubmit}
+					>
+						{({
+							values,
+							touched,
+							errors,
+							handleChange,
+							handleBlur,
+							handleSubmit,
+							isSubmitting,
+						}) => (
+							<Form onSubmit={handleSubmit}>
+								<Form.Group controlId="formName">
+									<Form.Label>Name as in NRIC</Form.Label>{" "}
+									<Form.Control
+										name="name"
+										onChange={handleChange}
+										onBlur={handleBlur}
+										values={values.name}
+										isValid={touched.name && !errors.name}
+										isInvalid={touched.name && errors.name}
+										placeholder={values.name}
+									/>
+									<Form.Control.Feedback type="invalid">
+										{errors.name}
+									</Form.Control.Feedback>
+								</Form.Group>
+								<Form.Group controlId="formDob">
+									<Form.Label>Date of birth</Form.Label>
+									<Form.Control
+										name="dob"
+										onChange={handleChange}
+										onBlur={handleBlur}
+										values={values.dob}
+										isValid={touched.dob && !errors.dob}
+										isInvalid={touched.dob && errors.dob}
+										type="date"
+										placeholder={values.dob}
+									/>
+									<Form.Control.Feedback type="invalid">
+										{errors.dob}
+									</Form.Control.Feedback>
+								</Form.Group>
+								<Form.Group controlId="formEmail">
+									<Form.Label>Email address</Form.Label>
+									<Form.Control
+										placeholder={userData !== null ? userData.id : ""}
+										disabled
+									/>
+								</Form.Group>
+								<Form.Group controlId="formContactNo">
+									<Form.Label>Mobile number</Form.Label>
+									<Form.Control
+										name="contactNo"
+										onChange={handleChange}
+										onBlur={handleBlur}
+										values={values.contactNo}
+										isValid={touched.contactNo && !errors.contactNo}
+										isInvalid={touched.contactNo && errors.contactNo}
+										placeholder={values.contactNo}
+									/>
+									<Form.Control.Feedback type="invalid">
+										{errors.contactNo}
+									</Form.Control.Feedback>
+								</Form.Group>
+								<Form.Group controlId="formCourse">
+									<Form.Label>Course of study</Form.Label>
+									<Form.Control
+										name="course"
+										onChange={handleChange}
+										onBlur={handleBlur}
+										values={values.course}
+										isValid={touched.course && !errors.course}
+										isInvalid={touched.course && errors.course}
+										placeholder={values.course}
+									/>
+									<Form.Control.Feedback type="invalid">
+										{errors.course}
+									</Form.Control.Feedback>
+								</Form.Group>
+								<Form.Group controlId="formYear">
+									<Form.Label>Year of study</Form.Label>
+									<Form.Control
+										name="year"
+										onChange={handleChange}
+										onBlur={handleBlur}
+										values={values.year}
+										isValid={touched.year && !errors.year}
+										isInvalid={touched.year && errors.year}
+										as="select"
+										placeholder={values.year}
+									>
+										<option disabled selected value=""></option>
+										<option>Year 1</option>
+										<option>Year 2</option>
+										<option>Year 3</option>
+										<option>Year 4</option>
+										<option>Year 5</option>
+										<option>Alumni</option>
+									</Form.Control>
+									<Form.Control.Feedback type="invalid">
+										{errors.year}
+									</Form.Control.Feedback>
+								</Form.Group>
+								<div className={styles.buttonContainer}>
+									<div>
+										<Button
+											variant={leftButtonVar}
+											onClick={(event) => setEdit(false)}
+										>
+											{leftButton}
+										</Button>
+									</div>
+									<div className={styles.rightButton}>
+										<Button
+											disabled={isSubmitting || successful}
+											variant="primary"
+											type="submit"
+										>
+											Submit
+										</Button>
+									</div>
+								</div>
 
-										<Card.Text />
+								<Card.Text />
 
-										{error ? (
-											<Alert variant="danger">{error}</Alert>
-										) : isSubmitting ? (
-											<Alert variant="primary">Updating your profile...</Alert>
-										) : successful ? (
-											<Alert variant="success">{message}</Alert>
-										) : (
-											<Alert variant="warning">
-												You can leave the fields you do not want to edit as
-												blank
-											</Alert>
-										)}
-									</Form>
+								{error ? (
+									<Alert variant="danger">{error}</Alert>
+								) : isSubmitting ? (
+									<Alert variant="primary">Updating your profile...</Alert>
+								) : successful ? (
+									<Alert variant="success">{message}</Alert>
+								) : (
+									<Alert variant="warning">
+										You can leave the fields you do not want to edit as blank
+									</Alert>
 								)}
-							</Formik>
-						</Card.Body>
-					</Card>
-				</div>
-			</div>
+							</Form>
+						)}
+					</Formik>
+				</Card.Body>
+			</Card>
 		</>
 	);
 };
