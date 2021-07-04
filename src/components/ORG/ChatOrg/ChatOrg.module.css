@@ -1,12 +1,12 @@
 .container {
 	max-width: 75rem;
 	margin: 0 auto;
-	padding: 0.5rem 1rem;
+	padding: 2rem 1rem;
 	height: calc(100vh - 156px);
 }
 
 .chatCol {
-	height: calc(100vh - 253px);
+	height: calc(100vh - 301px);
 	padding-right: 0;
 }
 
@@ -26,18 +26,18 @@
 }
 
 .messageCol {
-	height: calc(100vh - 253px);
+	height: calc(100vh - 301px);
 	padding-left: 0;
 }
 
 @media screen and (max-width: 992px) {
 	.container {
 		height: calc(100vh - 4.0625rem);
-		padding: 0 1rem;
+		padding: 1rem;
 	}
 	.chatCol {
 		padding-right: 15px;
-		height: calc(100vh - 8.625rem);
+		height: calc(100vh - 10.625rem);
 	}
 	.messageCol {
 		display: none;
@@ -46,7 +46,7 @@
 		display: none;
 	}
 	.messageColMobile {
-		height: calc(100vh - 8.625rem);
+		height: calc(100vh - 10.625rem);
 	}
 }
 

@@ -34,7 +34,25 @@ const JobDetails = ({ id }) => {
 	const [loadingChatButton, setLoadingChatButton] = useState(true);
 	const [buttonMakesNewChat, setButtonMakesNewChat] = useState(false);
 	const history = useHistory();
-	const [chatAlreadyExists, setAlreadyExists] = useState(false);
+	const [myLng, setMyLng] = useState();
+	const [myLat, setMyLat] = useState();
+
+	useEffect(() => {
+		getLocation();
+	}, []);
+
+	const getLocation = async () => {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition((position) => {
+				setMyLng(position.coords.longitude);
+				setMyLat(position.coords.latitude);
+			});
+		} else {
+			setMyLng(false);
+			setMyLat(false);
+		}
+		console.log(`This is my lat: ${myLat} and this is my lng: ${myLng}`);
+	};
 
 	useEffect(() => {
 		const getData = async () => {
@@ -170,10 +188,16 @@ const JobDetails = ({ id }) => {
 		datePosted,
 		removalReason,
 		applicants,
+		lat,
+		lng,
 	} = job;
 	const orgType = org.type;
 	const orgName = org.name;
 	const orgUen = org.uen;
+
+	if (platform === "Physical" && !multiLocation) {
+		getLocation();
+	}
 
 	// For display diff displayStates
 	//0: Signed out -> Apply button
@@ -344,10 +368,13 @@ const JobDetails = ({ id }) => {
 									<div className={styles.detailContainer}>
 										<h4>{title}</h4>
 										<hr className={styles.divider} />
-										<h7>
-											{`Posted on: ${new Date(datePosted).toDateString()}`}
-											<br />
-										</h7>
+										{datePosted && (
+											<h7>
+												`Posted on: ${new Date(datePosted).toDateString()}`
+												<br />
+											</h7>
+										)}
+
 										<h7>
 											{noClosingDate
 												? "No closing date for applications"
@@ -419,9 +446,13 @@ const JobDetails = ({ id }) => {
 												<h7>Postal code: </h7>
 												<h7>{`S(${postalCode}) `}</h7>
 												<h7>
-													{platform !== "Physical" || multiLocation === true
-														? ""
-														: `<Calculate distance from ${postalCode}`}
+													{platform === "Physical" &&
+														!multiLocation &&
+														myLat &&
+														myLng &&
+														`${distance(myLat, myLng, lat, lng).toFixed(
+															2
+														)}km away`}
 													<br />
 												</h7>
 											</div>
@@ -725,4 +756,15 @@ function tConvert(time) {
 		time[0] = +time[0] % 12 || 12; // Adjust hours
 	}
 	return time.join(""); // return adjusted time or original string
+}
+
+function distance(lat1, lon1, lat2, lon2) {
+	var p = 0.017453292519943295; // Math.PI / 180
+	var c = Math.cos;
+	var a =
+		0.5 -
+		c((lat2 - lat1) * p) / 2 +
+		(c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p))) / 2;
+
+	return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
 }

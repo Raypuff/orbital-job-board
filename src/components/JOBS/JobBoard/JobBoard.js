@@ -14,9 +14,27 @@ const JobBoard = () => {
 	const [jobs, setJobs] = useState([]);
 	const [filteredJobs, setFilteredJobs] = useState([]);
 	const [jobLoading, setJobLoading] = useState(true);
-	// const [setupLoading, setSetupLoading] = useState(true);
-	// const [filteredJobsLength, setFilteredJobsLength] = useState(0);
 	const [activePage, setActivePage] = useState(1);
+	const [myLng, setMyLng] = useState();
+	const [myLat, setMyLat] = useState();
+
+	useEffect(() => {
+		getLocation();
+	}, []);
+
+	const getLocation = async () => {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition((position) => {
+				setMyLng(position.coords.longitude);
+				setMyLat(position.coords.latitude);
+			});
+		} else {
+			setMyLng(false);
+			setMyLat(false);
+		}
+		console.log(`This is my lat: ${myLat} and this is my lng: ${myLng}`);
+	};
+	getLocation();
 
 	const getJobs = async () => {
 		const response = await fetch(process.env.REACT_APP_BACKEND_URL + "/jobs");
@@ -211,6 +229,10 @@ const JobBoard = () => {
 										pocEmail={job.pocEmail}
 										dateCreated={job.dateCreated}
 										datePosted={job.datePosted}
+										lat={job.lat}
+										lng={job.lng}
+										myLat={myLat}
+										myLng={myLng}
 									/>
 								);
 							})}
@@ -229,20 +251,13 @@ const JobBoard = () => {
 
 export default JobBoard;
 
-// function getMyLocation() {
-//   if (navigator.geolocation) {
-//     navigator.geolocation.getCurrentPosition(success);
-//   } else {
-//     alert("Geolocation not supported");
-//   }
-// }
+function distance(lat1, lon1, lat2, lon2) {
+	var p = 0.017453292519943295; // Math.PI / 180
+	var c = Math.cos;
+	var a =
+		0.5 -
+		c((lat2 - lat1) * p) / 2 +
+		(c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p))) / 2;
 
-// function success(pos) {
-//   var crd = pos.coords;
-//   console.log("Your current position is:");
-//   console.log(`Latitude : ${crd.latitude}`);
-//   console.log(`Longitude: ${crd.longitude}`);
-//   console.log(`More or less ${crd.accuracy} meters.`);
-//   myLat = crd.latitude
-//   myLong = crd.longitude
-// }
+	return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
+}

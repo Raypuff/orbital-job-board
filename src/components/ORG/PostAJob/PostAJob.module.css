@@ -1,12 +1,10 @@
 .formContainer {
 	min-height: calc(100vh - 610px);
-	display: flex;
-	justify-content: center;
-}
-
-.formBox {
-	margin: 3vmax 0;
-	width: 75em;
+	/* display: flex;
+	justify-content: center; */
+	max-width: 75em;
+	margin: 0 auto;
+	padding: 2rem 1rem;
 }
 
 @media (max-width: 1234px) {
