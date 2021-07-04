@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../../contexts/AuthContext";
 import { Card, Button, Form, Alert } from "react-bootstrap";
+import { ArrowLeft } from "react-bootstrap-icons";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import styles from "./EditProfileOrg.module.css";
 
-const EditProfileOrg = ({ setEdit }) => {
+const EditProfileOrg = ({
+	setEdit,
+	mobileActiveView,
+	setMobileActiveView,
+	width,
+}) => {
 	const [leftButton, setLeftButton] = useState("Cancel");
 	const [leftButtonVar, setLeftButtonVar] = useState("light");
 	const { currentUser } = useAuth();
@@ -83,193 +89,196 @@ const EditProfileOrg = ({ setEdit }) => {
 
 	return (
 		<>
-			<div className={styles.formBG}>
-				<div className={styles.formContainer}>
-					<Card bg="light" text="dark">
-						<Card.Header as="h6">Edit your organization profile</Card.Header>
-						<Card.Body>
-							<Formik
-								enableReinitialize
-								initialValues={{
-									type: userData !== null ? userData.type : "",
-									name: userData !== null ? userData.name : "",
-									uen: userData !== null ? userData.uen : "",
-									pocName: userData !== null ? userData.pocName : "",
-									pocNo: userData !== null ? userData.pocNo : "",
-									pocEmail: userData !== null ? userData.pocEmail : "",
-								}}
-								validationSchema={validationSchema}
-								onSubmit={mySubmit}
-							>
-								{({
-									values,
-									touched,
-									errors,
-									handleChange,
-									handleBlur,
-									handleSubmit,
-									isSubmitting,
-								}) => (
-									<Form onSubmit={handleSubmit}>
-										<Form.Group controlId="formOrgType">
-											<Form.Label>Organization type</Form.Label>
-											<Form.Control
-												name="type"
-												onChange={handleChange}
-												onBlur={handleBlur}
-												values={values.type}
-												isValid={touched.type && !errors.type}
-												isInvalid={touched.type && errors.type}
-												as="select"
-												placeholder={values.type}
-											>
-												<option disabled selected value=""></option>
-												<option>NUS Organization</option>
-												<option>Non-NUS Organization</option>
-											</Form.Control>
-											<Form.Control.Feedback type="invalid">
-												{errors.type}
-											</Form.Control.Feedback>
-										</Form.Group>
-										<Form.Group controlId="formOrgName">
-											<Form.Label>Organization name</Form.Label>
-											<Form.Control
-												name="name"
-												onChange={handleChange}
-												onBlur={handleBlur}
-												values={values.name}
-												isValid={touched.name && !errors.name}
-												isInvalid={touched.name && errors.name}
-												placeholder={values.name}
-											/>
-											<Form.Control.Feedback type="invalid">
-												{errors.name}
-											</Form.Control.Feedback>
-										</Form.Group>
-										<div
-											className={
-												values.type === "Non-NUS Organization"
-													? styles.display
-													: styles.displayNone
-											}
+			<Card bg="light" text="dark">
+				<Card.Header as="h5" className="d-flex align-items-center">
+					{mobileActiveView && width < 576 && (
+						<ArrowLeft
+							style={{ marginRight: "1rem" }}
+							onClick={() => setMobileActiveView(false)}
+						/>
+					)}
+					Edit organization profile
+				</Card.Header>
+				<Card.Body>
+					<Formik
+						enableReinitialize
+						initialValues={{
+							type: userData !== null ? userData.type : "",
+							name: userData !== null ? userData.name : "",
+							uen: userData !== null ? userData.uen : "",
+							pocName: userData !== null ? userData.pocName : "",
+							pocNo: userData !== null ? userData.pocNo : "",
+							pocEmail: userData !== null ? userData.pocEmail : "",
+						}}
+						validationSchema={validationSchema}
+						onSubmit={mySubmit}
+					>
+						{({
+							values,
+							touched,
+							errors,
+							handleChange,
+							handleBlur,
+							handleSubmit,
+							isSubmitting,
+						}) => (
+							<Form onSubmit={handleSubmit}>
+								<Form.Group controlId="formOrgType">
+									<Form.Label>Organization type</Form.Label>
+									<Form.Control
+										name="type"
+										onChange={handleChange}
+										onBlur={handleBlur}
+										values={values.type}
+										isValid={touched.type && !errors.type}
+										isInvalid={touched.type && errors.type}
+										as="select"
+										placeholder={values.type}
+									>
+										<option disabled selected value=""></option>
+										<option>NUS Organization</option>
+										<option>Non-NUS Organization</option>
+									</Form.Control>
+									<Form.Control.Feedback type="invalid">
+										{errors.type}
+									</Form.Control.Feedback>
+								</Form.Group>
+								<Form.Group controlId="formOrgName">
+									<Form.Label>Organization name</Form.Label>
+									<Form.Control
+										name="name"
+										onChange={handleChange}
+										onBlur={handleBlur}
+										values={values.name}
+										isValid={touched.name && !errors.name}
+										isInvalid={touched.name && errors.name}
+										placeholder={values.name}
+									/>
+									<Form.Control.Feedback type="invalid">
+										{errors.name}
+									</Form.Control.Feedback>
+								</Form.Group>
+								<div
+									className={
+										values.type === "Non-NUS Organization"
+											? styles.display
+											: styles.displayNone
+									}
+								>
+									<Form.Group controlId="formuen">
+										<Form.Label>
+											Organization UEN, Charity registration number or Society
+											registration number
+											<Form.Text className="text-muted">
+												Only applicable for Non-NUS Organizations
+											</Form.Text>
+										</Form.Label>
+
+										<Form.Control
+											name="uen"
+											onChange={handleChange}
+											onBlur={handleBlur}
+											values={values.uen}
+											isValid={touched.uen && !errors.uen}
+											isInvalid={touched.uen && errors.uen}
+											disabled={values.type === "NUS Organization"}
+											placeholder={values.uen}
+										/>
+										<Form.Control.Feedback type="invalid">
+											{errors.uen}
+										</Form.Control.Feedback>
+									</Form.Group>
+								</div>
+
+								<Form.Group controlId="formEmail">
+									<Form.Label>Email address of organization</Form.Label>
+									<Form.Control
+										placeholder={userData !== null ? userData.id : ""}
+										disabled
+									/>
+								</Form.Group>
+								<Form.Group controlId="formPocName">
+									<Form.Label>Name of contact person</Form.Label>
+									<Form.Control
+										name="pocName"
+										onChange={handleChange}
+										onBlur={handleBlur}
+										values={values.pocName}
+										isValid={touched.pocName && !errors.pocName}
+										isInvalid={touched.pocName && errors.pocName}
+										placeholder={values.pocName}
+									/>
+									<Form.Control.Feedback type="invalid">
+										{errors.pocName}
+									</Form.Control.Feedback>
+								</Form.Group>
+								<Form.Group controlId="formPocNum">
+									<Form.Label>Mobile number of contact person</Form.Label>
+									<Form.Control
+										name="pocNo"
+										onChange={handleChange}
+										onBlur={handleBlur}
+										values={values.pocNo}
+										isValid={touched.pocNo && !errors.pocNo}
+										isInvalid={touched.pocNo && errors.pocNo}
+										placeholder={values.pocNo}
+									/>
+									<Form.Control.Feedback type="invalid">
+										{errors.pocNo}
+									</Form.Control.Feedback>
+								</Form.Group>
+								<Form.Group controlId="formPocEmail">
+									<Form.Label>Email address of contact person</Form.Label>
+									<Form.Control
+										name="pocEmail"
+										onChange={handleChange}
+										onBlur={handleBlur}
+										values={values.pocEmail}
+										isValid={touched.pocEmail && !errors.pocEmail}
+										isInvalid={touched.pocEmail && errors.pocEmail}
+										placeholder={values.pocEmail}
+									/>
+									<Form.Control.Feedback type="invalid">
+										{errors.pocEmail}
+									</Form.Control.Feedback>
+								</Form.Group>
+
+								<div className={styles.buttonContainer}>
+									<div>
+										<Button
+											variant={leftButtonVar}
+											onClick={(event) => setEdit(false)}
 										>
-											<Form.Group controlId="formuen">
-												<Form.Label>
-													Organization UEN, Charity registration number or
-													Society registration number
-													<Form.Text className="text-muted">
-														Only applicable for Non-NUS Organizations
-													</Form.Text>
-												</Form.Label>
-
-												<Form.Control
-													name="uen"
-													onChange={handleChange}
-													onBlur={handleBlur}
-													values={values.uen}
-													isValid={touched.uen && !errors.uen}
-													isInvalid={touched.uen && errors.uen}
-													disabled={values.type === "NUS Organization"}
-													placeholder={values.uen}
-												/>
-												<Form.Control.Feedback type="invalid">
-													{errors.uen}
-												</Form.Control.Feedback>
-											</Form.Group>
-										</div>
-
-										<Form.Group controlId="formEmail">
-											<Form.Label>Email address of organization</Form.Label>
-											<Form.Control
-												placeholder={userData !== null ? userData.id : ""}
-												disabled
-											/>
-										</Form.Group>
-										<Form.Group controlId="formPocName">
-											<Form.Label>Name of contact person</Form.Label>
-											<Form.Control
-												name="pocName"
-												onChange={handleChange}
-												onBlur={handleBlur}
-												values={values.pocName}
-												isValid={touched.pocName && !errors.pocName}
-												isInvalid={touched.pocName && errors.pocName}
-												placeholder={values.pocName}
-											/>
-											<Form.Control.Feedback type="invalid">
-												{errors.pocName}
-											</Form.Control.Feedback>
-										</Form.Group>
-										<Form.Group controlId="formPocNum">
-											<Form.Label>Mobile number of contact person</Form.Label>
-											<Form.Control
-												name="pocNo"
-												onChange={handleChange}
-												onBlur={handleBlur}
-												values={values.pocNo}
-												isValid={touched.pocNo && !errors.pocNo}
-												isInvalid={touched.pocNo && errors.pocNo}
-												placeholder={values.pocNo}
-											/>
-											<Form.Control.Feedback type="invalid">
-												{errors.pocNo}
-											</Form.Control.Feedback>
-										</Form.Group>
-										<Form.Group controlId="formPocEmail">
-											<Form.Label>Email address of contact person</Form.Label>
-											<Form.Control
-												name="pocEmail"
-												onChange={handleChange}
-												onBlur={handleBlur}
-												values={values.pocEmail}
-												isValid={touched.pocEmail && !errors.pocEmail}
-												isInvalid={touched.pocEmail && errors.pocEmail}
-												placeholder={values.pocEmail}
-											/>
-											<Form.Control.Feedback type="invalid">
-												{errors.pocEmail}
-											</Form.Control.Feedback>
-										</Form.Group>
-
-										<div className={styles.buttonContainer}>
-											<div>
-												<Button
-													variant={leftButtonVar}
-													onClick={(event) => setEdit(false)}
-												>
-													{leftButton}
-												</Button>
-											</div>
-											<div className={styles.rightButton}>
-												<Button
-													disabled={isSubmitting || successful}
-													variant="primary"
-													type="submit"
-												>
-													Submit
-												</Button>
-											</div>
-										</div>
-										<Card.Text />
-										{error ? (
-											<Alert variant="danger">{error}</Alert>
-										) : isSubmitting ? (
-											<Alert variant="primary">Updating your profile...</Alert>
-										) : successful ? (
-											<Alert variant="success">{message}</Alert>
-										) : (
-											<Alert variant="warning">
-												You can leave the fields you do not want to edit as
-												blank
-											</Alert>
-										)}
-									</Form>
+											{leftButton}
+										</Button>
+									</div>
+									<div className={styles.rightButton}>
+										<Button
+											disabled={isSubmitting || successful}
+											variant="primary"
+											type="submit"
+										>
+											Submit
+										</Button>
+									</div>
+								</div>
+								<Card.Text />
+								{error ? (
+									<Alert variant="danger">{error}</Alert>
+								) : isSubmitting ? (
+									<Alert variant="primary">Updating your profile...</Alert>
+								) : successful ? (
+									<Alert variant="success">{message}</Alert>
+								) : (
+									<Alert variant="warning">
+										You can leave the fields you do not want to edit as blank
+									</Alert>
 								)}
-							</Formik>
-						</Card.Body>
-					</Card>
-				</div>
-			</div>
+							</Form>
+						)}
+					</Formik>
+				</Card.Body>
+			</Card>
 		</>
 	);
 };

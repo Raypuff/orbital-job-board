@@ -20,12 +20,15 @@ import {
 	PersonFill,
 	BriefcaseFill,
 	ChatSquareDotsFill,
+	BoxArrowRight,
+	DoorOpenFill,
 } from "react-bootstrap-icons";
 
 const SignedInStuNavbar = () => {
 	const [error, setError] = useState("");
 	const { currentUser, logout } = useAuth();
 	const [showGettingStarted, setShowGettingStarted] = useState(false);
+	const [showSignOut, setShowSignOut] = useState(false);
 	const history = useHistory();
 	const { width } = useWindowDimensions();
 	//page functionality
@@ -61,7 +64,6 @@ const SignedInStuNavbar = () => {
 		try {
 			await logout();
 			history.push("/");
-			alert("Signed out successfully");
 		} catch {
 			setError("Failed to log out");
 			console.log(error);
@@ -110,42 +112,24 @@ const SignedInStuNavbar = () => {
 				</OverlayTrigger>
 			</Nav>
 			<Nav>
-				<NavDropdown
-					as={NavLink}
-					exact
-					to="/profile-student"
-					title={
-						<OverlayTrigger placement="bottom" overlay={renderProfileTooltip}>
-							<span>
-								<PersonFill
-									style={{
-										fontSize: "1.3rem",
-										marginBottom: "0.2rem",
-									}}
-								/>
-								{width < 576 && (
-									<span style={{ marginLeft: "0.4rem" }}>Profile</span>
-								)}
-							</span>
-						</OverlayTrigger>
-					}
-					id="collasible-nav-dropdown"
-					alignRight
-					className={styles.dropdown}
-					activeClassName={styles.activeNavLink}
-				>
-					<NavDropdown.Header className={styles.email}>
-						{currentUser.email}
-						<br />({isVerified()})
-						<br />
-						<br /> Account Type: Student
-					</NavDropdown.Header>
-					<NavDropdown.Divider />
-					<NavDropdown.Item as={Link} to="/profile-student">
-						Your profile
-					</NavDropdown.Item>
-					<NavDropdown.Item onClick={handleLogout}>Sign out</NavDropdown.Item>
-				</NavDropdown>
+				<OverlayTrigger placement="bottom" overlay={renderProfileTooltip}>
+					<Nav.Link
+						as={NavLink}
+						exact
+						to="/profile-student"
+						activeClassName={styles.activeNavLink}
+					>
+						<PersonFill
+							style={{
+								fontSize: "1.3rem",
+								marginBottom: "0.2rem",
+							}}
+						/>
+						{width < 576 && (
+							<span style={{ marginLeft: "0.4rem" }}>Profile</span>
+						)}
+					</Nav.Link>
+				</OverlayTrigger>
 			</Nav>
 			<Nav>
 				<OverlayTrigger placement="bottom" overlay={renderYourAppsTooltip}>
@@ -167,6 +151,22 @@ const SignedInStuNavbar = () => {
 					</Nav.Link>
 				</OverlayTrigger>
 			</Nav>
+			<Nav>
+				<OverlayTrigger placement="bottom" overlay={renderSignOutTooltip}>
+					<Nav.Link onClick={() => setShowSignOut(true)}>
+						<DoorOpenFill
+							style={{
+								fontSize: "1.2rem",
+								marginBottom: "0.2rem",
+							}}
+						/>
+						{width < 576 && (
+							<span style={{ marginLeft: "0.4rem" }}>Sign Out</span>
+						)}
+					</Nav.Link>
+				</OverlayTrigger>
+			</Nav>
+
 			<Modal
 				show={showGettingStarted}
 				onHide={() => setShowGettingStarted(false)}
@@ -274,6 +274,23 @@ const SignedInStuNavbar = () => {
 					</div>
 				</Modal.Footer>
 			</Modal>
+			<Modal
+				show={showSignOut}
+				onHide={() => setShowSignOut(false)}
+				size="md"
+				aria-labelledby="contained-modal-title-vcenter"
+				centered
+			>
+				<Modal.Header closeButton>
+					<Modal.Title>Are you sure you want to sign out?</Modal.Title>
+				</Modal.Header>
+				<Modal.Body className="d-flex flex-column justify-content-center align-items-center">
+					We hope to see you again soon!
+					<Button variant="danger" onClick={handleLogout} className="mt-3">
+						Sign out
+					</Button>
+				</Modal.Body>
+			</Modal>
 		</>
 	);
 };
@@ -326,5 +343,11 @@ const renderProfileTooltip = (props) => (
 const renderYourAppsTooltip = (props) => (
 	<Tooltip id="your-applications-tooltip" {...props}>
 		Your Applications
+	</Tooltip>
+);
+
+const renderSignOutTooltip = (props) => (
+	<Tooltip id="sign-out-tooltip" {...props}>
+		Sign Out
 	</Tooltip>
 );
