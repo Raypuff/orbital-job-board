@@ -42,6 +42,12 @@ const JobBoardCard = ({
 	pocName,
 	pocNo,
 	pocEmail,
+	dateCreated,
+	datePosted,
+	lat,
+	lng,
+	myLat,
+	myLng,
 }) => {
 	const [orgName, setOrgName] = useState("Loading...");
 
@@ -59,23 +65,6 @@ const JobBoardCard = ({
 		getOrg();
 	}, []);
 
-	//!!!using api to find long lang of postal code (maybe can shift this to postajob so long lang attached to job)
-
-	// const [coord, setCoord] = useState([]);
-
-	// useEffect(() => {
-	//   requestCoord();
-	// }, [postalCode]);
-
-	// async function requestCoord() {
-	//   const res = await fetch(`https://geocode.xyz/${postalCode}?json=1`);
-	//   const json = await res.json();
-	//   setCoord([json.latt, json.longt]); //doesn't work because they have a limit on requests
-	//   console.log(`${location}: ${coord}`);
-	// }
-
-	//!!!using browser capability to get long lang of user
-	//!!! use openrouteservice to get the MATRIX distance using long lang of both user and location
 	return (
 		<div className={styles.cardContainer}>
 			<Card>
@@ -205,19 +194,19 @@ const JobBoardCard = ({
 									</div>
 								</div>
 								<div className={styles.infoWrapper}>
-									<div
-										className={
-											platform === "Virtual" || multiLocation === true
-												? styles.distanceContainerNone
-												: styles.distanceContainer
-										}
-									>
-										<GeoFill />
-										<div
-											data-testid="distance"
-											className={styles.infoContainer}
-										>{`${postalCode}m away`}</div>
-									</div>
+									{platform === "Physical" && !multiLocation && myLat && myLng && (
+										<div className={styles.distanceContainer}>
+											<GeoFill />
+											<div
+												data-testid="distance"
+												className={styles.infoContainer}
+											>
+												{`${distance(myLat, myLng, lat, lng).toFixed(
+													2
+												)}km away`}
+											</div>
+										</div>
+									)}
 								</div>
 							</div>
 							{/* Long term or Ad hoc*/}
@@ -302,4 +291,15 @@ function tConvert(time) {
 		time[0] = +time[0] % 12 || 12; // Adjust hours
 	}
 	return time.join(""); // return adjusted time or original string
+}
+
+function distance(lat1, lon1, lat2, lon2) {
+	var p = 0.017453292519943295; // Math.PI / 180
+	var c = Math.cos;
+	var a =
+		0.5 -
+		c((lat2 - lat1) * p) / 2 +
+		(c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p))) / 2;
+
+	return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
 }
