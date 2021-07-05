@@ -29,6 +29,12 @@ export function JobProvider({ children }) {
     setJobLoading(false);
   }
 
+  /**
+   * Used in JobBoard.js component
+   * @param {useState function} setJobs
+   * @returns {null}
+   */
+
   async function getAllApprovedJobs(setJobs) {
     setJobLoading(true);
     try {
@@ -65,7 +71,7 @@ export function JobProvider({ children }) {
   }
 
   async function getYourApps(setApps, currentUser) {
-    setAppLoading(true);
+    setJobLoading(true);
     try {
       const response = await fetch(
         process.env.REACT_APP_BACKEND_URL +
@@ -77,7 +83,7 @@ export function JobProvider({ children }) {
     } catch (err) {
       console.error(err);
     }
-    setAppLoading(false);
+    setJobLoading(false);
   }
 
   /**
