@@ -7,6 +7,8 @@ import {
 	Pagination,
 	Tooltip,
 	OverlayTrigger,
+	Toast,
+	Badge,
 } from "react-bootstrap";
 import { NavLink, Link, useHistory } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
@@ -20,9 +22,10 @@ import {
 	PersonFill,
 	BriefcaseFill,
 	ChatSquareDotsFill,
-	BoxArrowRight,
 	DoorOpenFill,
+	BellFill,
 } from "react-bootstrap-icons";
+import ReactTimeAgo from "react-time-ago";
 
 const SignedInStuNavbar = () => {
 	const [error, setError] = useState("");
@@ -31,6 +34,8 @@ const SignedInStuNavbar = () => {
 	const [showSignOut, setShowSignOut] = useState(false);
 	const history = useHistory();
 	const { width } = useWindowDimensions();
+	const [notifications, setNotifications] = useState(dummyNotifications);
+
 	//page functionality
 	const [activePage, setActivePage] = useState(1);
 	const numberOfPages = 4;
@@ -94,6 +99,98 @@ const SignedInStuNavbar = () => {
 				</OverlayTrigger>
 			</Nav>
 			<Nav>
+				<NavDropdown
+					title={
+						<OverlayTrigger
+							placement="bottom"
+							overlay={renderNotificationsTooltip}
+						>
+							<span>
+								{width >= 576 && notifications && notifications.length > 0 && (
+									<span className={styles.badge}>
+										<Badge
+											variant="danger"
+											style={{ borderRadius: "100%", fontSize: "0.55rem" }}
+										>
+											{notifications.length}
+										</Badge>
+									</span>
+								)}
+								<BellFill
+									style={{
+										fontSize: "1.2rem",
+										marginBottom: "0.2rem",
+									}}
+								/>
+								{width < 576 && (
+									<>
+										<span style={{ marginLeft: "0.4rem" }}>Notifications</span>
+										<span className={styles.mobileBadge}>
+											<Badge
+												variant="danger"
+												style={{ borderRadius: "100%", fontSize: "0.55rem" }}
+											>
+												{notifications.length}
+											</Badge>
+										</span>
+									</>
+								)}
+							</span>
+						</OverlayTrigger>
+					}
+					id="collasible-nav-dropdown"
+					alignRight
+				>
+					{notifications && notifications.length > 0 ? (
+						<>
+							<NavDropdown.Header
+								className={styles.clearNotifs}
+								onClick={() => {
+									console.log("Clear all notifications");
+									setNotifications([]);
+								}}
+							>
+								Clear all notifications
+							</NavDropdown.Header>
+							{notifications.map((notif) => {
+								return (
+									<Toast
+										style={{
+											minWidth: "20rem",
+											marginBottom: "0.25rem",
+										}}
+										onClose={() => {
+											console.log("change notif.dismissed to true");
+										}}
+									>
+										<Toast.Header>
+											<strong className="mr-auto">{notif.header}</strong>
+											<small>
+												<ReactTimeAgo
+													date={new Date(notif.dateTime)}
+													locale="en-GB"
+												/>
+											</small>
+										</Toast.Header>
+										<Toast.Body>{notif.message}</Toast.Body>
+									</Toast>
+								);
+							})}
+						</>
+					) : (
+						<NavDropdown.Header
+							style={{
+								display: "flex",
+								justifyContent: "center",
+								minWidth: "20rem",
+							}}
+						>
+							You have no notifications
+						</NavDropdown.Header>
+					)}
+				</NavDropdown>
+			</Nav>
+			<Nav>
 				<OverlayTrigger placement="bottom" overlay={renderChatTooltip}>
 					<Nav.Link
 						as={NavLink}
@@ -107,7 +204,9 @@ const SignedInStuNavbar = () => {
 								marginBottom: "0.2rem",
 							}}
 						/>
-						{width < 576 && <span style={{ marginLeft: "0.4rem" }}>Chat</span>}
+						{width < 576 && (
+							<span style={{ marginLeft: "0.4rem" }}>Your Chats</span>
+						)}
 					</Nav.Link>
 				</OverlayTrigger>
 			</Nav>
@@ -126,7 +225,7 @@ const SignedInStuNavbar = () => {
 							}}
 						/>
 						{width < 576 && (
-							<span style={{ marginLeft: "0.4rem" }}>Profile</span>
+							<span style={{ marginLeft: "0.4rem" }}>Your Profile</span>
 						)}
 					</Nav.Link>
 				</OverlayTrigger>
@@ -328,6 +427,12 @@ const renderGettingStartedTooltip = (props) => (
 	</Tooltip>
 );
 
+const renderNotificationsTooltip = (props) => (
+	<Tooltip id="notifications-tooltip" {...props}>
+		Notifications
+	</Tooltip>
+);
+
 const renderChatTooltip = (props) => (
 	<Tooltip id="chat-tooltip" {...props}>
 		Your Chats
@@ -351,3 +456,23 @@ const renderSignOutTooltip = (props) => (
 		Sign Out
 	</Tooltip>
 );
+
+const dummyNotifications = [
+	{
+		id: "123",
+		receiverID: "raynerljm@gmail.com",
+		header: "New applicant",
+		message:
+			"You have a new applicant (Loh Jia Ming, Rayner) for your job (Code in the Community Run 2)",
+		dateTime: "Thu, 03 Jul 2021 03:52:01 GMT",
+		dismissed: false,
+	},
+	{
+		id: "124",
+		receiverID: "raynerljm@gmail.com",
+		header: "Approved job",
+		message: "Your job (Code in the Community Run 3) has been approved",
+		dateTime: "Thu, 01 Jul 2021 03:52:01 GMT",
+		dismissed: false,
+	},
+];

@@ -211,7 +211,9 @@ const SignedInOrgNavbar = () => {
 								marginBottom: "0.2rem",
 							}}
 						/>
-						{width < 576 && <span style={{ marginLeft: "0.4rem" }}>Chat</span>}
+						{width < 576 && (
+							<span style={{ marginLeft: "0.4rem" }}>Your Chats</span>
+						)}
 					</Nav.Link>
 				</OverlayTrigger>
 			</Nav>
@@ -230,7 +232,7 @@ const SignedInOrgNavbar = () => {
 							}}
 						/>
 						{width < 576 && (
-							<span style={{ marginLeft: "0.4rem" }}>Profile</span>
+							<span style={{ marginLeft: "0.4rem" }}>Your Profile</span>
 						)}
 					</Nav.Link>
 				</OverlayTrigger>
