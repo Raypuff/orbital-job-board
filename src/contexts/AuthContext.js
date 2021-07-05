@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { auth } from "../firebase";
 import { store } from "../firebase";
+import { authObject } from "../firebase";
 
 const AuthContext = React.createContext();
 
@@ -70,6 +71,24 @@ export function AuthProvider({ children }) {
     });
   }
 
+  async function reauthenticate(oldPassword) {
+    const credential = authObject.EmailAuthProvider.credential(
+      currentUser.email,
+      oldPassword
+    );
+    await auth.currentUser
+      .reauthenticateWithCredential(credential)
+      .catch((error) => {
+        throw new Error("auth/wrong-password");
+      });
+  }
+
+  async function changePassword(newPassword) {
+    await currentUser.updatePassword(newPassword).catch((error) => {
+      throw new Error("internal-error");
+    });
+  }
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user !== null) {
@@ -92,6 +111,8 @@ export function AuthProvider({ children }) {
     logout,
     resetPassword,
     sendEmailVerification,
+    reauthenticate,
+    changePassword,
   };
   return (
     <AuthContext.Provider value={value}>
