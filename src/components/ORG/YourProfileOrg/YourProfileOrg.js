@@ -1,5 +1,5 @@
 import EditProfileOrg from "../EditProfileOrg";
-import { Card, Form, Button, Tab, Nav, Row, Col } from "react-bootstrap";
+import { Card, Form, Button, Tab, Nav, Row, Col, Alert } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { ArrowLeft, EyeFill, EyeSlashFill } from "react-bootstrap-icons";
 import styles from "./YourProfileOrg.module.css";
@@ -48,6 +48,7 @@ const YourProfileOrg = () => {
 
       try {
         await reauthenticate(values.passwordOld);
+
         await changePassword(values.passwordNew);
         setSuccessPassword("Password changed successfully!");
         resetForm();
@@ -120,7 +121,9 @@ const YourProfileOrg = () => {
                       >
                         {mobileActiveView && width < 576 && (
                           <ArrowLeft
-                            style={{ marginRight: "1rem" }}
+                            style={{
+                              marginRight: "1rem",
+                            }}
                             onClick={() => setMobileActiveView(false)}
                           />
                         )}
@@ -235,7 +238,9 @@ const YourProfileOrg = () => {
                       >
                         {mobileActiveView && width < 576 && (
                           <ArrowLeft
-                            style={{ marginRight: "1rem" }}
+                            style={{
+                              marginRight: "1rem",
+                            }}
                             onClick={() => setMobileActiveView(false)}
                           />
                         )}
@@ -369,6 +374,12 @@ const YourProfileOrg = () => {
                             </Form>
                           )}
                         </Formik>
+                        {errorPassword && (
+                          <>
+                            <Card.Text />
+                            <Alert variant="danger">{errorPassword}</Alert>
+                          </>
+                        )}
                       </Card.Body>
                     </Card>
                   </div>

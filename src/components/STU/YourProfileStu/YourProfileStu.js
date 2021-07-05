@@ -1,5 +1,5 @@
 import EditProfileStu from "../EditProfileStu";
-import { Card, Form, Button, Tab, Nav, Row, Col } from "react-bootstrap";
+import { Card, Form, Button, Tab, Nav, Row, Col, Alert } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import styles from "./YourProfileStu.module.css";
 import { useAuth } from "../../../contexts/AuthContext";
@@ -135,7 +135,9 @@ const YourProfileStu = () => {
                       >
                         {mobileActiveView && width < 576 && (
                           <ArrowLeft
-                            style={{ marginRight: "1rem" }}
+                            style={{
+                              marginRight: "1rem",
+                            }}
                             onClick={() => setMobileActiveView(false)}
                           />
                         )}
@@ -218,7 +220,9 @@ const YourProfileStu = () => {
                       >
                         {mobileActiveView && width < 576 && (
                           <ArrowLeft
-                            style={{ marginRight: "1rem" }}
+                            style={{
+                              marginRight: "1rem",
+                            }}
                             onClick={() => setMobileActiveView(false)}
                           />
                         )}
@@ -352,6 +356,12 @@ const YourProfileStu = () => {
                             </Form>
                           )}
                         </Formik>
+                        {errorPassword && (
+                          <>
+                            <Card.Text />
+                            <Alert variant="danger">{errorPassword}</Alert>
+                          </>
+                        )}
                       </Card.Body>
                     </Card>
                   </div>
@@ -366,7 +376,9 @@ const YourProfileStu = () => {
                       >
                         {mobileActiveView && width < 576 && (
                           <ArrowLeft
-                            style={{ marginRight: "1rem" }}
+                            style={{
+                              marginRight: "1rem",
+                            }}
                             onClick={() => setMobileActiveView(false)}
                           />
                         )}
