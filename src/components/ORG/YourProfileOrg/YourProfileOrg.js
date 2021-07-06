@@ -9,7 +9,8 @@ import { useAuth } from "../../../contexts/AuthContext";
 
 const YourProfileOrg = () => {
   const [edit, setEdit] = useState(false);
-  const { currentUser, changePassword, reauthenticate } = useAuth();
+  const { currentUser, changePassword, reauthenticate, userVerified } =
+    useAuth();
   const [userData, setUserData] = useState(null);
   const { width } = useWindowDimensions();
   const [mobileActiveView, setMobileActiveView] = useState(false);
@@ -114,119 +115,154 @@ const YourProfileOrg = () => {
                       width={width}
                     />
                   ) : (
-                    <Card bg="light" text="dark">
-                      <Card.Header
-                        as="h5"
-                        className="d-flex align-items-center"
-                      >
-                        {mobileActiveView && width < 576 && (
-                          <ArrowLeft
-                            style={{
-                              marginRight: "1rem",
-                            }}
-                            onClick={() => setMobileActiveView(false)}
-                          />
-                        )}
-                        Your organization profile
-                      </Card.Header>
-                      <Card.Body>
-                        <Form onSubmit={onEdit}>
-                          <Form.Group controlId="formType">
-                            <Form.Label>Organization type:</Form.Label>
-                            <Form.Control
-                              placeholder={
-                                userData !== null ? userData.type : ""
-                              }
-                              readOnly
-                              onClick={onEdit}
+                    <>
+                      <Card bg="light" text="dark">
+                        <Card.Header
+                          as="h5"
+                          className="d-flex align-items-center"
+                        >
+                          {mobileActiveView && width < 576 && (
+                            <ArrowLeft
+                              style={{
+                                marginRight: "1rem",
+                              }}
+                              onClick={() => setMobileActiveView(false)}
                             />
-                          </Form.Group>
-                          <Form.Group controlId="formName">
-                            <Form.Label>Organization name</Form.Label>
-                            <Form.Control
-                              placeholder={
-                                userData !== null ? userData.name : ""
-                              }
-                              readOnly
-                              onClick={onEdit}
-                            />
-                          </Form.Group>
-                          <div
-                            className={
-                              userData &&
-                              userData.type === "Non-NUS Organization"
-                                ? styles.display
-                                : styles.displayNone
-                            }
-                          >
-                            <Form.Group controlId="formUen">
-                              <Form.Label>
-                                Organization UEN, Charity registration number or
-                                Society registration number
-                                <Form.Text className="text-muted">
-                                  Only applicable for Non-NUS Organizations
-                                </Form.Text>
-                              </Form.Label>
+                          )}
+                          Your organization profile
+                        </Card.Header>
+                        <Card.Body>
+                          <Form onSubmit={onEdit}>
+                            <Form.Group controlId="formType">
+                              <Form.Label>Organization type:</Form.Label>
                               <Form.Control
                                 placeholder={
-                                  userData !== null ? userData.uen : ""
+                                  userData !== null ? userData.type : ""
                                 }
                                 readOnly
                                 onClick={onEdit}
                               />
                             </Form.Group>
-                          </div>
-                          <Form.Group controlId="formEmail">
-                            <Form.Label>
-                              Email address of organization
-                            </Form.Label>
-                            <Form.Control
-                              placeholder={userData !== null ? userData.id : ""}
-                              readOnly
-                              onClick={onEdit}
-                            />
-                          </Form.Group>
-                          <Form.Group controlId="formPocName">
-                            <Form.Label>Name of contact person</Form.Label>
-                            <Form.Control
-                              placeholder={
-                                userData !== null ? userData.pocName : ""
+                            <Form.Group controlId="formName">
+                              <Form.Label>Organization name</Form.Label>
+                              <Form.Control
+                                placeholder={
+                                  userData !== null ? userData.name : ""
+                                }
+                                readOnly
+                                onClick={onEdit}
+                              />
+                            </Form.Group>
+                            <div
+                              className={
+                                userData &&
+                                userData.type === "Non-NUS Organization"
+                                  ? styles.display
+                                  : styles.displayNone
                               }
-                              readOnly
-                              onClick={onEdit}
-                            />
-                          </Form.Group>
-                          <Form.Group controlId="formPocNo">
-                            <Form.Label>
-                              Mobile number of contact person
-                            </Form.Label>
-                            <Form.Control
-                              placeholder={
-                                userData !== null ? userData.pocNo : ""
-                              }
-                              readOnly
-                              onClick={onEdit}
-                            />
-                          </Form.Group>
-                          <Form.Group controlId="formPocEmail">
-                            <Form.Label>
-                              Email address of contact person
-                            </Form.Label>
-                            <Form.Control
-                              placeholder={
-                                userData !== null ? userData.pocEmail : ""
-                              }
-                              readOnly
-                              onClick={onEdit}
-                            />
-                          </Form.Group>
+                            >
+                              <Form.Group controlId="formUen">
+                                <Form.Label>
+                                  Organization UEN, Charity registration number
+                                  or Society registration number
+                                  <Form.Text className="text-muted">
+                                    Only applicable for Non-NUS Organizations
+                                  </Form.Text>
+                                </Form.Label>
+                                <Form.Control
+                                  placeholder={
+                                    userData !== null ? userData.uen : ""
+                                  }
+                                  readOnly
+                                  onClick={onEdit}
+                                />
+                              </Form.Group>
+                            </div>
+                            <Form.Group controlId="formEmail">
+                              <Form.Label>
+                                Email address of organization
+                              </Form.Label>
+                              <Form.Control
+                                placeholder={
+                                  userData !== null ? userData.id : ""
+                                }
+                                readOnly
+                                onClick={onEdit}
+                              />
+                            </Form.Group>
+                            <Form.Group controlId="formPocName">
+                              <Form.Label>Name of contact person</Form.Label>
+                              <Form.Control
+                                placeholder={
+                                  userData !== null ? userData.pocName : ""
+                                }
+                                readOnly
+                                onClick={onEdit}
+                              />
+                            </Form.Group>
+                            <Form.Group controlId="formPocNo">
+                              <Form.Label>
+                                Mobile number of contact person
+                              </Form.Label>
+                              <Form.Control
+                                placeholder={
+                                  userData !== null ? userData.pocNo : ""
+                                }
+                                readOnly
+                                onClick={onEdit}
+                              />
+                            </Form.Group>
+                            <Form.Group controlId="formPocEmail">
+                              <Form.Label>
+                                Email address of contact person
+                              </Form.Label>
+                              <Form.Control
+                                placeholder={
+                                  userData !== null ? userData.pocEmail : ""
+                                }
+                                readOnly
+                                onClick={onEdit}
+                              />
+                            </Form.Group>
 
-                          <Button variant="primary" type="submit">
-                            Edit profile
-                          </Button>
-                        </Form>
-                      </Card.Body>
-                    </Card>
+                            <Button variant="primary" type="submit">
+                              Edit profile
+                            </Button>
+                          </Form>
+                        </Card.Body>
+                      </Card>
+                      <Card className="mt-4">
+                        <Card.Header
+                          as="h5"
+                          className="d-flex align-items-center"
+                        >
+                          {mobileActiveView && width < 576 && (
+                            <ArrowLeft
+                              style={{ marginRight: "1rem" }}
+                              onClick={() => setMobileActiveView(false)}
+                            />
+                          )}
+                          Additional Information
+                        </Card.Header>
+                        <Card.Body>
+                          Verification status:{" "}
+                          <span style={{ fontWeight: 600 }}>
+                            {userVerified ? "Verified" : "Unverified"}
+                          </span>
+                          {!userVerified && (
+                            <div
+                              style={{
+                                textDecoration: "underline",
+                                color: "#193f76",
+                              }}
+                              onClick={() => console.log("zech")}
+                            >
+                              Click here to resend a verification email
+                            </div>
+                          )}
+                        </Card.Body>
+                      </Card>
+                    </>
                   )}
                 </Tab.Pane>
                 <Tab.Pane eventKey="second">

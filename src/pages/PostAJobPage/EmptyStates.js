@@ -13,8 +13,14 @@ export const NotVerifiedOrg = () => {
 				/>
 				<div className={styles.title}>
 					To post a job, please verify your account by clicking the link in your
-					email first. Thank you!{" "}
+					email first. Thank you!
+					<br />
+					Didn't receive a verification email? Proceed to your profile details
+					to resend a verification email!
 				</div>
+				<Link to="/profile-organization" className={styles.button}>
+					<div className={styles.buttonText}>Your Profile</div>
+				</Link>
 			</div>
 		</div>
 	);
