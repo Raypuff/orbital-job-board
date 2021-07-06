@@ -9,8 +9,13 @@ import { useAuth } from "../../../contexts/AuthContext";
 
 const YourProfileOrg = () => {
   const [edit, setEdit] = useState(false);
-  const { currentUser, changePassword, reauthenticate, userVerified } =
-    useAuth();
+  const {
+    currentUser,
+    changePassword,
+    reauthenticate,
+    userVerified,
+    sendEmailVerification,
+  } = useAuth();
   const [userData, setUserData] = useState(null);
   const { width } = useWindowDimensions();
   const [mobileActiveView, setMobileActiveView] = useState(false);
@@ -255,7 +260,10 @@ const YourProfileOrg = () => {
                                 textDecoration: "underline",
                                 color: "#193f76",
                               }}
-                              onClick={() => console.log("zech")}
+                              onClick={() => {
+                                sendEmailVerification();
+                                console.log("Email sent");
+                              }}
                             >
                               Click here to resend a verification email
                             </div>

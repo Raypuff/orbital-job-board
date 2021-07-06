@@ -60,7 +60,9 @@ export function AuthProvider({ children }) {
   }
 
   function sendEmailVerification() {
-    return auth.currentUser.sendEmailVerification();
+    return auth.currentUser.sendEmailVerification().catch((error) => {
+      throw new Error("auth/too-many-requests");
+    });
   }
 
   function getUserType(email) {
