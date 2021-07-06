@@ -22,6 +22,7 @@ import ChatOrgPage from "./pages/ChatOrgPage";
 import SignInAdminPage from "./pages/SignInAdminPage";
 import AllJobsPage from "./pages/AllJobsPage";
 // general pages
+import SignUpSuccessPage from "./pages/SignUpSuccessPage";
 import LandingPage from "./pages/LandingPage";
 import JobBoardPage from "./pages/JobBoardPage";
 import JobDetailsPage from "./pages/JobDetailsPage";
@@ -98,6 +99,9 @@ function App() {
               </Route>
               <Route path="/jobs">
                 <JobBoardPage />
+              </Route>
+              <Route path="/sign-up-success">
+                <SignUpSuccessPage />
               </Route>
               <Route path="/">
                 <LandingPage />
