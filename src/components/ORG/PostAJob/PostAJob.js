@@ -28,9 +28,9 @@ const PostAJob = () => {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   // Form useStates
+  const [loadingOrgDetails, setLoadingOrgDetails] = useState(true);
   const [canRetrieveOrgDetails, setCanRetrieveOrgDetails] = useState(false);
   const [canRetrievePocDetails, setCanRetrievePocDetails] = useState(false);
-  const [funToggle, setFunToggle] = useState(false);
 
   //finding currentUser that is logged in
   const { currentUser, userVerified } = useAuth();
@@ -66,6 +66,7 @@ const PostAJob = () => {
     if (pocName && pocNo && pocEmail) {
       setCanRetrievePocDetails(true);
     }
+    setLoadingOrgDetails(false);
   };
 
   useEffect(() => {
@@ -279,7 +280,7 @@ const PostAJob = () => {
                   </Accordion.Toggle>
                   <Accordion.Collapse eventKey="0">
                     <div className={styles.accordionBox}>
-                      {!canRetrieveOrgDetails && (
+                      {!loadingOrgDetails && !canRetrieveOrgDetails && (
                         <Alert variant="danger">
                           <Alert.Heading as="h6">
                             Missing organization details
@@ -360,13 +361,7 @@ const PostAJob = () => {
                         </Form.Control.Feedback>
                       </Form.Group>
                       <Form.Group controlId="formBeneficiary">
-                        <Form.Label>
-                          Target profile of beneficiary
-                          {/* <Form.Text className="text-muted">
-														Hold Ctrl (Windows) or CMD (Mac) to select multiple
-														options
-													</Form.Text> */}
-                        </Form.Label>
+                        <Form.Label>Target profile of beneficiary</Form.Label>
                         <Select
                           isMulti
                           name="beneficiaries"
@@ -378,7 +373,6 @@ const PostAJob = () => {
                             );
                           }}
                         />
-
                         {values.beneficiaries !== "untouched" ? (
                           values.beneficiaries.length === 0 ? (
                             <Form.Text className="text-danger">
@@ -390,41 +384,13 @@ const PostAJob = () => {
                         ) : (
                           ""
                         )}
-
-                        {/* <Form.Control
-													name="beneficiaries"
-													onChange={handleChange}
-													onBlur={handleBlur}
-													values={values.beneficiaries}
-													isValid={
-														touched.beneficiaries && !errors.beneficiaries
-													}
-													isInvalid={
-														touched.beneficiaries && errors.beneficiaries
-													}
-													as="select"
-													multiple
-												>
-													{BeneficiaryTags.map((beneficiary) => (
-														<option>{beneficiary}</option>
-													))}
-												</Form.Control>
-												<Form.Control.Feedback type="invalid">
-													{errors.beneficiaries}
-												</Form.Control.Feedback> */}
                         <Form.Text className="text-muted">
                           For 'Other', you can elaborate in the Additional
                           information section
                         </Form.Text>
                       </Form.Group>
                       <Form.Group controlId="formSkills">
-                        <Form.Label>
-                          Skills required
-                          {/* <Form.Text className="text-muted">
-														Hold Ctrl (Windows) or CMD (Mac) to select multiple
-														options
-													</Form.Text> */}
-                        </Form.Label>
+                        <Form.Label>Skills required</Form.Label>
                         <Select
                           isMulti
                           name="skills"
@@ -434,23 +400,6 @@ const PostAJob = () => {
                             values.skills = inputValue.map((e) => e.value);
                           }}
                         />
-                        {/* <Form.Control
-													name="skills"
-													onChange={handleChange}
-													onBlur={handleBlur}
-													values={values.skills}
-													isValid={touched.skills && !errors.skills}
-													isInvalid={touched.skills && errors.skills}
-													as="select"
-													multiple
-												>
-													{SkillTags.map((skill) => (
-														<option>{skill}</option>
-													))}
-												</Form.Control>
-												<Form.Control.Feedback type="invalid">
-													{errors.skills}
-												</Form.Control.Feedback> */}
                         {values.skills !== "untouched" ? (
                           values.skills.length === 0 ? (
                             <Form.Text className="text-danger">
@@ -921,7 +870,7 @@ const PostAJob = () => {
                           disabled={!canRetrievePocDetails}
                         />
                         <Form.Text>
-                          {!canRetrievePocDetails && (
+                          {!loadingOrgDetails && !canRetrievePocDetails && (
                             <Alert variant="warning">
                               You need to fill in your contact details on{" "}
                               <Link to="/profile-organization">
@@ -1024,7 +973,7 @@ const PostAJob = () => {
                 </Accordion>
               </Card>
               <Card.Text />
-              {!canRetrieveOrgDetails && (
+              {!loadingOrgDetails && !canRetrieveOrgDetails && (
                 <Alert variant="danger">
                   You need to{" "}
                   <Link to="/profile-organization">
