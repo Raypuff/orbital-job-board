@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import EditJobsModal from "./EditJobsModal";
+import ConfirmModal from "./ConfirmModal";
 import {
   Row,
   Col,
@@ -12,6 +13,7 @@ import {
   OverlayTrigger,
   Tooltip,
 } from "react-bootstrap";
+import { LoadingJob } from "./EmptyStates";
 import { PencilSquare } from "react-bootstrap-icons";
 import noImage from "../../../assets/noImage.png";
 import styles from "./EditJobs.module.css";
@@ -21,6 +23,7 @@ const EditJobs = ({ id }) => {
   const [loading, setLoading] = useState(true);
   const [imageSrc, setImageSrc] = useState("");
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [editMode, setEditMode] = useState("");
 
   const getData = async () => {
@@ -113,12 +116,15 @@ const EditJobs = ({ id }) => {
   );
 
   if (loading) {
-    return <div>loading</div>;
+    return <LoadingJob />;
   } else {
     return (
       <>
         <div className={styles.container}>
           <div className={styles.wrapper}>
+            <Alert variant="warning">
+              Your edits will not be saved untill you click "Confirm changes"
+            </Alert>
             <Row>
               <Col md={2}>
                 <div className={styles.imageCol}>
@@ -342,8 +348,7 @@ const EditJobs = ({ id }) => {
                   <div
                     className={styles.button}
                     onClick={() => {
-                      setEditMode("confirm");
-                      setShowEditModal(true);
+                      setShowConfirmModal(true);
                     }}
                   >
                     Confirm changes
@@ -357,10 +362,16 @@ const EditJobs = ({ id }) => {
         <EditJobsModal
           job={job}
           setJob={setJob}
+          setImageSrc={setImageSrc}
           tooltipDict={tooltipDict}
           editMode={editMode}
           show={showEditModal}
           onHide={() => setShowEditModal(false)}
+        />
+        <ConfirmModal
+          job={job}
+          show={showConfirmModal}
+          onHide={() => setShowConfirmModal(false)}
         />
       </>
     );

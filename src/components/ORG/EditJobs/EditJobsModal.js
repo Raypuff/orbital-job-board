@@ -11,6 +11,7 @@ import styles from "./EditJobsModal.module.css";
 const EditJobsModal = ({
   job,
   setJob,
+  setImageSrc,
   tooltipDict,
   editMode,
   show,
@@ -50,16 +51,70 @@ const EditJobsModal = ({
     var editedJob = job;
     if (editMode === "image") {
       editedJob.imageUrl = imageUrl;
+      setImageSrc(imageUrl);
     } else if (editMode === "title") {
       editedJob.title = values.title;
     } else if (editMode === "closingDate") {
+      editedJob.closingDate = values.closingDate;
+      editedJob.noClosingDate = values.noClosingDate;
     } else if (editMode === "beneficiaries") {
+      editedJob.beneficiaries = values.beneficiaries;
     } else if (editMode === "skills") {
+      editedJob.skills = values.skills;
     } else if (editMode === "purpose") {
+      editedJob.purpose = values.purpose;
     } else if (editMode === "location") {
+      editedJob.platform = values.platform;
+      editedJob.location = values.location;
+      editedJob.multiLocation = values.multiLocation;
+      editedJob.postalCode = values.postalCode;
     } else if (editMode === "commitment") {
+      editedJob.type = values.type;
+      editedJob.longStartDate = values.longStartDate;
+      editedJob.longEndDate = values.longEndDate;
+      editedJob.flexiDate = values.flexiDate;
+      editedJob.longHours = values.longHours;
+      editedJob.flexiHours = values.flexiHours;
+      editedJob.adShift = adShiftProcessor(
+        values.shiftNumber,
+        values.shift1Date,
+        values.shift1Start,
+        values.shift1End,
+        values.shift2Date,
+        values.shift2Start,
+        values.shift2End,
+        values.shift3Date,
+        values.shift3Start,
+        values.shift3End,
+        values.shift4Date,
+        values.shift4Start,
+        values.shift4End,
+        values.shift5Date,
+        values.shift5Start,
+        values.shift5End,
+        values.shift6Date,
+        values.shift6Start,
+        values.shift6End,
+        values.shift7Date,
+        values.shift7Start,
+        values.shift7End,
+        values.shift8Date,
+        values.shift8Start,
+        values.shift8End,
+        values.shift9Date,
+        values.shift9Start,
+        values.shift9End,
+        values.shift10Date,
+        values.shift10Start,
+        values.shift10End
+      );
+      editedJob.flexiShifts = values.flexiShifts;
     } else if (editMode === "addInfo") {
+      editedJob.addInfo = values.addInfo;
     } else if (editMode === "contact") {
+      editedJob.pocName = values.pocName;
+      editedJob.pocNo = values.pocNo;
+      editedJob.pocEmail = values.pocEmail;
     }
     setJob(editedJob);
     onHide();
@@ -72,8 +127,8 @@ const EditJobsModal = ({
           initialValues={{
             editMode: editMode,
             title: "",
-            beneficiaries: "untouched",
-            skills: "untouched",
+            beneficiaries: [],
+            skills: [],
             purpose: "",
             platform: "",
             multiLocation: false,
@@ -86,7 +141,7 @@ const EditJobsModal = ({
             flexiHours: false,
             longHours: "",
             flexiShifts: false,
-            shiftNumber: 1,
+            shiftNumber: 0,
             shift1Date: "",
             shift1Start: "",
             shift1End: "",
@@ -134,6 +189,7 @@ const EditJobsModal = ({
             handleChange,
             handleBlur,
             handleSubmit,
+            setFieldValue,
           }) => (
             <Form onSubmit={handleSubmit}>
               <Modal.Header closeButton>
@@ -694,11 +750,16 @@ const EditJobsModal = ({
                 ) : null}
               </Modal.Body>
               <Modal.Footer>
-                <Button type="submit">Edit</Button>
-                <Form.Text className="text-muted">
-                  Your changes will not be sent until you click "Confirm
-                  changes"
-                </Form.Text>
+                <Button
+                  disabled={
+                    values.editMode === "beneficiaries" &&
+                    values.beneficiaries.length === 0
+                  }
+                  type="submit"
+                  className="mx-auto"
+                >
+                  Edit
+                </Button>
               </Modal.Footer>
             </Form>
           )}
@@ -778,14 +839,14 @@ const validationSchema = Yup.object().shape({
       "Please indicate the purpose of the volunteer job"
     ),
   }),
-  beneficiaries: Yup.string().when("editMode", {
+  beneficiaries: Yup.array().when("editMode", {
     is: "beneficiaries",
     then: Yup.array("Please select at least one beneficiary")
       .of(Yup.string())
       .required("Please select at least one beneficiary"),
   }),
 
-  skills: Yup.string().when("editMode", {
+  skills: Yup.array().when("editMode", {
     is: "skills",
     then: Yup.array("Please select at least one skill")
       .of(Yup.string())
@@ -849,167 +910,376 @@ const validationSchema = Yup.object().shape({
       .required("Please indicate the number of hours to commit"),
   }),
   flexiShifts: Yup.bool(),
-  shiftNumber: Yup.number("Please only enter numbers"),
-  shift1Date: Yup.date().when(["shiftNumber", "editMode"], {
-    is: (shiftNumber, editMode) =>
-      editMode === "commitment" && shiftNumber >= 1,
-    then: Yup.date().required("Please indicate the date of the shift"),
-  }),
-  shift1Start: Yup.string().when(["shiftNumber", "editMode"], {
-    is: (shiftNumber, editMode) =>
-      editMode === "commitment" && shiftNumber >= 1,
-    then: Yup.string().required("Please indicate the start time of the shift"),
-  }),
+  shiftNumber: Yup.number("Please only enter numbers").when(
+    ["type", "flexiShifts", "editMode"],
+    {
+      is: (type, flexiShifts, editMode) =>
+        type === "Ad hoc" && !flexiShifts && editMode === "commitment",
+      then: Yup.number("Please only enter numbers").required(
+        "Please indicate the number of shifts"
+      ),
+    }
+  ),
+  shift1Date: Yup.date().when(
+    ["type", "shiftNumber", "flexiShifts", "editMode"],
+    {
+      is: (type, shiftNumber, flexiShifts, editMode) =>
+        type === "Ad hoc" &&
+        editMode === "commitment" &&
+        shiftNumber >= 1 &&
+        !flexiShifts,
+      then: Yup.date().required("Please indicate the date of the shift"),
+    }
+  ),
+  shift1Start: Yup.string().when(
+    ["type", "shiftNumber", "flexiShifts", "editMode"],
+    {
+      is: (type, shiftNumber, flexiShifts, editMode) =>
+        type === "Ad hoc" &&
+        editMode === "commitment" &&
+        shiftNumber >= 1 &&
+        !flexiShifts,
+      then: Yup.string().required(
+        "Please indicate the start time of the shift"
+      ),
+    }
+  ),
 
-  shift1End: Yup.string().when(["shiftNumber", "editMode"], {
-    is: (shiftNumber, editMode) =>
-      editMode === "commitment" && shiftNumber >= 1,
-    then: Yup.string().required("Please indicate the end time of the shift"),
-  }),
-  shift2Date: Yup.date().when(["shiftNumber", "editMode"], {
-    is: (shiftNumber, editMode) =>
-      editMode === "commitment" && shiftNumber >= 2,
-    then: Yup.date().required("Please indicate the date of the shift"),
-  }),
-  shift2Start: Yup.string().when(["shiftNumber", "editMode"], {
-    is: (shiftNumber, editMode) =>
-      editMode === "commitment" && shiftNumber >= 2,
-    then: Yup.string().required("Please indicate the start time of the shift"),
-  }),
+  shift1End: Yup.string().when(
+    ["type", "shiftNumber", "flexiShifts", "editMode"],
+    {
+      is: (type, shiftNumber, flexiShifts, editMode) =>
+        type === "Ad hoc" &&
+        editMode === "commitment" &&
+        shiftNumber >= 1 &&
+        !flexiShifts,
+      then: Yup.string().required("Please indicate the end time of the shift"),
+    }
+  ),
+  shift2Date: Yup.date().when(
+    ["type", "shiftNumber", "flexiShifts", "editMode"],
+    {
+      is: (type, shiftNumber, flexiShifts, editMode) =>
+        type === "Ad hoc" &&
+        editMode === "commitment" &&
+        shiftNumber >= 2 &&
+        !flexiShifts,
+      then: Yup.date().required("Please indicate the date of the shift"),
+    }
+  ),
+  shift2Start: Yup.string().when(
+    ["type", "shiftNumber", "flexiShifts", "editMode"],
+    {
+      is: (type, shiftNumber, flexiShifts, editMode) =>
+        type === "Ad hoc" &&
+        editMode === "commitment" &&
+        shiftNumber >= 2 &&
+        !flexiShifts,
+      then: Yup.string().required(
+        "Please indicate the start time of the shift"
+      ),
+    }
+  ),
 
-  shift2End: Yup.string().when(["shiftNumber", "editMode"], {
-    is: (shiftNumber, editMode) =>
-      editMode === "commitment" && shiftNumber >= 2,
-    then: Yup.string().required("Please indicate the end time of the shift"),
-  }),
-  shift3Date: Yup.date().when(["shiftNumber", "editMode"], {
-    is: (shiftNumber, editMode) =>
-      editMode === "commitment" && shiftNumber >= 3,
-    then: Yup.date().required("Please indicate the date of the shift"),
-  }),
-  shift3Start: Yup.string().when(["shiftNumber", "editMode"], {
-    is: (shiftNumber, editMode) =>
-      editMode === "commitment" && shiftNumber >= 3,
-    then: Yup.string().required("Please indicate the start time of the shift"),
-  }),
+  shift2End: Yup.string().when(
+    ["type", "shiftNumber", "flexiShifts", "editMode"],
+    {
+      is: (type, shiftNumber, flexiShifts, editMode) =>
+        type === "Ad hoc" &&
+        editMode === "commitment" &&
+        shiftNumber >= 2 &&
+        !flexiShifts,
+      then: Yup.string().required("Please indicate the end time of the shift"),
+    }
+  ),
+  shift3Date: Yup.date().when(
+    ["type", "shiftNumber", "flexiShifts", "editMode"],
+    {
+      is: (type, shiftNumber, flexiShifts, editMode) =>
+        type === "Ad hoc" &&
+        editMode === "commitment" &&
+        shiftNumber >= 3 &&
+        !flexiShifts,
+      then: Yup.date().required("Please indicate the date of the shift"),
+    }
+  ),
+  shift3Start: Yup.string().when(
+    ["type", "shiftNumber", "flexiShifts", "editMode"],
+    {
+      is: (type, shiftNumber, flexiShifts, editMode) =>
+        type === "Ad hoc" &&
+        editMode === "commitment" &&
+        shiftNumber >= 3 &&
+        !flexiShifts,
+      then: Yup.string().required(
+        "Please indicate the start time of the shift"
+      ),
+    }
+  ),
 
-  shift3End: Yup.string().when(["shiftNumber", "editMode"], {
-    is: (shiftNumber, editMode) =>
-      editMode === "commitment" && shiftNumber >= 3,
-    then: Yup.string().required("Please indicate the end time of the shift"),
-  }),
-  shift4Date: Yup.date().when(["shiftNumber", "editMode"], {
-    is: (shiftNumber, editMode) =>
-      editMode === "commitment" && shiftNumber >= 4,
-    then: Yup.date().required("Please indicate the date of the shift"),
-  }),
-  shift4Start: Yup.string().when(["shiftNumber", "editMode"], {
-    is: (shiftNumber, editMode) =>
-      editMode === "commitment" && shiftNumber >= 4,
-    then: Yup.string().required("Please indicate the start time of the shift"),
-  }),
+  shift3End: Yup.string().when(
+    ["type", "shiftNumber", "flexiShifts", "editMode"],
+    {
+      is: (type, shiftNumber, flexiShifts, editMode) =>
+        type === "Ad hoc" &&
+        editMode === "commitment" &&
+        shiftNumber >= 3 &&
+        !flexiShifts,
+      then: Yup.string().required("Please indicate the end time of the shift"),
+    }
+  ),
+  shift4Date: Yup.date().when(
+    ["type", "shiftNumber", "flexiShifts", "editMode"],
+    {
+      is: (type, shiftNumber, flexiShifts, editMode) =>
+        type === "Ad hoc" &&
+        editMode === "commitment" &&
+        shiftNumber >= 4 &&
+        !flexiShifts,
+      then: Yup.date().required("Please indicate the date of the shift"),
+    }
+  ),
+  shift4Start: Yup.string().when(
+    ["type", "shiftNumber", "flexiShifts", "editMode"],
+    {
+      is: (type, shiftNumber, flexiShifts, editMode) =>
+        type === "Ad hoc" &&
+        editMode === "commitment" &&
+        shiftNumber >= 4 &&
+        !flexiShifts,
+      then: Yup.string().required(
+        "Please indicate the start time of the shift"
+      ),
+    }
+  ),
 
-  shift4End: Yup.string().when(["shiftNumber", "editMode"], {
-    is: (shiftNumber, editMode) =>
-      editMode === "commitment" && shiftNumber >= 4,
-    then: Yup.string().required("Please indicate the end time of the shift"),
-  }),
-  shift5Date: Yup.date().when(["shiftNumber", "editMode"], {
-    is: (shiftNumber, editMode) =>
-      editMode === "commitment" && shiftNumber >= 5,
-    then: Yup.date().required("Please indicate the date of the shift"),
-  }),
-  shift5Start: Yup.string().when(["shiftNumber", "editMode"], {
-    is: (shiftNumber, editMode) =>
-      editMode === "commitment" && shiftNumber >= 5,
-    then: Yup.string().required("Please indicate the start time of the shift"),
-  }),
+  shift4End: Yup.string().when(
+    ["type", "shiftNumber", "flexiShifts", "editMode"],
+    {
+      is: (type, shiftNumber, flexiShifts, editMode) =>
+        type === "Ad hoc" &&
+        editMode === "commitment" &&
+        shiftNumber >= 4 &&
+        !flexiShifts,
+      then: Yup.string().required("Please indicate the end time of the shift"),
+    }
+  ),
+  shift5Date: Yup.date().when(
+    ["type", "shiftNumber", "flexiShifts", "editMode"],
+    {
+      is: (type, shiftNumber, flexiShifts, editMode) =>
+        type === "Ad hoc" &&
+        editMode === "commitment" &&
+        shiftNumber >= 5 &&
+        !flexiShifts,
+      then: Yup.date().required("Please indicate the date of the shift"),
+    }
+  ),
+  shift5Start: Yup.string().when(
+    ["type", "shiftNumber", "flexiShifts", "editMode"],
+    {
+      is: (type, shiftNumber, flexiShifts, editMode) =>
+        type === "Ad hoc" &&
+        editMode === "commitment" &&
+        shiftNumber >= 5 &&
+        !flexiShifts,
+      then: Yup.string().required(
+        "Please indicate the start time of the shift"
+      ),
+    }
+  ),
 
-  shift5End: Yup.string().when(["shiftNumber", "editMode"], {
-    is: (shiftNumber, editMode) =>
-      editMode === "commitment" && shiftNumber >= 5,
-    then: Yup.string().required("Please indicate the end time of the shift"),
-  }),
-  shift6Date: Yup.date().when(["shiftNumber", "editMode"], {
-    is: (shiftNumber, editMode) =>
-      editMode === "commitment" && shiftNumber >= 6,
-    then: Yup.date().required("Please indicate the date of the shift"),
-  }),
-  shift6Start: Yup.string().when(["shiftNumber", "editMode"], {
-    is: (shiftNumber, editMode) =>
-      editMode === "commitment" && shiftNumber >= 6,
-    then: Yup.string().required("Please indicate the start time of the shift"),
-  }),
+  shift5End: Yup.string().when(
+    ["type", "shiftNumber", "flexiShifts", "editMode"],
+    {
+      is: (type, shiftNumber, flexiShifts, editMode) =>
+        type === "Ad hoc" &&
+        editMode === "commitment" &&
+        shiftNumber >= 5 &&
+        !flexiShifts,
+      then: Yup.string().required("Please indicate the end time of the shift"),
+    }
+  ),
+  shift6Date: Yup.date().when(
+    ["type", "shiftNumber", "flexiShifts", "editMode"],
+    {
+      is: (type, shiftNumber, flexiShifts, editMode) =>
+        type === "Ad hoc" &&
+        editMode === "commitment" &&
+        shiftNumber >= 6 &&
+        !flexiShifts,
+      then: Yup.date().required("Please indicate the date of the shift"),
+    }
+  ),
+  shift6Start: Yup.string().when(
+    ["type", "shiftNumber", "flexiShifts", "editMode"],
+    {
+      is: (type, shiftNumber, flexiShifts, editMode) =>
+        type === "Ad hoc" &&
+        editMode === "commitment" &&
+        shiftNumber >= 6 &&
+        !flexiShifts,
+      then: Yup.string().required(
+        "Please indicate the start time of the shift"
+      ),
+    }
+  ),
 
-  shift6End: Yup.string().when(["shiftNumber", "editMode"], {
-    is: (shiftNumber, editMode) =>
-      editMode === "commitment" && shiftNumber >= 6,
-    then: Yup.string().required("Please indicate the end time of the shift"),
-  }),
-  shift7Date: Yup.date().when(["shiftNumber", "editMode"], {
-    is: (shiftNumber, editMode) =>
-      editMode === "commitment" && shiftNumber >= 7,
-    then: Yup.date().required("Please indicate the date of the shift"),
-  }),
-  shift7Start: Yup.string().when(["shiftNumber", "editMode"], {
-    is: (shiftNumber, editMode) =>
-      editMode === "commitment" && shiftNumber >= 7,
-    then: Yup.string().required("Please indicate the start time of the shift"),
-  }),
+  shift6End: Yup.string().when(
+    ["type", "shiftNumber", "flexiShifts", "editMode"],
+    {
+      is: (type, shiftNumber, flexiShifts, editMode) =>
+        type === "Ad hoc" &&
+        editMode === "commitment" &&
+        shiftNumber >= 6 &&
+        !flexiShifts,
+      then: Yup.string().required("Please indicate the end time of the shift"),
+    }
+  ),
+  shift7Date: Yup.date().when(
+    ["type", "shiftNumber", "flexiShifts", "editMode"],
+    {
+      is: (type, shiftNumber, flexiShifts, editMode) =>
+        type === "Ad hoc" &&
+        editMode === "commitment" &&
+        shiftNumber >= 7 &&
+        !flexiShifts,
+      then: Yup.date().required("Please indicate the date of the shift"),
+    }
+  ),
+  shift7Start: Yup.string().when(
+    ["type", "shiftNumber", "flexiShifts", "editMode"],
+    {
+      is: (type, shiftNumber, flexiShifts, editMode) =>
+        type === "Ad hoc" &&
+        editMode === "commitment" &&
+        shiftNumber >= 7 &&
+        !flexiShifts,
+      then: Yup.string().required(
+        "Please indicate the start time of the shift"
+      ),
+    }
+  ),
 
-  shift7End: Yup.string().when(["shiftNumber", "editMode"], {
-    is: (shiftNumber, editMode) =>
-      editMode === "commitment" && shiftNumber >= 7,
-    then: Yup.string().required("Please indicate the end time of the shift"),
-  }),
-  shift8Date: Yup.date().when(["shiftNumber", "editMode"], {
-    is: (shiftNumber, editMode) =>
-      editMode === "commitment" && shiftNumber >= 8,
-    then: Yup.date().required("Please indicate the date of the shift"),
-  }),
-  shift8Start: Yup.string().when(["shiftNumber", "editMode"], {
-    is: (shiftNumber, editMode) =>
-      editMode === "commitment" && shiftNumber >= 8,
-    then: Yup.string().required("Please indicate the start time of the shift"),
-  }),
+  shift7End: Yup.string().when(
+    ["type", "shiftNumber", "flexiShifts", "editMode"],
+    {
+      is: (type, shiftNumber, flexiShifts, editMode) =>
+        type === "Ad hoc" &&
+        editMode === "commitment" &&
+        shiftNumber >= 7 &&
+        !flexiShifts,
+      then: Yup.string().required("Please indicate the end time of the shift"),
+    }
+  ),
+  shift8Date: Yup.date().when(
+    ["type", "shiftNumber", "flexiShifts", "editMode"],
+    {
+      is: (type, shiftNumber, flexiShifts, editMode) =>
+        type === "Ad hoc" &&
+        editMode === "commitment" &&
+        shiftNumber >= 8 &&
+        !flexiShifts,
+      then: Yup.date().required("Please indicate the date of the shift"),
+    }
+  ),
+  shift8Start: Yup.string().when(
+    ["type", "shiftNumber", "flexiShifts", "editMode"],
+    {
+      is: (type, shiftNumber, flexiShifts, editMode) =>
+        type === "Ad hoc" &&
+        editMode === "commitment" &&
+        shiftNumber >= 8 &&
+        !flexiShifts,
+      then: Yup.string().required(
+        "Please indicate the start time of the shift"
+      ),
+    }
+  ),
 
-  shift8End: Yup.string().when(["shiftNumber", "editMode"], {
-    is: (shiftNumber, editMode) =>
-      editMode === "commitment" && shiftNumber >= 8,
-    then: Yup.string().required("Please indicate the end time of the shift"),
-  }),
-  shift9Date: Yup.date().when(["shiftNumber", "editMode"], {
-    is: (shiftNumber, editMode) =>
-      editMode === "commitment" && shiftNumber >= 9,
-    then: Yup.date().required("Please indicate the date of the shift"),
-  }),
-  shift9Start: Yup.string().when(["shiftNumber", "editMode"], {
-    is: (shiftNumber, editMode) =>
-      editMode === "commitment" && shiftNumber >= 9,
-    then: Yup.string().required("Please indicate the start time of the shift"),
-  }),
+  shift8End: Yup.string().when(
+    ["type", "shiftNumber", "flexiShifts", "editMode"],
+    {
+      is: (type, shiftNumber, flexiShifts, editMode) =>
+        type === "Ad hoc" &&
+        editMode === "commitment" &&
+        shiftNumber >= 8 &&
+        !flexiShifts,
+      then: Yup.string().required("Please indicate the end time of the shift"),
+    }
+  ),
+  shift9Date: Yup.date().when(
+    ["type", "shiftNumber", "flexiShifts", "editMode"],
+    {
+      is: (type, shiftNumber, flexiShifts, editMode) =>
+        type === "Ad hoc" &&
+        editMode === "commitment" &&
+        shiftNumber >= 9 &&
+        !flexiShifts,
+      then: Yup.date().required("Please indicate the date of the shift"),
+    }
+  ),
+  shift9Start: Yup.string().when(
+    ["type", "shiftNumber", "flexiShifts", "editMode"],
+    {
+      is: (type, shiftNumber, flexiShifts, editMode) =>
+        type === "Ad hoc" &&
+        editMode === "commitment" &&
+        shiftNumber >= 9 &&
+        !flexiShifts,
+      then: Yup.string().required(
+        "Please indicate the start time of the shift"
+      ),
+    }
+  ),
 
-  shift9End: Yup.string().when(["shiftNumber", "editMode"], {
-    is: (shiftNumber, editMode) =>
-      editMode === "commitment" && shiftNumber >= 9,
-    then: Yup.string().required("Please indicate the end time of the shift"),
-  }),
-  shift10Date: Yup.date().when(["shiftNumber", "editMode"], {
-    is: (shiftNumber, editMode) =>
-      editMode === "commitment" && shiftNumber >= 10,
-    then: Yup.date().required("Please indicate the date of the shift"),
-  }),
-  shift10Start: Yup.string().when(["shiftNumber", "editMode"], {
-    is: (shiftNumber, editMode) =>
-      editMode === "commitment" && shiftNumber >= 10,
-    then: Yup.string().required("Please indicate the start time of the shift"),
-  }),
+  shift9End: Yup.string().when(
+    ["type", "shiftNumber", "flexiShifts", "editMode"],
+    {
+      is: (type, shiftNumber, flexiShifts, editMode) =>
+        type === "Ad hoc" &&
+        editMode === "commitment" &&
+        shiftNumber >= 9 &&
+        !flexiShifts,
+      then: Yup.string().required("Please indicate the end time of the shift"),
+    }
+  ),
+  shift10Date: Yup.date().when(
+    ["type", "shiftNumber", "flexiShifts", "editMode"],
+    {
+      is: (type, shiftNumber, flexiShifts, editMode) =>
+        type === "Ad hoc" &&
+        editMode === "commitment" &&
+        shiftNumber >= 10 &&
+        !flexiShifts,
+      then: Yup.date().required("Please indicate the date of the shift"),
+    }
+  ),
+  shift10Start: Yup.string().when(
+    ["type", "shiftNumber", "flexiShifts", "editMode"],
+    {
+      is: (type, shiftNumber, flexiShifts, editMode) =>
+        type === "Ad hoc" &&
+        editMode === "commitment" &&
+        shiftNumber >= 10 &&
+        !flexiShifts,
+      then: Yup.string().required(
+        "Please indicate the start time of the shift"
+      ),
+    }
+  ),
 
-  shift10End: Yup.string().when(["shiftNumber", "editMode"], {
-    is: (shiftNumber, editMode) =>
-      editMode === "commitment" && shiftNumber >= 10,
-    then: Yup.string().required("Please indicate the end time of the shift"),
-  }),
+  shift10End: Yup.string().when(
+    ["type", "shiftNumber", "flexiShifts", "editMode"],
+    {
+      is: (type, shiftNumber, flexiShifts, editMode) =>
+        type === "Ad hoc" &&
+        editMode === "commitment" &&
+        shiftNumber >= 10 &&
+        !flexiShifts,
+      then: Yup.string().required("Please indicate the end time of the shift"),
+    }
+  ),
   addInfo: Yup.string(),
   closingDate: Yup.date().when(["noClosingDate", "editMode"], {
     is: (noClosingDate, editMode) =>

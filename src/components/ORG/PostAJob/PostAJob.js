@@ -1127,137 +1127,177 @@ const validationSchema = Yup.object().shape({
       .required("Please indicate the number of hours to commit"),
   }),
   flexiShifts: Yup.bool(),
-  shiftNumber: Yup.number("Please only enter numbers"),
-  shift1Date: Yup.date().when("shiftNumber", {
-    is: (shiftNumber) => shiftNumber >= 1,
+  shiftNumber: Yup.number("Please only enter numbers").when(
+    ["type", "flexiShifts"],
+    {
+      is: (type, flexiShifts) => type === "Ad hoc" && !flexiShifts,
+      then: Yup.number("Please only enter numbers").required(
+        "Please indicate the number of shifts"
+      ),
+    }
+  ),
+
+  shift1Date: Yup.date().when(["type", "shiftNumber", "flexiShifts"], {
+    is: (type, shiftNumber, flexiShifts) =>
+      type === "Ad hoc" && shiftNumber >= 1 && !flexiShifts,
     then: Yup.date().required("Please indicate the date of the shift"),
   }),
-  shift1Start: Yup.string().when("shiftNumber", {
-    is: (shiftNumber) => shiftNumber >= 1,
+  shift1Start: Yup.string().when(["type", "shiftNumber", "flexiShifts"], {
+    is: (type, shiftNumber, flexiShifts) =>
+      type === "Ad hoc" && shiftNumber >= 1 && !flexiShifts,
     then: Yup.string().required("Please indicate the start time of the shift"),
   }),
 
-  shift1End: Yup.string().when("shiftNumber", {
-    is: (shiftNumber) => shiftNumber >= 1,
+  shift1End: Yup.string().when(["type", "shiftNumber", "flexiShifts"], {
+    is: (type, shiftNumber, flexiShifts) =>
+      type === "Ad hoc" && shiftNumber >= 1 && !flexiShifts,
     then: Yup.string().required("Please indicate the end time of the shift"),
   }),
-  shift2Date: Yup.date().when("shiftNumber", {
-    is: (shiftNumber) => shiftNumber >= 2,
-    then: Yup.date().required("Please the indicate date of the shift"),
-  }),
-  shift2Start: Yup.string().when("shiftNumber", {
-    is: (shiftNumber) => shiftNumber >= 2,
-    then: Yup.string().required("Please indicate the start time of the shift"),
-  }),
-
-  shift2End: Yup.string().when("shiftNumber", {
-    is: (shiftNumber) => shiftNumber >= 2,
-    then: Yup.string().required("Please indicate the end time of the shift"),
-  }),
-  shift3Date: Yup.date().when("shiftNumber", {
-    is: (shiftNumber) => shiftNumber >= 3,
+  shift2Date: Yup.date().when(["type", "shiftNumber", "flexiShifts"], {
+    is: (type, shiftNumber, flexiShifts) =>
+      type === "Ad hoc" && shiftNumber >= 2 && !flexiShifts,
     then: Yup.date().required("Please indicate the date of the shift"),
   }),
-  shift3Start: Yup.string().when("shiftNumber", {
-    is: (shiftNumber) => shiftNumber >= 3,
+  shift2Start: Yup.string().when(["type", "shiftNumber", "flexiShifts"], {
+    is: (type, shiftNumber, flexiShifts) =>
+      type === "Ad hoc" && shiftNumber >= 2 && !flexiShifts,
     then: Yup.string().required("Please indicate the start time of the shift"),
   }),
 
-  shift3End: Yup.string().when("shiftNumber", {
-    is: (shiftNumber) => shiftNumber >= 3,
+  shift2End: Yup.string().when(["type", "shiftNumber", "flexiShifts"], {
+    is: (type, shiftNumber, flexiShifts) =>
+      type === "Ad hoc" && shiftNumber >= 2 && !flexiShifts,
     then: Yup.string().required("Please indicate the end time of the shift"),
   }),
-  shift4Date: Yup.date().when("shiftNumber", {
-    is: (shiftNumber) => shiftNumber >= 4,
+  shift3Date: Yup.date().when(["type", "shiftNumber", "flexiShifts"], {
+    is: (type, shiftNumber, flexiShifts) =>
+      type === "Ad hoc" && shiftNumber >= 3 && !flexiShifts,
     then: Yup.date().required("Please indicate the date of the shift"),
   }),
-  shift4Start: Yup.string().when("shiftNumber", {
-    is: (shiftNumber) => shiftNumber >= 4,
+  shift3Start: Yup.string().when(["type", "shiftNumber", "flexiShifts"], {
+    is: (type, shiftNumber, flexiShifts) =>
+      type === "Ad hoc" && shiftNumber >= 3 && !flexiShifts,
     then: Yup.string().required("Please indicate the start time of the shift"),
   }),
 
-  shift4End: Yup.string().when("shiftNumber", {
-    is: (shiftNumber) => shiftNumber >= 4,
+  shift3End: Yup.string().when(["type", "shiftNumber", "flexiShifts"], {
+    is: (type, shiftNumber, flexiShifts) =>
+      type === "Ad hoc" && shiftNumber >= 3 && !flexiShifts,
     then: Yup.string().required("Please indicate the end time of the shift"),
   }),
-  shift5Date: Yup.date().when("shiftNumber", {
-    is: (shiftNumber) => shiftNumber >= 5,
+  shift4Date: Yup.date().when(["type", "shiftNumber", "flexiShifts"], {
+    is: (type, shiftNumber, flexiShifts) =>
+      type === "Ad hoc" && shiftNumber >= 4 && !flexiShifts,
     then: Yup.date().required("Please indicate the date of the shift"),
   }),
-  shift5Start: Yup.string().when("shiftNumber", {
-    is: (shiftNumber) => shiftNumber >= 5,
+  shift4Start: Yup.string().when(["type", "shiftNumber", "flexiShifts"], {
+    is: (type, shiftNumber, flexiShifts) =>
+      type === "Ad hoc" && shiftNumber >= 4 && !flexiShifts,
     then: Yup.string().required("Please indicate the start time of the shift"),
   }),
 
-  shift5End: Yup.string().when("shiftNumber", {
-    is: (shiftNumber) => shiftNumber >= 5,
+  shift4End: Yup.string().when(["type", "shiftNumber", "flexiShifts"], {
+    is: (type, shiftNumber, flexiShifts) =>
+      type === "Ad hoc" && shiftNumber >= 4 && !flexiShifts,
     then: Yup.string().required("Please indicate the end time of the shift"),
   }),
-  shift6Date: Yup.date().when("shiftNumber", {
-    is: (shiftNumber) => shiftNumber >= 6,
+  shift5Date: Yup.date().when(["type", "shiftNumber", "flexiShifts"], {
+    is: (type, shiftNumber, flexiShifts) =>
+      type === "Ad hoc" && shiftNumber >= 5 && !flexiShifts,
     then: Yup.date().required("Please indicate the date of the shift"),
   }),
-  shift6Start: Yup.string().when("shiftNumber", {
-    is: (shiftNumber) => shiftNumber >= 6,
+  shift5Start: Yup.string().when(["type", "shiftNumber", "flexiShifts"], {
+    is: (type, shiftNumber, flexiShifts) =>
+      type === "Ad hoc" && shiftNumber >= 5 && !flexiShifts,
     then: Yup.string().required("Please indicate the start time of the shift"),
   }),
 
-  shift6End: Yup.string().when("shiftNumber", {
-    is: (shiftNumber) => shiftNumber >= 6,
+  shift5End: Yup.string().when(["type", "shiftNumber", "flexiShifts"], {
+    is: (type, shiftNumber, flexiShifts) =>
+      type === "Ad hoc" && shiftNumber >= 5 && !flexiShifts,
     then: Yup.string().required("Please indicate the end time of the shift"),
   }),
-  shift7Date: Yup.date().when("shiftNumber", {
-    is: (shiftNumber) => shiftNumber >= 7,
+  shift6Date: Yup.date().when(["type", "shiftNumber", "flexiShifts"], {
+    is: (type, shiftNumber, flexiShifts) =>
+      type === "Ad hoc" && shiftNumber >= 6 && !flexiShifts,
     then: Yup.date().required("Please indicate the date of the shift"),
   }),
-  shift7Start: Yup.string().when("shiftNumber", {
-    is: (shiftNumber) => shiftNumber >= 7,
+  shift6Start: Yup.string().when(["type", "shiftNumber", "flexiShifts"], {
+    is: (type, shiftNumber, flexiShifts) =>
+      type === "Ad hoc" && shiftNumber >= 6 && !flexiShifts,
     then: Yup.string().required("Please indicate the start time of the shift"),
   }),
 
-  shift7End: Yup.string().when("shiftNumber", {
-    is: (shiftNumber) => shiftNumber >= 7,
+  shift6End: Yup.string().when(["type", "shiftNumber", "flexiShifts"], {
+    is: (type, shiftNumber, flexiShifts) =>
+      type === "Ad hoc" && shiftNumber >= 6 && !flexiShifts,
     then: Yup.string().required("Please indicate the end time of the shift"),
   }),
-  shift8Date: Yup.date().when("shiftNumber", {
-    is: (shiftNumber) => shiftNumber >= 8,
+  shift7Date: Yup.date().when(["type", "shiftNumber", "flexiShifts"], {
+    is: (type, shiftNumber, flexiShifts) =>
+      type === "Ad hoc" && shiftNumber >= 7 && !flexiShifts,
     then: Yup.date().required("Please indicate the date of the shift"),
   }),
-  shift8Start: Yup.string().when("shiftNumber", {
-    is: (shiftNumber) => shiftNumber >= 8,
+  shift7Start: Yup.string().when(["type", "shiftNumber", "flexiShifts"], {
+    is: (type, shiftNumber, flexiShifts) =>
+      type === "Ad hoc" && shiftNumber >= 7 && !flexiShifts,
     then: Yup.string().required("Please indicate the start time of the shift"),
   }),
 
-  shift8End: Yup.string().when("shiftNumber", {
-    is: (shiftNumber) => shiftNumber >= 8,
+  shift7End: Yup.string().when(["type", "shiftNumber", "flexiShifts"], {
+    is: (type, shiftNumber, flexiShifts) =>
+      type === "Ad hoc" && shiftNumber >= 7 && !flexiShifts,
     then: Yup.string().required("Please indicate the end time of the shift"),
   }),
-  shift9Date: Yup.date().when("shiftNumber", {
-    is: (shiftNumber) => shiftNumber >= 9,
+  shift8Date: Yup.date().when(["type", "shiftNumber", "flexiShifts"], {
+    is: (type, shiftNumber, flexiShifts) =>
+      type === "Ad hoc" && shiftNumber >= 8 && !flexiShifts,
     then: Yup.date().required("Please indicate the date of the shift"),
   }),
-  shift9Start: Yup.string().when("shiftNumber", {
-    is: (shiftNumber) => shiftNumber >= 9,
+  shift8Start: Yup.string().when(["type", "shiftNumber", "flexiShifts"], {
+    is: (type, shiftNumber, flexiShifts) =>
+      type === "Ad hoc" && shiftNumber >= 8 && !flexiShifts,
     then: Yup.string().required("Please indicate the start time of the shift"),
   }),
 
-  shift9End: Yup.string().when("shiftNumber", {
-    is: (shiftNumber) => shiftNumber >= 9,
+  shift8End: Yup.string().when(["type", "shiftNumber", "flexiShifts"], {
+    is: (type, shiftNumber, flexiShifts) =>
+      type === "Ad hoc" && shiftNumber >= 8 && !flexiShifts,
     then: Yup.string().required("Please indicate the end time of the shift"),
   }),
-  shift10Date: Yup.date().when("shiftNumber", {
-    is: (shiftNumber) => shiftNumber >= 10,
+  shift9Date: Yup.date().when(["type", "shiftNumber", "flexiShifts"], {
+    is: (type, shiftNumber, flexiShifts) =>
+      type === "Ad hoc" && shiftNumber >= 9 && !flexiShifts,
     then: Yup.date().required("Please indicate the date of the shift"),
   }),
-  shift10Start: Yup.string().when("shiftNumber", {
-    is: (shiftNumber) => shiftNumber >= 10,
+  shift9Start: Yup.string().when(["type", "shiftNumber", "flexiShifts"], {
+    is: (type, shiftNumber, flexiShifts) =>
+      type === "Ad hoc" && shiftNumber >= 9 && !flexiShifts,
     then: Yup.string().required("Please indicate the start time of the shift"),
   }),
 
-  shift10End: Yup.string().when("shiftNumber", {
-    is: (shiftNumber) => shiftNumber >= 10,
+  shift9End: Yup.string().when(["type", "shiftNumber", "flexiShifts"], {
+    is: (type, shiftNumber, flexiShifts) =>
+      type === "Ad hoc" && shiftNumber >= 9 && !flexiShifts,
     then: Yup.string().required("Please indicate the end time of the shift"),
   }),
+  shift10Date: Yup.date().when(["type", "shiftNumber", "flexiShifts"], {
+    is: (type, shiftNumber, flexiShifts) =>
+      type === "Ad hoc" && shiftNumber >= 10 && !flexiShifts,
+    then: Yup.date().required("Please indicate the date of the shift"),
+  }),
+  shift10Start: Yup.string().when(["type", "shiftNumber", "flexiShifts"], {
+    is: (type, shiftNumber, flexiShifts) =>
+      type === "Ad hoc" && shiftNumber >= 10 && !flexiShifts,
+    then: Yup.string().required("Please indicate the start time of the shift"),
+  }),
+
+  shift10End: Yup.string().when(["type", "shiftNumber", "flexiShifts"], {
+    is: (type, shiftNumber, flexiShifts) =>
+      type === "Ad hoc" && shiftNumber >= 10 && !flexiShifts,
+    then: Yup.string().required("Please indicate the end time of the shift"),
+  }),
+
   addInfo: Yup.string(),
   closingDate: Yup.date().when("noClosingDate", {
     is: false,
@@ -1292,29 +1332,3 @@ const validationSchema = Yup.object().shape({
       "Terms and Conditions of Use must be accepted to post a Job"
     ),
 });
-
-/*
-                      <Form.Group controlId="formImageUrl">
-                        <Form.Label>
-                          Image URL
-                          <Form.Text className="text-muted">
-                            If you would like to include an image with your
-                            posting, upload it on an image hosting site and
-                            paste the direct link below
-                          </Form.Text>
-                        </Form.Label>
-                        <Form.Control
-                          name="imageUrl"
-                          type="text"
-                          placeholder="Direct Imgur link to image"
-                          value={values.imageUrl}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          isValid={touched.imageUrl && !errors.imageUrl}
-                          isInvalid={touched.imageUrl && errors.imageUrl}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          {errors.imageUrl}
-                        </Form.Control.Feedback>
-                      </Form.Group>
-                      */
