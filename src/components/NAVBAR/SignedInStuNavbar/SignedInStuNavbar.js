@@ -34,7 +34,23 @@ const SignedInStuNavbar = () => {
 	const [showSignOut, setShowSignOut] = useState(false);
 	const history = useHistory();
 	const { width } = useWindowDimensions();
-	const [notifications, setNotifications] = useState(dummyNotifications);
+	const [notifications, setNotifications] = useState();
+	const [notifLoading, setNotifLoading] = useState(true);
+
+	const getNotifications = async () => {
+		try {
+		const notifData = await fetch(`${process.env.REACT_APP_BACKEND_URL}/notifications/${currentUser.email}`)
+		const notifs = await notifData.json();
+		setNotifications(notifs)
+		} catch (err) {
+			console.log(err)
+		} 
+		setNotifLoading(false);
+	}
+
+	useEffect(() => {
+		getNotifications()
+	})
 
 	//page functionality
 	const [activePage, setActivePage] = useState(1);
