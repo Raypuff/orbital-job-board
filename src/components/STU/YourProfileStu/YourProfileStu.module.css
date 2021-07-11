@@ -34,3 +34,18 @@
 	composes: eye;
 	left: 270px;
 }
+
+.imageContainer {
+	display: flex;
+	/* justify-content: center; */
+}
+
+.image {
+	max-width: 25%;
+}
+
+@media screen and (max-width: 576px) {
+	.image {
+		max-width: 50%;
+	}
+}
