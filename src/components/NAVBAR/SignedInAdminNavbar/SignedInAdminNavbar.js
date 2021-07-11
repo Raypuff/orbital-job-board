@@ -10,7 +10,13 @@ import {
 import { NavLink, Link, useHistory } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 import styles from "./SignedInAdminNavbar.module.css";
-import { PersonFill, BriefcaseFill, DoorOpenFill } from "react-bootstrap-icons";
+import {
+	PersonFill,
+	BriefcaseFill,
+	DoorOpenFill,
+	ClipboardData,
+	GearWideConnected,
+} from "react-bootstrap-icons";
 
 const SignedInAdminNavbar = () => {
 	const [error, setError] = useState("");
@@ -41,6 +47,46 @@ const SignedInAdminNavbar = () => {
 
 	return (
 		<>
+			<Nav>
+				<OverlayTrigger placement="bottom" overlay={renderStatisticsTooltip}>
+					<Nav.Link
+						as={NavLink}
+						exact
+						activeClassName={styles.activeNavLink}
+						to="/statistics"
+					>
+						<ClipboardData
+							style={{
+								fontSize: "1.3rem",
+								marginBottom: "0.2rem",
+							}}
+						/>
+						{width < 576 && (
+							<span style={{ marginLeft: "0.4rem" }}>Statistics</span>
+						)}
+					</Nav.Link>
+				</OverlayTrigger>
+			</Nav>
+			<Nav>
+				<OverlayTrigger placement="bottom" overlay={renderManageAdminsTooltip}>
+					<Nav.Link
+						as={NavLink}
+						exact
+						activeClassName={styles.activeNavLink}
+						to="/manage-admins"
+					>
+						<GearWideConnected
+							style={{
+								fontSize: "1.2rem",
+								marginBottom: "0.2rem",
+							}}
+						/>
+						{width < 576 && (
+							<span style={{ marginLeft: "0.4rem" }}>Manage Admins</span>
+						)}
+					</Nav.Link>
+				</OverlayTrigger>
+			</Nav>
 			<Nav>
 				<OverlayTrigger placement="bottom" overlay={renderProfileTooltip}>
 					<Nav.Link
@@ -143,6 +189,18 @@ function useWindowDimensions() {
 
 	return windowDimensions;
 }
+
+const renderStatisticsTooltip = (props) => (
+	<Tooltip id="statistics-tooltip" {...props}>
+		Statistics
+	</Tooltip>
+);
+
+const renderManageAdminsTooltip = (props) => (
+	<Tooltip id="manage-admins-tooltip" {...props}>
+		Manage Admins
+	</Tooltip>
+);
 
 const renderProfileTooltip = (props) => (
 	<Tooltip id="profile-tooltip" {...props}>
