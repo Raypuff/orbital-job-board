@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useAuth } from "../../../contexts/AuthContext";
-import { Card, Button, Form, Alert } from "react-bootstrap";
+import { Card, Button, Form, Alert, Spinner } from "react-bootstrap";
 import { ArrowLeft } from "react-bootstrap-icons";
 import styles from "./EditProfileStu.module.css";
 import { Formik } from "formik";
@@ -21,6 +21,10 @@ const EditProfileStu = ({
 	const [message, setMessage] = useState("");
 	const [successful, setSuccessful] = useState(false);
 	const [error, setError] = useState("");
+	//upload image
+	const [image, setImage] = useState();
+	const [imageUrl, setImageUrl] = useState("");
+	const [imageLoading, setImageLoading] = useState(false);
 
 	const getUser = async () => {
 		const response = await fetch(
@@ -30,7 +34,6 @@ const EditProfileStu = ({
 		);
 		const jsonData = await response.json();
 		setUserData(jsonData);
-		// setUserLoading(false);
 	};
 
 	useEffect(() => {
@@ -49,6 +52,7 @@ const EditProfileStu = ({
 			setError("");
 
 			const newAccountInfo = {
+				avatar: imageUrl,
 				name: values.name,
 				dob: values.dob,
 				contactNo: values.contactNo,
@@ -81,6 +85,30 @@ const EditProfileStu = ({
 				console.log(err);
 			}
 		}
+	};
+
+	//image uploader
+	const uploadImage = async (event) => {
+		setImageLoading(true);
+		try {
+			const files = event.target.files;
+			const data = new FormData();
+			data.append("file", files[0]);
+			data.append("upload_preset", "volunteer-ccsgp-images");
+			const res = await fetch(
+				"https://api.cloudinary.com/v1_1/volunteer-ccsgp-job-board/image/upload",
+				{
+					method: "POST",
+					body: data,
+				}
+			);
+			const file = await res.json();
+			setImage(file.secure_url);
+			setImageUrl(file.secure_url);
+		} catch (err) {
+			console.log(err);
+		}
+		setImageLoading(false);
 	};
 
 	return (
@@ -122,6 +150,39 @@ const EditProfileStu = ({
 							isSubmitting,
 						}) => (
 							<Form onSubmit={handleSubmit}>
+								<Form.Group controlId="formAvatar">
+									<Form.Label>Avatar</Form.Label>
+									<div className={styles.imageContainer}>
+										{userData && userData.avatar && !image && !imageLoading ? (
+											<img
+												src={userData.avatar}
+												className={styles.image}
+												alt="student avatar"
+											/>
+										) : imageLoading ? (
+											<Spinner
+												animation="border"
+												role="status"
+												variant="primary"
+											>
+												<span className="sr-only">Loading...</span>
+											</Spinner>
+										) : image ? (
+											<img
+												src={image}
+												className={styles.image}
+												alt="student avatar"
+											/>
+										) : null}
+									</div>
+									<Form.Control
+										name="file"
+										type="file"
+										onChange={uploadImage}
+										accept="image/*"
+									/>
+								</Form.Group>
+
 								<Form.Group controlId="formName">
 									<Form.Label>Name as in NRIC</Form.Label>{" "}
 									<Form.Control
