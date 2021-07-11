@@ -6,6 +6,7 @@ import {
   CheckCircleFill,
 } from "react-bootstrap-icons";
 import styles from "./ApplicantsModalCard.module.css";
+var uniqid = require("uniqid");
 
 const ApplicantsModalCard = ({
   id,
@@ -54,6 +55,23 @@ const ApplicantsModalCard = ({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(msg),
+      });
+
+      const newNotif = {
+        newNotif: {
+          id: uniqid(),
+          receiverID: stuID,
+          header: "Change in status of job application",
+          message: `Your application for a job (${title}) has been ${choice}.`,
+          dateTime: new Date().toUTCString(),
+          dismissed: false,
+        },
+      };
+
+      await fetch(`${process.env.REACT_APP_BACKEND_URL}/notifications`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newNotif),
       });
     } catch (err) {
       console.error(err);
