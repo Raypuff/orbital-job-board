@@ -1,5 +1,7 @@
 import EditProfileOrg from "../EditProfileOrg";
 import { Card, Form, Button, Tab, Nav, Row, Col, Alert } from "react-bootstrap";
+import noImage from "../../../assets/noAvatar.png";
+import { LoadingProfile } from "./EmptyStates";
 import { useEffect, useState } from "react";
 import { ArrowLeft, EyeFill, EyeSlashFill } from "react-bootstrap-icons";
 import styles from "./YourProfileOrg.module.css";
@@ -16,6 +18,7 @@ const YourProfileOrg = () => {
 		userVerified,
 		sendEmailVerification,
 	} = useAuth();
+	const [loading, setLoading] = useState(true);
 	const [userData, setUserData] = useState(null);
 	const { width } = useWindowDimensions();
 	const [mobileActiveView, setMobileActiveView] = useState(false);
@@ -40,6 +43,7 @@ const YourProfileOrg = () => {
 		);
 		const jsonData = await response.json();
 		setUserData(jsonData);
+		setLoading(false);
 	};
 
 	useEffect(() => {
@@ -90,6 +94,10 @@ const YourProfileOrg = () => {
 			setStartTimer(false);
 		}
 	}, [timer]);
+
+	if (loading) {
+		return <LoadingProfile />;
+	}
 
 	return (
 		<div className={styles.container}>
@@ -157,6 +165,20 @@ const YourProfileOrg = () => {
 												</Card.Header>
 												<Card.Body>
 													<Form onSubmit={onEdit}>
+														<Form.Group controlId="formAvatar">
+															<Form.Label>Avatar</Form.Label>
+															<div className={styles.imageContainer}>
+																<img
+																	src={
+																		userData && userData.avatar
+																			? userData.avatar
+																			: noImage
+																	}
+																	className={styles.image}
+																	alt="organization avatar"
+																/>
+															</div>
+														</Form.Group>
 														<Form.Group controlId="formType">
 															<Form.Label>Organization type:</Form.Label>
 															<Form.Control
