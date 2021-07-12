@@ -205,6 +205,7 @@ const JobDetails = ({ id }) => {
   //1: Student applied & Job Approved -> Disabled Apply button + Chat now
   //11: Student successfully applied & Job Taken down -> Disabled Apply Button + Alert at top that job is taken down + Chat now
   //12: Student successfully applied & Job Completd ->  Disabled Apply Button + Alert at top that job is completed
+  //16: Student successfully applied & Job Pending -> Disabled Apply Button + Alert at top that job is pending + Chat now
   //2: Org Not Your Job -> No button
   //3: Org Job Pending -> Alert at top that job is still pending
   //4: Org Job Approved -> Alert at top that job is visible
@@ -250,6 +251,15 @@ const JobDetails = ({ id }) => {
       );
       if (myApp && myApp[0].status === "Accepted") {
         displayState = 12;
+      } else {
+        displayState = 9;
+      }
+    } else if (status === "Pending") {
+      const myApp = applications.filter(
+        (app) => app.stuID === currentUser.email
+      );
+      if (myApp && myApp[0].status === "Accepted") {
+        displayState = 16;
       } else {
         displayState = 9;
       }
@@ -350,6 +360,12 @@ const JobDetails = ({ id }) => {
                 This job has been taken down and is not publicly visible.
                 <hr />
                 Reason for takedown: {removalReason}
+              </Alert>
+            ) : displayState === 16 ? (
+              <Alert variant="warning">
+                This job has been edited by the organization and requires
+                re-approval and is hence not publicly visible. Please contact
+                the organization if you have further queries.
               </Alert>
             ) : null}
             <Row>
@@ -499,34 +515,31 @@ const JobDetails = ({ id }) => {
                       }
                     >
                       <div className={styles.shiftWrapper}>
-                        <h7>{`Shifts:${" "}`}</h7>
-                        <span>
-                          {type === "Ad hoc" ? (
-                            !flexiShifts ? (
-                              adShift && adShift.length > 0 ? (
-                                <ol>
-                                  {adShift.map((shift, index) => (
-                                    <li key={index}>
-                                      <h7>
-                                        {`${new Date(
-                                          shift.date
-                                        ).toDateString()} ${tConvert(
-                                          shift.startTime
-                                        )} - ${tConvert(shift.endTime)}`}
-                                      </h7>
-                                    </li>
-                                  ))}
-                                </ol>
-                              ) : (
-                                "No shifts indicated"
-                              )
-                            ) : (
-                              "Flexible shifts"
-                            )
-                          ) : (
-                            ""
-                          )}
-                        </span>
+                        <h7>
+                          Shifts:
+                          <br />
+                        </h7>
+                        <ol>
+                          {type === "Ad hoc"
+                            ? !flexiShifts
+                              ? adShift && adShift.length > 0
+                                ? adShift.map((shift, index) => {
+                                    return (
+                                      <li key={index}>
+                                        <h7>
+                                          {`${new Date(
+                                            shift.date
+                                          ).toDateString()} ${tConvert(
+                                            shift.startTime
+                                          )} - ${tConvert(shift.endTime)}`}
+                                        </h7>
+                                      </li>
+                                    );
+                                  })
+                                : "No shifts indicated"
+                              : "Flexible shifts"
+                            : ""}
+                        </ol>
                       </div>
                     </div>
                   </div>
@@ -575,7 +588,8 @@ const JobDetails = ({ id }) => {
                   </div>
                   {(displayState === 16 ||
                     displayState === 1 ||
-                    displayState === 11) && (
+                    displayState === 11 ||
+                    displayState === 16) && (
                     <div className={styles.buttonRow}>
                       <ChatNowButton />
                     </div>
@@ -591,7 +605,8 @@ const JobDetails = ({ id }) => {
                     <ApplyButton handleClick={() => setShowApplyModal(true)} />
                   ) : displayState === 1 ||
                     displayState === 11 ||
-                    displayState === 12 ? (
+                    displayState === 12 ||
+                    displayState === 16 ? (
                     <DisabledButton />
                   ) : displayState === 6 ? (
                     <>
