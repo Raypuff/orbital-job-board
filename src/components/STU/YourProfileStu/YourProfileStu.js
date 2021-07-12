@@ -124,6 +124,7 @@ const YourProfileStu = () => {
 			setSuccessSubscriptions("");
 			setErrorSubscriptions("");
 			try {
+				//put the logic for updating subscription preferences here
 				console.log(values);
 				setSuccessSubscriptions("Subscriptions updated successfully!");
 				setSubmitting(false);
