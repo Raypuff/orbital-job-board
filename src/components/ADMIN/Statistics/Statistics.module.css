@@ -1,0 +1,26 @@
+.container {
+	max-width: 75rem;
+	margin: 2rem auto;
+	padding: 0 1rem;
+}
+
+.stat {
+	font-weight: 700;
+}
+
+.buttonCol {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5em;
+}
+
+.exportButton {
+	width: fit-content;
+	font-size: small;
+}
+
+.exportRow {
+	display: flex;
+	flex-direction: column;
+	gap: 1em;
+}
