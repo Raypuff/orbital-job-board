@@ -19,7 +19,7 @@ import {
 } from "react-bootstrap-icons";
 import styles from "./YourJobsCard.module.css";
 import ApplicantsModal from "./ApplicantsModal";
-import { CSVLink, CSVDownload } from "react-csv";
+import { CSVLink } from "react-csv";
 
 const YourJobsCard = ({
 	key,
@@ -129,6 +129,7 @@ const YourJobsCard = ({
 			console.log(jsonData.map((app) => Object.values(app)));
 		};
 		getApplications();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [showApplicantsModal]);
 
 	const TripleDot = () => {
@@ -423,7 +424,7 @@ const YourJobsCard = ({
 					<Modal.Footer className="justify-content-center">
 						<CSVLink
 							data={exportApplications}
-							filename={`Volunteers for ${title}.csv`}
+							filename={`CCSGP ${title} Volunteer.csv`}
 						>
 							<Button
 								variant="primary"
@@ -444,7 +445,6 @@ export default YourJobsCard;
 
 const CustomDropdown = forwardRef(({ children, onClick }, ref) => (
 	// eslint-disable-next-line jsx-a11y/anchor-is-valid
-
 	<a
 		href=""
 		ref={ref}
