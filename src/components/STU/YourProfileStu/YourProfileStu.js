@@ -1,6 +1,7 @@
 import EditProfileStu from "../EditProfileStu";
 import { Card, Form, Button, Tab, Nav, Row, Col, Alert } from "react-bootstrap";
 import noImage from "../../../assets/noAvatar.png";
+import { BeneficiaryTags, SkillTags } from "../../../assets/Tags";
 import { LoadingProfile } from "./EmptyStates";
 import { useEffect, useState } from "react";
 import styles from "./YourProfileStu.module.css";
@@ -29,6 +30,9 @@ const YourProfileStu = () => {
 	const [showCfmPw, setShowCfmPw] = useState(false);
 	const [timer, setTimer] = useState(60);
 	const [startTimer, setStartTimer] = useState(false);
+	const [subscriptions, setSubscriptions] = useState({});
+	const [successSubscriptions, setSuccessSubscriptions] = useState();
+	const [errorSubscriptions, setErrorSubscriptions] = useState();
 
 	function onEdit() {
 		setEdit(true);
@@ -41,7 +45,25 @@ const YourProfileStu = () => {
 				currentUser.email
 		);
 		const jsonData = await response.json();
+		jsonData.subscriptions = ["Animals", "WebDev"]; // remove this once subscriptions is implemented in userData
 		setUserData(jsonData);
+		let subs = {};
+		console.log(jsonData.subscriptions);
+		for (let i = 0; i < BeneficiaryTags.length; i++) {
+			if (jsonData.subscriptions.includes(BeneficiaryTags[i])) {
+				subs[BeneficiaryTags[i]] = true;
+			} else {
+				subs[BeneficiaryTags[i]] = false;
+			}
+		}
+		for (let j = 0; j < SkillTags.length; j++) {
+			if (jsonData.subscriptions.includes(SkillTags[j])) {
+				subs[SkillTags[j]] = true;
+			} else {
+				subs[SkillTags[j]] = false;
+			}
+		}
+		setSubscriptions(subs);
 		setLoading(false);
 	};
 
@@ -93,6 +115,24 @@ const YourProfileStu = () => {
 			setStartTimer(false);
 		}
 	}, [timer]);
+
+	const saveSubscriptions = (values, { setSubmitting }) => {
+		setSubmitting(true);
+		handleSubmit(values);
+
+		async function handleSubmit(values) {
+			setSuccessSubscriptions("");
+			setErrorSubscriptions("");
+			try {
+				console.log(values);
+				setSuccessSubscriptions("Subscriptions updated successfully!");
+				setSubmitting(false);
+			} catch (err) {
+				setErrorSubscriptions(err);
+				setSubmitting(false);
+			}
+		}
+	};
 
 	if (loading) {
 		return <LoadingProfile />;
@@ -478,10 +518,90 @@ const YourProfileStu = () => {
 												Email subscriptions
 											</Card.Header>
 											<Card.Body>
-												<div className={styles.subscriptionsHeader}>
-													Beneficiaries
-												</div>
-												<div className={styles.subscriptionsHeader}>Skills</div>
+												<p>
+													Want to get notified when new jobs are posted?
+													Customize your preferences such that you are only
+													notified by new job postings that contain the
+													beneficiaries and skills that you are interested in.
+													Don't forget to save your changes at the bottom!
+												</p>
+												<Formik
+													initialValues={subscriptions}
+													onSubmit={saveSubscriptions}
+												>
+													{({
+														values,
+														handleChange,
+														handleBlur,
+														handleSubmit,
+														isSubmitting,
+													}) => (
+														<Form onSubmit={handleSubmit}>
+															{setSubscriptions(values)}
+															<div className={styles.subHeader}>
+																Beneficiaries
+															</div>
+															<div className={styles.subBody}>
+																{BeneficiaryTags.map((beneficiary) => {
+																	return (
+																		<Form.Group
+																			controlId={`form${beneficiary}`}
+																			className={styles.subGroup}
+																		>
+																			<Form.Check
+																				key={beneficiary}
+																				label={beneficiary}
+																				name={beneficiary}
+																				checked={values[beneficiary]}
+																				onChange={handleChange}
+																				onBlur={handleBlur}
+																			/>
+																		</Form.Group>
+																	);
+																})}
+															</div>
+															<div className={styles.subHeader}>Skills</div>
+															<div className={styles.subBody}>
+																{SkillTags.map((skill) => {
+																	return (
+																		<Form.Group
+																			controlId={`form${skill}`}
+																			className={styles.subGroup}
+																		>
+																			<Form.Check
+																				key={skill}
+																				label={skill}
+																				name={skill}
+																				checked={values[skill]}
+																				onChange={handleChange}
+																				onBlur={handleBlur}
+																			/>
+																		</Form.Group>
+																	);
+																})}
+															</div>
+															<Card.Text />
+															<Button
+																variant="primary"
+																type="submit"
+																disabled={isSubmitting}
+															>
+																Save changes
+															</Button>
+															<Card.Text />
+															{successSubscriptions && (
+																<Alert variant="success">
+																	{successSubscriptions}
+																</Alert>
+															)}
+															{errorSubscriptions && (
+																<Alert variant="danger">
+																	{errorSubscriptions}
+																</Alert>
+															)}
+														</Form>
+													)}
+												</Formik>
 											</Card.Body>
 										</Card>
 									</>

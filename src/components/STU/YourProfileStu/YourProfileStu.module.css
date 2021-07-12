@@ -50,7 +50,18 @@
 	}
 }
 
-.subscriptionsHeader {
+.subHeader {
 	font-weight: 700;
 	font-size: 1.1rem;
+	margin-bottom: 1rem;
+}
+
+.subBody {
+	display: flex;
+	flex-direction: column;
+	gap: 0rem;
+}
+
+.subGroup {
+	margin-bottom: 0.2rem;
 }
