@@ -49,3 +49,8 @@
 		max-width: 50%;
 	}
 }
+
+.subscriptionsHeader {
+	font-weight: 700;
+	font-size: 1.1rem;
+}

@@ -38,7 +38,6 @@ const JobBoard = () => {
 			setMyLng(false);
 			setMyLat(false);
 		}
-		console.log(`This is my lat: ${myLat} and this is my lng: ${myLng}`);
 	};
 	getLocation();
 

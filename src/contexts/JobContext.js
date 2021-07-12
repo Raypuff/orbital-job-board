@@ -70,6 +70,31 @@ export function JobProvider({ children }) {
     setJobLoading(false);
   }
 
+  /**
+   *
+   * @param {useState function to setApps} setApps
+   * //Gets all applications and sets the useState
+   */
+  async function getAllApps(setApps) {
+    setJobLoading(true);
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/job-applications/`
+      );
+      const jsonData = await response.json();
+      setApps(jsonData);
+    } catch (err) {
+      console.error(err);
+    }
+    setJobLoading(false);
+  }
+
+  /**
+   *
+   * @param {useState function to setApps} setApps
+   * @param {Object containing information of current user} currentUser
+   * //Gets applications of current student and sets the useState
+   */
   async function getYourApps(setApps, currentUser) {
     setJobLoading(true);
     try {
@@ -121,6 +146,7 @@ export function JobProvider({ children }) {
     getAllApprovedJobs,
     PostAJob,
     getYourJobs,
+    getAllApps,
     getYourApps,
     jobLoading,
     appLoading,

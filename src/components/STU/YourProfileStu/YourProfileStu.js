@@ -465,8 +465,7 @@ const YourProfileStu = () => {
 										<Card bg="light" text="dark">
 											<Card.Header
 												as="h5"
-												className="d-flex align-items-center
-"
+												className="d-flex align-items-center"
 											>
 												{mobileActiveView && width < 576 && (
 													<ArrowLeft
@@ -478,7 +477,12 @@ const YourProfileStu = () => {
 												)}
 												Email subscriptions
 											</Card.Header>
-											<Card.Body></Card.Body>
+											<Card.Body>
+												<div className={styles.subscriptionsHeader}>
+													Beneficiaries
+												</div>
+												<div className={styles.subscriptionsHeader}>Skills</div>
+											</Card.Body>
 										</Card>
 									</>
 								</Tab.Pane>
