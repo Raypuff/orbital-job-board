@@ -1,42 +1,40 @@
 .formContainer {
-	min-height: calc(100vh - 610px);
-	/* display: flex;
-	justify-content: center; */
-	max-width: 75em;
-	margin: 0 auto;
-	padding: 2rem 1rem;
+  min-height: calc(100vh - 610px);
+  max-width: 75em;
+  margin: 0 auto;
+  padding: 2rem 1rem;
 }
 
 @media (max-width: 1234px) {
-	.formBox {
-		width: 95%;
-	}
+  .formBox {
+    width: 95%;
+  }
 }
 
 .terms > li {
-	font-weight: bold;
+  font-weight: bold;
 }
 
 .accordionBox {
-	margin: 1em;
+  margin: 1em;
 }
 
 .typeDisplay {
-	grid-gap: 0px;
-	/* a useless property */
+  grid-gap: 0px;
+  /* a useless property */
 }
 
 .typeDisplayNone {
-	display: none;
+  display: none;
 }
 
 .imageContainer {
-	display: flex;
-	justify-content: center;
-	margin: 0.5rem;
+  display: flex;
+  justify-content: center;
+  margin: 0.5rem;
 }
 
 .image {
-	max-width: 75%;
-	max-height: 50vh;
+  max-width: 75%;
+  max-height: 50vh;
 }

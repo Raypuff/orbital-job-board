@@ -1,0 +1,19 @@
+.imageContainer {
+  display: flex;
+  justify-content: center;
+  margin: 0.5rem;
+}
+
+.image {
+  max-width: 75%;
+  max-height: 50vh;
+}
+
+.typeDisplay {
+  grid-gap: 0px;
+  /* a useless property */
+}
+
+.typeDisplayNone {
+  display: none;
+}

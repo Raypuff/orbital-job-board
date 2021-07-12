@@ -105,7 +105,12 @@ const AllJobsCard = ({
 										<TripleDot id={id} />
 									</div>
 								</div>
-								<h6>Created on: {new Date(dateCreated).toDateString()}</h6>
+								<h6>
+									Created on:{" "}
+									{dateCreated
+										? new Date(dateCreated).toDateString()
+										: "No date created"}
+								</h6>
 								<h6
 									className={
 										status !== "Approved" && status !== "Completed"
@@ -113,7 +118,10 @@ const AllJobsCard = ({
 											: null
 									}
 								>
-									Posted on: {new Date(datePosted).toDateString()}
+									Posted on:{" "}
+									{datePosted
+										? new Date(datePosted).toDateString()
+										: "No date posted as job is not approved"}
 								</h6>
 								<h6>
 									Applications close on:{" "}
@@ -168,22 +176,24 @@ const AllJobsCard = ({
 										type === "Ad hoc" ? styles.type : styles.displayNone
 									}
 								>
-									<h6>Shifts:</h6>
-									{type === "Ad hoc"
-										? !flexiShifts
-											? adShift && adShift.length > 1
-												? adShift.map((shift, index) => {
-														return (
-															<h6>{`Shift ${index + 1}: ${new Date(
-																shift.date
-															).toDateString()} | ${tConvert(
-																shift.startTime
-															)} - ${tConvert(shift.endTime)}`}</h6>
-														);
-												  })
-												: "No shifts indicated"
-											: "Flexible shifts"
-										: ""}
+									<h6>
+										Shifts:{" "}
+										{type === "Ad hoc"
+											? !flexiShifts
+												? adShift && adShift.length > 1
+													? adShift.map((shift, index) => {
+															return (
+																<h6>{`Shift ${index + 1}: ${new Date(
+																	shift.date
+																).toDateString()} | ${tConvert(
+																	shift.startTime
+																)} - ${tConvert(shift.endTime)}`}</h6>
+															);
+													  })
+													: "No shifts indicated"
+												: "Flexible shifts"
+											: ""}
+									</h6>
 								</div>
 							</div>
 						</Col>
