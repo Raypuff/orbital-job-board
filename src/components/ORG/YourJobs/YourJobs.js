@@ -1,27 +1,43 @@
-import { Row, Col } from "react-bootstrap";
+//IMPORTS
+//React Hooks
 import { useEffect, useState } from "react";
+//Bootstrap
+import { Row, Col } from "react-bootstrap";
+//Components
 import YourJobsCard from "./YourJobsCard";
 import YourJobsFilter from "./YourJobsFilter";
 import { Loading, Empty, EmptyFilter } from "../../EmptyStates/EmptyStates";
-import styles from "./YourJobs.module.css";
+//Form Management
 import { Formik } from "formik";
+//Contexts
 import { useAuth } from "../../../contexts/AuthContext";
 import { useJob } from "../../../contexts/JobContext";
+//CSS Modules
+import styles from "./YourJobs.module.css";
 
 const YourJobs = () => {
+	//USESTATES
+	//Store jobs
+	const [jobs, setJobs] = useState([]);
+	//State of the filter to process jobs
 	const [filterState, setFilterState] = useState({});
+	//CUSTOM HOOKS
 	const { currentUser } = useAuth();
+	//Retrieve job data
 	const { getYourJobs, jobLoading } = useJob();
 
-	const [jobs, setJobs] = useState([]);
-
+	//USEEFFECTS
 	useEffect(() => {
 		getYourJobs(setJobs, currentUser);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	//LOADING
 	if (jobLoading) {
 		return <Loading>Loading your jobs...</Loading>;
-	} else if (jobs.length === 0) {
+	}
+	//NO JOBS
+	if (jobs.length === 0) {
 		return (
 			<Empty
 				title={"You do not have any jobs available for viewing..."}
@@ -36,7 +52,7 @@ const YourJobs = () => {
 		);
 	}
 
-	//filter
+	//FILTER JOBS
 	var filteredJobs = jobs;
 	if (
 		filterState.pending ||
@@ -78,34 +94,34 @@ const YourJobs = () => {
 	}
 	filteredJobs = filteredJobs
 		.sort(
-			//sort by recent creation first
+			//Sort by recent creation first
 			(job1, job2) => new Date(job2.dateCreated) - new Date(job1.dateCreated)
 		)
 		.sort((job1, job2) => {
-			// sort by pending first
+			//Sort by pending first
 			var job1State = job1.status === "Pending" ? 1 : 0;
 			var job2State = job2.status === "Pending" ? 1 : 0;
 			return job2State - job1State;
 		});
-	// for formik
-	var initialValues = {
-		pending: false,
-		approved: false,
-		completed: false,
-		rejected: false,
-		takenDown: false,
-		longTerm: false,
-		adHoc: false,
-		physical: false,
-		virtual: false,
-	};
 
 	return (
 		<div className={styles.container}>
 			<Row className={styles.rowContainer}>
 				<Col md={3} className={styles.firstColContainer}>
 					<div className={styles.filterContainer}>
-						<Formik initialValues={initialValues}>
+						<Formik
+							initialValues={{
+								pending: false,
+								approved: false,
+								completed: false,
+								rejected: false,
+								takenDown: false,
+								longTerm: false,
+								adHoc: false,
+								physical: false,
+								virtual: false,
+							}}
+						>
 							{({ values, handleChange, handleBlur }) => (
 								<YourJobsFilter
 									values={values}

@@ -1,22 +1,36 @@
-import React, { useRef, useState } from "react";
+//IMPORTS
+//React Hooks
+import { useRef, useState } from "react";
+//Bootstrap
 import { Card, Form, Button, Alert } from "react-bootstrap";
-import { Link, useHistory } from "react-router-dom";
-import { useAuth } from "../../../contexts/AuthContext";
 import { EyeFill, EyeSlashFill } from "react-bootstrap-icons";
+//React Router
+import { Link, useHistory } from "react-router-dom";
+//Auth Context
+import { useAuth } from "../../../contexts/AuthContext";
+//CSS Modules
 import styles from "./SignInOrgForm.module.css";
 
 const SignInOrgForm = () => {
-	const emailRef = useRef();
-	const passwordRef = useRef();
-	const { login } = useAuth();
+	//USESTATES
+	//Error message for signing in
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
-	const history = useHistory();
+	//Toggle for clicking the eyeball to show password
 	const [showPassword, setShowPassword] = useState(false);
 
+	//CUSTOM HOOKS
+	//Refs for form
+	const emailRef = useRef();
+	const passwordRef = useRef();
+	//API call to sign in
+	const { login } = useAuth();
+	const history = useHistory();
+
+	//FUNCTIONS
+	//To submit form to sign in
 	async function handleSubmit(event) {
 		event.preventDefault();
-
 		try {
 			setError("");
 			setLoading(true);

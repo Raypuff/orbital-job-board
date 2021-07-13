@@ -1,4 +1,7 @@
+//IMPORTS
+//React Hooks
 import { useState, forwardRef, useEffect, useRef } from "react";
+//Bootstrap
 import {
 	Row,
 	Col,
@@ -10,16 +13,20 @@ import {
 	OverlayTrigger,
 	Tooltip,
 } from "react-bootstrap";
-import { Link } from "react-router-dom";
 import {
 	ThreeDotsVertical,
 	HourglassSplit,
 	XCircleFill,
 	CheckCircleFill,
 } from "react-bootstrap-icons";
-import styles from "./YourJobsCard.module.css";
+//Components
 import ApplicantsModal from "./ApplicantsModal";
+//React Router
+import { Link } from "react-router-dom";
+//CSV Export
 import { CSVLink } from "react-csv";
+//CSS Modules
+import styles from "./YourJobsCard.module.css";
 
 const YourJobsCard = ({
 	key,
@@ -52,16 +59,38 @@ const YourJobsCard = ({
 	datePosted,
 	applicants,
 }) => {
+	//USESTATES
+	//Show State of Modals
 	const [showApplicantsModal, setShowApplicantsModal] = useState(false);
 	const [showCompleteModal, setShowCompleteModal] = useState(false);
 	const [showExportModal, setShowExportModal] = useState(false);
+	//Applications
 	const [applications, setApplications] = useState([]);
+	//Applications to export after being selected
 	const [exportApplications, setExportApplications] = useState([]);
 
+	//CUSTOM HOOKS
+	//Refs to refer to the selections for exporting applicants
 	const acceptedRef = useRef();
 	const pendingRef = useRef();
 	const rejectedRef = useRef();
 
+	//USEEFFECTS
+	//Fetching applications
+	useEffect(() => {
+		const getApplications = async () => {
+			const response = await fetch(
+				process.env.REACT_APP_BACKEND_URL + "/job-applications/job/" + id
+			);
+			const jsonData = await response.json();
+			setApplications(jsonData);
+		};
+		getApplications();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [showApplicantsModal]);
+
+	//FUNCTIONS
+	//To filter through applications that were selected for
 	const processApplications = () => {
 		setExportApplications(
 			applications
@@ -100,9 +129,8 @@ const YourJobsCard = ({
 				})
 		);
 	};
-
+	//Mark a job as complete
 	const handleComplete = async () => {
-		//setLoading(true);
 		try {
 			await fetch(
 				process.env.REACT_APP_BACKEND_URL + "/jobs/status-complete/" + id,
@@ -115,22 +143,8 @@ const YourJobsCard = ({
 		} catch (err) {
 			console.error(err);
 		}
-		//setLoading(false);
 		window.location.reload(false);
 	};
-
-	useEffect(() => {
-		const getApplications = async () => {
-			const response = await fetch(
-				process.env.REACT_APP_BACKEND_URL + "/job-applications/job/" + id
-			);
-			const jsonData = await response.json();
-			setApplications(jsonData);
-			// console.log(jsonData.map((app) => Object.values(app)));
-		};
-		getApplications();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [showApplicantsModal]);
 
 	const TripleDot = () => {
 		return (
@@ -371,6 +385,7 @@ const YourJobsCard = ({
 				datePosted={datePosted}
 				applicants={applicants}
 			/>
+			{/* MODALS */}
 			{/* Mark as complete modal */}
 			<Modal
 				show={showCompleteModal}
@@ -400,7 +415,6 @@ const YourJobsCard = ({
 				centered
 			>
 				<Form>
-					{/* {console.log(`${accepted} ${pending} ${rejected}`)} */}
 					<Modal.Header closeButton>
 						<Modal.Title>Export applicants</Modal.Title>
 					</Modal.Header>
@@ -453,6 +467,7 @@ const YourJobsCard = ({
 
 export default YourJobsCard;
 
+//CUSTOM TRIPLE DOT BUTTON
 const CustomDropdown = forwardRef(({ children, onClick }, ref) => (
 	// eslint-disable-next-line jsx-a11y/anchor-is-valid
 	<a
@@ -469,12 +484,14 @@ const CustomDropdown = forwardRef(({ children, onClick }, ref) => (
 	</a>
 ));
 
+//TOOLTIPS
 const renderTooltip = (props) => (
 	<Tooltip id="button-tooltip" {...props}>
 		More actions
 	</Tooltip>
 );
 
+//FUNCTION TO CONVERT TIME FORMAT
 function tConvert(time) {
 	// Check correct time format and split into components
 	time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [
