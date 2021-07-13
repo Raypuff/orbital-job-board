@@ -71,6 +71,7 @@ const EditProfileOrg = ({
 
 			//Creating new object to send to backend
 			const newAccountInfo = {
+				avatar: imageUrl,
 				type: values.type,
 				name: values.name,
 				uen: values.uen,

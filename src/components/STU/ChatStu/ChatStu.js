@@ -1,11 +1,18 @@
+//IMPORTS
+//React Hooks
 import { useState, useEffect, useRef } from "react";
+//Bootstrap
 import { Row, Col, Card, Form, Button } from "react-bootstrap";
 import { ArrowLeft } from "react-bootstrap-icons";
+//Auth Contexts
 import { useAuth } from "../../../contexts/AuthContext";
+//React Chat Elements
 import { ChatList, MessageList } from "react-chat-elements";
+//Components
 import { Loading, Empty, SystemMessage } from "../../EmptyStates/EmptyStates";
-
+//CSS Modules
 import styles from "./ChatStu.module.css";
+//Unique ID
 var uniqid = require("uniqid");
 
 const ChatStu = () => {

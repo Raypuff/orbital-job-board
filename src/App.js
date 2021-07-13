@@ -20,6 +20,7 @@ import YourJobsPage from "./pages/YourJobsPage";
 import ChatOrgPage from "./pages/ChatOrgPage";
 // admin pages
 import SignInAdminPage from "./pages/SignInAdminPage";
+import YourProfileAdminPage from "./pages/YourProfileAdminPage";
 import AllJobsPage from "./pages/AllJobsPage";
 import StatisticsPage from "./pages/StatisticsPage";
 import ManageAdminsPage from "./pages/ManageAdminsPage";
@@ -92,6 +93,9 @@ function App() {
               <Route path="/sign-in-admin">
                 <SignInAdminPage />
               </Route>
+              <Route path="/profile-admin">
+                <YourProfileAdminPage />
+              </Route>
               <Route path="/all-jobs">
                 <AllJobsPage />
               </Route>
@@ -101,7 +105,6 @@ function App() {
               <Route path="/manage-admins">
                 <ManageAdminsPage />
               </Route>
-
               {/* General Pages */}
               <Route path="/jobs/:id">
                 <JobDetailsPage />
