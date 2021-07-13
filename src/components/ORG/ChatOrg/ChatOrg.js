@@ -1,35 +1,56 @@
+//IMPORTS
+//React Hooks
 import { useState, useEffect, useRef } from "react";
+//Bootstrap
 import { Row, Col, Card, Form, Button } from "react-bootstrap";
 import { ArrowLeft } from "react-bootstrap-icons";
+//Auth Context
 import { useAuth } from "../../../contexts/AuthContext";
+//React Chat Elements
 import { ChatList, MessageList } from "react-chat-elements";
+//Components
 import { Loading, Empty, SystemMessage } from "../../EmptyStates/EmptyStates";
+//CSS Modules
 import styles from "./ChatOrg.module.css";
+//Unique ID
 var uniqid = require("uniqid");
 
 const ChatOrg = () => {
-	const { currentUser } = useAuth();
-	const [currentChat, setCurrentChat] = useState(""); //currentChat is the ID of the current open chat
-	const [chats, setChats] = useState(); //chats store all MY chats
-	const [currentMessages, setCurrentMessages] = useState([]); //currentMessages store all messages of current chat
+	//USESTATES
+	//Current chat indicates the current open chat
+	const [currentChat, setCurrentChat] = useState("");
+	//Chats store all chats
+	const [chats, setChats] = useState([]);
+	//CurrentMessages stores messages of current open chat
+	const [currentMessages, setCurrentMessages] = useState([]);
+	//Indicate if the chat is loading
 	const [loadingChats, setLoadingChats] = useState(true);
+	//Only used in mobile - Show messages when true and chats when false
 	const [mobileViewMessages, setMobileViewMessages] = useState(false);
+	//Search acts as a filter for chats
 	const [search, setSearch] = useState("");
-	const [updater, setUpdater] = useState(true);
+	//UseStates to be toggled back and forth to repeatedly call the useEffect to check for new messages
+	const [chatUpdater, setChatUpdater] = useState(true);
+	const [messageUpdater, setMessageUpdater] = useState(true);
+
+	//CUSTOM HOOKS
+	//Current user details from auth context
+	const { currentUser } = useAuth();
+	//Retrieve window dimensions
 	const { width } = useWindowDimensions();
+	//Refs for retrieving new message and scrolling to bottom
 	const newMessageRef = useRef();
 	const messageBottomRef = useRef();
 
-	//fetch chats where chat.stuID === currentUser.email
 	const getChats = async () => {
 		const chatData = await fetch(
 			process.env.REACT_APP_BACKEND_URL +
 				"/chats/all-chats/organization/" +
 				currentUser.email
 		);
-		const chats = await chatData.json();
+		const retrievedChats = await chatData.json();
 
-		var processedChats = chats;
+		var processedChats = retrievedChats;
 		processedChats.forEach((chat) => {
 			chat.date = new Date(chat.date);
 		});
@@ -41,14 +62,29 @@ const ChatOrg = () => {
 				chat.subtitle = `You: ${chat.subtitle}`;
 			}
 		});
-		setChats(processedChats);
-		setLoadingChats(false);
-		scrollToBottom();
+		let newMessage = false;
+		for (let chat1 in processedChats) {
+			for (let chat2 in chats) {
+				if (chat1.id === chat2.id) {
+					if (chat1.date !== chat2.date) {
+						newMessage = true;
+					}
+				}
+			}
+		}
+		console.log(`hey boy: ${processedChats[0].date}`);
+		console.log(`hey girl: ${chats[0].date}`);
+		if (newMessage || chats.length === 0) {
+			setChats(processedChats);
+			setLoadingChats(false);
+		}
+		setChatUpdater(!chatUpdater);
 	};
 
+	//USEEFFECTS
 	useEffect(() => {
 		getChats();
-	}, []);
+	});
 
 	const scrollToBottom = () => {
 		messageBottomRef.current?.scrollIntoView({
@@ -57,10 +93,6 @@ const ChatOrg = () => {
 			inline: "start",
 		});
 	};
-
-	// useEffect(() => {
-	// 	scrollToBottom();
-	// }, []);
 
 	const getMessages = async () => {
 		const messagesData = await fetch(
@@ -82,7 +114,7 @@ const ChatOrg = () => {
 			setCurrentMessages(processedMessages);
 			scrollToBottom();
 		}
-		setUpdater(!updater);
+		setMessageUpdater(!messageUpdater);
 	};
 
 	useEffect(() => {

@@ -1,4 +1,7 @@
-import React, { useState, useEffect } from "react";
+//IMPORTS
+//React Hooks
+import { useState, useEffect } from "react";
+//Bootstrap
 import {
 	NavDropdown,
 	Nav,
@@ -10,13 +13,6 @@ import {
 	Toast,
 	Badge,
 } from "react-bootstrap";
-import { NavLink, Link, useHistory } from "react-router-dom";
-import { useAuth } from "../../../contexts/AuthContext";
-import styles from "./SignedInStuNavbar.module.css";
-import stu1 from "../../../assets/gettingStarted/stu1.png";
-import stu2 from "../../../assets/gettingStarted/stu2.png";
-import stu3 from "../../../assets/gettingStarted/stu3.png";
-import stu4 from "../../../assets/gettingStarted/stu4.png";
 import {
 	InfoLg,
 	PersonFill,
@@ -25,36 +21,59 @@ import {
 	DoorOpenFill,
 	BellFill,
 } from "react-bootstrap-icons";
+//React Router
+import { NavLink, Link, useHistory } from "react-router-dom";
+//Images
+import stu1 from "../../../assets/gettingStarted/stu1.png";
+import stu2 from "../../../assets/gettingStarted/stu2.png";
+import stu3 from "../../../assets/gettingStarted/stu3.png";
+import stu4 from "../../../assets/gettingStarted/stu4.png";
+//ReactTime for Notifications
 import ReactTimeAgo from "react-time-ago";
+//Auth Contexts
+import { useAuth } from "../../../contexts/AuthContext";
+//CSS Modules
+import styles from "./SignedInStuNavbar.module.css";
 
 const SignedInStuNavbar = () => {
+	//USESTATES
+	//Error message for logging out
 	const [error, setError] = useState("");
-	const { currentUser, logout } = useAuth();
+	//If the getting started modal is showing
 	const [showGettingStarted, setShowGettingStarted] = useState(false);
+	//If the sign out confirmation modal is showing
 	const [showSignOut, setShowSignOut] = useState(false);
-	const history = useHistory();
-	const { width } = useWindowDimensions();
+	//All notifications
 	const [notifications, setNotifications] = useState();
+	//If the notifications are loading
 	const [notifLoading, setNotifLoading] = useState(true);
 
-	const getNotifications = async () => {
-		try {
-			const notifData = await fetch(
-				`${process.env.REACT_APP_BACKEND_URL}/notifications/${currentUser.email}`
-			);
-			const notifs = await notifData.json();
-			setNotifications(notifs);
-		} catch (err) {
-			console.log(err);
-		}
-		setNotifLoading(false);
-	};
+	//CUSTOM HOOKS
+	//Retrieve account details and logging out
+	const { currentUser, logout } = useAuth();
+	//Push to landing page after logging out
+	const history = useHistory();
+	//Show icon labels if in mobile view
+	const { width } = useWindowDimensions();
 
+	//USEEFFECTS
 	useEffect(() => {
+		const getNotifications = async () => {
+			try {
+				const notifData = await fetch(
+					`${process.env.REACT_APP_BACKEND_URL}/notifications/${currentUser.email}`
+				);
+				const notifs = await notifData.json();
+				setNotifications(notifs);
+			} catch (err) {
+				console.log(err);
+			}
+			setNotifLoading(false);
+		};
 		getNotifications();
 	});
 
-	//page functionality
+	//PAGINATION SYSTEM
 	const [activePage, setActivePage] = useState(1);
 	const numberOfPages = 4;
 	let pages = [
@@ -81,9 +100,10 @@ const SignedInStuNavbar = () => {
 		/>
 	);
 
+	//FUNCTIONS
+	//Signing out
 	async function handleLogout() {
 		setError("");
-
 		try {
 			await logout();
 			history.push("/");
@@ -92,15 +112,7 @@ const SignedInStuNavbar = () => {
 			console.log(error);
 		}
 	}
-
-	function isVerified() {
-		if (currentUser.emailVerified) {
-			return "Verified";
-		} else {
-			return "Please verify your email";
-		}
-	}
-
+	//Dismissing all notifications
 	async function dismissAllNotifs() {
 		try {
 			await fetch(
@@ -115,7 +127,7 @@ const SignedInStuNavbar = () => {
 			console.log(err);
 		}
 	}
-
+	//Dismissing a specific notification
 	async function dismissNotif(notifId) {
 		try {
 			await fetch(
@@ -192,6 +204,11 @@ const SignedInStuNavbar = () => {
 					id="collasible-nav-dropdown"
 					alignRight
 				>
+					{notifLoading && (
+						<NavDropdown.Header className={styles.notifHeader}>
+							Loading notifications...
+						</NavDropdown.Header>
+					)}
 					{notifications && notifications.length > 0 ? (
 						<>
 							<NavDropdown.Header
@@ -229,13 +246,7 @@ const SignedInStuNavbar = () => {
 							})}
 						</>
 					) : (
-						<NavDropdown.Header
-							style={{
-								display: "flex",
-								justifyContent: "center",
-								minWidth: "20rem",
-							}}
-						>
+						<NavDropdown.Header className={styles.notifHeader}>
 							You have no notifications
 						</NavDropdown.Header>
 					)}
@@ -316,7 +327,7 @@ const SignedInStuNavbar = () => {
 					</Nav.Link>
 				</OverlayTrigger>
 			</Nav>
-
+			{/* Getting Started Modal */}
 			<Modal
 				show={showGettingStarted}
 				onHide={() => setShowGettingStarted(false)}
@@ -424,6 +435,7 @@ const SignedInStuNavbar = () => {
 					</div>
 				</Modal.Footer>
 			</Modal>
+			{/* Confirm Sign Out Modal */}
 			<Modal
 				show={showSignOut}
 				onHide={() => setShowSignOut(false)}
@@ -447,6 +459,7 @@ const SignedInStuNavbar = () => {
 
 export default SignedInStuNavbar;
 
+//CUSTOM HOOK FOR RETRIEVING WINDOW DIMENSIONS
 function getWindowDimensions() {
 	const { innerWidth: width, innerHeight: height } = window;
 	return {
@@ -472,6 +485,7 @@ function useWindowDimensions() {
 	return windowDimensions;
 }
 
+//TOOLTIPS
 const renderGettingStartedTooltip = (props) => (
 	<Tooltip id="getting-started-tooltip" {...props}>
 		Getting Started
@@ -507,23 +521,3 @@ const renderSignOutTooltip = (props) => (
 		Sign Out
 	</Tooltip>
 );
-
-const dummyNotifications = [
-	{
-		id: "123",
-		receiverID: "raynerljm@gmail.com",
-		header: "New applicant",
-		message:
-			"You have a new applicant (Loh Jia Ming, Rayner) for your job (Code in the Community Run 2)",
-		dateTime: "Thu, 03 Jul 2021 03:52:01 GMT",
-		dismissed: false,
-	},
-	{
-		id: "124",
-		receiverID: "raynerljm@gmail.com",
-		header: "Approved job",
-		message: "Your job (Code in the Community Run 3) has been approved",
-		dateTime: "Thu, 01 Jul 2021 03:52:01 GMT",
-		dismissed: false,
-	},
-];

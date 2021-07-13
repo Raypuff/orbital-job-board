@@ -1,10 +1,8 @@
 //IMPORT
 //React Hooks
 import { useState, useEffect } from "react";
+//Bootstrap
 import { Nav, Tooltip, OverlayTrigger, Modal, Button } from "react-bootstrap";
-import { NavLink, useHistory } from "react-router-dom";
-import { useAuth } from "../../../contexts/AuthContext";
-import styles from "./SignedInAdminNavbar.module.css";
 import {
 	PersonFill,
 	BriefcaseFill,
@@ -12,31 +10,34 @@ import {
 	ClipboardData,
 	GearWideConnected,
 } from "react-bootstrap-icons";
+//React Router
+import { NavLink, useHistory } from "react-router-dom";
+//Auth context
+import { useAuth } from "../../../contexts/AuthContext";
+//CSS Modules
+import styles from "./SignedInAdminNavbar.module.css";
 
 const SignedInAdminNavbar = () => {
+	//USESTATES
 	const [error, setError] = useState("");
-	const { currentUser, logout } = useAuth();
 	const [showSignOut, setShowSignOut] = useState(false);
+	//CUSTOM HOOKS
+	//Log out import from auth context
+	const { logout } = useAuth();
+	//History to push to landing page after signing out
 	const history = useHistory();
+	//Width to show icon labels in mobile
 	const { width } = useWindowDimensions();
 
+	//FUNCTION TO SIGNOUT
 	async function handleLogout() {
 		setError("");
-
 		try {
 			await logout();
 			history.push("/");
 		} catch {
 			setError("Failed to log out");
 			console.log(error);
-		}
-	}
-
-	function isVerified() {
-		if (currentUser.emailVerified) {
-			return "Verified";
-		} else {
-			return "Please verify your email";
 		}
 	}
 
@@ -160,6 +161,7 @@ const SignedInAdminNavbar = () => {
 
 export default SignedInAdminNavbar;
 
+//CUSTOM HOOK TO RETRIEVE WINDOW DIMENSIONS
 function getWindowDimensions() {
 	const { innerWidth: width, innerHeight: height } = window;
 	return {
@@ -185,6 +187,7 @@ function useWindowDimensions() {
 	return windowDimensions;
 }
 
+//TOOLTIPS
 const renderStatisticsTooltip = (props) => (
 	<Tooltip id="statistics-tooltip" {...props}>
 		Statistics

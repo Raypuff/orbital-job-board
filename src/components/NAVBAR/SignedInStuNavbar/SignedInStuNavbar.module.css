@@ -67,3 +67,9 @@
 	background-color: #e9ecef;
 	color: red;
 }
+
+.notifHeader {
+	display: flex;
+	justify-content: center;
+	min-width: 20rem;
+}

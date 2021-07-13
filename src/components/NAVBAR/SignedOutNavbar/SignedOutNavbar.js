@@ -1,13 +1,21 @@
+//IMPORTS
+//React Hooks
 import React, { useState, useEffect } from "react";
+//Bootstrap
 import { Nav, NavDropdown, Tooltip, OverlayTrigger } from "react-bootstrap";
-import PostAJobButton from "../PostAJobButton";
-import { NavLink, Link, useLocation } from "react-router-dom";
 import { BoxArrowInRight, PersonPlusFill } from "react-bootstrap-icons";
+//Components
+import PostAJobButton from "../PostAJobButton";
+//React Router
+import { NavLink, Link, useLocation } from "react-router-dom";
+//CSS Modules
 import styles from "./SignedOutNavbar.module.css";
 
 const SignedOutNavbar = () => {
+	//CUSTOM HOOKS
 	const { width } = useWindowDimensions();
 	const { pathname } = useLocation();
+
 	return (
 		<>
 			<Nav>
@@ -111,6 +119,7 @@ const SignedOutNavbar = () => {
 
 export default SignedOutNavbar;
 
+//CUSTOM HOOK TO DETERMINE WINDOW DIMENSIONS
 function getWindowDimensions() {
 	const { innerWidth: width, innerHeight: height } = window;
 	return {
@@ -136,6 +145,7 @@ function useWindowDimensions() {
 	return windowDimensions;
 }
 
+//TOOLTIPS
 const renderSignInTooltip = (props) => (
 	<Tooltip id="sign-in-tooltip" {...props}>
 		Sign In
