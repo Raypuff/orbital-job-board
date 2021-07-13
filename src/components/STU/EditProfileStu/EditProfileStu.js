@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useAuth } from "../../../contexts/AuthContext";
 import { Card, Button, Form, Alert, Spinner } from "react-bootstrap";
+//Components
+import { Loading } from "../../EmptyStates/EmptyStates";
 import { ArrowLeft } from "react-bootstrap-icons";
 import styles from "./EditProfileStu.module.css";
 import { Formik } from "formik";
@@ -16,7 +18,7 @@ const EditProfileStu = ({
 	const [leftButtonVar, setLeftButtonVar] = useState("light");
 	const { currentUser } = useAuth();
 	const [userData, setUserData] = useState(null);
-	// const [userLoading, setUserLoading] = useState(true);
+	const [userLoading, setUserLoading] = useState(true);
 
 	const [message, setMessage] = useState("");
 	const [successful, setSuccessful] = useState(false);
@@ -34,6 +36,7 @@ const EditProfileStu = ({
 		);
 		const jsonData = await response.json();
 		setUserData(jsonData);
+		setUserLoading(false);
 	};
 
 	useEffect(() => {
@@ -110,6 +113,11 @@ const EditProfileStu = ({
 		}
 		setImageLoading(false);
 	};
+
+	//LOADING
+	if (userLoading) {
+		return <Loading>Loading edit profile...</Loading>;
+	}
 
 	return (
 		<>

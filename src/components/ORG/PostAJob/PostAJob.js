@@ -1,4 +1,7 @@
+//IMPORTS
+//React Hooks
 import { useState, useEffect } from "react";
+//Bootstrap
 import {
 	Row,
 	Col,
@@ -10,70 +13,78 @@ import {
 	Spinner,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
+//Components
 import Shifts from "./Shifts";
-import Terms from "./Terms";
-import styles from "./PostAJob.module.css";
+import { TermsAndConditions } from "../../../Constants";
+//Contexts
 import { useAuth } from "../../../contexts/AuthContext";
 import { useDist } from "../../../contexts/DistContext";
 import { useJob } from "../../../contexts/JobContext";
+//Inline Form Validation
 import { Formik } from "formik";
 import * as Yup from "yup";
+//Constants
 import { SelectBeneficiaryTags, SelectSkillTags } from "../../../Constants";
+//React Select
 import Select from "react-select";
-
+//CSS Modules
+import styles from "./PostAJob.module.css";
+//Unique ID
 var uniqid = require("uniqid");
 
 const PostAJob = () => {
+	//USESTATES
 	// Database useStates
 	const [message, setMessage] = useState("");
 	const [error, setError] = useState("");
-	// Form useStates
+	//Form useStates
 	const [loadingOrgDetails, setLoadingOrgDetails] = useState(true);
 	const [canRetrieveOrgDetails, setCanRetrieveOrgDetails] = useState(false);
 	const [canRetrievePocDetails, setCanRetrievePocDetails] = useState(false);
-
-	//finding currentUser that is logged in
-	const { currentUser, userVerified } = useAuth();
-
-	//to obtain currentUser data from database
+	//Obtain currentUser data from database
 	const [userData, setUserData] = useState(null);
-
+	//Image uploading
 	const [image, setImage] = useState();
 	const [imageUrl, setImageUrl] = useState("");
 	const [imageLoading, setImageLoading] = useState(false);
 
+	//CUSTOM HOOKS
+	//Finding currentUser that is logged in
+	const { currentUser } = useAuth();
 	const { getGeocode } = useDist();
 	const { PostAJob } = useJob();
 
-	//retrieve user from database
-	const getUser = async () => {
-		const response = await fetch(
-			process.env.REACT_APP_BACKEND_URL +
-				"/organization-accounts/" +
-				currentUser.email,
-			{}
-		);
-		const jsonData = await response.json();
-		setUserData(jsonData);
-		const { type, name, uen, pocName, pocNo, pocEmail } = jsonData;
-		if (
-			(type === "NUS Organization" ||
-				(type === "Non-NUS Organization" && uen)) &&
-			name
-		) {
-			setCanRetrieveOrgDetails(true);
-		}
-		if (pocName && pocNo && pocEmail) {
-			setCanRetrievePocDetails(true);
-		}
-		setLoadingOrgDetails(false);
-	};
-
+	//USEEFFECTS
+	//Retrieve user from database
 	useEffect(() => {
+		const getUser = async () => {
+			const response = await fetch(
+				process.env.REACT_APP_BACKEND_URL +
+					"/organization-accounts/" +
+					currentUser.email,
+				{}
+			);
+			const jsonData = await response.json();
+			setUserData(jsonData);
+			const { type, name, uen, pocName, pocNo, pocEmail } = jsonData;
+			if (
+				(type === "NUS Organization" ||
+					(type === "Non-NUS Organization" && uen)) &&
+				name
+			) {
+				setCanRetrieveOrgDetails(true);
+			}
+			if (pocName && pocNo && pocEmail) {
+				setCanRetrievePocDetails(true);
+			}
+			setLoadingOrgDetails(false);
+		};
 		getUser();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	//image uploader
+	//FUNCTIONS
+	//Upload image to cloudinary
 	const uploadImage = async (event) => {
 		setImageLoading(true);
 		try {
@@ -96,13 +107,13 @@ const PostAJob = () => {
 		}
 		setImageLoading(false);
 	};
-
+	//Submit post a job
 	const mySubmit = (values, { setSubmitting, resetForm }) => {
 		setSubmitting(true);
 		handleSubmit(values);
 
 		async function handleSubmit(values) {
-			//resetting useStates
+			//Resetting useStates
 			setMessage("");
 			setError("");
 			var lat;
@@ -122,6 +133,7 @@ const PostAJob = () => {
 			}
 
 			const jobID = uniqid();
+			//Creating new job
 			const newJob = {
 				id: jobID,
 				orgID: currentUser.email,
@@ -270,7 +282,6 @@ const PostAJob = () => {
 					isSubmitting,
 				}) => (
 					<Form onSubmit={handleSubmit}>
-						{console.log(values.beneficiaries)}
 						<>
 							<Card>
 								<Accordion defaultActiveKey="0">
@@ -956,7 +967,9 @@ const PostAJob = () => {
 									</Accordion.Toggle>
 									<Accordion.Collapse eventKey="3">
 										<div className={styles.accordionBox}>
-											<Terms />
+											<ol className={styles.terms}>
+												<TermsAndConditions />
+											</ol>
 											<Form.Group controlId="formTerms">
 												<Form.Check
 													name="terms"
@@ -1015,6 +1028,7 @@ const PostAJob = () => {
 
 export default PostAJob;
 
+//FUNCTION TO CONVERT ALL THE SHIFT FIELDS INTO A SINGLE ADSHIFT OBJECT
 function adShiftProcessor(
 	shiftNumber,
 	shift1Date,
@@ -1072,6 +1086,7 @@ function adShiftProcessor(
 	return returnList;
 }
 
+//VALIDATION SCHEMA FOR INLINE FORM VALIDATION
 const validationSchema = Yup.object().shape({
 	title: Yup.string().required("Please indicate the volunteer job title"),
 	purpose: Yup.string().required(

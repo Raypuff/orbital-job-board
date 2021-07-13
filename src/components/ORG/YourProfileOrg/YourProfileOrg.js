@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { ArrowLeft, EyeFill, EyeSlashFill } from "react-bootstrap-icons";
 import styles from "./YourProfileOrg.module.css";
 import * as Yup from "yup";
-import { ErrorMessage, Formik } from "formik";
+import { Formik } from "formik";
 import { useAuth } from "../../../contexts/AuthContext";
 
 const YourProfileOrg = () => {

@@ -199,7 +199,6 @@ const EditJobsModal = ({
 						handleChange,
 						handleBlur,
 						handleSubmit,
-						setFieldValue,
 					}) => (
 						<Form onSubmit={handleSubmit}>
 							<Modal.Header closeButton>
@@ -838,6 +837,7 @@ function adShiftProcessor(
 	return returnList;
 }
 
+//VALIDATION SCHEMA
 const validationSchema = Yup.object().shape({
 	title: Yup.string().when("editMode", {
 		is: "title",

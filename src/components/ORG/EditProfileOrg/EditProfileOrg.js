@@ -1,9 +1,17 @@
+//IMPORTS
+//React Hooks
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../../../contexts/AuthContext";
+//Bootstrap
 import { Card, Button, Form, Alert, Spinner } from "react-bootstrap";
 import { ArrowLeft } from "react-bootstrap-icons";
+//Components
+import { Loading } from "../../EmptyStates/EmptyStates";
+//Auth Context
+import { useAuth } from "../../../contexts/AuthContext";
+//Inline form validation
 import { Formik } from "formik";
 import * as Yup from "yup";
+//CSS Modules
 import styles from "./EditProfileOrg.module.css";
 
 const EditProfileOrg = ({
@@ -12,48 +20,56 @@ const EditProfileOrg = ({
 	setMobileActiveView,
 	width,
 }) => {
+	//USESTATES
+	//Before submitting, left button says cancel; After submitting, it says cancel
 	const [leftButton, setLeftButton] = useState("Cancel");
 	const [leftButtonVar, setLeftButtonVar] = useState("light");
-	const { currentUser } = useAuth();
+	//Storing user data and whether it's loading
 	const [userData, setUserData] = useState(null);
 	const [userLoading, setUserLoading] = useState(true);
-
+	//Success and error messages and if the edits are successful
 	const [message, setMessage] = useState("");
-	const [successful, setSuccessful] = useState(false);
 	const [error, setError] = useState("");
-	//upload image
+	const [successful, setSuccessful] = useState(false);
+	//For uploading images
 	const [image, setImage] = useState();
 	const [imageUrl, setImageUrl] = useState("");
 	const [imageLoading, setImageLoading] = useState(false);
 
-	const getUser = async () => {
-		const response = await fetch(
-			process.env.REACT_APP_BACKEND_URL +
-				"/organization-accounts/" +
-				currentUser.email,
-			{}
-		);
-		const jsonData = await response.json();
-		setUserData(jsonData);
-		setUserLoading(false);
-	};
+	//CUSTOM HOOKS
+	const { currentUser } = useAuth();
 
+	//USEEFFECTS
+	//Retrieving user data
 	useEffect(() => {
+		const getUser = async () => {
+			const response = await fetch(
+				process.env.REACT_APP_BACKEND_URL +
+					"/organization-accounts/" +
+					currentUser.email,
+				{}
+			);
+			const jsonData = await response.json();
+			setUserData(jsonData);
+			setUserLoading(false);
+		};
 		getUser();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	//FUNCTIONS
+	//Submitting edit profile details
 	const mySubmit = (values, { setSubmitting, resetForm }) => {
 		setSubmitting(true);
 		handleSubmit(values);
 
 		async function handleSubmit(values) {
-			//resetting submit states
+			//Resetting submit states
 			setSuccessful(false);
 			setMessage("");
 			setError("");
 
-			//creating new object to send to backend
+			//Creating new object to send to backend
 			const newAccountInfo = {
 				type: values.type,
 				name: values.name,
@@ -64,8 +80,7 @@ const EditProfileOrg = ({
 			};
 
 			try {
-				//signify start of update process
-
+				//Signify start of update process
 				await fetch(
 					process.env.REACT_APP_BACKEND_URL +
 						"/organization-accounts/" +
@@ -77,7 +92,7 @@ const EditProfileOrg = ({
 					}
 				);
 
-				//set success usestate to true
+				//Set success usestate to true
 				setSuccessful(true);
 				setMessage("Organization profile updated successfully!");
 				setLeftButton("Back");
@@ -90,8 +105,7 @@ const EditProfileOrg = ({
 			}
 		}
 	};
-
-	//image uploader
+	//Uploading image to cloudinary
 	const uploadImage = async (event) => {
 		setImageLoading(true);
 		try {
@@ -114,6 +128,11 @@ const EditProfileOrg = ({
 		}
 		setImageLoading(false);
 	};
+
+	//LOADING
+	if (userLoading) {
+		return <Loading>Loading edit profile...</Loading>;
+	}
 
 	return (
 		<>
@@ -154,7 +173,11 @@ const EditProfileOrg = ({
 								<Form.Group controlId="formAvatar">
 									<Form.Label>Avatar</Form.Label>
 									<div className={styles.imageContainer}>
-										{userData && userData.avatar && !image && !imageLoading ? (
+										{userData &&
+										userData.avatar &&
+										!image &&
+										!imageUrl &&
+										!imageLoading ? (
 											<img
 												src={userData.avatar}
 												className={styles.image}
@@ -346,6 +369,7 @@ const EditProfileOrg = ({
 
 export default EditProfileOrg;
 
+//VALIDATION SCHEMA FOR INLINE FORM VALIDATION
 const validationSchema = Yup.object().shape({
 	type: Yup.string("Please indicate your organization type")
 		.required("Please indicate your organization type")

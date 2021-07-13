@@ -1,4 +1,7 @@
+//IMPORTS
+//Bootstrap
 import { Row, Col, Form } from "react-bootstrap";
+//CSS Modules
 import styles from "./PostAJob.module.css";
 
 const Shifts = ({ handleChange, handleBlur, values, touched, errors }) => {
