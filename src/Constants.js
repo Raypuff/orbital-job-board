@@ -41,6 +41,9 @@ export const CCSGP = {
   nusWebsite: "https://www.comp.nus.edu.sg/",
 };
 
+//Number of jobs per page
+export const jobsPerPage = 3;
+
 //For React Select
 export const SelectBeneficiaryTags = BeneficiaryTags.map((beneficiary) => {
   return { value: beneficiary, label: beneficiary };

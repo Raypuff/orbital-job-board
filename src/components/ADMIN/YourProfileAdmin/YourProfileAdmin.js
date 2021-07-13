@@ -145,7 +145,7 @@ const YourProfileAdmin = () => {
                     }
                   }}
                 >
-                  Admin profile details
+                  Profile details
                 </Nav.Link>
               </Nav.Item>
               <Nav.Item>
