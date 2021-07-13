@@ -101,9 +101,9 @@ export const SignedIn = ({ children }) => {
 					alt="No jobs mountains"
 				/>
 				<div className={styles.emptyAction}>{children}</div>
-				<Link to={handleLogout} className={styles.emptyButton}>
+				<div onClick={() => handleLogout} className={styles.emptyButton}>
 					<div className={styles.emptyButtonText}>Sign out</div>
-				</Link>
+				</div>
 			</div>
 		</div>
 	);

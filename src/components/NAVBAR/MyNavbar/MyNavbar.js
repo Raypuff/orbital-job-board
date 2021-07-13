@@ -1,19 +1,29 @@
+//IMPORTS
+//Bootstrap
 import { Navbar, Nav, Tooltip, OverlayTrigger } from "react-bootstrap";
+import { HouseFill, EaselFill } from "react-bootstrap-icons";
+//React Router
 import { Link, NavLink } from "react-router-dom";
+//Components
 import SignedOutNavbar from "../SignedOutNavbar";
 import SignedInStuNavbar from "../SignedInStuNavbar";
 import SignedInOrgNavbar from "../SignedInOrgNavbar";
 import SignedInAdminNavbar from "../SignedInAdminNavbar";
-import { useAuth } from "../../../contexts/AuthContext";
-import styles from "./MyNavbar.module.css";
+//Images
 import nusccsgplogo from "../../../assets/headerLogos/nusccsgp.png";
-import { HouseFill, EaselFill } from "react-bootstrap-icons";
+//Auth context
+import { useAuth } from "../../../contexts/AuthContext";
+//CSS Modules
+import styles from "./MyNavbar.module.css";
 
 const MyNavbar = () => {
+	//CUSTOM HOOKS
+	//Retrieve current user details
 	const { currentUser, userType } = useAuth();
 
+	//Determining which navbar to render
 	const AccountButtons = () => {
-		if (currentUser != null) {
+		if (currentUser !== null) {
 			if (userType === "student") {
 				return <SignedInStuNavbar />;
 			} else if (userType === "organization") {
@@ -106,6 +116,7 @@ const MyNavbar = () => {
 
 export default MyNavbar;
 
+//TOOLTIPS
 const renderHomeTooltip = (props) => (
 	<Tooltip id="home-tooltip" {...props}>
 		Home

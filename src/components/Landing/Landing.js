@@ -1,19 +1,25 @@
+//IMPORTS
+//Bootstrap
 import { Row, Col } from "react-bootstrap";
+//React Router
 import { Link } from "react-router-dom";
+//Auth Context
 import { useAuth } from "../../contexts/AuthContext";
+//Images
 import landingbg from "../../assets/backgrounds/landingbg.png";
+//Animations
 import { Fade } from "react-reveal";
+//CSS Modules
 import styles from "./Landing.module.css";
 
 const Landing = () => {
+	//CUSTOM HOOKS
+	//Retrieve the user details
 	const { currentUser, userType } = useAuth();
 
+	//Don't show
 	function showPostAJobButton() {
-		if (currentUser !== null && userType !== "organization") {
-			return false;
-		} else {
-			return true;
-		}
+		return !(currentUser !== null && userType !== "organization");
 	}
 
 	return (

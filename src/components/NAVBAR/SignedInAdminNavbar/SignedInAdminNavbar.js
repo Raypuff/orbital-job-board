@@ -1,13 +1,8 @@
-import React, { useState, useEffect } from "react";
-import {
-	NavDropdown,
-	Nav,
-	Tooltip,
-	OverlayTrigger,
-	Modal,
-	Button,
-} from "react-bootstrap";
-import { NavLink, Link, useHistory } from "react-router-dom";
+//IMPORT
+//React Hooks
+import { useState, useEffect } from "react";
+import { Nav, Tooltip, OverlayTrigger, Modal, Button } from "react-bootstrap";
+import { NavLink, useHistory } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 import styles from "./SignedInAdminNavbar.module.css";
 import {

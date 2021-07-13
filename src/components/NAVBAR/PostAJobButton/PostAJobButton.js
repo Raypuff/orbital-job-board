@@ -1,11 +1,19 @@
+//IMPORT
+//React Hooks
 import { useState, useEffect } from "react";
+//Bootstrap
 import { Nav, Tooltip, OverlayTrigger } from "react-bootstrap";
+import { PlusLg } from "react-bootstrap-icons";
+//React router
 import { NavLink } from "react-router-dom";
+//CSS Modules
 import styles from "./PostAJobButton.module.css";
-import { PlusSquare, PlusLg } from "react-bootstrap-icons";
 
 const PostAJobButton = () => {
+	//CUSTOM HOOKS
+	//Retrieving the window dimensions
 	const { width } = useWindowDimensions();
+
 	return (
 		<Nav>
 			<OverlayTrigger placement="bottom" overlay={renderPostAJobTooltip}>
@@ -27,6 +35,7 @@ const PostAJobButton = () => {
 
 export default PostAJobButton;
 
+//FUNCTION TO RETRIEVE WINDOW DIMENSIONS
 function getWindowDimensions() {
 	const { innerWidth: width, innerHeight: height } = window;
 	return {
@@ -52,6 +61,7 @@ function useWindowDimensions() {
 	return windowDimensions;
 }
 
+//TOOLTIPS
 const renderPostAJobTooltip = (props) => (
 	<Tooltip id="post-a-job-tooltip" {...props}>
 		Post A Job
