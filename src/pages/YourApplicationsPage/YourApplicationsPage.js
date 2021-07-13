@@ -1,6 +1,6 @@
 import YourApplications from "../../components/STU/YourApplications";
 import { useAuth } from "../../contexts/AuthContext";
-import { NotStu } from "./EmptyStates";
+import { Empty } from "../../components/EmptyStates/EmptyStates";
 
 const YourApplicationsPage = () => {
 	const { currentUser, userType } = useAuth();
@@ -9,7 +9,17 @@ const YourApplicationsPage = () => {
 		if (currentUser !== null && userType === "student") {
 			return <YourApplications />;
 		} else {
-			return <NotStu />;
+			return (
+				<Empty
+					actions={[
+						{
+							tip: "To view your job applications, please",
+							button: "Sign in as NUS Student",
+							link: "/sign-in-student",
+						},
+					]}
+				/>
+			);
 		}
 	}
 

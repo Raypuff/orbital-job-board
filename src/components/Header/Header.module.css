@@ -1,4 +1,4 @@
-header {
+.header {
 	height: 100px;
 	background-color: #fff;
 }
@@ -22,10 +22,12 @@ header {
 	margin-right: 2em;
 }
 
-@media (max-width: 576px) {
-	header,
-	.nusLogo,
-	.ccsgpLogo {
-		height: 0;
+.rightLogo {
+	margin-left: auto;
+}
+
+@media (max-width: 575px) {
+	.header {
+		display: none;
 	}
 }

@@ -1,5 +1,5 @@
 import SignUpStuForm from "../../components/STU/SignUpStuForm";
-import { SignedIn } from "./EmptyStates";
+import { SignedIn } from "../../components/EmptyStates/EmptyStates";
 import { useAuth } from "../../contexts/AuthContext";
 
 const SignUpStuPage = () => {
@@ -7,7 +7,9 @@ const SignUpStuPage = () => {
 
 	function isSignedIn() {
 		if (currentUser) {
-			return <SignedIn />;
+			return (
+				<SignedIn>To sign up as an NUS student, please sign out first</SignedIn>
+			);
 		} else {
 			return <SignUpStuForm />;
 		}

@@ -1,6 +1,6 @@
 import YourProfileStu from "../../components/STU/YourProfileStu";
 import { useAuth } from "../../contexts/AuthContext";
-import { NotStu } from "./EmptyStates";
+import { Empty } from "../../components/EmptyStates/EmptyStates";
 
 const YourProfileStuPage = () => {
 	const { currentUser, userType } = useAuth();
@@ -9,7 +9,17 @@ const YourProfileStuPage = () => {
 		if (currentUser !== null && userType === "student") {
 			return <YourProfileStu />;
 		} else {
-			return <NotStu />;
+			return (
+				<Empty
+					actions={[
+						{
+							tip: "To view your student profile details, please",
+							button: "Sign in as NUS Student",
+							link: "/sign-in-student",
+						},
+					]}
+				/>
+			);
 		}
 	}
 

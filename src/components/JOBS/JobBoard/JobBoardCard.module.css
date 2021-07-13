@@ -1,0 +1,201 @@
+/* defining margin on the left and right of the screen and in between cards */
+.cardContainer {
+	margin: 0 1rem 0.5rem;
+	transition: ease 0.3s;
+}
+.cardContainer:hover {
+	transform: scale(1.02) translateY(-10px);
+}
+.cardContainer:hover .button {
+	transform: translateX(-3px) translateY(-15px);
+	color: #f8f8f8;
+	background-color: #193f76;
+}
+.cardContainer:hover .buttonContainer {
+	text-decoration: none;
+}
+
+.colContainer {
+	padding-right: 0;
+}
+
+/* for the image */
+.imageContainer {
+	box-sizing: border-box;
+	/* background-color: blue; */
+	height: 100%;
+	padding: 0.5rem 0 0.5rem 0.5rem;
+}
+
+@media screen and (max-width: 992px) {
+	.colContainer {
+		padding-right: 15px;
+	}
+	.imageContainer {
+		padding-right: 0.5rem;
+	}
+}
+
+.image {
+	object-fit: cover;
+	height: 11.4rem;
+}
+
+@media screen and (max-width: 992px) {
+	.image {
+		height: 20rem;
+	}
+}
+@media screen and (max-width: 480px) {
+	.image {
+		height: 100%;
+	}
+}
+
+/* holds all the text */
+.centreColumnWrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 0.12em;
+	justify-content: space-between;
+	height: 100%;
+	padding-bottom: 0.5rem;
+}
+/* holds title text and org text*/
+.titleWrapper {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+}
+@media screen and (max-width: 480px) {
+	.titleWrapper {
+		flex-direction: column;
+		gap: 0;
+	}
+}
+/* holds title text */
+.titleContainer {
+	margin: 0.5rem 0.5rem 0 0;
+	font-weight: 500;
+}
+/* holds org text */
+.orgContainer {
+	color: rgb(124, 124, 124);
+	font-weight: 400;
+}
+/* wraps the text info for each row */
+.infoWrapper {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+}
+/* for the location and distance to change to column in mobile*/
+.higherInfoWrapper {
+	display: flex;
+	flex-direction: row;
+}
+/* margin from text to icon */
+.infoContainer {
+	margin-left: 0.35rem;
+	display: flex;
+	flex-wrap: wrap;
+}
+/* margin from distance to location */
+.distanceContainer {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+	margin-left: 1.5rem;
+}
+/* makes distance disappear if not applicable */
+.distanceContainerNone {
+	display: none;
+}
+/* wraps the extra shifts */
+.extraShiftWrapper {
+	display: flex;
+	align-items: center;
+}
+/* holds the extra shifts */
+.extraShiftContainer {
+	font-size: 0.8rem;
+	font-weight: 600;
+	margin-left: 1rem;
+}
+/* makes the extra shifts disppear if not applicable  */
+.extraShiftContainerNone {
+	display: none;
+}
+/*  wraps button*/
+.buttonWrapper {
+	display: flex;
+	height: 100%;
+}
+.buttonContainer {
+	margin-top: auto;
+}
+/* button details */
+.button {
+	width: 100%;
+	margin: 0 0.5rem 0.5rem 0;
+	padding: 0.4rem 0.5rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: black;
+	background-color: #f8f8f8;
+	border-radius: 40px;
+	cursor: pointer;
+	transition: 0.3s;
+}
+/* button text */
+.buttonText {
+	white-space: nowrap;
+	line-height: 1;
+	margin: 0;
+	padding: 0.25rem 0;
+}
+
+@media screen and (max-width: 1125px) {
+	.buttonText {
+		font-size: 1.1vw;
+	}
+	/* fit image when job cards become stacked */
+	@media screen and (max-width: 992px) {
+		.cardContainer:hover,
+		.cardContainer:hover .button {
+			transform: scale(1);
+		}
+		.centreColumnWrapper {
+			margin: 0 1.5rem;
+		}
+		/* for the distance to go under location and for extra shifts to go under dates */
+		.higherInfoWrapper {
+			flex-direction: column;
+		}
+		.distanceContainer {
+			margin-left: 0;
+		}
+		.extraShiftWrapper {
+			margin: 0.1rem 0 0 0.35rem;
+		}
+		.extraShiftContainer {
+			margin-left: 0;
+		}
+		.button {
+			color: white;
+			background-color: #193f76;
+			padding: 0.5rem 1rem;
+		}
+		.buttonText {
+			font-size: 1.2rem;
+		}
+		.buttonWrapper {
+			display: flex;
+			justify-content: center;
+			margin-top: auto;
+		}
+	}
+}

@@ -1,11 +1,13 @@
-import { Link } from "react-router-dom";
+//IMPORTS
+//Logos
+import ccsgplogo from "../../assets/headerLogos/ccsgp.png";
+import nuslogo from "../../assets/headerLogos/nussoc.png";
+//CSS Modules
 import styles from "./Header.module.css";
-import ccsgplogo from "../../assets/ccsgp.png";
-import nuslogo from "../../assets/nussoc.png";
 
 const Header = () => {
 	return (
-		<header>
+		<div className={styles.header}>
 			<div className={styles.logobox}>
 				<a href="https://www.comp.nus.edu.sg/" target="_blank" rel="noreferrer">
 					<img
@@ -19,7 +21,7 @@ const Header = () => {
 					href="https://www.ccsgp.comp.nus.edu.sg/"
 					target="_blank"
 					rel="noreferrer"
-					className="ml-auto"
+					className={styles.rightLogo}
 				>
 					<img
 						className={styles.ccsgpLogo}
@@ -29,7 +31,7 @@ const Header = () => {
 					/>
 				</a>
 			</div>
-		</header>
+		</div>
 	);
 };
 

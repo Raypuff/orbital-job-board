@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { Row, Col, Card, Form, Button } from "react-bootstrap";
-import { Telegram, ArrowLeft } from "react-bootstrap-icons";
+import { ArrowLeft } from "react-bootstrap-icons";
 import { useAuth } from "../../../contexts/AuthContext";
 import { ChatList, MessageList } from "react-chat-elements";
-import { LoadingChats, NoChats, SelectMessage, NoMessage } from "./EmptyStates";
+import { Loading, Empty, SystemMessage } from "../../EmptyStates/EmptyStates";
 import styles from "./ChatOrg.module.css";
 var uniqid = require("uniqid");
 
@@ -133,7 +133,7 @@ const ChatOrg = () => {
 	};
 
 	if (loadingChats) {
-		return <LoadingChats />;
+		return <Loading>Loading your chats...</Loading>;
 	}
 
 	if (chats && chats.length > 0) {
@@ -198,10 +198,12 @@ const ChatOrg = () => {
 							}
 						>
 							{!currentChat ? (
-								<SelectMessage />
+								<SystemMessage>Select a chat to start messaging</SystemMessage>
 							) : currentChat && currentMessages ? (
 								currentMessages.length === 0 ? (
-									<NoMessage />
+									<SystemMessage>
+										You have no messages with this volunteer.
+									</SystemMessage>
 								) : (
 									<>
 										<MessageList
@@ -242,7 +244,18 @@ const ChatOrg = () => {
 			</div>
 		);
 	} else {
-		return <NoChats />;
+		return (
+			<Empty
+				title={"You do not have any chats yet"}
+				actions={[
+					{
+						tip: "If you would like volunteers to have the option to ask you a question, make sure to enable the option when posting a job!",
+						button: "Post A Job",
+						link: "/post-a-job",
+					},
+				]}
+			/>
+		);
 	}
 };
 

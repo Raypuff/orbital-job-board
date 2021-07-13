@@ -14,10 +14,10 @@ import PostAJobButton from "../PostAJobButton";
 import { NavLink, Link, useHistory } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 import styles from "./SignedInOrgNavbar.module.css";
-import stu1 from "../../../assets/getting_started/stu1.png";
-import stu2 from "../../../assets/getting_started/stu2.png";
-import stu3 from "../../../assets/getting_started/stu3.png";
-import stu4 from "../../../assets/getting_started/stu4.png";
+import stu1 from "../../../assets/gettingStarted/stu1.png";
+import stu2 from "../../../assets/gettingStarted/stu2.png";
+import stu3 from "../../../assets/gettingStarted/stu3.png";
+import stu4 from "../../../assets/gettingStarted/stu4.png";
 import {
 	InfoLg,
 	PersonFill,

@@ -1,6 +1,10 @@
-import emptyState_noJobs from "../../../assets/emptyState_noJobs.png";
-import { Spinner } from "react-bootstrap";
+//react router imports
 import { Link } from "react-router-dom";
+//bootstrap components import
+import { Spinner } from "react-bootstrap";
+//image import
+import mountains from "../../../assets/emptyStates/mountains-dark.png";
+//css modules import
 import styles from "./EmptyStates.module.css";
 
 export const LoadingProfile = () => {
@@ -27,7 +31,7 @@ export const NoApplications = () => {
 			<div className={styles.noJobWrapper}>
 				<img
 					className={styles.noJobImage}
-					src={emptyState_noJobs}
+					src={mountains}
 					alt="No jobs mountains"
 				/>
 				<div className={styles.noJobTitle}>
@@ -49,7 +53,7 @@ export const FilterNoApplications = () => {
 		<div className={styles.filterNoJobContainer}>
 			<div className={styles.filterNoJobWrapper}>
 				<img
-					src={emptyState_noJobs}
+					src={mountains}
 					alt="Filter no jobs mountains"
 					className={styles.filterNoJobImage}
 				/>

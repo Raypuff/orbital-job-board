@@ -1,6 +1,6 @@
 import Statistics from "../../components/ADMIN/Statistics";
 import { useAuth } from "../../contexts/AuthContext";
-import { NotAdmin } from "./EmptyStates";
+import { Empty } from "../../components/EmptyStates/EmptyStates";
 
 const StatisticsPage = () => {
 	const { currentUser, userType } = useAuth();
@@ -9,7 +9,17 @@ const StatisticsPage = () => {
 		if (currentUser !== null && userType === "admin") {
 			return <Statistics />;
 		} else {
-			return <NotAdmin />;
+			return (
+				<Empty
+					actions={[
+						{
+							tip: "To view statistics, please",
+							button: "Sign in as Administrator",
+							link: "/sign-in-admin",
+						},
+					]}
+				/>
+			);
 		}
 	}
 

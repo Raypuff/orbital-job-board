@@ -1,5 +1,5 @@
 import PostAJob from "../../components/ORG/PostAJob";
-import { NotVerifiedOrg, NotOrg } from "./EmptyStates";
+import { Empty } from "../../components/EmptyStates/EmptyStates";
 import { useAuth } from "../../contexts/AuthContext";
 
 const PostAJobPage = () => {
@@ -13,9 +13,32 @@ const PostAJobPage = () => {
 			userType === "organization" &&
 			!userVerified
 		) {
-			return <NotVerifiedOrg />;
+			return (
+				<Empty
+					title={
+						"To post a job, please verify your account by clicking the link in your email first. Thank you!"
+					}
+					actions={[
+						{
+							tip: "Didn't receive a verification email? Proceed to your profile details to resend a verification email!",
+							button: "Your Profile",
+							link: "/profile-organization",
+						},
+					]}
+				/>
+			);
 		} else {
-			return <NotOrg />;
+			return (
+				<Empty
+					actions={[
+						{
+							tip: "To post a job, please",
+							button: "Sign in as Organization",
+							link: "/sign-in-organization",
+						},
+					]}
+				/>
+			);
 		}
 	}
 

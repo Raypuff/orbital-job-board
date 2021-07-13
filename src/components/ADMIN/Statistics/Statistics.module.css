@@ -24,3 +24,7 @@
 	flex-direction: column;
 	gap: 1em;
 }
+
+.nextCard {
+	margin-top: 1.5rem;
+}

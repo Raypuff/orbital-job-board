@@ -1,6 +1,6 @@
 import AllJobs from "../../components/ADMIN/AllJobs";
 import { useAuth } from "../../contexts/AuthContext";
-import { NotAdmin } from "./EmptyStates";
+import { Empty } from "../../components/EmptyStates/EmptyStates";
 
 const AllJobsPage = () => {
 	const { currentUser, userType } = useAuth();
@@ -9,7 +9,17 @@ const AllJobsPage = () => {
 		if (currentUser !== null && userType === "admin") {
 			return <AllJobs />;
 		} else {
-			return <NotAdmin />;
+			return (
+				<Empty
+					actions={[
+						{
+							tip: "To view all jobs, please",
+							button: "Sign in as Administrator",
+							link: "/sign-in-admin",
+						},
+					]}
+				/>
+			);
 		}
 	}
 

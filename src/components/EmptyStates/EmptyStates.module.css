@@ -1,0 +1,141 @@
+/* loading */
+.loadingContainer {
+	height: calc(100vh - 155px);
+	display: grid;
+	place-items: center;
+	text-align: center;
+}
+
+.loadingWrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1em;
+}
+
+.spinner {
+	width: 5rem;
+	height: 5rem;
+}
+.loadingTitle {
+	font-size: 2.5rem;
+	color: #193f76;
+}
+
+/* noJobs */
+.emptyContainer {
+	min-height: calc(100vh - 155px);
+	display: grid;
+	place-items: center;
+	text-align: center;
+}
+
+.emptyWrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding-bottom: 7rem;
+}
+
+.emptyImage {
+	max-height: 50vh;
+	max-width: 85vw;
+}
+
+.emptyTitle {
+	font-size: 2rem;
+	color: #193f76;
+	margin: 0 1rem;
+	text-align: center;
+}
+
+.emptyAction {
+	font-size: 1.3rem;
+	margin-top: 1rem;
+	text-align: center;
+}
+.emptyButton {
+	margin-top: 1rem;
+	background-color: #193f76;
+	border-radius: 4em;
+	padding: 1em 2em;
+	cursor: pointer;
+	display: grid;
+	place-items: center;
+	transition: 0.5s ease-in;
+	text-decoration: none;
+}
+.emptyButtonText {
+	font-size: 1rem;
+	color: #f8f8f8;
+}
+.emptyButton:hover {
+	transform: translateY(-1rem);
+	background-color: #122f57;
+	transition: 0.25s ease;
+	text-decoration: none;
+}
+
+@media screen and (max-width: 576px) {
+	.emptyTitle {
+		font-size: 2rem;
+	}
+
+	.emptyAction {
+		font-size: 1.5rem;
+	}
+	.emptyButtonText {
+		font-size: 1rem;
+	}
+}
+
+/* filter no job  */
+.filterContainer {
+	width: 100%;
+	display: grid;
+	place-items: center;
+	text-align: center;
+}
+
+.filterWrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding-bottom: 7rem;
+}
+
+.filterImage {
+	max-height: 50vh;
+	max-width: 85vw;
+}
+
+.filterTitle {
+	font-size: 1.5rem;
+	color: #193f76;
+	max-width: 70%;
+	text-align: center;
+	margin: 0 1rem;
+}
+
+@media screen and (max-width: 576px) {
+	.loadingContainer,
+	.noJobContainer {
+		height: calc(100vh - 4rem);
+	}
+}
+
+.systemMessageContainer {
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.systemMessage {
+	background-color: white;
+	color: #193f76;
+	padding: 0.5rem 1rem;
+	margin-bottom: 1rem;
+	border-radius: 2rem;
+	text-align: center;
+}

@@ -1,12 +1,17 @@
-import { useState, forwardRef } from "react";
+//IMPORTS
+//React
+import { forwardRef } from "react";
+//Bootstrap
 import { Row, Col, Card, Dropdown } from "react-bootstrap";
-import { Link } from "react-router-dom";
 import {
 	ThreeDotsVertical,
 	HourglassSplit,
 	XCircleFill,
 	CheckCircleFill,
 } from "react-bootstrap-icons";
+//React Router
+import { Link } from "react-router-dom";
+//CSS Modules
 import styles from "./AllJobsCard.module.css";
 
 const AllJobsCard = ({
@@ -224,6 +229,7 @@ const AllJobsCard = ({
 export default AllJobsCard;
 
 const CustomDropdown = forwardRef(({ children, onClick }, ref) => (
+	// eslint-disable-next-line jsx-a11y/anchor-is-valid
 	<a
 		href=""
 		ref={ref}

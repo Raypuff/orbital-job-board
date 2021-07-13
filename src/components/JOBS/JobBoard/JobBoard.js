@@ -1,33 +1,59 @@
+//IMPORTS
+//React Hooks
 import { useState, useEffect } from "react";
+//Contexts
 import { useAuth } from "../../../contexts/AuthContext";
-import { Row, Col, Pagination, Alert } from "react-bootstrap";
-import JobBoardFilter from "../JobBoardFilter";
-import JobBoardCard from "../JobBoardCard";
-import styles from "./JobBoard.module.css";
-import { BeneficiaryTags, SkillTags } from "../../../assets/Tags";
-import { Formik } from "formik";
-import { LoadingJobs, NoJobs, FilterNoJobs } from "./EmptyStates";
-import { Link } from "react-router-dom";
-
 import { useJob } from "../../../contexts/JobContext";
-// import { useStore } from "../../../contexts/StoreContext";
-// import { getDefaultNormalizer } from "@testing-library/dom";
+//Bootstrap
+import { Row, Col, Pagination, Alert } from "react-bootstrap";
+//Components
+import JobBoardFilter from "./JobBoardFilter";
+import JobBoardCard from "./JobBoardCard";
+import { Loading, Empty, EmptyFilter } from "../../EmptyStates/EmptyStates";
+//Beneficiaries and Skills
+import { BeneficiaryTags, SkillTags } from "../../../assets/Tags";
+//React Router
+import { Link } from "react-router-dom";
+//Form Validation
+import { Formik } from "formik";
+//CSS Modules
+import styles from "./JobBoard.module.css";
 
 const JobBoard = () => {
-	const { currentUser, userType } = useAuth();
-	const [filterState, setFilterState] = useState({});
+	//USESTATES
+	//All apporved jobs and filtered jobs
 	const [jobs, setJobs] = useState([]);
 	const [filteredJobs, setFilteredJobs] = useState([]);
+	//State of filter
+	const [filterState, setFilterState] = useState({});
+	//Pagination system current page
 	const [activePage, setActivePage] = useState(1);
+	//Retrieving my coords
 	const [myLng, setMyLng] = useState();
 	const [myLat, setMyLat] = useState();
 
+	//CUSTOM HOOKS
+	//Importing API calls for auth and jobs
+	const { currentUser, userType } = useAuth();
 	const { getAllApprovedJobs, jobLoading } = useJob();
 
+	//USEEFFECTS
+	//Retrieve browser location
 	useEffect(() => {
 		getLocation();
 	}, []);
+	//Retrieve all approved jobs
+	useEffect(() => {
+		getAllApprovedJobs(setJobs);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+	//Filter jobs
+	useEffect(() => {
+		filterJobs();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [filterState]);
 
+	//FUNCTIONS FOR RETRIEVING LOCATION
 	const getLocation = async () => {
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition((position) => {
@@ -39,8 +65,8 @@ const JobBoard = () => {
 			setMyLat(false);
 		}
 	};
-	getLocation();
 
+	//FILTERING JOBS
 	const filterJobs = () => {
 		var calculatedJobs = [...jobs];
 		calculatedJobs.forEach((job) => {
@@ -117,21 +143,7 @@ const JobBoard = () => {
 		}
 	};
 
-	useEffect(() => {
-		getAllApprovedJobs(setJobs);
-	}, []);
-
-	useEffect(() => {
-		filterJobs();
-	}, [filterState]);
-
-	if (jobLoading) {
-		return <LoadingJobs />;
-	} else if (jobs.length < 1) {
-		return <NoJobs />;
-	}
-
-	//processing pages
+	//CALCULATING PAGINATION SYSTEM
 	const jobsPerPage = 3;
 	var numberOfPages = Math.ceil(filteredJobs.length / jobsPerPage);
 	let pages = [
@@ -167,7 +179,7 @@ const JobBoard = () => {
 		endIndex = jobsPerPage * activePage;
 	}
 
-	// For Formik for Filter state
+	//INITIAL VALUES FOR FORMIK FOR FILTERSTATE
 	var initialValues = {
 		sort: "mostRecent",
 		longTerm: false,
@@ -182,9 +194,35 @@ const JobBoard = () => {
 		initialValues[SkillTags[j]] = false;
 	}
 
+	//LOADING
+	if (jobLoading) {
+		return <Loading>Loading jobs...</Loading>;
+	}
+	//NO JOBS
+	if (jobs.length < 1) {
+		return (
+			<Empty
+				title={"There are no available jobs for viewing..."}
+				actions={[
+					{
+						tip: "If you are an organization, click here to",
+						button: "Post a job",
+						link: "/post-a-job",
+					},
+					{
+						tip: "If you are an NUS student, you can configure your email notifications about new jobs on",
+						button: "Your Profile",
+						link: "/profile-student",
+					},
+				]}
+			/>
+		);
+	}
+
+	getLocation();
+
 	return (
 		<div className={styles.container}>
-			{console.log(filterState.sort)}
 			<Row className={styles.rowContainer}>
 				<Col md={4} lg={3} className={styles.firstColContainer}>
 					<div className={styles.filterContainer}>
@@ -246,7 +284,7 @@ const JobBoard = () => {
 							</div>
 						</>
 					) : (
-						<FilterNoJobs />
+						<EmptyFilter />
 					)}
 				</Col>
 			</Row>
@@ -265,6 +303,7 @@ const JobBoard = () => {
 
 export default JobBoard;
 
+//FUNCTION TO CALCULATE DISTANCE BETWEEN 2 PLACES USING LAT LNG
 function distance(lat1, lon1, lat2, lon2) {
 	var p = 0.017453292519943295; // Math.PI / 180
 	var c = Math.cos;

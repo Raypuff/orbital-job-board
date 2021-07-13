@@ -1,6 +1,10 @@
+//IMPORTS
+//React Hooks
 import { useState, useEffect } from "react";
+//Bootstrap
 import { Accordion, Card, Form } from "react-bootstrap";
 import { ChevronDown, Sliders } from "react-bootstrap-icons";
+//CSS Modules
 import styles from "./AllJobsFilter.module.css";
 
 const AllJobsFilter = ({
@@ -9,9 +13,12 @@ const AllJobsFilter = ({
 	handleBlur,
 	setFilterState,
 }) => {
+	//USESTATES
+	//To animate the chevrons for each accordion
 	const [statusOpen, setStatusOpen] = useState(true);
 	const [typeOpen, setTypeOpen] = useState(true);
 	const [platformOpen, setPlatformOpen] = useState(true);
+	//To make the filter default closed in mobile and open in non-mobile
 	const { width } = useWindowDimensions();
 
 	return (
@@ -204,6 +211,7 @@ const AllJobsFilter = ({
 
 export default AllJobsFilter;
 
+//To get the size of the window
 function getWindowDimensions() {
 	const { innerWidth: width, innerHeight: height } = window;
 	return {

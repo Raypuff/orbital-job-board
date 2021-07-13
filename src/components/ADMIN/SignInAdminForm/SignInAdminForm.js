@@ -1,37 +1,43 @@
-import React, { useRef, useState } from "react";
+//IMPORTS
+//React Hooks
+import { useRef, useState } from "react";
+//Bootstrap
 import { Card, Form, Button, Alert } from "react-bootstrap";
-import styles from "./SignInAdminForm.module.css";
-import { useHistory } from "react-router-dom";
-import { useAuth } from "../../../contexts/AuthContext";
 import { EyeFill, EyeSlashFill } from "react-bootstrap-icons";
+//React Router
+import { useHistory } from "react-router-dom";
+//Auth
+import { useAuth } from "../../../contexts/AuthContext";
+//CSS Modules
+import styles from "./SignInAdminForm.module.css";
 
 const SignInAdminForm = () => {
-	//initialize refs to access form data
-	const emailRef = useRef();
-	const passwordRef = useRef();
-
-	//history to push users back to landing page when done with sign in
-	const history = useHistory();
-
-	//useStates for use during signin
+	//USESTATES
+	//UseStates for use during signin
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
-
-	//import login methods from authcontext
-	const { login } = useAuth();
-
-	//useState for showing password
+	//UseState for showing password
 	const [showPassword, setShowPassword] = useState(false);
 
+	//CUSTOM HOOKS
+	//Refs for form data
+	const emailRef = useRef();
+	const passwordRef = useRef();
+	//React router history to push users back to landing page when done with sign in
+	const history = useHistory();
+	//Import login methods from authcontext
+	const { login } = useAuth();
+
+	//FUNCTIONS
+	//Sign in function
 	async function handleSubmit(event) {
-		//prevent page refresh
+		//Prevent page refresh
 		event.preventDefault();
 
 		try {
-			//reset error message
+			//Reset error message
 			setError("");
-
-			//start loading state to signify start of sign in
+			//Start loading state to signify start of sign in
 			setLoading(true);
 
 			await login(emailRef.current.value, passwordRef.current.value, "admin");
@@ -54,7 +60,7 @@ const SignInAdminForm = () => {
 	return (
 		<div className={styles.formBG}>
 			<div className={styles.formContainer}>
-				<Card bg="light" text="dark" style={{ width: "23rem" }}>
+				<Card bg="light" text="dark" className={styles.cardContainer}>
 					<Card.Header as="h6">Sign in as a CCSGP administrator</Card.Header>
 					<Card.Body>
 						<Form onSubmit={handleSubmit}>

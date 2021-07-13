@@ -6,7 +6,7 @@ import SignedInOrgNavbar from "../SignedInOrgNavbar";
 import SignedInAdminNavbar from "../SignedInAdminNavbar";
 import { useAuth } from "../../../contexts/AuthContext";
 import styles from "./MyNavbar.module.css";
-import nusccsgplogo from "../../../assets/nusccsgp.png";
+import nusccsgplogo from "../../../assets/headerLogos/nusccsgp.png";
 import { HouseFill, EaselFill } from "react-bootstrap-icons";
 
 const MyNavbar = () => {

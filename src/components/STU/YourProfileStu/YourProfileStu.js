@@ -1,8 +1,8 @@
 import EditProfileStu from "../EditProfileStu";
 import { Card, Form, Button, Tab, Nav, Row, Col, Alert } from "react-bootstrap";
-import noImage from "../../../assets/noAvatar.png";
+import noAvatar from "../../../assets/emptyStates/noAvatar.png";
 import { BeneficiaryTags, SkillTags } from "../../../assets/Tags";
-import { LoadingProfile } from "./EmptyStates";
+import { Loading } from "../../EmptyStates/EmptyStates";
 import { useEffect, useState } from "react";
 import styles from "./YourProfileStu.module.css";
 import { useAuth } from "../../../contexts/AuthContext";
@@ -136,7 +136,7 @@ const YourProfileStu = () => {
 	};
 
 	if (loading) {
-		return <LoadingProfile />;
+		return <Loading>Loading your profile...</Loading>;
 	}
 
 	return (
@@ -226,7 +226,7 @@ const YourProfileStu = () => {
 																	src={
 																		userData && userData.avatar
 																			? userData.avatar
-																			: noImage
+																			: noAvatar
 																	}
 																	className={styles.image}
 																	alt="student avatar"

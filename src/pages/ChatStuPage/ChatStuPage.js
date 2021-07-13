@@ -1,6 +1,6 @@
 import ChatStu from "../../components/STU/ChatStu";
 import { useAuth } from "../../contexts/AuthContext";
-import { NotStu } from "./EmptyStates";
+import { Empty } from "../../components/EmptyStates/EmptyStates";
 
 const ChatStuPage = () => {
 	const { currentUser, userType } = useAuth();
@@ -8,7 +8,17 @@ const ChatStuPage = () => {
 		if (currentUser !== null && userType === "student") {
 			return <ChatStu />;
 		} else {
-			return <NotStu />;
+			return (
+				<Empty
+					actions={[
+						{
+							tip: "To view your chat, please",
+							button: "Sign in as NUS Student",
+							link: "/sign-in-student",
+						},
+					]}
+				/>
+			);
 		}
 	}
 

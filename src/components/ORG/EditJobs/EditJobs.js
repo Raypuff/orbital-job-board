@@ -14,9 +14,9 @@ import {
 	OverlayTrigger,
 	Tooltip,
 } from "react-bootstrap";
-import { LoadingJob, NotYourJob } from "./EmptyStates";
+import { Loading, Empty } from "../../EmptyStates/EmptyStates";
 import { PencilSquare } from "react-bootstrap-icons";
-import noImage from "../../../assets/noImage.png";
+import noImage from "../../../assets/emptyStates/noImage.png";
 import styles from "./EditJobs.module.css";
 
 const EditJobs = ({ id }) => {
@@ -119,10 +119,23 @@ const EditJobs = ({ id }) => {
 	);
 
 	if (loading) {
-		return <LoadingJob />;
+		return <Loading>Loading edit jobs...</Loading>;
 	}
 	if (orgID !== currentUser.email) {
-		return <NotYourJob />;
+		return (
+			<Empty
+				title={
+					"Sorry! It seems you have stumbled across a job that is not yours."
+				}
+				actions={[
+					{
+						tip: "To view your own jobs, proceed to",
+						button: "Your Jobs",
+						link: "/your-jobs",
+					},
+				]}
+			/>
+		);
 	}
 
 	return (

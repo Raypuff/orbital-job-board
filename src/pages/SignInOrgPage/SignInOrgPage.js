@@ -1,5 +1,5 @@
 import SignInOrgForm from "../../components/ORG/SignInOrgForm";
-import { SignedIn } from "./EmptyStates";
+import { SignedIn } from "../../components/EmptyStates/EmptyStates";
 import { useAuth } from "../../contexts/AuthContext";
 
 const SignInOrgPage = () => {
@@ -7,7 +7,11 @@ const SignInOrgPage = () => {
 
 	function isSignedIn() {
 		if (currentUser) {
-			return <SignedIn />;
+			return (
+				<SignedIn>
+					To sign in as an organization, please sign out first
+				</SignedIn>
+			);
 		} else {
 			return <SignInOrgForm />;
 		}

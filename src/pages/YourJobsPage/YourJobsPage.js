@@ -1,6 +1,6 @@
 import YourJobs from "../../components/ORG/YourJobs";
 import { useAuth } from "../../contexts/AuthContext";
-import { NotOrg } from "./EmptyStates";
+import { Empty } from "../../components/EmptyStates/EmptyStates";
 
 const YourJobsPage = () => {
 	const { currentUser, userType } = useAuth();
@@ -9,7 +9,17 @@ const YourJobsPage = () => {
 		if (currentUser !== null && userType === "organization") {
 			return <YourJobs />;
 		} else {
-			return <NotOrg />;
+			return (
+				<Empty
+					action={[
+						{
+							tip: "To view your posted organization jobs, please",
+							button: "Sign in as Organization",
+							link: "/sign-in-organization",
+						},
+					]}
+				/>
+			);
 		}
 	}
 

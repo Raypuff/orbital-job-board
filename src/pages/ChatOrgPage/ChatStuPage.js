@@ -1,6 +1,6 @@
 import ChatOrg from "../../components/ORG/ChatOrg";
 import { useAuth } from "../../contexts/AuthContext";
-import { NotOrg } from "./EmptyStates";
+import { Empty } from "../../components/EmptyStates/EmptyStates";
 
 const ChatOrgPage = () => {
 	const { currentUser, userType } = useAuth();
@@ -8,7 +8,17 @@ const ChatOrgPage = () => {
 		if (currentUser !== null && userType === "organization") {
 			return <ChatOrg />;
 		} else {
-			return <NotOrg />;
+			return (
+				<Empty
+					actions={[
+						{
+							tip: "To view your chat, please",
+							button: "Sign in as Organization",
+							link: "/sign-in-organization",
+						},
+					]}
+				/>
+			);
 		}
 	}
 

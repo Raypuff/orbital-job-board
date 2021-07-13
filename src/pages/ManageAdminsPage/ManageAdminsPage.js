@@ -1,6 +1,6 @@
 import ManageAdmins from "../../components/ADMIN/ManageAdmins";
 import { useAuth } from "../../contexts/AuthContext";
-import { NotAdmin } from "./EmptyStates";
+import { Empty } from "../../components/EmptyStates/EmptyStates";
 
 const ManageAdminsPage = () => {
 	const { currentUser, userType } = useAuth();
@@ -9,7 +9,17 @@ const ManageAdminsPage = () => {
 		if (currentUser !== null && userType === "admin") {
 			return <ManageAdmins />;
 		} else {
-			return <NotAdmin />;
+			return (
+				<Empty
+					actions={[
+						{
+							tip: "To manage admins, please",
+							button: "Sign in as Administrator",
+							link: "/sign-in-admin",
+						},
+					]}
+				/>
+			);
 		}
 	}
 

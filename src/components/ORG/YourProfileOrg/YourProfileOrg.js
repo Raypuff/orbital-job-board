@@ -1,7 +1,7 @@
 import EditProfileOrg from "../EditProfileOrg";
 import { Card, Form, Button, Tab, Nav, Row, Col, Alert } from "react-bootstrap";
-import noImage from "../../../assets/noAvatar.png";
-import { LoadingProfile } from "./EmptyStates";
+import noAvatar from "../../../assets/emptyStates/noAvatar.png";
+import { Loading } from "../../EmptyStates/EmptyStates";
 import { useEffect, useState } from "react";
 import { ArrowLeft, EyeFill, EyeSlashFill } from "react-bootstrap-icons";
 import styles from "./YourProfileOrg.module.css";
@@ -96,7 +96,7 @@ const YourProfileOrg = () => {
 	}, [timer]);
 
 	if (loading) {
-		return <LoadingProfile />;
+		return <Loading>Loading your organization profile...</Loading>;
 	}
 
 	return (
@@ -172,7 +172,7 @@ const YourProfileOrg = () => {
 																	src={
 																		userData && userData.avatar
 																			? userData.avatar
-																			: noImage
+																			: noAvatar
 																	}
 																	className={styles.image}
 																	alt="organization avatar"
