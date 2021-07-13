@@ -42,6 +42,8 @@ const ChatOrg = () => {
 	const newMessageRef = useRef();
 	const messageBottomRef = useRef();
 
+	//API CALL FUNCTIONS
+	//Fetching chats
 	const getChats = async () => {
 		const chatData = await fetch(
 			process.env.REACT_APP_BACKEND_URL +
@@ -62,38 +64,14 @@ const ChatOrg = () => {
 				chat.subtitle = `You: ${chat.subtitle}`;
 			}
 		});
-		let newMessage = false;
-		for (let chat1 in processedChats) {
-			for (let chat2 in chats) {
-				if (chat1.id === chat2.id) {
-					if (chat1.date !== chat2.date) {
-						newMessage = true;
-					}
-				}
-			}
-		}
-		console.log(`hey boy: ${processedChats[0].date}`);
-		console.log(`hey girl: ${chats[0].date}`);
-		if (newMessage || chats.length === 0) {
-			setChats(processedChats);
+		//Repeatedly replace chats with new chats
+		if (loadingChats) {
 			setLoadingChats(false);
 		}
+		setChats(processedChats);
 		setChatUpdater(!chatUpdater);
 	};
-
-	//USEEFFECTS
-	useEffect(() => {
-		getChats();
-	});
-
-	const scrollToBottom = () => {
-		messageBottomRef.current?.scrollIntoView({
-			behavior: "smooth",
-			block: "nearest",
-			inline: "start",
-		});
-	};
-
+	//Fetching messages
 	const getMessages = async () => {
 		const messagesData = await fetch(
 			process.env.REACT_APP_BACKEND_URL + "/chats/messages/" + currentChat
@@ -110,6 +88,7 @@ const ChatOrg = () => {
 				msg.position = "left";
 			}
 		});
+		//Repeatedly replace messages and scroll down
 		if (currentMessages.length !== processedMessages.length) {
 			setCurrentMessages(processedMessages);
 			scrollToBottom();
@@ -117,12 +96,28 @@ const ChatOrg = () => {
 		setMessageUpdater(!messageUpdater);
 	};
 
+	//USEEFFECTS
+	//Chats are always being fetched and compared
+	useEffect(() => {
+		getChats();
+	});
+	//Messages are always being fetched and compared
 	useEffect(() => {
 		if (currentChat) {
 			getMessages();
 		}
 	});
 
+	//FUNCTIONS
+	//Scroll to the bottom of the messages
+	const scrollToBottom = () => {
+		messageBottomRef.current?.scrollIntoView({
+			behavior: "smooth",
+			block: "nearest",
+			inline: "start",
+		});
+	};
+	//Sending a new message
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		scrollToBottom();
@@ -139,8 +134,7 @@ const ChatOrg = () => {
 			text: newMessage,
 			date: newDate.toUTCString(),
 		};
-
-		//update the chat where chat.id === currentChat to have chat.lastDateTime = newMessage.dateTime and chat.lastContent = newMessage.message and unread +=1
+		//Update the chat where chat.id === currentChat to have chat.lastDateTime = newMessage.dateTime and chat.lastContent = newMessage.message and unread +=1
 		var updateChats = chats;
 		updateChats.forEach((chat) => {
 			if (chat.id === currentChatID) {
@@ -164,6 +158,7 @@ const ChatOrg = () => {
 		console.log("Successfully sent chat");
 	};
 
+	//LOADING
 	if (loadingChats) {
 		return <Loading>Loading your chats...</Loading>;
 	}
@@ -293,6 +288,7 @@ const ChatOrg = () => {
 
 export default ChatOrg;
 
+//CUSTOM HOOK TO GET WINDOW DIMENSIONS
 function getWindowDimensions() {
 	const { innerWidth: width, innerHeight: height } = window;
 	return {
