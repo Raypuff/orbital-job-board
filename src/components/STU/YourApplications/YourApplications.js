@@ -1,26 +1,44 @@
-import { Row, Col } from "react-bootstrap";
+//IMPORTS
+//React Hooks
 import { useEffect, useState } from "react";
+//Bootstrap
+import { Row, Col } from "react-bootstrap";
+//Components
 import YourApplicationsCard from "./YourApplicationsCard";
 import YourApplicationsFilter from "./YourApplicationsFilter";
 import { Loading, Empty, EmptyFilter } from "../../EmptyStates/EmptyStates";
-import styles from "./YourApplications.module.css";
+//Handling Form Inputs
 import { Formik } from "formik";
+//Contexts
 import { useAuth } from "../../../contexts/AuthContext";
 import { useJob } from "../../../contexts/JobContext";
+//CSS Modules
+import styles from "./YourApplications.module.css";
 
 const YourApplications = () => {
-  const [filterState, setFilterState] = useState({});
-  const { currentUser } = useAuth();
-  const { getYourApps, jobLoading } = useJob();
+  //USESTATES
+  //Application data
   const [apps, setApps] = useState([]);
+  //State of the filter
+  const [filterState, setFilterState] = useState({});
 
+  //CUSTOM HOOKS
+  //Current user data
+  const { currentUser } = useAuth();
+  //Import functions from job context to make API Calls to fetch jobs
+  const { getYourApps, jobLoading } = useJob();
+
+  //USEEFFECTS
   useEffect(() => {
     getYourApps(setApps, currentUser);
   }, []);
 
+  //LOADING
   if (jobLoading) {
     return <Loading>Loading your applications...</Loading>;
-  } else if (apps.length < 1) {
+  }
+  //NO JOBS
+  if (apps.length < 1) {
     return (
       <Empty
         title={"You do not have any applications available for viewing..."}
@@ -35,7 +53,8 @@ const YourApplications = () => {
     );
   }
 
-  //filter
+  //FUNCTIONS
+  //Filtering applications based on filterState
   var filteredApplications = apps;
   if (filterState.pending || filterState.accepted || filterState.rejected) {
     filteredApplications = filteredApplications
@@ -51,29 +70,28 @@ const YourApplications = () => {
   }
   filteredApplications = filteredApplications
     .sort(
-      //sort by recent applications first
+      //Sort by recent applications first
       (app1, app2) => new Date(app2.dateApplied) - new Date(app1.dateApplied)
     )
     .sort((app1, app2) => {
-      // sort by pending first
+      //Sort by pending first
       var app1State = app1.status === "Pending" ? 1 : 0;
       var app2State = app2.status === "Pending" ? 1 : 0;
       return app2State - app1State;
     });
-
-  // for formik
-  var initialValues = {
-    pending: false,
-    accepted: false,
-    rejected: false,
-  };
 
   return (
     <div className={styles.container}>
       <Row className={styles.rowContainer}>
         <Col md={3} className={styles.firstColContainer}>
           <div className={styles.filterContainer}>
-            <Formik initialValues={initialValues}>
+            <Formik
+              initialValues={{
+                pending: false,
+                accepted: false,
+                rejected: false,
+              }}
+            >
               {({ values, handleChange, handleBlur }) => (
                 <YourApplicationsFilter
                   values={values}

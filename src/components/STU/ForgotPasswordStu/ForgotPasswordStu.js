@@ -1,21 +1,33 @@
 //IMPORTS
 //React Hooks
 import { useRef, useState } from "react";
+//Bootstrap
 import { Card, Form, Button, Alert } from "react-bootstrap";
+//React Router
 import { Link } from "react-router-dom";
+//Auth Context
 import { useAuth } from "../../../contexts/AuthContext";
+//CSS Modules
 import styles from "./ForgotPasswordStu.module.css";
 
 const ForgotPasswordStu = () => {
-  const emailRef = useRef();
-  const { resetPassword } = useAuth();
-  const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
+  //USESTATES
+  //Loading submission of forgot password
   const [loading, setLoading] = useState(false);
+  //Success and error messages
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
+  //CUSTOM HOOKS
+  //Refs to refer to email field
+  const emailRef = useRef();
+  //Function for resetting password
+  const { resetPassword } = useAuth();
+
+  //FUNCTIONS
+  //Submit forgot password form
   async function handleSubmit(event) {
     event.preventDefault();
-
     try {
       setMessage("");
       setError("");

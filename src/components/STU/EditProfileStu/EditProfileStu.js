@@ -1,12 +1,18 @@
+//IMPORTS
+//React Hooks
 import { useEffect, useState } from "react";
-import { useAuth } from "../../../contexts/AuthContext";
+//Bootstrap
 import { Card, Button, Form, Alert, Spinner } from "react-bootstrap";
+import { ArrowLeft } from "react-bootstrap-icons";
+//Auth Context
+import { useAuth } from "../../../contexts/AuthContext";
 //Components
 import { Loading } from "../../EmptyStates/EmptyStates";
-import { ArrowLeft } from "react-bootstrap-icons";
-import styles from "./EditProfileStu.module.css";
+//Inline Form Validatio
 import { Formik } from "formik";
 import * as Yup from "yup";
+//CSS Modules
+import styles from "./EditProfileStu.module.css";
 
 const EditProfileStu = ({
   setEdit,
@@ -14,36 +20,44 @@ const EditProfileStu = ({
   setMobileActiveView,
   width,
 }) => {
+  //USESTATES
+  //Before submitting, left button says cancel; After submitting, says back
   const [leftButton, setLeftButton] = useState("Cancel");
   const [leftButtonVar, setLeftButtonVar] = useState("light");
-  const { currentUser } = useAuth();
+  //User details and loading
   const [userData, setUserData] = useState(null);
   const [userLoading, setUserLoading] = useState(true);
-
+  //Success messages, Error messages and if successful
   const [message, setMessage] = useState("");
-  const [successful, setSuccessful] = useState(false);
   const [error, setError] = useState("");
-  //upload image
+  const [successful, setSuccessful] = useState(false);
+
+  //Upload Iamge
   const [image, setImage] = useState();
   const [imageUrl, setImageUrl] = useState("");
   const [imageLoading, setImageLoading] = useState(false);
 
-  const getUser = async () => {
-    const response = await fetch(
-      process.env.REACT_APP_BACKEND_URL +
-        "/student-accounts/" +
-        currentUser.email
-    );
-    const jsonData = await response.json();
-    setUserData(jsonData);
-    setUserLoading(false);
-  };
+  //CUSTOM HOOKS
+  const { currentUser } = useAuth();
 
+  //USEEFFECTS
   useEffect(() => {
+    const getUser = async () => {
+      const response = await fetch(
+        process.env.REACT_APP_BACKEND_URL +
+          "/student-accounts/" +
+          currentUser.email
+      );
+      const jsonData = await response.json();
+      setUserData(jsonData);
+      setUserLoading(false);
+    };
+
     getUser();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  //FUNCTIONS
+  //Submit edit profile
   const mySubmit = (values, { setSubmitting, resetForm }) => {
     setSubmitting(true);
     handleSubmit(values);
@@ -64,7 +78,7 @@ const EditProfileStu = ({
       };
 
       try {
-        //signify start of update process
+        //Signify start of update process
 
         await fetch(
           process.env.REACT_APP_BACKEND_URL +
@@ -89,8 +103,7 @@ const EditProfileStu = ({
       }
     }
   };
-
-  //image uploader
+  //To upload image to cloudinary
   const uploadImage = async (event) => {
     setImageLoading(true);
     try {
@@ -122,11 +135,7 @@ const EditProfileStu = ({
   return (
     <>
       <Card bg="light" text="dark">
-        <Card.Header
-          as="h5"
-          className="d-flex align-items-center
-"
-        >
+        <Card.Header as="h5" className="d-flex align-items-center">
           {mobileActiveView && width < 576 && (
             <ArrowLeft
               style={{ marginRight: "1rem" }}
@@ -327,6 +336,7 @@ const EditProfileStu = ({
 
 export default EditProfileStu;
 
+//INLINE FORM VALIDATION
 const validationSchema = Yup.object().shape({
   name: Yup.string("Please enter your full name as indicated on your NRIC")
     .required("Please enter your full name as indicated on your NRIC")

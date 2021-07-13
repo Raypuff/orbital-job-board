@@ -1,50 +1,58 @@
+//IMPORTS
+//React Hooks
 import React, { useState } from "react";
+//Bootstrap
 import { Card, Button, Form, Alert } from "react-bootstrap";
+import { EyeFill, EyeSlashFill } from "react-bootstrap-icons";
+//React Router
 import { Link, useHistory } from "react-router-dom";
-import styles from "./SignUpStuForm.module.css";
+//Auth Context
 import { useAuth } from "../../../contexts/AuthContext";
+//Inline Form Validation
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { EyeFill, EyeSlashFill } from "react-bootstrap-icons";
+//CSS Modules
+import styles from "./SignUpStuForm.module.css";
 
 const SignUpStuForm = () => {
-  //importing methods from auth and store
-  const { signup, sendEmailVerification } = useAuth();
-
-  //importing history to redirect users after signing up
-  const history = useHistory();
-
-  //useStates for form
+  //USESTATES
+  //For error or successful message upon signing up
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
-
-  //useStates for showing password
+  //Toggle for showing password fields as text
   const [showPassword, setShowPassword] = useState(false);
   const [showCfmPassword, setShowCfmPassword] = useState(false);
 
+  //CUSTOM HOOKS
+  //Importing methods from auth and store
+  const { signup, sendEmailVerification } = useAuth();
+  //Importing history to redirect users after signing up
+  const history = useHistory();
+
+  //FUNCTIONS
+  //Submitting signing up form
   const mySubmit = (values, { setSubmitting, resetForm }) => {
     setSubmitting(true);
     handleSubmit(values);
 
     async function handleSubmit(values) {
-      //reset states of messages
+      //Reset states of messages
       setMessage("");
       setError("");
 
-      //check if passwords match and email is nus student email
+      //Check if passwords match and email is nus student email
       if (!values.email.includes("@u.nus.edu")) {
         return setError("Not an NUS student email");
       }
 
       try {
-        //firebase side methods
-        // alert("Sign up successful");
+        //Firebase side methods
         await signup(values.email, values.password, "student");
         setMessage("Sign up successful");
         history.push("/sign-up-success");
         await sendEmailVerification();
 
-        //send account to backend
+        //Send account to backend
         const id = values.email;
 
         const body = { id };
@@ -207,6 +215,7 @@ const SignUpStuForm = () => {
 
 export default SignUpStuForm;
 
+//FORM VALIDATION
 const validationSchema = Yup.object().shape({
   email: Yup.string()
     .email("Please enter a valid NUS email address")

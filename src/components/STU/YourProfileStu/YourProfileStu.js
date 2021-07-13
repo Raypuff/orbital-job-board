@@ -1,17 +1,51 @@
-import EditProfileStu from "../EditProfileStu";
-import { Card, Form, Button, Tab, Nav, Row, Col, Alert } from "react-bootstrap";
-import noAvatar from "../../../assets/emptyStates/noAvatar.png";
-import { BeneficiaryTags, SkillTags } from "../../../Constants";
-import { Loading } from "../../EmptyStates/EmptyStates";
+//IMPORTS
+//React Hooks
 import { useEffect, useState } from "react";
-import styles from "./YourProfileStu.module.css";
-import { useAuth } from "../../../contexts/AuthContext";
+//Bootstrap
+import { Card, Form, Button, Tab, Nav, Row, Col, Alert } from "react-bootstrap";
 import { ArrowLeft, EyeFill, EyeSlashFill } from "react-bootstrap-icons";
+//Components
+import EditProfileStu from "../EditProfileStu";
+import { Loading } from "../../EmptyStates/EmptyStates";
+//Image
+import noAvatar from "../../../assets/emptyStates/noAvatar.png";
+//Constants
+import { BeneficiaryTags, SkillTags } from "../../../Constants";
+//Auth Context
+import { useAuth } from "../../../contexts/AuthContext";
+//Inline Form Validation
 import { Formik } from "formik";
 import * as Yup from "yup";
+//CSS Modules
+import styles from "./YourProfileStu.module.css";
 
 const YourProfileStu = () => {
+  //USESTATES
+  //Whether to render editprofile or not
   const [edit, setEdit] = useState(false);
+  //If still retrieving user details
+  const [loading, setLoading] = useState(true);
+  const [userData, setUserData] = useState(null);
+  //Mobile view for profile, true shows right side details, false shows left side tabs
+  const [mobileActiveView, setMobileActiveView] = useState(false);
+  //Success and error messages upon changing password
+  const [successPassword, setSuccessPassword] = useState();
+  const [errorPassword, setErrorPassword] = useState();
+  //Toggle for showing passwords as text
+  const [showOldPw, setShowOldPw] = useState(false);
+  const [showNewPw, setShowNewPw] = useState(false);
+  const [showCfmPw, setShowCfmPw] = useState(false);
+  //Timer for resending verification emails
+  const [timer, setTimer] = useState(60);
+  const [startTimer, setStartTimer] = useState(false);
+  //Which subscriptions have been selected
+  const [subscriptions, setSubscriptions] = useState({});
+  //Success and error messages upon submitting subscriptions
+  const [successSubscriptions, setSuccessSubscriptions] = useState();
+  const [errorSubscriptions, setErrorSubscriptions] = useState();
+
+  //CUSTOM HOOKS
+  //Retrieving functions from auth context
   const {
     currentUser,
     changePassword,
@@ -19,59 +53,58 @@ const YourProfileStu = () => {
     userVerified,
     sendEmailVerification,
   } = useAuth();
-  const [loading, setLoading] = useState(true);
-  const [userData, setUserData] = useState(null);
   const { width } = useWindowDimensions();
-  const [mobileActiveView, setMobileActiveView] = useState(false);
-  const [successPassword, setSuccessPassword] = useState();
-  const [errorPassword, setErrorPassword] = useState();
-  const [showOldPw, setShowOldPw] = useState(false);
-  const [showNewPw, setShowNewPw] = useState(false);
-  const [showCfmPw, setShowCfmPw] = useState(false);
-  const [timer, setTimer] = useState(60);
-  const [startTimer, setStartTimer] = useState(false);
-  const [subscriptions, setSubscriptions] = useState({});
-  const [successSubscriptions, setSuccessSubscriptions] = useState();
-  const [errorSubscriptions, setErrorSubscriptions] = useState();
 
+  //USEEFFECTS
+  //Retrieve User Details
+  useEffect(() => {
+    const getUser = async () => {
+      const response = await fetch(
+        process.env.REACT_APP_BACKEND_URL +
+          "/student-accounts/" +
+          currentUser.email
+      );
+      const jsonData = await response.json();
+      jsonData.subscriptions = ["Animals", "WebDev"]; // remove this once subscriptions is implemented in userData
+      setUserData(jsonData);
+      let subs = {};
+      console.log(jsonData.subscriptions);
+      for (let i = 0; i < BeneficiaryTags.length; i++) {
+        if (jsonData.subscriptions.includes(BeneficiaryTags[i])) {
+          subs[BeneficiaryTags[i]] = true;
+        } else {
+          subs[BeneficiaryTags[i]] = false;
+        }
+      }
+      for (let j = 0; j < SkillTags.length; j++) {
+        if (jsonData.subscriptions.includes(SkillTags[j])) {
+          subs[SkillTags[j]] = true;
+        } else {
+          subs[SkillTags[j]] = false;
+        }
+      }
+      setSubscriptions(subs);
+      setLoading(false);
+    };
+    getUser();
+  }, [edit]);
+  //Set timer for resending verification email
+  useEffect(() => {
+    if (startTimer && timer > 0) {
+      console.log(timer);
+      setTimeout(() => setTimer(timer - 1), 1000);
+    } else if (timer === 0) {
+      setTimer(60);
+      setStartTimer(false);
+    }
+  }, [timer]);
+
+  //FUNCTIONS
+  //Turn on edit mode
   function onEdit() {
     setEdit(true);
   }
-
-  const getUser = async () => {
-    const response = await fetch(
-      process.env.REACT_APP_BACKEND_URL +
-        "/student-accounts/" +
-        currentUser.email
-    );
-    const jsonData = await response.json();
-    jsonData.subscriptions = ["Animals", "WebDev"]; // remove this once subscriptions is implemented in userData
-    setUserData(jsonData);
-    let subs = {};
-    console.log(jsonData.subscriptions);
-    for (let i = 0; i < BeneficiaryTags.length; i++) {
-      if (jsonData.subscriptions.includes(BeneficiaryTags[i])) {
-        subs[BeneficiaryTags[i]] = true;
-      } else {
-        subs[BeneficiaryTags[i]] = false;
-      }
-    }
-    for (let j = 0; j < SkillTags.length; j++) {
-      if (jsonData.subscriptions.includes(SkillTags[j])) {
-        subs[SkillTags[j]] = true;
-      } else {
-        subs[SkillTags[j]] = false;
-      }
-    }
-    setSubscriptions(subs);
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    getUser();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [edit]);
-
+  //Submit password change
   const changePasswordSubmit = (values, { setSubmitting, resetForm }) => {
     setSubmitting(true);
     handleSubmit(values);
@@ -98,24 +131,14 @@ const YourProfileStu = () => {
       console.log(errorPassword);
     }
   };
-
+  //Resend email verification
   const resendVerification = () => {
     setStartTimer(true);
     sendEmailVerification();
     console.log("sent");
     setTimer(timer - 1);
   };
-
-  useEffect(() => {
-    if (startTimer && timer > 0) {
-      console.log(timer);
-      setTimeout(() => setTimer(timer - 1), 1000);
-    } else if (timer === 0) {
-      setTimer(60);
-      setStartTimer(false);
-    }
-  }, [timer]);
-
+  //Save subscriptions
   const saveSubscriptions = (values, { setSubmitting }) => {
     setSubmitting(true);
     handleSubmit(values);
@@ -135,6 +158,7 @@ const YourProfileStu = () => {
     }
   };
 
+  //LOADING
   if (loading) {
     return <Loading>Loading your profile...</Loading>;
   }
@@ -143,6 +167,7 @@ const YourProfileStu = () => {
     <div className={styles.container}>
       <Tab.Container defaultActiveKey={width < 576 ? "" : "first"}>
         <Row>
+          {/* Left columns to select view */}
           <Col sm={3} className={mobileActiveView ? styles.displayNone : ""}>
             <Nav variant="pills" className="flex-column">
               <Nav.Item>
@@ -189,11 +214,14 @@ const YourProfileStu = () => {
               </Nav.Item>
             </Nav>
           </Col>
+          {/* Right columns to show details */}
           {(width > 577 || (mobileActiveView && width < 576)) && (
             <Col sm={9}>
               <Tab.Content>
+                {/* Profile details */}
                 <Tab.Pane eventKey="first">
                   {edit ? (
+                    // Edit mode
                     <EditProfileStu
                       setEdit={setEdit}
                       mobileActiveView={mobileActiveView}
@@ -201,6 +229,7 @@ const YourProfileStu = () => {
                       width={width}
                     />
                   ) : (
+                    //Non-edit mode
                     <>
                       <Card bg="light" text="dark">
                         <Card.Header
@@ -346,6 +375,7 @@ const YourProfileStu = () => {
                     </>
                   )}
                 </Tab.Pane>
+                {/* Change password */}
                 <Tab.Pane eventKey="second">
                   <div className="d-flex justify-content-center align-items-center">
                     <Card bg="light" text="dark" style={{ width: "23rem" }}>
@@ -501,6 +531,7 @@ const YourProfileStu = () => {
                     </Card>
                   </div>
                 </Tab.Pane>
+                {/* Subscriptions tab */}
                 <Tab.Pane eventKey="third">
                   <>
                     <Card bg="light" text="dark">
@@ -620,6 +651,7 @@ const YourProfileStu = () => {
 
 export default YourProfileStu;
 
+//FOR RETRIEVING WINDOW SIZE
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window;
   return {
@@ -645,6 +677,7 @@ function useWindowDimensions() {
   return windowDimensions;
 }
 
+//VALIDATION SCHEMA FOR INLINE FORM VALIDATION
 const validationSchema = Yup.object().shape({
   passwordOld: Yup.string().required("Please enter your old password"),
   passwordNew: Yup.string()
