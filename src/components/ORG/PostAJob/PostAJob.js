@@ -18,7 +18,7 @@ import { useDist } from "../../../contexts/DistContext";
 import { useJob } from "../../../contexts/JobContext";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { SelectBeneficiaryTags, SelectSkillTags } from "../../../assets/Tags";
+import { SelectBeneficiaryTags, SelectSkillTags } from "../../../Constants";
 import Select from "react-select";
 
 var uniqid = require("uniqid");

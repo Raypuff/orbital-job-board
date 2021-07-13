@@ -1,56 +1,58 @@
+//IMPORTS
+//React Hooks
 import { useState, useEffect } from "react";
+//Bootstrap
+import { Row, Col, Alert, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { PencilSquare } from "react-bootstrap-icons";
+//Auth Context
 import { useAuth } from "../../../contexts/AuthContext";
+//Components
 import EditJobsModal from "./EditJobsModal";
 import ConfirmModal from "./ConfirmModal";
-import {
-	Row,
-	Col,
-	Accordion,
-	Card,
-	Form,
-	Button,
-	Alert,
-	Spinner,
-	OverlayTrigger,
-	Tooltip,
-} from "react-bootstrap";
 import { Loading, Empty } from "../../EmptyStates/EmptyStates";
-import { PencilSquare } from "react-bootstrap-icons";
+//Images
 import noImage from "../../../assets/emptyStates/noImage.png";
+//CSS Modules
 import styles from "./EditJobs.module.css";
 
 const EditJobs = ({ id }) => {
-	const { currentUser, userType } = useAuth();
+	//USESTATES
+	//Stores job details
 	const [job, setJob] = useState({});
+	//If the job is still being fetched
 	const [loading, setLoading] = useState(true);
+	//The image source - to be replaced by job.imageUrl but if there's error it'll be the placeholder image
 	const [imageSrc, setImageSrc] = useState("");
+	//Show the modal for editing each section of the job
 	const [showEditModal, setShowEditModal] = useState(false);
+	//Show the modal for confirming all the edits
 	const [showConfirmModal, setShowConfirmModal] = useState(false);
+	//Determines what the edit modal shows
 	const [editMode, setEditMode] = useState("");
 
-	const getData = async () => {
-		const response = await fetch(
-			process.env.REACT_APP_BACKEND_URL + "/jobs/" + id
-		);
-		const jsonData = await response.json();
-		// const response2 = await fetch(
-		//   process.env.REACT_APP_BACKEND_URL +
-		//     "/organization-accounts/" +
-		//     jsonData.orgID
-		// );
-		// const jsonData2 = await response2.json();
-		setJob(jsonData);
-		setImageSrc(jsonData.imageUrl);
-		setLoading(false);
-	};
+	//CUSTOM HOOKS
+	//Retrieves the current user details
+	const { currentUser } = useAuth();
 
+	//USEEFFECTS
+	//Fetching job data
 	useEffect(() => {
+		const getData = async () => {
+			const response = await fetch(
+				process.env.REACT_APP_BACKEND_URL + "/jobs/" + id
+			);
+			const jsonData = await response.json();
+			setJob(jsonData);
+			setImageSrc(jsonData.imageUrl);
+			setLoading(false);
+		};
 		getData();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	//DESTRUCTURING JOB INTO PROPERTIES
 	const {
 		orgID,
-		status,
 		title,
 		beneficiaries,
 		skills,
@@ -68,19 +70,15 @@ const EditJobs = ({ id }) => {
 		flexiShifts,
 		adShift,
 		addInfo,
-		imageUrl,
 		closingDate,
 		noClosingDate,
 		pocName,
 		pocNo,
 		pocEmail,
-		dateCreated,
 		datePosted,
-		applicants,
-		lat,
-		lng,
 	} = job;
 
+	//DICTIONARY TO BIND PROPERTY TO A TOOLTIP NAME
 	const tooltipDict = {
 		image: "image",
 		title: "title",
@@ -94,33 +92,38 @@ const EditJobs = ({ id }) => {
 		contact: "contact information",
 	};
 
-	const EditButton = ({ mode }) => (
-		<OverlayTrigger
-			placement="bottom"
-			overlay={(props) => (
-				<Tooltip id="tooltip" {...props}>
-					Edit {tooltipDict[mode]}
-				</Tooltip>
-			)}
-		>
-			<PencilSquare
-				style={{
-					fontSize: "1rem",
-					color: "#193f76",
-					cursor: "pointer",
-					marginLeft: "auto",
-				}}
-				onClick={() => {
-					setShowEditModal(true);
-					setEditMode(mode);
-				}}
-			/>
-		</OverlayTrigger>
-	);
+	//EDIT BUTTON COMPONENT WITH TOOLTIP THAT OPENS MODAL AND SETS EDIT MODE
+	const EditButton = ({ mode }) => {
+		return (
+			<OverlayTrigger
+				placement="bottom"
+				overlay={(props) => (
+					<Tooltip id="tooltip" {...props}>
+						Edit {tooltipDict[mode]}
+					</Tooltip>
+				)}
+			>
+				<PencilSquare
+					style={{
+						fontSize: "1rem",
+						color: "#193f76",
+						cursor: "pointer",
+						marginLeft: "auto",
+					}}
+					onClick={() => {
+						setShowEditModal(true);
+						setEditMode(mode);
+					}}
+				/>
+			</OverlayTrigger>
+		);
+	};
 
+	//LOADIING
 	if (loading) {
 		return <Loading>Loading edit jobs...</Loading>;
 	}
+	//NOT YOUR JOB
 	if (orgID !== currentUser.email) {
 		return (
 			<Empty
@@ -148,7 +151,7 @@ const EditJobs = ({ id }) => {
 					<Row>
 						<Col md={2}>
 							<div className={styles.imageCol}>
-								<div className="d-flex">
+								<div className={styles.editImageContainer}>
 									<EditButton mode="image" />
 								</div>
 								<img
@@ -162,7 +165,7 @@ const EditJobs = ({ id }) => {
 						<Col md={6}>
 							<div className={styles.detailCol}>
 								<div className={styles.detailContainer}>
-									<h4 className="d-flex align-items-center">
+									<h4 className={styles.checkboxContainer}>
 										{title}
 										<EditButton mode="title" />
 									</h4>
@@ -174,7 +177,7 @@ const EditJobs = ({ id }) => {
 										</h7>
 									)}
 
-									<div className="d-flex align-items-center">
+									<div className={styles.checkboxContainer}>
 										{noClosingDate
 											? "No closing date for applications"
 											: `Applications close on: ${new Date(
@@ -185,7 +188,7 @@ const EditJobs = ({ id }) => {
 									<hr />
 									<h5>About</h5>
 									<div className={styles.lineWrapper}>
-										<div className="d-flex align-items-center">
+										<div className={styles.checkboxContainer}>
 											Beneficiaries:
 											<EditButton mode="beneficiaries" />
 											<br />{" "}
@@ -199,7 +202,7 @@ const EditJobs = ({ id }) => {
 										})}
 									</div>
 									<div className={styles.lineWrapper}>
-										<div className="d-flex align-items-center">
+										<div className={styles.checkboxContainer}>
 											Skills:
 											<EditButton mode="skills" />
 											<br />{" "}
@@ -212,7 +215,7 @@ const EditJobs = ({ id }) => {
 											}
 										})}
 									</div>
-									<div className="d-flex">
+									<div className={styles.editImageContainer}>
 										Purpose:
 										<EditButton mode="purpose" />
 										<br />{" "}
@@ -220,7 +223,7 @@ const EditJobs = ({ id }) => {
 									<h7>{purpose}</h7>
 								</div>
 								<div className={styles.detailContainer}>
-									<h5 className="d-flex align-items-center">
+									<h5 className={styles.checkboxContainer}>
 										Location
 										<EditButton mode="location" />
 									</h5>
@@ -255,7 +258,7 @@ const EditJobs = ({ id }) => {
 									</div>
 								</div>
 								<div className={styles.detailContainer}>
-									<h5 className="d-flex align-items-center">
+									<h5 className={styles.checkboxContainer}>
 										Commitment period
 										<EditButton mode="commitment" />
 									</h5>
@@ -328,7 +331,7 @@ const EditJobs = ({ id }) => {
 									</div>
 								</div>
 								<div>
-									<h5 className="d-flex align-items-center">
+									<h5 className={styles.checkboxContainer}>
 										Additional information
 										<EditButton mode="addInfo" />
 									</h5>
@@ -339,7 +342,7 @@ const EditJobs = ({ id }) => {
 						<Col md={4}>
 							<div className={styles.orgCol}>
 								<div className={styles.orgContainer}>
-									<h5 className="d-flex align-items-center">
+									<h5 className={styles.checkboxContainer}>
 										Contact us
 										<EditButton mode="contact" />
 									</h5>
@@ -377,6 +380,7 @@ const EditJobs = ({ id }) => {
 					</Row>
 				</div>
 			</div>
+			{/* Modals */}
 			<EditJobsModal
 				job={job}
 				setJob={setJob}
@@ -397,6 +401,7 @@ const EditJobs = ({ id }) => {
 
 export default EditJobs;
 
+//FUNCTION FOR CONVERTING TIME FORMAT
 function tConvert(time) {
 	// Check correct time format and split into components
 	time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [

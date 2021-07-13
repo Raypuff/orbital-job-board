@@ -1,7 +1,7 @@
 import EditProfileStu from "../EditProfileStu";
 import { Card, Form, Button, Tab, Nav, Row, Col, Alert } from "react-bootstrap";
 import noAvatar from "../../../assets/emptyStates/noAvatar.png";
-import { BeneficiaryTags, SkillTags } from "../../../assets/Tags";
+import { BeneficiaryTags, SkillTags } from "../../../Constants";
 import { Loading } from "../../EmptyStates/EmptyStates";
 import { useEffect, useState } from "react";
 import styles from "./YourProfileStu.module.css";

@@ -11,7 +11,7 @@ import JobBoardFilter from "./JobBoardFilter";
 import JobBoardCard from "./JobBoardCard";
 import { Loading, Empty, EmptyFilter } from "../../EmptyStates/EmptyStates";
 //Beneficiaries and Skills
-import { BeneficiaryTags, SkillTags } from "../../../assets/Tags";
+import { BeneficiaryTags, SkillTags } from "../../../Constants";
 //React Router
 import { Link } from "react-router-dom";
 //Form Validation
