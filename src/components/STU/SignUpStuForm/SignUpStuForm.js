@@ -9,7 +9,7 @@ import { EyeFill, EyeSlashFill } from "react-bootstrap-icons";
 
 const SignUpStuForm = () => {
   //importing methods from auth and store
-  const { signup, logout, sendEmailVerification } = useAuth();
+  const { signup, sendEmailVerification } = useAuth();
 
   //importing history to redirect users after signing up
   const history = useHistory();
@@ -48,14 +48,11 @@ const SignUpStuForm = () => {
         const id = values.email;
 
         const body = { id };
-        const response = await fetch(
-          process.env.REACT_APP_BACKEND_URL + "/student-accounts",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body),
-          }
-        );
+        await fetch(process.env.REACT_APP_BACKEND_URL + "/student-accounts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
         resetForm();
         setSubmitting(false);
       } catch (err) {

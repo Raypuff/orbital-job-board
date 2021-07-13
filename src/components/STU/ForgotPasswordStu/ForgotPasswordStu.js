@@ -1,4 +1,6 @@
-import React, { useRef, useState } from "react";
+//IMPORTS
+//React Hooks
+import { useRef, useState } from "react";
 import { Card, Form, Button, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
@@ -6,7 +8,7 @@ import styles from "./ForgotPasswordStu.module.css";
 
 const ForgotPasswordStu = () => {
   const emailRef = useRef();
-  const { resetPassword, currentUser } = useAuth();
+  const { resetPassword } = useAuth();
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);

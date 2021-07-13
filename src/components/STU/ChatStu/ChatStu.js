@@ -9,22 +9,35 @@ import styles from "./ChatStu.module.css";
 var uniqid = require("uniqid");
 
 const ChatStu = () => {
-  const { currentUser } = useAuth();
-  const [currentChat, setCurrentChat] = useState(); //currentChat is the ID of the current open chat
-  const [chats, setChats] = useState([]); //chats store all MY chats
-  const [currentMessages, setCurrentMessages] = useState([]); //currentMessages store all messages of current chat
+  //USESTATES
+  //Current chat indicates the current open chat
+  const [currentChat, setCurrentChat] = useState("");
+  //Chats store all chats
+  const [chats, setChats] = useState([]);
+  //CurrentMessages stores messages of current open chat
+  const [currentMessages, setCurrentMessages] = useState([]);
+  //Indicate if the chat is loading
   const [loadingChats, setLoadingChats] = useState(true);
+  //Only used in mobile - Show messages when true and chats when false
   const [mobileViewMessages, setMobileViewMessages] = useState(false);
+  //Search acts as a filter for chats
   const [search, setSearch] = useState("");
+
   //UseStates to be toggled back and forth to repeatedly call the useEffect to check for new messages
   const [chatUpdater, setChatUpdater] = useState(true);
   const [messageUpdater, setMessageUpdater] = useState(true);
 
+  //CUSTOM HOOKS
+  //Current user details from auth context
+  const { currentUser } = useAuth();
+  //Retrieve window dimensions
   const { width } = useWindowDimensions();
+  //Refs for retrieving new message and scrolling to bottom
   const newMessageRef = useRef();
   const messageBottomRef = useRef();
 
-  //fetch chats where chat.stuID === currentUser.email
+  //API CALL FUNCTIONS
+  //Fetching Chats
   const getChats = async () => {
     const chatData = await fetch(
       `${process.env.REACT_APP_BACKEND_URL}/chats/all-chats/student/${currentUser.email}`
@@ -56,7 +69,7 @@ const ChatStu = () => {
       inline: "start",
     });
   };
-
+  //Fetching Messages
   const getMessages = async () => {
     const messagesData = await fetch(
       process.env.REACT_APP_BACKEND_URL + "/chats/messages/" + currentChat
@@ -92,6 +105,8 @@ const ChatStu = () => {
     }
   });
 
+  //FUNCTIONS
+  //Scroll to the bottom of the messages
   const handleSubmit = async (event) => {
     event.preventDefault();
     scrollToBottom();
@@ -108,8 +123,7 @@ const ChatStu = () => {
       text: newMessage,
       date: newDate.toUTCString(),
     };
-
-    //update the chat where chat.id === currentChat to have chat.lastDateTime = newMessage.dateTime and chat.lastContent = newMessage.message and unread +=1
+    //Update the chat where chat.id === currentChat to have chat.lastDateTime = newMessage.dateTime and chat.lastContent = newMessage.message and unread +=1
     chats.forEach((chat) => {
       if (chat.id === currentChatID) {
         chat.subtitle = `You: ${newMessage}`;
@@ -132,6 +146,7 @@ const ChatStu = () => {
     console.log("Successfully sent chat");
   };
 
+  //LOADING
   if (loadingChats) {
     return <Loading>Loading your chats...</Loading>;
   }
@@ -245,6 +260,7 @@ const ChatStu = () => {
       </div>
     );
   } else {
+    //NO CHATS
     return (
       <Empty
         title={"You do not have any chats yet"}
@@ -262,6 +278,7 @@ const ChatStu = () => {
 
 export default ChatStu;
 
+//CUSTOM HOOK TO GET WINDOW DIMENSIONS
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window;
   return {
@@ -286,11 +303,3 @@ function useWindowDimensions() {
 
   return windowDimensions;
 }
-
-// function arrayEquals(a, b) {
-// 	return (
-// 		a.length === b.length
-// 		&&
-// 		a.every((val, index) => JSON.stringify(val) === JSON.stringify(b[index]))
-// 	);
-// }

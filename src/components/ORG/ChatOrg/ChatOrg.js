@@ -271,6 +271,7 @@ const ChatOrg = () => {
       </div>
     );
   } else {
+    //NO CHATS
     return (
       <Empty
         title={"You do not have any chats yet"}
