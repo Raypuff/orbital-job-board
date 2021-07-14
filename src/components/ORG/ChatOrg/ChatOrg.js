@@ -64,6 +64,11 @@ const ChatOrg = () => {
         chat.subtitle = `You: ${chat.subtitle}`;
       }
     });
+    processedChats.forEach((chat) => {
+      if (!(chat.title && chat.title.length > 0)) {
+        chat.title = "<No name>";
+      }
+    });
     //Repeatedly replace chats with new chats
     if (loadingChats) {
       setLoadingChats(false);
@@ -214,7 +219,9 @@ const ChatOrg = () => {
                 <ArrowLeft onClick={() => setMobileViewMessages(false)} />
               )}
               {chats && currentChat
-                ? chats.find((chat) => chat.id === currentChat).title
+                ? `${chats.find((chat) => chat.id === currentChat).title} (${
+                    chats.find((chat) => chat.id === currentChat).stuID
+                  })`
                 : ""}
             </div>
             <Card

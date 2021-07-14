@@ -62,6 +62,11 @@ const ChatStu = () => {
         chat.subtitle = `You: ${chat.subtitle}`;
       }
     });
+    processedChats.forEach((chat) => {
+      if (!(chat.title && chat.title.length > 0)) {
+        chat.title = "<No name>";
+      }
+    });
     if (loadingChats) {
       setLoadingChats(false);
     }
@@ -209,7 +214,9 @@ const ChatStu = () => {
                 <ArrowLeft onClick={() => setMobileViewMessages(false)} />
               )}
               {chats && currentChat
-                ? chats.find((chat) => chat.id === currentChat).title
+                ? `${chats.find((chat) => chat.id === currentChat).title} (${
+                    chats.find((chat) => chat.id === currentChat).orgID
+                  })`
                 : ""}
             </div>
             <Card
