@@ -1,8 +1,40 @@
 .email {
-	color: #193f76;
+  color: #193f76;
 }
 
 .activeNavLink {
-	background-color: #eeeeee;
-	border-bottom: 2px solid #ef7c00;
+  background-color: #eeeeee;
+  border-bottom: 2px solid #ef7c00;
+}
+
+.badge {
+  position: relative;
+  left: 1.45rem;
+  bottom: 0.6rem;
+}
+
+.mobileBadge {
+  position: relative;
+  right: 6.35rem;
+  bottom: 0.6rem;
+}
+
+.clearNotifs {
+  display: flex;
+  justify-content: center;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+}
+
+.clearNotifs:hover {
+  background-color: #e9ecef;
+  color: red;
+}
+
+.notifHeader {
+  display: flex;
+  justify-content: center;
+  min-width: 20rem;
 }

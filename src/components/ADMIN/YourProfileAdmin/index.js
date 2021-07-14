@@ -1,2 +1,2 @@
-import YourProfileOrg from "./YourProfileOrg";
-export default YourProfileOrg;
+import YourProfileAdmin from "./YourProfileAdmin";
+export default YourProfileAdmin;

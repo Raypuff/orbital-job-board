@@ -1,16 +1,45 @@
-import EditProfileOrg from "../EditProfileOrg";
-import { Card, Form, Button, Tab, Nav, Row, Col, Alert } from "react-bootstrap";
-import noAvatar from "../../../assets/emptyStates/noAvatar.png";
-import { Loading } from "../../EmptyStates/EmptyStates";
+//IMPORTS
+//React Hooks
 import { useEffect, useState } from "react";
+//Bootstrap
+import { Card, Form, Button, Tab, Nav, Row, Col, Alert } from "react-bootstrap";
 import { ArrowLeft, EyeFill, EyeSlashFill } from "react-bootstrap-icons";
-import styles from "./YourProfileOrg.module.css";
+//Images
+import noAvatar from "../../../assets/emptyStates/noAvatar.png";
+//Components
+import EditProfileOrg from "../EditProfileOrg";
+import { Loading } from "../../EmptyStates/EmptyStates";
+//Inline Form Validation
 import * as Yup from "yup";
 import { Formik } from "formik";
+//Auth Context
 import { useAuth } from "../../../contexts/AuthContext";
+//CSS Modules
+import styles from "./YourProfileOrg.module.css";
 
 const YourProfileOrg = () => {
+  //USESTATES
+  //Edit mode
   const [edit, setEdit] = useState(false);
+  //If still loading user data
+  const [loading, setLoading] = useState(true);
+  //User data
+  const [userData, setUserData] = useState(null);
+  //Only for mobile - View left pane and right pane separately
+  const [mobileActiveView, setMobileActiveView] = useState(false);
+  //Success and error message for changing password
+  const [successPassword, setSuccessPassword] = useState();
+  const [errorPassword, setErrorPassword] = useState();
+  //Toggle view of passwords
+  const [showOldPw, setShowOldPw] = useState(false);
+  const [showNewPw, setShowNewPw] = useState(false);
+  const [showCfmPw, setShowCfmPw] = useState(false);
+  //Timer for resending verification email
+  const [startTimer, setStartTimer] = useState(false);
+  const [timer, setTimer] = useState(60);
+
+  //CUSTOM HOOKS
+  //Retrieve functions for user data
   const {
     currentUser,
     changePassword,
@@ -18,38 +47,42 @@ const YourProfileOrg = () => {
     userVerified,
     sendEmailVerification,
   } = useAuth();
-  const [loading, setLoading] = useState(true);
-  const [userData, setUserData] = useState(null);
+  //To retrieve the window width
   const { width } = useWindowDimensions();
-  const [mobileActiveView, setMobileActiveView] = useState(false);
-  const [successPassword, setSuccessPassword] = useState();
-  const [errorPassword, setErrorPassword] = useState();
-  const [showOldPw, setShowOldPw] = useState(false);
-  const [showNewPw, setShowNewPw] = useState(false);
-  const [showCfmPw, setShowCfmPw] = useState(false);
-  const [startTimer, setStartTimer] = useState(false);
-  const [timer, setTimer] = useState(60);
 
+  //USEEFFECTS
+  //To retrieve user data
+  useEffect(() => {
+    const getUser = async () => {
+      const response = await fetch(
+        process.env.REACT_APP_BACKEND_URL +
+          "/organization-accounts/" +
+          currentUser.email,
+        {}
+      );
+      const jsonData = await response.json();
+      setUserData(jsonData);
+      setLoading(false);
+    };
+    getUser();
+  }, [edit]);
+  //For countdown for resend verification email
+  useEffect(() => {
+    if (startTimer && timer > 0) {
+      console.log(timer);
+      setTimeout(() => setTimer(timer - 1), 1000);
+    } else if (timer === 0) {
+      setTimer(60);
+      setStartTimer(false);
+    }
+  }, [timer]);
+
+  //FUNCTIONS
+  //Turn on edit mode
   function onEdit() {
     setEdit(true);
   }
-
-  const getUser = async () => {
-    const response = await fetch(
-      process.env.REACT_APP_BACKEND_URL +
-        "/organization-accounts/" +
-        currentUser.email,
-      {}
-    );
-    const jsonData = await response.json();
-    setUserData(jsonData);
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    getUser();
-  }, [edit]);
-
+  //Submit password change form
   const changePasswordSubmit = (values, { setSubmitting, resetForm }) => {
     setSubmitting(true);
     handleSubmit(values);
@@ -77,7 +110,7 @@ const YourProfileOrg = () => {
       console.log(errorPassword);
     }
   };
-
+  //Resend verification email
   const resendVerification = () => {
     setStartTimer(true);
     sendEmailVerification();
@@ -85,16 +118,7 @@ const YourProfileOrg = () => {
     setTimer(timer - 1);
   };
 
-  useEffect(() => {
-    if (startTimer && timer > 0) {
-      console.log(timer);
-      setTimeout(() => setTimer(timer - 1), 1000);
-    } else if (timer === 0) {
-      setTimer(60);
-      setStartTimer(false);
-    }
-  }, [timer]);
-
+  //LOADING
   if (loading) {
     return <Loading>Loading your organization profile...</Loading>;
   }
@@ -104,7 +128,7 @@ const YourProfileOrg = () => {
       <Tab.Container defaultActiveKey={width < 576 ? "" : "first"}>
         <Row>
           <Col sm={3} className={mobileActiveView ? styles.displayNone : ""}>
-            <Nav variant="pills" className="flex-column">
+            <Nav variant="pills" className={styles.pillsContainer}>
               <Nav.Item>
                 <Nav.Link
                   eventKey="first"
@@ -138,6 +162,7 @@ const YourProfileOrg = () => {
           {(width > 577 || (mobileActiveView && width < 576)) && (
             <Col sm={9}>
               <Tab.Content>
+                {/* Profile Details */}
                 <Tab.Pane eventKey="first">
                   {edit ? (
                     <EditProfileOrg
@@ -149,10 +174,7 @@ const YourProfileOrg = () => {
                   ) : (
                     <>
                       <Card bg="light" text="dark">
-                        <Card.Header
-                          as="h5"
-                          className="d-flex align-items-center"
-                        >
+                        <Card.Header as="h5" className={styles.cardHeader}>
                           {mobileActiveView && width < 576 && (
                             <ArrowLeft
                               style={{
@@ -277,11 +299,8 @@ const YourProfileOrg = () => {
                           </Form>
                         </Card.Body>
                       </Card>
-                      <Card className="mt-4">
-                        <Card.Header
-                          as="h5"
-                          className="d-flex align-items-center"
-                        >
+                      <Card className={styles.cardTop}>
+                        <Card.Header as="h5" className={styles.cardHeader}>
                           {mobileActiveView && width < 576 && (
                             <ArrowLeft
                               style={{ marginRight: "1rem" }}
@@ -324,13 +343,15 @@ const YourProfileOrg = () => {
                     </>
                   )}
                 </Tab.Pane>
+                {/* Change password */}
                 <Tab.Pane eventKey="second">
-                  <div className="d-flex justify-content-center align-items-center">
-                    <Card bg="light" text="dark" style={{ width: "23rem" }}>
-                      <Card.Header
-                        as="h5"
-                        className="d-flex align-items-center"
-                      >
+                  <div className={styles.tabContainer}>
+                    <Card
+                      bg="light"
+                      text="dark"
+                      className={styles.cardContainer}
+                    >
+                      <Card.Header as="h5" className={styles.cardHeader}>
                         {mobileActiveView && width < 576 && (
                           <ArrowLeft
                             style={{
@@ -453,7 +474,7 @@ const YourProfileOrg = () => {
                                   {errors.passwordConfirm}
                                 </Form.Control.Feedback>
                               </Form.Group>
-                              <div className="d-flex justify-content-center align-items-center">
+                              <div className={styles.tabContainer}>
                                 <Button
                                   variant="primary"
                                   type="submit"
@@ -490,6 +511,7 @@ const YourProfileOrg = () => {
 
 export default YourProfileOrg;
 
+//TO GET WINDOW SIZE
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window;
   return {
@@ -502,7 +524,6 @@ function useWindowDimensions() {
   const [windowDimensions, setWindowDimensions] = useState(
     getWindowDimensions()
   );
-
   useEffect(() => {
     function handleResize() {
       setWindowDimensions(getWindowDimensions());
@@ -515,6 +536,7 @@ function useWindowDimensions() {
   return windowDimensions;
 }
 
+//VALIDATION SCHEMA
 const validationSchema = Yup.object().shape({
   passwordOld: Yup.string().required("Please enter your old password"),
   passwordNew: Yup.string()

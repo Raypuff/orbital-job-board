@@ -1,0 +1,44 @@
+.formBG {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.formContainer {
+	max-width: 30rem;
+	padding: 2rem;
+	flex-basis: 30rem;
+}
+
+.buttonContainer {
+	display: flex;
+	flex-direction: row;
+}
+
+.rightButton {
+	margin-left: auto;
+}
+
+.displayNone {
+	display: none;
+}
+
+.display {
+	display: inherit;
+}
+
+.imageContainer {
+	display: flex;
+	/* justify-content: center; */
+	margin-bottom: 1rem;
+}
+
+.image {
+	max-width: 25%;
+}
+
+@media screen and (max-width: 576px) {
+	.image {
+		max-width: 50%;
+	}
+}

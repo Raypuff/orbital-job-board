@@ -10,8 +10,8 @@ import { Row, Col, Pagination, Alert } from "react-bootstrap";
 import JobBoardFilter from "./JobBoardFilter";
 import JobBoardCard from "./JobBoardCard";
 import { Loading, Empty, EmptyFilter } from "../../EmptyStates/EmptyStates";
-//Beneficiaries and Skills
-import { BeneficiaryTags, SkillTags } from "../../../Constants";
+//Constans
+import { BeneficiaryTags, SkillTags, jobsPerPage } from "../../../Constants";
 //React Router
 import { Link } from "react-router-dom";
 //Form Validation
@@ -144,7 +144,6 @@ const JobBoard = () => {
   };
 
   //CALCULATING PAGINATION SYSTEM
-  const jobsPerPage = 3;
   var numberOfPages = Math.ceil(filteredJobs.length / jobsPerPage);
   let pages = [
     <Pagination.First key={-1} onClick={() => setActivePage(1)} />,
