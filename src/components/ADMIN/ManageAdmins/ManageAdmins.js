@@ -2,8 +2,23 @@
 //React Hooks
 import { useEffect, useState } from "react";
 //Bootstrap
-import { Card, Form, Button, Tab, Nav, Row, Col, Alert } from "react-bootstrap";
+import {
+  Card,
+  Form,
+  Button,
+  Tab,
+  Nav,
+  Row,
+  Col,
+  Alert,
+  Modal,
+} from "react-bootstrap";
 import { ArrowLeft, EyeFill, EyeSlashFill } from "react-bootstrap-icons";
+//Components
+import ConfirmModal from "./ConfirmModal";
+import { Loading } from "../../EmptyStates/EmptyStates";
+//Auth Context
+import { useAuth } from "../../../contexts/AuthContext";
 //Inline Form Validation
 import * as Yup from "yup";
 import { Formik } from "formik";
@@ -12,6 +27,12 @@ import styles from "./ManageAdmins.module.css";
 
 const ManageAdmins = () => {
   //USESTATES
+  //Current User Data
+  const [userData, setUserData] = useState({});
+  const [userLoading, setUserLoading] = useState(true);
+  //Storing all admins
+  const [admins, setAdmins] = useState([]);
+  const [adminsLoading, setAdminsLoading] = useState(true);
   //Only for mobile - View left pane and right pane separately
   const [mobileActiveView, setMobileActiveView] = useState(false);
   //Success and error message for creating new admin
@@ -19,10 +40,59 @@ const ManageAdmins = () => {
   const [errorNewAdmin, setErrorNewAdmin] = useState();
   //Toggle view of passwords
   const [showPw, setShowPw] = useState(false);
+  //Show modal for confirmation and admin details
+  const [showModal, setShowModal] = useState(false);
+  const [selectedAdmin, setSelectedAdmin] = useState({});
 
   //CUSTOM HOOKS
   //To retrieve the window width
+  const { currentUser } = useAuth();
   const { width } = useWindowDimensions();
+
+  //API CALLS
+  const getUserData = async () => {
+    //hey zech do stuff here -> use currentUser details to fetch userData
+    const dummyUserData = {
+      type: "Master",
+    };
+    setUserData(dummyUserData);
+    setUserLoading(false);
+  };
+  const getAdmins = async () => {
+    //hey zech do stuff here -> retrieve all admins
+    const dummyAdmins = [
+      {
+        id: "admin@gmail.com",
+        name: "Loh Jia Ming, Rayner",
+        email: "admin@gmail.com",
+        type: "Master",
+      },
+      {
+        id: "zech@gmail.com",
+        name: "Zechary Au Jun Wen",
+        email: "zech@gmail.com",
+        type: "Regular",
+      },
+      {
+        id: "test@gmail.com",
+        name: "",
+        email: "test@gmail.com",
+        type: "Regular",
+      },
+    ];
+    setAdmins(dummyAdmins);
+    setAdminsLoading(false);
+  };
+
+  //USEEFFECTS
+  //Retrieving user data
+  useEffect(() => {
+    getUserData();
+  }, []);
+  //Retrieving admin data
+  useEffect(() => {
+    getAdmins();
+  }, [showModal]);
 
   //FUNCTIONS
   //Create new admin
@@ -33,6 +103,7 @@ const ManageAdmins = () => {
       setSuccessNewAdmin("");
       setErrorNewAdmin("");
       try {
+        //hey zech do stuff here -> Create new admin
         console.log(`new admin: ${values}`);
         setSuccessNewAdmin("Created new admin!");
         resetForm();
@@ -44,209 +115,335 @@ const ManageAdmins = () => {
     }
   };
 
+  //LOADING
+  if (userLoading || adminsLoading) {
+    return <Loading>Loading manage admins...</Loading>;
+  }
+
   return (
-    <div className={styles.container}>
-      <Tab.Container defaultActiveKey={width < 576 ? "" : "first"}>
-        <Row>
-          <Col sm={3} className={mobileActiveView ? styles.displayNone : ""}>
-            <Nav variant="pills" className={styles.pillsContainer}>
-              <Nav.Item>
-                <Nav.Link
-                  eventKey="first"
-                  className={styles.navLink}
-                  active={width < 576 ? false : null}
-                  onClick={() => {
-                    if (width < 576) {
-                      setMobileActiveView(true);
-                    }
-                  }}
-                >
-                  All admins
-                </Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link
-                  eventKey="second"
-                  className={styles.navLink}
-                  active={width < 576 ? false : null}
-                  onClick={() => {
-                    if (width < 576) {
-                      setMobileActiveView(true);
-                    }
-                  }}
-                >
-                  Add new admin
-                </Nav.Link>
-              </Nav.Item>
-            </Nav>
-          </Col>
-          {(width > 577 || (mobileActiveView && width < 576)) && (
-            <Col sm={9}>
-              <Tab.Content>
-                {/* All Admins */}
-                <Tab.Pane eventKey="first">
-                  <>
-                    <Card bg="light" text="dark">
-                      <Card.Header as="h5" className={styles.cardHeader}>
-                        {mobileActiveView && width < 576 && (
-                          <ArrowLeft
-                            style={{
-                              marginRight: "1rem",
-                            }}
-                            onClick={() => setMobileActiveView(false)}
-                          />
-                        )}
-                        Master Admins
-                      </Card.Header>
-                      <Card.Body></Card.Body>
-                    </Card>
-                    <Card className={styles.cardTop}>
-                      <Card.Header as="h5" className={styles.cardHeader}>
-                        {mobileActiveView && width < 576 && (
-                          <ArrowLeft
-                            style={{ marginRight: "1rem" }}
-                            onClick={() => setMobileActiveView(false)}
-                          />
-                        )}
-                        Regular Admins
-                      </Card.Header>
-                      <Card.Body></Card.Body>
-                    </Card>
-                  </>
-                </Tab.Pane>
-                {/* Add new admin */}
-                <Tab.Pane eventKey="second">
-                  <div className={styles.tabContainer}>
-                    <Card
-                      bg="light"
-                      text="dark"
-                      className={styles.cardContainer}
+    <>
+      <div className={styles.container}>
+        <Tab.Container defaultActiveKey={width < 576 ? "" : "first"}>
+          <Row>
+            <Col sm={3} className={mobileActiveView ? styles.displayNone : ""}>
+              <Nav variant="pills" className={styles.pillsContainer}>
+                <Nav.Item>
+                  <Nav.Link
+                    eventKey="first"
+                    className={styles.navLink}
+                    active={width < 576 ? false : null}
+                    onClick={() => {
+                      if (width < 576) {
+                        setMobileActiveView(true);
+                      }
+                    }}
+                  >
+                    All admins
+                  </Nav.Link>
+                </Nav.Item>
+                {userData.type === "Master" && (
+                  <Nav.Item>
+                    <Nav.Link
+                      eventKey="second"
+                      className={styles.navLink}
+                      active={width < 576 ? false : null}
+                      onClick={() => {
+                        if (width < 576) {
+                          setMobileActiveView(true);
+                        }
+                      }}
                     >
-                      <Card.Header as="h5" className={styles.cardHeader}>
-                        {mobileActiveView && width < 576 && (
-                          <ArrowLeft
-                            style={{
-                              marginRight: "1rem",
-                            }}
-                            onClick={() => setMobileActiveView(false)}
-                          />
-                        )}
-                        Add new admin
-                      </Card.Header>
-                      <Card.Body>
-                        <Formik
-                          initialValues={{
-                            email: "",
-                            password: "",
-                            type: "",
-                          }}
-                          validationSchema={validationSchema}
-                          onSubmit={createNewAdmin}
-                        >
-                          {({
-                            values,
-                            touched,
-                            errors,
-                            handleChange,
-                            handleBlur,
-                            handleSubmit,
-                            isSubmitting,
-                          }) => (
-                            <Form onSubmit={handleSubmit}>
-                              <Form.Group>
-                                <Form.Label>Email address</Form.Label>
-                                <Form.Control
-                                  name="email"
-                                  type="email"
-                                  value={values.email}
-                                  onChange={handleChange}
-                                  onBlur={handleBlur}
-                                  isValid={touched.email && !errors.email}
-                                  isInvalid={touched.email && errors.email}
-                                />
-
-                                <Form.Control.Feedback type="invalid">
-                                  {errors.email}
-                                </Form.Control.Feedback>
-                              </Form.Group>
-                              <Form.Group>
-                                <Form.Label>Password</Form.Label>
-                                <Form.Control
-                                  name="password"
-                                  type={showPw ? "text" : "password"}
-                                  value={values.password}
-                                  onChange={handleChange}
-                                  onBlur={handleBlur}
-                                  isValid={touched.password && !errors.password}
-                                  isInvalid={
-                                    touched.password && errors.password
-                                  }
-                                />
-                                <div
-                                  className={
-                                    touched.password
-                                      ? styles.eyeError
-                                      : styles.eye
-                                  }
-                                  onClick={() => setShowPw(!showPw)}
-                                >
-                                  {showPw ? <EyeSlashFill /> : <EyeFill />}
-                                </div>
-
-                                <Form.Control.Feedback type="invalid">
-                                  {errors.password}
-                                </Form.Control.Feedback>
-                              </Form.Group>
-                              <Form.Group>
-                                <Form.Label>Type</Form.Label>
-                                <Form.Control
-                                  name="type"
-                                  as="select"
-                                  value={values.type}
-                                  onChange={handleChange}
-                                  onBlur={handleBlur}
-                                  isValid={touched.type && !errors.type}
-                                  isInvalid={touched.type && errors.type}
-                                >
-                                  <option disabed selected value="" />
-                                  <option>Regular</option>
-                                  <option>Master</option>
-                                </Form.Control>
-                                <Form.Control.Feedback type="invalid">
-                                  {errors.type}
-                                </Form.Control.Feedback>
-                              </Form.Group>
-                              <div className={styles.tabContainer}>
-                                <Button
-                                  variant="primary"
-                                  type="submit"
-                                  disabled={isSubmitting || successNewAdmin}
-                                >
-                                  {isSubmitting
-                                    ? "Submitting..."
-                                    : "Create admin"}
-                                </Button>
-                              </div>
-                            </Form>
-                          )}
-                        </Formik>
-                        <Card.Text />
-                        {successNewAdmin && (
-                          <Alert variant="success">{successNewAdmin}</Alert>
-                        )}
-                        {errorNewAdmin && (
-                          <Alert variant="danger">{errorNewAdmin}</Alert>
-                        )}
-                      </Card.Body>
-                    </Card>
-                  </div>
-                </Tab.Pane>
-              </Tab.Content>
+                      Add new admin
+                    </Nav.Link>
+                  </Nav.Item>
+                )}
+              </Nav>
             </Col>
-          )}
-        </Row>
-      </Tab.Container>
-    </div>
+            {(width > 577 || (mobileActiveView && width < 576)) && (
+              <Col sm={9}>
+                <Tab.Content>
+                  {/* All Admins */}
+                  <Tab.Pane eventKey="first">
+                    <>
+                      <Card bg="light" text="dark">
+                        <Card.Header as="h5" className={styles.cardHeader}>
+                          {mobileActiveView && width < 576 && (
+                            <ArrowLeft
+                              style={{
+                                marginRight: "1rem",
+                              }}
+                              onClick={() => setMobileActiveView(false)}
+                            />
+                          )}
+                          Master Admins
+                        </Card.Header>
+                        <Card.Body>
+                          <div className={styles.adminCol}>
+                            {admins
+                              .filter((admin) => admin.type === "Master")
+                              .map((admin) => {
+                                return (
+                                  <div
+                                    key={admin.id}
+                                    className={styles.adminRow}
+                                  >
+                                    <div className={styles.adminName}>
+                                      {admin.name && admin.name.length > 0
+                                        ? admin.name
+                                        : "No name indicated"}{" "}
+                                      ({admin.email})
+                                    </div>
+                                    {userData.type === "Master" && (
+                                      <div className={styles.buttonRow}>
+                                        <Button
+                                          variant="warning"
+                                          className={styles.button}
+                                          onClick={() => {
+                                            setSelectedAdmin({
+                                              id: admin.id,
+                                              name: admin.name,
+                                              action: "demote",
+                                            });
+                                            setShowModal(true);
+                                          }}
+                                        >
+                                          Demote
+                                        </Button>
+                                        <Button
+                                          variant="danger"
+                                          className={styles.button}
+                                          onClick={() => {
+                                            setSelectedAdmin({
+                                              id: admin.id,
+                                              name: admin.name,
+                                              action: "remove",
+                                            });
+                                            setShowModal(true);
+                                          }}
+                                        >
+                                          Remove as admin
+                                        </Button>
+                                      </div>
+                                    )}
+                                  </div>
+                                );
+                              })}
+                          </div>
+                        </Card.Body>
+                      </Card>
+                      <Card className={styles.cardTop}>
+                        <Card.Header as="h5" className={styles.cardHeader}>
+                          {mobileActiveView && width < 576 && (
+                            <ArrowLeft
+                              style={{ marginRight: "1rem" }}
+                              onClick={() => setMobileActiveView(false)}
+                            />
+                          )}
+                          Regular Admins
+                        </Card.Header>
+                        <Card.Body>
+                          <div className={styles.adminCol}>
+                            {admins
+                              .filter((admin) => admin.type === "Regular")
+                              .map((admin) => {
+                                return (
+                                  <div
+                                    key={admin.id}
+                                    className={styles.adminRow}
+                                  >
+                                    <div className={styles.adminName}>
+                                      {admin.name && admin.name.length > 0
+                                        ? admin.name
+                                        : "No name indicated"}{" "}
+                                      ({admin.email})
+                                    </div>
+                                    {userData.type === "Master" && (
+                                      <div className={styles.buttonRow}>
+                                        <Button
+                                          variant="warning"
+                                          className={styles.button}
+                                          onClick={() => {
+                                            setSelectedAdmin({
+                                              id: admin.id,
+                                              name: admin.name,
+                                              action: "promote",
+                                            });
+                                            setShowModal(true);
+                                          }}
+                                        >
+                                          Promote
+                                        </Button>
+                                        <Button
+                                          variant="danger"
+                                          className={styles.button}
+                                          onClick={() => {
+                                            setSelectedAdmin({
+                                              id: admin.id,
+                                              name: admin.name,
+                                              action: "remove",
+                                            });
+                                            setShowModal(true);
+                                          }}
+                                        >
+                                          Remove as admin
+                                        </Button>
+                                      </div>
+                                    )}
+                                  </div>
+                                );
+                              })}
+                          </div>
+                        </Card.Body>
+                      </Card>
+                    </>
+                  </Tab.Pane>
+                  {/* Add new admin */}
+                  <Tab.Pane eventKey="second">
+                    <div className={styles.tabContainer}>
+                      <Card
+                        bg="light"
+                        text="dark"
+                        className={styles.cardContainer}
+                      >
+                        <Card.Header as="h5" className={styles.cardHeader}>
+                          {mobileActiveView && width < 576 && (
+                            <ArrowLeft
+                              style={{
+                                marginRight: "1rem",
+                              }}
+                              onClick={() => setMobileActiveView(false)}
+                            />
+                          )}
+                          Add new admin
+                        </Card.Header>
+                        <Card.Body>
+                          <Formik
+                            initialValues={{
+                              email: "",
+                              password: "",
+                              type: "",
+                            }}
+                            validationSchema={validationSchema}
+                            onSubmit={createNewAdmin}
+                          >
+                            {({
+                              values,
+                              touched,
+                              errors,
+                              handleChange,
+                              handleBlur,
+                              handleSubmit,
+                              isSubmitting,
+                            }) => (
+                              <Form onSubmit={handleSubmit}>
+                                <Form.Group>
+                                  <Form.Label>Email address</Form.Label>
+                                  <Form.Control
+                                    name="email"
+                                    type="email"
+                                    value={values.email}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    isValid={touched.email && !errors.email}
+                                    isInvalid={touched.email && errors.email}
+                                  />
+
+                                  <Form.Control.Feedback type="invalid">
+                                    {errors.email}
+                                  </Form.Control.Feedback>
+                                </Form.Group>
+                                <Form.Group>
+                                  <Form.Label>Password</Form.Label>
+                                  <Form.Control
+                                    name="password"
+                                    type={showPw ? "text" : "password"}
+                                    value={values.password}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    isValid={
+                                      touched.password && !errors.password
+                                    }
+                                    isInvalid={
+                                      touched.password && errors.password
+                                    }
+                                  />
+                                  <div
+                                    className={
+                                      touched.password
+                                        ? styles.eyeError
+                                        : styles.eye
+                                    }
+                                    onClick={() => setShowPw(!showPw)}
+                                  >
+                                    {showPw ? <EyeSlashFill /> : <EyeFill />}
+                                  </div>
+
+                                  <Form.Control.Feedback type="invalid">
+                                    {errors.password}
+                                  </Form.Control.Feedback>
+                                </Form.Group>
+                                <Form.Group>
+                                  <Form.Label>Type</Form.Label>
+                                  <Form.Control
+                                    name="type"
+                                    as="select"
+                                    value={values.type}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    isValid={touched.type && !errors.type}
+                                    isInvalid={touched.type && errors.type}
+                                  >
+                                    <option disabed selected value="" />
+                                    <option>Regular</option>
+                                    <option>Master</option>
+                                  </Form.Control>
+                                  <Form.Control.Feedback type="invalid">
+                                    {errors.type}
+                                  </Form.Control.Feedback>
+                                </Form.Group>
+                                <div className={styles.tabContainer}>
+                                  <Button
+                                    variant="primary"
+                                    type="submit"
+                                    disabled={isSubmitting || successNewAdmin}
+                                  >
+                                    {isSubmitting
+                                      ? "Submitting..."
+                                      : "Create admin"}
+                                  </Button>
+                                </div>
+                              </Form>
+                            )}
+                          </Formik>
+                          <Card.Text />
+                          {successNewAdmin && (
+                            <Alert variant="success">{successNewAdmin}</Alert>
+                          )}
+                          {errorNewAdmin && (
+                            <Alert variant="danger">{errorNewAdmin}</Alert>
+                          )}
+                        </Card.Body>
+                      </Card>
+                    </div>
+                  </Tab.Pane>
+                </Tab.Content>
+              </Col>
+            )}
+          </Row>
+        </Tab.Container>
+      </div>
+      <ConfirmModal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        adminID={selectedAdmin.id}
+        adminName={
+          selectedAdmin.name && selectedAdmin.name.length > 0
+            ? selectedAdmin.name
+            : selectedAdmin.id
+        }
+        action={selectedAdmin.action}
+      />
+    </>
   );
 };
 
