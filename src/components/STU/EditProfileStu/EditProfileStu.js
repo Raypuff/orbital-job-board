@@ -20,6 +20,9 @@ const EditProfileStu = ({
   setMobileActiveView,
   width,
 }) => {
+  //CUSTOM HOOKS
+  const { currentUser, updateProfilePic } = useAuth();
+
   //USESTATES
   //Before submitting, left button says cancel; After submitting, says back
   const [leftButton, setLeftButton] = useState("Cancel");
@@ -33,12 +36,9 @@ const EditProfileStu = ({
   const [successful, setSuccessful] = useState(false);
 
   //Upload Iamge
-  const [image, setImage] = useState();
+  const [image, setImage] = useState(currentUser.photoURL);
   const [imageUrl, setImageUrl] = useState("");
   const [imageLoading, setImageLoading] = useState(false);
-
-  //CUSTOM HOOKS
-  const { currentUser } = useAuth();
 
   //USEEFFECTS
   useEffect(() => {
@@ -121,6 +121,7 @@ const EditProfileStu = ({
       const file = await res.json();
       setImage(file.secure_url);
       setImageUrl(file.secure_url);
+      await updateProfilePic(file.secure_url);
     } catch (err) {
       console.log(err);
     }
