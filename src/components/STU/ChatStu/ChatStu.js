@@ -2,7 +2,7 @@
 //React Hooks
 import { useState, useEffect, useRef } from "react";
 //Bootstrap
-import { Row, Col, Card, Form, Button } from "react-bootstrap";
+import { Row, Col, Card, Form, Button, Spinner } from "react-bootstrap";
 import { ArrowLeft } from "react-bootstrap-icons";
 //Auth Contexts
 import { useAuth } from "../../../contexts/AuthContext";
@@ -22,7 +22,7 @@ const ChatStu = () => {
   //Chats store all chats
   const [chats, setChats] = useState([]);
   //CurrentMessages stores messages of current open chat
-  const [currentMessages, setCurrentMessages] = useState([]);
+  const [currentMessages, setCurrentMessages] = useState({});
   //Indicate if the chat is loading
   const [loadingChats, setLoadingChats] = useState(true);
   //Only used in mobile - Show messages when true and chats when false
@@ -98,8 +98,21 @@ const ChatStu = () => {
         msg.position = "left";
       }
     });
-    if (currentMessages.length !== processedMessages.length) {
-      setCurrentMessages(processedMessages);
+    console.log(
+      `1: ${
+        currentMessages[currentChat] && currentMessages[currentChat].length
+      }`
+    );
+    console.log(`2: ${processedMessages.length}`);
+    if (
+      !currentMessages[currentChat] ||
+      (currentMessages[currentChat] &&
+        currentMessages[currentChat].length !== processedMessages.length)
+    ) {
+      setCurrentMessages({
+        ...currentMessages,
+        [currentChat]: processedMessages,
+      });
       scrollToBottom();
     }
     setMessageUpdater(!messageUpdater);
@@ -196,6 +209,7 @@ const ChatStu = () => {
                   )}
                 onClick={(chat) => {
                   setCurrentChat(chat.id);
+                  getMessages();
                   if (width < 992) {
                     setMobileViewMessages(true);
                   }
@@ -228,22 +242,29 @@ const ChatStu = () => {
             >
               {!currentChat ? (
                 <SystemMessage>Select a chat to start messaging</SystemMessage>
-              ) : currentChat && currentMessages ? (
-                currentMessages.length === 0 ? (
+              ) : currentChat ? (
+                currentMessages[currentChat] &&
+                currentMessages[currentChat].length === 0 ? (
                   <SystemMessage>
                     You have no messages with this organization yet. If you have
                     a question, send one now!
                   </SystemMessage>
-                ) : (
+                ) : currentMessages[currentChat] ? (
                   <>
                     <MessageList
                       className="message-list"
-                      dataSource={currentMessages
-                        .filter((msg) => msg.chatID === currentChat)
-                        .sort((msg1, msg2) => msg1.date - msg2.date)}
+                      dataSource={currentMessages[currentChat].sort(
+                        (msg1, msg2) => msg1.date - msg2.date
+                      )}
                     />
                     <div ref={messageBottomRef} />
                   </>
+                ) : (
+                  <div className={styles.loadingMessages}>
+                    <Spinner animation="border" role="status" variant="primary">
+                      <span className="sr-only">Loading messages...</span>
+                    </Spinner>
+                  </div>
                 )
               ) : (
                 <div className="h-100 d-flex justify-content-center align-items-center">

@@ -89,3 +89,10 @@
 .displayNone {
   display: none;
 }
+
+.loadingMessages {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+}
