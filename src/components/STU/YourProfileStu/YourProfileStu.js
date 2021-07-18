@@ -253,9 +253,7 @@ const YourProfileStu = () => {
                               <div className={styles.imageContainer}>
                                 <img
                                   src={
-                                    currentUser.photoURL
-                                      ? currentUser.photoURL
-                                      : noAvatar
+                                    userData.avatar ? userData.avatar : noAvatar
                                   }
                                   className={styles.image}
                                   alt="student avatar"

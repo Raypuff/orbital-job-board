@@ -35,7 +35,7 @@ const EditProfileOrg = ({
   const [error, setError] = useState("");
   const [successful, setSuccessful] = useState(false);
   //For uploading images
-  const [image, setImage] = useState(currentUser.photoURL);
+  const [image, setImage] = useState();
   const [imageUrl, setImageUrl] = useState("");
   const [imageLoading, setImageLoading] = useState(false);
 
@@ -71,7 +71,6 @@ const EditProfileOrg = ({
 
       //Creating new object to send to backend
       const newAccountInfo = {
-        avatar: imageUrl,
         type: values.type,
         name: values.name,
         uen: values.uen,
@@ -124,7 +123,15 @@ const EditProfileOrg = ({
       const file = await res.json();
       setImage(file.secure_url);
       setImageUrl(file.secure_url);
-      await updateProfilePic(file.secure_url);
+
+      await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/organization-accounts/avatar/${currentUser.email}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ photoURL: file.secure_url }),
+        }
+      );
     } catch (err) {
       console.log(err);
     }

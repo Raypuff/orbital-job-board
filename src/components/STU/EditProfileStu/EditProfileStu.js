@@ -21,7 +21,7 @@ const EditProfileStu = ({
   width,
 }) => {
   //CUSTOM HOOKS
-  const { currentUser, updateProfilePic } = useAuth();
+  const { currentUser } = useAuth();
 
   //USESTATES
   //Before submitting, left button says cancel; After submitting, says back
@@ -36,7 +36,7 @@ const EditProfileStu = ({
   const [successful, setSuccessful] = useState(false);
 
   //Upload Iamge
-  const [image, setImage] = useState(currentUser.photoURL);
+  const [image, setImage] = useState();
   const [imageUrl, setImageUrl] = useState("");
   const [imageLoading, setImageLoading] = useState(false);
 
@@ -69,7 +69,6 @@ const EditProfileStu = ({
       setError("");
 
       const newAccountInfo = {
-        avatar: imageUrl,
         name: values.name,
         dob: values.dob,
         contactNo: values.contactNo,
@@ -121,7 +120,15 @@ const EditProfileStu = ({
       const file = await res.json();
       setImage(file.secure_url);
       setImageUrl(file.secure_url);
-      await updateProfilePic(file.secure_url);
+
+      await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/student-accounts/avatar/${currentUser.email}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ photoURL: file.secure_url }),
+        }
+      );
     } catch (err) {
       console.log(err);
     }
