@@ -60,10 +60,7 @@ export const JobDetailsApplyModal = ({
 
   //CUSTOM HOOKS
   const { currentUser, userType, userVerified } = useAuth();
-<<<<<<< HEAD
   const { sendEmail } = useEmail();
-=======
->>>>>>> 3d5acc397ace8a752a81251fb805d184f1ce49de
 
   //USEEFFECTS
   //Retrieving student details
