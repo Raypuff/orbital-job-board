@@ -2,7 +2,7 @@
 //React Hooks
 import { useState, useEffect } from "react";
 //Bootstrap
-import { Accordion, Card, Dropdown, Form } from "react-bootstrap";
+import { Accordion, Card, Dropdown, Form, Button } from "react-bootstrap";
 import { ChevronDown, Sliders } from "react-bootstrap-icons";
 //CSS Modules
 import styles from "./JobBoardFilter.module.css";
@@ -11,6 +11,7 @@ const JobBoardFilter = ({
   values,
   handleChange,
   handleBlur,
+  setFieldValue,
   BeneficiaryTags,
   SkillTags,
   setFilterState,
@@ -73,7 +74,27 @@ const JobBoardFilter = ({
               </Form.Group>
               <Dropdown.Divider />
               {/* FILTER BY */}
-              <Card.Title>Filter by</Card.Title>
+              <Card.Title>
+                <div className={styles.filterRow}>
+                  Filter by
+                  <Button
+                    size="sm"
+                    className="ml-auto"
+                    onClick={() => {
+                      setFieldValue("longTerm", false);
+                      setFieldValue("adHoc", false);
+                      setFieldValue("physical", false);
+                      setFieldValue("virtual", false);
+                      BeneficiaryTags.forEach((tag) =>
+                        setFieldValue(tag, false)
+                      );
+                      SkillTags.forEach((tag) => setFieldValue(tag, false));
+                    }}
+                  >
+                    Clear all
+                  </Button>
+                </div>
+              </Card.Title>
               {/* Type */}
               <Accordion defaultActiveKey="0">
                 <Accordion.Toggle
