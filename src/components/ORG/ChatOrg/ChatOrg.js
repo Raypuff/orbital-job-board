@@ -57,9 +57,6 @@ const ChatOrg = () => {
       chat.date = new Date(chat.date);
     });
     processedChats.forEach((chat) => {
-      chat.avatar = chat.stuAvatar;
-    });
-    processedChats.forEach((chat) => {
       if (currentUser.email === chat.fromID) {
         chat.subtitle = `You: ${chat.subtitle}`;
       }
