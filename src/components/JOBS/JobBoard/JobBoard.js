@@ -228,11 +228,12 @@ const JobBoard = () => {
         <Col md={4} lg={3} className={styles.firstColContainer}>
           <div className={styles.filterContainer}>
             <Formik initialValues={initialValues}>
-              {({ values, handleChange, handleBlur }) => (
+              {({ values, handleChange, handleBlur, setFieldValue }) => (
                 <JobBoardFilter
                   values={values}
                   handleChange={handleChange}
                   handleBlur={handleBlur}
+                  setFieldValue={setFieldValue}
                   BeneficiaryTags={BeneficiaryTags}
                   SkillTags={SkillTags}
                   setFilterState={setFilterState}
