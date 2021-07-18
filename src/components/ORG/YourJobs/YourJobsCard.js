@@ -421,8 +421,10 @@ const YourJobsCard = ({
             <Modal.Title>Export applicants</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            Select the types of applicants that you would like to export into a
-            CSV spreadsheet
+            <div className="text-center mb-4">
+              Select the types of applicants that you would like to export into
+              a CSV spreadsheet
+            </div>
             <div className="d-flex flex-column align-items-center">
               <Form.Group controlId="formAccepted">
                 <Form.Check

@@ -53,6 +53,7 @@ const ManageAdmins = () => {
   const getUserData = async () => {
     //hey zech do stuff here -> use currentUser details to fetch userData
     const dummyUserData = {
+      email: "admin@gmail.com",
       type: "Master",
     };
     setUserData(dummyUserData);
@@ -193,38 +194,42 @@ const ManageAdmins = () => {
                                         : "No name indicated"}{" "}
                                       ({admin.email})
                                     </div>
-                                    {userData.type === "Master" && (
-                                      <div className={styles.buttonRow}>
-                                        <Button
-                                          variant="warning"
-                                          className={styles.button}
-                                          onClick={() => {
-                                            setSelectedAdmin({
-                                              id: admin.id,
-                                              name: admin.name,
-                                              action: "demote",
-                                            });
-                                            setShowModal(true);
-                                          }}
-                                        >
-                                          Demote
-                                        </Button>
-                                        <Button
-                                          variant="danger"
-                                          className={styles.button}
-                                          onClick={() => {
-                                            setSelectedAdmin({
-                                              id: admin.id,
-                                              name: admin.name,
-                                              action: "remove",
-                                            });
-                                            setShowModal(true);
-                                          }}
-                                        >
-                                          Remove as admin
-                                        </Button>
-                                      </div>
-                                    )}
+                                    {userData.email !== admin.id &&
+                                      admins.filter(
+                                        (admin) => admin.type === "Master"
+                                      ).length > 1 &&
+                                      userData.type === "Master" && (
+                                        <div className={styles.buttonRow}>
+                                          <Button
+                                            variant="warning"
+                                            className={styles.button}
+                                            onClick={() => {
+                                              setSelectedAdmin({
+                                                id: admin.id,
+                                                name: admin.name,
+                                                action: "demote",
+                                              });
+                                              setShowModal(true);
+                                            }}
+                                          >
+                                            Demote
+                                          </Button>
+                                          <Button
+                                            variant="danger"
+                                            className={styles.button}
+                                            onClick={() => {
+                                              setSelectedAdmin({
+                                                id: admin.id,
+                                                name: admin.name,
+                                                action: "remove",
+                                              });
+                                              setShowModal(true);
+                                            }}
+                                          >
+                                            Remove as admin
+                                          </Button>
+                                        </div>
+                                      )}
                                   </div>
                                 );
                               })}
@@ -257,38 +262,39 @@ const ManageAdmins = () => {
                                         : "No name indicated"}{" "}
                                       ({admin.email})
                                     </div>
-                                    {userData.type === "Master" && (
-                                      <div className={styles.buttonRow}>
-                                        <Button
-                                          variant="warning"
-                                          className={styles.button}
-                                          onClick={() => {
-                                            setSelectedAdmin({
-                                              id: admin.id,
-                                              name: admin.name,
-                                              action: "promote",
-                                            });
-                                            setShowModal(true);
-                                          }}
-                                        >
-                                          Promote
-                                        </Button>
-                                        <Button
-                                          variant="danger"
-                                          className={styles.button}
-                                          onClick={() => {
-                                            setSelectedAdmin({
-                                              id: admin.id,
-                                              name: admin.name,
-                                              action: "remove",
-                                            });
-                                            setShowModal(true);
-                                          }}
-                                        >
-                                          Remove as admin
-                                        </Button>
-                                      </div>
-                                    )}
+                                    {userData.email !== admin.id &&
+                                      userData.type === "Master" && (
+                                        <div className={styles.buttonRow}>
+                                          <Button
+                                            variant="warning"
+                                            className={styles.button}
+                                            onClick={() => {
+                                              setSelectedAdmin({
+                                                id: admin.id,
+                                                name: admin.name,
+                                                action: "promote",
+                                              });
+                                              setShowModal(true);
+                                            }}
+                                          >
+                                            Promote
+                                          </Button>
+                                          <Button
+                                            variant="danger"
+                                            className={styles.button}
+                                            onClick={() => {
+                                              setSelectedAdmin({
+                                                id: admin.id,
+                                                name: admin.name,
+                                                action: "remove",
+                                              });
+                                              setShowModal(true);
+                                            }}
+                                          >
+                                            Remove as admin
+                                          </Button>
+                                        </div>
+                                      )}
                                   </div>
                                 );
                               })}

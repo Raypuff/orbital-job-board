@@ -1,33 +1,45 @@
 .header {
-	height: 100px;
-	background-color: #fff;
+  height: 100px;
+  background-color: #fff;
+}
+
+.headerLink {
+  cursor: pointer;
 }
 
 .logobox {
-	display: flex;
-	max-width: 75em;
-	margin: 0 auto;
-	align-items: center;
+  display: flex;
+  max-width: 75em;
+  margin: 0 auto;
+  align-items: center;
 }
 
 .nusLogo {
-	height: 50px;
-	margin: 25px 0;
-	margin-left: 2em;
+  height: 50px;
+  margin: 25px 0;
+  margin-left: 2em;
 }
 
 .ccsgpLogo {
-	height: 64px;
-	margin: 18px 0;
-	margin-right: 2em;
+  height: 64px;
+  margin: 18px 0;
+  margin-right: 2em;
 }
 
 .rightLogo {
-	margin-left: auto;
+  margin-left: auto;
+  cursor: pointer;
 }
 
 @media (max-width: 575px) {
-	.header {
-		display: none;
-	}
+  .header {
+    display: none;
+  }
+}
+
+.modalBody {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
 }

@@ -403,10 +403,8 @@ const validationSchema = Yup.object().shape({
   pocName: Yup.string("Please enter the name of contact person")
     .required("Please enter the name of contact person")
     .nullable(),
-  pocNo: Yup.string("Please enter the mobile number of contact person")
-    .matches(/^[0-9]+$/, "Please enter a 8 digit number")
-    .min(8, "Please enter a 8 digit number")
-    .max(8, "Please enter a 8 digit number")
+  pocNo: Yup.string("Please enter only + symbols, spaces, or numbers")
+    .matches(/^[0-9+ ]+$/, "Please enter only + symbols, spaces, or numbers")
     .required("Please enter the mobile number of contact person")
     .nullable(),
   pocEmail: Yup.string("Please enter the email address of contact person")
