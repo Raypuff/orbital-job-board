@@ -45,6 +45,7 @@ const handleAcceptReject = async (jobId, choice, reason, orgEmail, title) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newNotif),
     });
+
     window.location.reload(false);
   } catch (err) {
     console.error(err);
@@ -157,6 +158,23 @@ export const JobDetailsAdminAppModal = ({
   pocEmail,
   applicants,
 }) => {
+  async function alertSubscribers() {
+    const body = {
+      tags: beneficiaries.concat(skills),
+      subject: `[Volunteer CCSGP] New job posting: ${title}`,
+      text: `Please check your account for a new job posting that you have subscribed to`,
+      html: `Please check your account for a new job posting that you have subscribed to`,
+    };
+    try {
+      await fetch(`http://localhost:5000/subscriptions/alert-subscribers`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
   return (
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>
@@ -166,9 +184,10 @@ export const JobDetailsAdminAppModal = ({
         <div className={styles.modalContainer}>
           Are you sure you want to approve this posting?
           <Button
-            onClick={(event) =>
-              handleAcceptReject(id, "Approved", "", orgEmail, title)
-            }
+            onClick={(event) => {
+              handleAcceptReject(id, "Approved", "", orgEmail, title);
+              alertSubscribers();
+            }}
             variant="success"
           >
             Approve posting
