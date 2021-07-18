@@ -187,7 +187,7 @@ const SignedInStuNavbar = () => {
                 {width < 576 && (
                   <span style={{ marginLeft: "0.4rem" }}>Notifications</span>
                 )}
-                {width && notifications && notifications.length > 0 && (
+                {width < 576 && notifications && notifications.length > 0 && (
                   <span className={styles.mobileBadge}>
                     <Badge
                       variant="danger"

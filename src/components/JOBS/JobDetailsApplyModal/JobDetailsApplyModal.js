@@ -60,7 +60,10 @@ export const JobDetailsApplyModal = ({
 
   //CUSTOM HOOKS
   const { currentUser, userType, userVerified } = useAuth();
+<<<<<<< HEAD
   const { sendEmail } = useEmail();
+=======
+>>>>>>> 3d5acc397ace8a752a81251fb805d184f1ce49de
 
   //USEEFFECTS
   //Retrieving student details
@@ -245,7 +248,9 @@ export const JobDetailsApplyModal = ({
                   <Form.Label>Full name as in NRIC</Form.Label>
                   <Form.Control
                     name="stuName"
-                    value={values.stuName}
+                    value={
+                      values.retrieveDetails ? student.name : values.stuName
+                    }
                     onChange={handleChange}
                     onBlur={handleBlur}
                     isValid={touched.stuName && !errors.stuName}
@@ -261,7 +266,7 @@ export const JobDetailsApplyModal = ({
                   <Form.Label>Date of birth</Form.Label>
                   <Form.Control
                     name="stuDob"
-                    value={values.stuDob}
+                    value={values.retrieveDetails ? student.dob : values.stuDob}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     isValid={touched.stuDob && !errors.stuDob}
@@ -278,7 +283,9 @@ export const JobDetailsApplyModal = ({
                   <Form.Label>Email address</Form.Label>
                   <Form.Control
                     name="stuEmail"
-                    value={values.stuEmail}
+                    value={
+                      values.retrieveDetails ? student.email : values.stuEmail
+                    }
                     onChange={handleChange}
                     onBlur={handleBlur}
                     isValid={touched.stuEmail && !errors.stuEmail}
@@ -295,7 +302,9 @@ export const JobDetailsApplyModal = ({
                   <Form.Label>Mobile number</Form.Label>
                   <Form.Control
                     name="stuNo"
-                    value={values.stuNo}
+                    value={
+                      values.retrieveDetails ? student.contactNo : values.stuNo
+                    }
                     onChange={handleChange}
                     onBlur={handleBlur}
                     isValid={touched.stuNo && !errors.stuNo}
@@ -313,7 +322,9 @@ export const JobDetailsApplyModal = ({
                   <Form.Label>Course of study</Form.Label>
                   <Form.Control
                     name="stuCourse"
-                    value={values.stuCourse}
+                    value={
+                      values.retrieveDetails ? student.course : values.stuCourse
+                    }
                     onChange={handleChange}
                     onBlur={handleBlur}
                     isValid={touched.stuCourse && !errors.stuCourse}
@@ -329,7 +340,9 @@ export const JobDetailsApplyModal = ({
                   <Form.Label>Year of study</Form.Label>
                   <Form.Control
                     name="stuYear"
-                    values={values.stuYear}
+                    value={
+                      values.retrieveDetails ? student.year : values.stuYear
+                    }
                     onChange={handleChange}
                     onBlur={handleBlur}
                     isValid={touched.stuYear && !errors.stuYear}
@@ -486,12 +499,12 @@ const validationSchema = Yup.object().shape({
   }),
   stuNo: Yup.string().when(["retrieveDetails"], {
     is: false,
-    then: Yup.string()
-      .matches(/^[0-9]+$/, "Please enter a 8 digit number")
-      .min(8, "Please enter a 8 digit number")
-      .max(8, "Please enter a 8 digit number")
-      .required("Please enter your mobile number"),
+    then: Yup.string("Please enter only + symbols, spaces, or numbers")
+      .matches(/^[0-9+ ]+$/, "Please enter only + symbols, spaces, or numbers")
+      .required("Please enter your mobile number")
+      .nullable(),
   }),
+
   stuCourse: Yup.string().when(["retrieveDetails"], {
     is: false,
     then: Yup.string().required("Please enter your course of study in NUS"),

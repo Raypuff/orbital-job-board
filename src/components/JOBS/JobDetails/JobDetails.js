@@ -2,7 +2,7 @@
 //React Hooks
 import { useEffect, useState } from "react";
 //Bootstrap
-import { Row, Col, Alert } from "react-bootstrap";
+import { Row, Col, Alert, Button } from "react-bootstrap";
 //Components
 import {
   JobDetailsApplyModal,
@@ -21,7 +21,7 @@ import { Loading, Empty } from "../../EmptyStates/EmptyStates";
 //Contexts
 import { useAuth } from "../../../contexts/AuthContext";
 //React Router
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 //Images
 import noImage from "../../../assets/emptyStates/noImage.png";
 //CSS Modules
@@ -239,11 +239,11 @@ const JobDetails = ({ id }) => {
 
   //ORGANIZATIONS
   //2: Not their job & Job Approved; Show: No button;
-  //3: Their job & Job Pending; Show: Alert that job is still pending
-  //4: Their job & Job Approved; Show: Alert that job is visible
-  //5: Their job & Job Rejected; Show: Alert that job is rejected with removal reason
+  //3: Their job & Job Pending; Show: Alert that job is still pending, Edit job button
+  //4: Their job & Job Approved; Show: Alert that job is visible, Edit job button
+  //5: Their job & Job Rejected; Show: Alert that job is rejected with removal reason, Edit job button
   //10: Their job & Job Completed; Show: Alert that job is completed
-  //14: Their job & Job TakenDown; Show:  Alert that job is taken down with removal reason
+  //14: Their job & Job TakenDown; Show:  Alert that job is taken down with removal reason, Edit job button
 
   //ADMINS
   //6: Job Pending; Show: Reject button and  Approve button
@@ -442,7 +442,7 @@ const JobDetails = ({ id }) => {
             <Col md={6}>
               <div className={styles.detailCol}>
                 <div className={styles.detailContainer}>
-                  <h4>{title}</h4>
+                  <h3>{title}</h3>
                   <hr className={styles.divider} />
                   {datePosted && (
                     <h7>
@@ -459,9 +459,9 @@ const JobDetails = ({ id }) => {
                         ).toDateString()}`}
                   </h7>
                   <hr />
-                  <h5>About</h5>
+                  <h5 className={styles.sectionHeader}>About</h5>
                   <div className={styles.lineWrapper}>
-                    <h7>
+                    <h7 className={styles.aboutHeader}>
                       Beneficiaries:
                       <br />{" "}
                     </h7>
@@ -474,7 +474,7 @@ const JobDetails = ({ id }) => {
                     })}
                   </div>
                   <div className={styles.lineWrapper}>
-                    <h7>
+                    <h7 className={styles.aboutHeader}>
                       Skills:
                       <br />{" "}
                     </h7>
@@ -486,19 +486,24 @@ const JobDetails = ({ id }) => {
                       }
                     })}
                   </div>
-                  <h7>
+                  <h7 className={styles.aboutHeader}>
                     Purpose:
                     <br />{" "}
                   </h7>
                   <h7>{purpose}</h7>
                 </div>
                 <div className={styles.detailContainer}>
-                  <h5>Location</h5>
-                  <h7>Platform: </h7>
-                  <h7>
-                    {platform}
-                    <br />
-                  </h7>
+                  <h5 className={styles.sectionHeader}>Location</h5>
+                  <div className={styles.lineWrapper}>
+                    <h7 className={styles.aboutHeader}>
+                      Platform:
+                      <br />{" "}
+                    </h7>
+                    <h7>
+                      {platform}
+                      <br />
+                    </h7>
+                  </div>
                   <div
                     className={
                       platform === "Physical"
@@ -506,12 +511,17 @@ const JobDetails = ({ id }) => {
                         : styles.displayNone
                     }
                   >
-                    <h7>Location: </h7>
-                    <h7>
-                      {platform !== "Physical" || multiLocation === true
-                        ? "Multiple locations"
-                        : location}
-                    </h7>
+                    <div className={styles.lineWrapper}>
+                      <h7 className={styles.aboutHeader}>
+                        Location:
+                        <br />
+                      </h7>
+                      <h7>
+                        {platform !== "Physical" || multiLocation === true
+                          ? "Multiple locations"
+                          : location}
+                      </h7>
+                    </div>
                     <div
                       className={
                         multiLocation === true
@@ -519,53 +529,70 @@ const JobDetails = ({ id }) => {
                           : styles.display
                       }
                     >
-                      <h7>Postal code: </h7>
-                      <h7>{`S(${postalCode}) `}</h7>
-                      <h7>
-                        {platform === "Physical" &&
-                          !multiLocation &&
-                          myLat &&
-                          myLng &&
-                          `${distance(myLat, myLng, lat, lng).toFixed(
-                            2
-                          )}km away`}
-                        <br />
-                      </h7>
+                      <div className={styles.lineWrapper}>
+                        <h7 className={styles.aboutHeader}>Postal code: </h7>
+                        <h7>{`S(${postalCode}) `}</h7>
+                        <h7>
+                          {platform === "Physical" &&
+                            !multiLocation &&
+                            myLat &&
+                            myLng &&
+                            `${distance(myLat, myLng, lat, lng).toFixed(
+                              2
+                            )}km away`}
+                          <br />
+                        </h7>
+                      </div>
                     </div>
                   </div>
                 </div>
                 <div className={styles.detailContainer}>
-                  <h5>Commitment period</h5>
-                  <h7>Commitment type: </h7>
-                  <h7>
-                    {type}
-                    <br />
-                  </h7>
+                  <h5 className={styles.sectionHeader}>Commitment period</h5>
+                  <div className={styles.lineWrapper}>
+                    <h7 className={styles.aboutHeader}>
+                      Commitment type:
+                      <br />
+                    </h7>
+                    <h7>
+                      {type}
+                      <br />
+                    </h7>
+                  </div>
                   <div
                     className={
                       type === "Long term" ? styles.display : styles.displayNone
                     }
                   >
-                    <h7>Dates: </h7>
-                    <h7>
-                      {type === "Long term"
-                        ? !flexiDate
-                          ? `${new Date(
-                              longStartDate
-                            ).toDateString()} - ${new Date(
-                              longEndDate
-                            ).toDateString()}`
-                          : "Flexible start and end date"
-                        : ""}
-                      <br />
-                    </h7>
-                    <h7>Required hours: </h7>
-                    <h7>
-                      {flexiHours === false
-                        ? longHours
-                        : "Flexible required hours"}
-                      <br />
-                    </h7>
+                    <div className={styles.lineWrapper}>
+                      <h7 className={styles.aboutHeader}>
+                        Dates:
+                        <br />
+                      </h7>
+                      <h7>
+                        {type === "Long term"
+                          ? !flexiDate
+                            ? `${new Date(
+                                longStartDate
+                              ).toDateString()} - ${new Date(
+                                longEndDate
+                              ).toDateString()}`
+                            : "Flexible start and end date"
+                          : ""}
+                        <br />
+                      </h7>
+                    </div>
+                    <div className={styles.lineWrapper}>
+                      <h7 className={styles.aboutHeader}>
+                        Required hours:
+                        <br />
+                      </h7>
+                      <h7>
+                        {flexiHours === false
+                          ? longHours
+                          : "Flexible required hours"}
+                        <br />
+                      </h7>
+                    </div>
                   </div>
                   <div
                     className={
@@ -573,36 +600,48 @@ const JobDetails = ({ id }) => {
                     }
                   >
                     <div className={styles.shiftWrapper}>
-                      <h7>
+                      <h7 className={styles.aboutHeader}>
                         Shifts:
                         <br />
                       </h7>
-                      <ol>
-                        {type === "Ad hoc"
-                          ? !flexiShifts
-                            ? adShift && adShift.length > 0
-                              ? adShift.map((shift, index) => {
-                                  return (
-                                    <li key={index}>
-                                      <h7>
-                                        {`${new Date(
-                                          shift.date
-                                        ).toDateString()} ${tConvert(
-                                          shift.startTime
-                                        )} - ${tConvert(shift.endTime)}`}
-                                      </h7>
-                                    </li>
-                                  );
-                                })
-                              : "No shifts indicated"
-                            : "Flexible shifts"
-                          : ""}
-                      </ol>
+                      <span>
+                        {type === "Ad hoc" ? (
+                          !flexiShifts ? (
+                            adShift && adShift.length > 0 ? (
+                              <>
+                                <ol>
+                                  {adShift.map((shift, index) => {
+                                    return (
+                                      <li key={index}>
+                                        <h7>
+                                          {`${new Date(
+                                            shift.date
+                                          ).toDateString()} ${tConvert(
+                                            shift.startTime
+                                          )} - ${tConvert(shift.endTime)}`}
+                                        </h7>
+                                      </li>
+                                    );
+                                  })}
+                                </ol>
+                              </>
+                            ) : (
+                              <span>No shifts indicated</span>
+                            )
+                          ) : (
+                            <span>Flexible shifts</span>
+                          )
+                        ) : (
+                          ""
+                        )}
+                      </span>
                     </div>
                   </div>
                 </div>
                 <div>
-                  <h5>Additional information</h5>
+                  <h5 className={styles.sectionHeader}>
+                    Additional information
+                  </h5>
                   <h7>{addInfo}</h7>
                 </div>
               </div>
@@ -650,6 +689,19 @@ const JobDetails = ({ id }) => {
                   displayState === 17) && (
                   <div className={styles.buttonRow}>
                     <ChatNowButton />
+                  </div>
+                )}
+                {(displayState === 3 ||
+                  displayState === 4 ||
+                  displayState === 5 ||
+                  displayState === 14) && (
+                  <div className={styles.buttonRow}>
+                    <Link
+                      to={`/your-jobs/edit/${id}`}
+                      className={styles.button}
+                    >
+                      Edit job
+                    </Link>
                   </div>
                 )}
               </div>

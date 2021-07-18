@@ -57,7 +57,7 @@ const SignInStuForm = () => {
   return (
     <div className={styles.formBG}>
       <div className={styles.formContainer}>
-        <Card bg="light" text="dark" style={{ width: "23rem" }}>
+        <Card bg="light" text="dark" className={styles.cardContainer}>
           <Card.Header as="h6">Sign in as an NUS student</Card.Header>
           <Card.Body>
             <Form onSubmit={handleSubmit}>
@@ -65,6 +65,7 @@ const SignInStuForm = () => {
                 <Form.Label>Email address</Form.Label>
                 <Form.Control
                   data-testid="email"
+                  name="email"
                   type="email"
                   ref={emailRef}
                   required
@@ -76,7 +77,8 @@ const SignInStuForm = () => {
               <Form.Group controlId="formBasicPassword">
                 <Form.Label>Password</Form.Label>
                 <Form.Control
-                  data-testid="passwrd"
+                  data-testid="password"
+                  name="password"
                   type={showPassword ? "text" : "password"}
                   ref={passwordRef}
                   required

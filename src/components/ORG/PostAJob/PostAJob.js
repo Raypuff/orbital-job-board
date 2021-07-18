@@ -292,7 +292,7 @@ const PostAJob = () => {
                   </Accordion.Toggle>
                   <Accordion.Collapse eventKey="0">
                     <div className={styles.accordionBox}>
-                      {!loadingOrgDetails && !canRetrieveOrgDetails && (
+                      {!loadingOrgDetails && !canRetrieveOrgDetails ? (
                         <Alert variant="danger">
                           <Alert.Heading as="h6">
                             Missing organization details
@@ -307,13 +307,19 @@ const PostAJob = () => {
                             Thank you!
                           </p>
                         </Alert>
+                      ) : (
+                        <Alert variant="primary">
+                          Do ensure that your organization details are correct.
+                          If there are errors, please amend them on{" "}
+                          <Link to="/profile-organization">Your Profile</Link>.
+                        </Alert>
                       )}
                       <Form.Group controlId="formOrgType">
                         <Form.Label>Organization type</Form.Label>
                         <Form.Control
                           required
                           placeholder={userData !== null ? userData.type : ""}
-                          readOnly
+                          disabled
                         />
                       </Form.Group>
                       <Form.Group controlId="formOrgName">
@@ -321,7 +327,7 @@ const PostAJob = () => {
                         <Form.Control
                           required
                           placeholder={userData !== null ? userData.name : ""}
-                          readOnly
+                          disabled
                         />
                       </Form.Group>
                       <Form.Group controlId="formOrgUen">
@@ -335,7 +341,7 @@ const PostAJob = () => {
                         <Form.Control
                           required
                           placeholder={userData !== null ? userData.uen : ""}
-                          readOnly
+                          disabled
                         />
                       </Form.Group>
                       <Form.Group controlId="formOrgEmail">
@@ -343,14 +349,14 @@ const PostAJob = () => {
                         <Form.Control
                           required
                           placeholder={userData !== null ? userData.id : ""}
-                          readOnly
+                          disabled
                         />
                       </Form.Group>
                     </div>
                   </Accordion.Collapse>
                 </Accordion>
                 {/* Accordion 2: Job Details */}
-                <Accordion>
+                <Accordion defaultActiveKey="1">
                   <Accordion.Toggle as={Card.Header} eventKey="1">
                     <h5>Job Details</h5>
                   </Accordion.Toggle>
@@ -650,7 +656,14 @@ const PostAJob = () => {
                                 isInvalid={
                                   touched.longEndDate && errors.longEndDate
                                 }
-                                min={new Date().toISOString().substring(0, 10)}
+                                min={
+                                  values.longStartDate &&
+                                  new Date() < new Date(values.longStartDate)
+                                    ? new Date(values.longStartDate)
+                                        .toISOString()
+                                        .substring(0, 10)
+                                    : new Date().toISOString().substring(0, 10)
+                                }
                               />
                               <Form.Control.Feedback type="invalid">
                                 {errors.longEndDate}
@@ -865,7 +878,7 @@ const PostAJob = () => {
                   </Accordion.Collapse>
                 </Accordion>
                 {/* Contact details */}
-                <Accordion>
+                <Accordion defaultActiveKey="2">
                   <Accordion.Toggle as={Card.Header} eventKey="2">
                     <h5>Contact Details</h5>
                   </Accordion.Toggle>
@@ -962,7 +975,7 @@ const PostAJob = () => {
                   </Accordion.Collapse>
                 </Accordion>
                 {/* Terms */}
-                <Accordion>
+                <Accordion defaultActiveKey="3">
                   <Accordion.Toggle as={Card.Header} eventKey="3">
                     <h5>Terms and Conditions of Use</h5>
                   </Accordion.Toggle>
@@ -1136,12 +1149,15 @@ const validationSchema = Yup.object().shape({
     ),
   }),
   flexiHours: Yup.bool(),
-  longHours: Yup.number().when(["type", "flexiHours"], {
-    is: (type, flexiHours) => type === "Long term" && flexiHours !== true,
-    then: Yup.number("Please enter a number")
-      .positive("Please only enter a positive number")
-      .required("Please indicate the number of hours to commit"),
-  }),
+  longHours: Yup.number("Please enter a number")
+    .typeError("Please enter a number")
+    .when(["type", "flexiHours"], {
+      is: (type, flexiHours) => type === "Long term" && flexiHours !== true,
+      then: Yup.number("Please enter a number")
+        .typeError("Please enter a number")
+        .positive("Please only enter a positive number")
+        .required("Please indicate the number of hours to commit"),
+    }),
   flexiShifts: Yup.bool(),
   shiftNumber: Yup.number("Please only enter numbers").when(
     ["type", "flexiShifts"],
@@ -1328,10 +1344,8 @@ const validationSchema = Yup.object().shape({
   }),
   pocNo: Yup.string().when("retrievePoc", {
     is: false,
-    then: Yup.string("Please enter only numbers")
-      .matches(/^[0-9]+$/, "Please enter a 8 digit number")
-      .min(8, "Please enter a 8 digit number")
-      .max(8, "Please enter a 8 digit number")
+    then: Yup.string("Please enter only + symbols, spaces, or numbers")
+      .matches(/^[0-9+ ]+$/, "Please enter only + symbols, spaces, or numbers")
       .required("Please enter the mobile number of contact person"),
   }),
   pocEmail: Yup.string().when("retrievePoc", {
