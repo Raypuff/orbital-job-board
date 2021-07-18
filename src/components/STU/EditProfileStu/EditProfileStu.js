@@ -6,6 +6,7 @@ import { Card, Button, Form, Alert, Spinner } from "react-bootstrap";
 import { ArrowLeft } from "react-bootstrap-icons";
 //Auth Context
 import { useAuth } from "../../../contexts/AuthContext";
+import { useStu } from "../../../contexts/StuContext";
 //Components
 import { Loading } from "../../EmptyStates/EmptyStates";
 //Inline Form Validatio
@@ -22,6 +23,7 @@ const EditProfileStu = ({
 }) => {
   //CUSTOM HOOKS
   const { currentUser } = useAuth();
+  const { getSubscriptions } = useStu();
 
   //USESTATES
   //Before submitting, left button says cancel; After submitting, says back
