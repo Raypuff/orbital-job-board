@@ -166,11 +166,14 @@ export const JobDetailsAdminAppModal = ({
       html: `Please check your account for a new job posting that you have subscribed to`,
     };
     try {
-      await fetch(`http://localhost:5000/subscriptions/alert-subscribers`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
+      await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/subscriptions/alert-subscribers`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        }
+      );
     } catch (err) {
       console.log(err);
     }
