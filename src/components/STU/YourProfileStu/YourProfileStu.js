@@ -13,6 +13,7 @@ import noAvatar from "../../../assets/emptyStates/noAvatar.png";
 import { BeneficiaryTags, SkillTags } from "../../../Constants";
 //Auth Context
 import { useAuth } from "../../../contexts/AuthContext";
+import { useStu } from "../../../contexts/StuContext";
 //Inline Form Validation
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -53,41 +54,23 @@ const YourProfileStu = () => {
     userVerified,
     sendEmailVerification,
   } = useAuth();
+  const { getStudent, getSubscriptions, updateSubscriptions } = useStu();
   const { width } = useWindowDimensions();
+
+  async function getStudentData() {
+    const userTest = await getStudent(currentUser.email);
+    const subscriptionTest = await getSubscriptions(currentUser.email);
+    setUserData(userTest);
+    setSubscriptions(subscriptionTest);
+    setLoading(false);
+  }
 
   //USEEFFECTS
   //Retrieve User Details
   useEffect(() => {
-    const getUser = async () => {
-      const response = await fetch(
-        process.env.REACT_APP_BACKEND_URL +
-          "/student-accounts/" +
-          currentUser.email
-      );
-      const jsonData = await response.json();
-      jsonData.subscriptions = ["Animals", "WebDev"]; // remove this once subscriptions is implemented in userData
-      setUserData(jsonData);
-      let subs = {};
-      console.log(jsonData.subscriptions);
-      for (let i = 0; i < BeneficiaryTags.length; i++) {
-        if (jsonData.subscriptions.includes(BeneficiaryTags[i])) {
-          subs[BeneficiaryTags[i]] = true;
-        } else {
-          subs[BeneficiaryTags[i]] = false;
-        }
-      }
-      for (let j = 0; j < SkillTags.length; j++) {
-        if (jsonData.subscriptions.includes(SkillTags[j])) {
-          subs[SkillTags[j]] = true;
-        } else {
-          subs[SkillTags[j]] = false;
-        }
-      }
-      setSubscriptions(subs);
-      setLoading(false);
-    };
-    getUser();
+    getStudentData();
   }, [edit]);
+
   //Set timer for resending verification email
   useEffect(() => {
     if (startTimer && timer > 0) {
@@ -146,9 +129,23 @@ const YourProfileStu = () => {
     async function handleSubmit(values) {
       setSuccessSubscriptions("");
       setErrorSubscriptions("");
+      const subscribed = [];
+      const unsubscribed = [];
+      for (const value in values) {
+        if (values[value]) {
+          subscribed.push(value);
+        } else if (!values[value]) {
+          unsubscribed.push(value);
+        }
+      }
+      console.log(subscribed);
+      console.log(unsubscribed);
       try {
-        //put the logic for updating subscription preferences here
-        console.log(values);
+        const updateRequest = await updateSubscriptions(
+          currentUser.email,
+          subscribed,
+          unsubscribed
+        );
         setSuccessSubscriptions("Subscriptions updated successfully!");
         setSubmitting(false);
       } catch (err) {
