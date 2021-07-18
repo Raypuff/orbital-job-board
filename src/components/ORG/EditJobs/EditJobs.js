@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 //Bootstrap
 import { Row, Col, Alert, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { PencilSquare } from "react-bootstrap-icons";
+//React Router
+import { Link, useHistory } from "react-router-dom";
 //Auth Context
 import { useAuth } from "../../../contexts/AuthContext";
 //Components
@@ -33,6 +35,8 @@ const EditJobs = ({ id }) => {
   //CUSTOM HOOKS
   //Retrieves the current user details
   const { currentUser } = useAuth();
+  //Pushing to previous page
+  const history = useHistory();
 
   //USEEFFECTS
   //Fetching job data
@@ -366,6 +370,12 @@ const EditJobs = ({ id }) => {
             <Col md={2} />
             <Col md={6}>
               <div className={styles.buttonRow}>
+                <div
+                  className={styles.buttonBack}
+                  onClick={() => history.goBack()}
+                >
+                  Back
+                </div>
                 <div
                   className={styles.button}
                   onClick={() => {

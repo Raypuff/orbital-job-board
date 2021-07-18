@@ -354,10 +354,8 @@ const validationSchema = Yup.object().shape({
   dob: Yup.date("Please enter your date of birth")
     .required("Please enter your date of birth")
     .nullable(),
-  contactNo: Yup.string("Please enter your mobile number")
-    .matches(/^[0-9]+$/, "Please enter a 8 digit number")
-    .min(8, "Please enter a 8 digit number")
-    .max(8, "Please enter a 8 digit number")
+  contactNo: Yup.string("Please enter only + symbols, spaces, or numbers")
+    .matches(/^[0-9+ ]+$/, "Please enter only + symbols, spaces, or numbers")
     .required("Please enter your mobile number")
     .nullable(),
   course: Yup.string("Please enter your course of study in NUS")

@@ -335,17 +335,18 @@ const YourProfileAdmin = () => {
                                     touched.passwordOld && errors.passwordOld
                                   }
                                 />
-                                <div
-                                  className={
-                                    touched.passwordOld
-                                      ? styles.eyeError
-                                      : styles.eye
-                                  }
-                                  onClick={() => setShowOldPw(!showOldPw)}
-                                >
-                                  {showOldPw ? <EyeSlashFill /> : <EyeFill />}
+                                <div className={styles.eyeContainer}>
+                                  <div
+                                    className={
+                                      touched.passwordOld
+                                        ? styles.eyeError
+                                        : styles.eye
+                                    }
+                                    onClick={() => setShowOldPw(!showOldPw)}
+                                  >
+                                    {showOldPw ? <EyeSlashFill /> : <EyeFill />}
+                                  </div>
                                 </div>
-
                                 <Form.Control.Feedback type="invalid">
                                   {errors.passwordOld}
                                 </Form.Control.Feedback>
@@ -365,17 +366,18 @@ const YourProfileAdmin = () => {
                                     touched.passwordNew && errors.passwordNew
                                   }
                                 />
-                                <div
-                                  className={
-                                    touched.passwordNew
-                                      ? styles.eyeError
-                                      : styles.eye
-                                  }
-                                  onClick={() => setShowNewPw(!showNewPw)}
-                                >
-                                  {showNewPw ? <EyeSlashFill /> : <EyeFill />}
+                                <div className={styles.eyeContainer}>
+                                  <div
+                                    className={
+                                      touched.passwordNew
+                                        ? styles.eyeError
+                                        : styles.eye
+                                    }
+                                    onClick={() => setShowNewPw(!showNewPw)}
+                                  >
+                                    {showNewPw ? <EyeSlashFill /> : <EyeFill />}
+                                  </div>
                                 </div>
-
                                 <Form.Control.Feedback type="invalid">
                                   {errors.passwordNew}
                                 </Form.Control.Feedback>
@@ -397,17 +399,18 @@ const YourProfileAdmin = () => {
                                     errors.passwordConfirm
                                   }
                                 />
-                                <div
-                                  className={
-                                    touched.passwordConfirm
-                                      ? styles.eyeError
-                                      : styles.eye
-                                  }
-                                  onClick={() => setShowCfmPw(!showCfmPw)}
-                                >
-                                  {showCfmPw ? <EyeSlashFill /> : <EyeFill />}
+                                <div className={styles.eyeContainer}>
+                                  <div
+                                    className={
+                                      touched.passwordConfirm
+                                        ? styles.eyeError
+                                        : styles.eye
+                                    }
+                                    onClick={() => setShowCfmPw(!showCfmPw)}
+                                  >
+                                    {showCfmPw ? <EyeSlashFill /> : <EyeFill />}
+                                  </div>
                                 </div>
-
                                 <Form.Control.Feedback type="invalid">
                                   {errors.passwordConfirm}
                                 </Form.Control.Feedback>

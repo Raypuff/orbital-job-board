@@ -1,17 +1,24 @@
 .formBG {
-	display: grid;
-	place-items: center;
+  display: grid;
+  place-items: center;
+}
+
+.cardContainer {
+  width: 23rem;
 }
 
 .formContainer {
-	margin: 10vmax 0 12vmax;
+  margin: 10vmax 0 12vmax;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .eye {
-	font-size: 1.2rem;
-	position: relative;
-	bottom: 33px;
-	left: 295px;
-	width: 0;
-	height: 0;
+  font-size: 1.2rem;
+  position: relative;
+  bottom: 33px;
+  left: 295px;
+  width: 0;
+  height: 0;
 }
