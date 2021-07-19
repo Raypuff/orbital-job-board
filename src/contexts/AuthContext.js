@@ -91,19 +91,6 @@ export function AuthProvider({ children }) {
     });
   }
 
-  async function updateProfilePic(imageURL) {
-    await currentUser
-      .updateProfile({
-        photoURL: imageURL,
-      })
-      .then(() => {
-        console.log("Update successful");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user !== null) {
@@ -128,7 +115,6 @@ export function AuthProvider({ children }) {
     sendEmailVerification,
     reauthenticate,
     changePassword,
-    updateProfilePic,
   };
   return (
     <AuthContext.Provider value={value}>

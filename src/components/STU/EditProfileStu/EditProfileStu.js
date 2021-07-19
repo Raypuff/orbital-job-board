@@ -7,6 +7,8 @@ import { ArrowLeft } from "react-bootstrap-icons";
 //Auth Context
 import { useAuth } from "../../../contexts/AuthContext";
 import { useStu } from "../../../contexts/StuContext";
+import { useImage } from "../../../contexts/ImageContext";
+
 //Components
 import { Loading } from "../../EmptyStates/EmptyStates";
 //Inline Form Validatio
@@ -23,7 +25,8 @@ const EditProfileStu = ({
 }) => {
   //CUSTOM HOOKS
   const { currentUser } = useAuth();
-  const { getSubscriptions } = useStu();
+  const { updateStudentAccount } = useStu();
+  const { uploadImage } = useImage();
 
   //USESTATES
   //Before submitting, left button says cancel; After submitting, says back
@@ -39,7 +42,6 @@ const EditProfileStu = ({
 
   //Upload Iamge
   const [image, setImage] = useState();
-  const [imageUrl, setImageUrl] = useState("");
   const [imageLoading, setImageLoading] = useState(false);
 
   //USEEFFECTS
@@ -76,23 +78,12 @@ const EditProfileStu = ({
         contactNo: values.contactNo,
         course: values.course,
         year: values.year,
-        avatar: imageUrl || userData.avatar,
+        avatar: image || userData.avatar,
       };
 
       try {
         //Signify start of update process
-
-        await fetch(
-          process.env.REACT_APP_BACKEND_URL +
-            "/student-accounts/" +
-            currentUser.email,
-          {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(newAccountInfo),
-          }
-        );
-
+        await updateStudentAccount(currentUser.email, newAccountInfo);
         setSuccessful(true);
         setMessage("User profile updated successfully!");
         setLeftButton("Back");
@@ -106,23 +97,11 @@ const EditProfileStu = ({
     }
   };
   //To upload image to cloudinary
-  const uploadImage = async (event) => {
+  const uploadNewImage = async (event) => {
     setImageLoading(true);
     try {
-      const files = event.target.files;
-      const data = new FormData();
-      data.append("file", files[0]);
-      data.append("upload_preset", "volunteer-ccsgp-images");
-      const res = await fetch(
-        "https://api.cloudinary.com/v1_1/volunteer-ccsgp-job-board/image/upload",
-        {
-          method: "POST",
-          body: data,
-        }
-      );
-      const file = await res.json();
-      setImage(file.secure_url);
-      setImageUrl(file.secure_url);
+      const newImageUrl = await uploadImage(event.target.files);
+      setImage(newImageUrl);
     } catch (err) {
       console.log(err);
     }
@@ -197,7 +176,7 @@ const EditProfileStu = ({
                   <Form.Control
                     name="file"
                     type="file"
-                    onChange={uploadImage}
+                    onChange={uploadNewImage}
                     accept="image/*"
                   />
                 </Form.Group>

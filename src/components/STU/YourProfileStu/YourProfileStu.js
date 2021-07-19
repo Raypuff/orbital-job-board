@@ -54,7 +54,8 @@ const YourProfileStu = () => {
     userVerified,
     sendEmailVerification,
   } = useAuth();
-  const { getStudent, getSubscriptions, updateSubscriptions } = useStu();
+  const { getStudent, getSubscriptions, updateSubscriptions, currentStu } =
+    useStu();
   const { width } = useWindowDimensions();
 
   async function getStudentData() {

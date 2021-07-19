@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
-import PostAJob from "../components/ORG/PostAJob";
 var uniqid = require("uniqid");
 
 const ChatContext = React.createContext();
@@ -71,8 +70,8 @@ export function ChatProvider({ children }) {
           chat.subtitle = `You: ${chat.subtitle}`;
         }
       });
-      return processedChats;
       setChatLoading(false);
+      return processedChats;
     } catch (err) {
       console.log(err);
     }

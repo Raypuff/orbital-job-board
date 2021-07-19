@@ -9,6 +9,8 @@ import { Loading } from "../../EmptyStates/EmptyStates";
 //Auth Context
 import { useAuth } from "../../../contexts/AuthContext";
 import { useAdmin } from "../../../contexts/AdminContext";
+import { useImage } from "../../../contexts/ImageContext";
+
 //Inline form validation
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -35,12 +37,12 @@ const EditProfileAdmin = ({
   const [isSubmitting, setSubmitting] = useState(false);
   //For uploading images
   const [image, setImage] = useState();
-  const [imageUrl, setImageUrl] = useState("");
   const [imageLoading, setImageLoading] = useState(false);
 
   //CUSTOM HOOKS
   const { currentUser } = useAuth();
-  const { getCurrentAdmin } = useAdmin();
+  const { getCurrentAdmin, updateAdminAccount } = useAdmin();
+  const { uploadImage } = useImage();
 
   const getUser = async () => {
     setUserData(await getCurrentAdmin(currentUser.email));
@@ -66,54 +68,34 @@ const EditProfileAdmin = ({
 
       //Creating new object to send to backend
       const newAccountInfo = {
-        avatar: imageUrl || userData.avatar,
+        avatar: image || userData.avatar,
         name: values.name,
       };
 
       try {
         //Signify start of update process
-        await fetch(
-          process.env.REACT_APP_BACKEND_URL +
-            "/admin-accounts/" +
-            currentUser.email,
-          {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(newAccountInfo),
-          }
-        );
+        await updateAdminAccount(currentUser.email, newAccountInfo);
 
         //Set success usestate to true
+        setSubmitting(false);
+
         setSuccessful(true);
         setMessage("Admin profile updated successfully!");
         setLeftButton("Back");
         setLeftButtonVar("secondary");
         resetForm();
-        setSubmitting(false);
       } catch (err) {
         setError("Failed to update user info");
         console.log(err);
       }
     }
   };
-  //Uploading image to cloudinary
-  const uploadImage = async (event) => {
+  //To upload image to cloudinary
+  const uploadNewImage = async (event) => {
     setImageLoading(true);
     try {
-      const files = event.target.files;
-      const data = new FormData();
-      data.append("file", files[0]);
-      data.append("upload_preset", "volunteer-ccsgp-images");
-      const res = await fetch(
-        "https://api.cloudinary.com/v1_1/volunteer-ccsgp-job-board/image/upload",
-        {
-          method: "POST",
-          body: data,
-        }
-      );
-      const file = await res.json();
-      setImage(file.secure_url);
-      setImageUrl(file.secure_url);
+      const newImageUrl = await uploadImage(event.target.files);
+      setImage(newImageUrl);
     } catch (err) {
       console.log(err);
     }
@@ -153,17 +135,12 @@ const EditProfileAdmin = ({
               handleChange,
               handleBlur,
               handleSubmit,
-              isSubmitting,
             }) => (
               <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="formAvatar">
                   <Form.Label>Avatar</Form.Label>
                   <div className={styles.imageContainer}>
-                    {userData &&
-                    userData.avatar &&
-                    !image &&
-                    !imageUrl &&
-                    !imageLoading ? (
+                    {userData && userData.avatar && !image && !imageLoading ? (
                       <img
                         src={userData.avatar}
                         className={styles.image}
@@ -188,7 +165,7 @@ const EditProfileAdmin = ({
                   <Form.Control
                     name="file"
                     type="file"
-                    onChange={uploadImage}
+                    onChange={uploadNewImage}
                     accept="image/*"
                   />
                 </Form.Group>

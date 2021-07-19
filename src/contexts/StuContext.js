@@ -1,5 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { BeneficiaryTags, SkillTags } from "../Constants";
+import { auth } from "../firebase";
+import { useAuth } from "./AuthContext";
 
 const StuContext = React.createContext();
 
@@ -8,10 +10,7 @@ export function useStu() {
 }
 
 export function StuProvider({ children }) {
-  const [stuLoading, setStuLoading] = useState(false);
-
   async function getStudent(email) {
-    setStuLoading(true);
     try {
       const studentData = await fetch(
         `${process.env.REACT_APP_BACKEND_URL}/student-accounts/${email}`
@@ -24,7 +23,6 @@ export function StuProvider({ children }) {
   }
 
   async function getSubscriptions(email) {
-    setStuLoading(true);
     try {
       const subscriptionData = await fetch(
         `${process.env.REACT_APP_BACKEND_URL}/subscriptions/${email}`
@@ -57,11 +55,9 @@ export function StuProvider({ children }) {
     } catch (err) {
       console.error(err);
     }
-    setStuLoading(false);
   }
 
   async function updateSubscriptions(email, subscriptions, unsubscriptions) {
-    setStuLoading(true);
     const body = {
       subscriptions,
       unsubscriptions,
@@ -78,10 +74,29 @@ export function StuProvider({ children }) {
     } catch (err) {
       console.error(err);
     }
-    setStuLoading(false);
   }
 
-  const value = { getStudent, getSubscriptions, updateSubscriptions };
+  async function updateStudentAccount(email, updated) {
+    try {
+      await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/student-accounts/${email}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updated),
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const value = {
+    getStudent,
+    getSubscriptions,
+    updateSubscriptions,
+    updateStudentAccount,
+  };
 
   return <StuContext.Provider value={value}>{children}</StuContext.Provider>;
 }
