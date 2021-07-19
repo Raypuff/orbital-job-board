@@ -21,7 +21,7 @@ const EditProfileOrg = ({
   width,
 }) => {
   //CUSTOM HOOKS
-  const { currentUser, updateProfilePic } = useAuth();
+  const { currentUser } = useAuth();
 
   //USESTATES
   //Before submitting, left button says cancel; After submitting, it says cancel
@@ -77,6 +77,7 @@ const EditProfileOrg = ({
         pocName: values.pocName,
         pocNo: values.pocNo,
         pocEmail: values.pocEmail,
+        avatar: imageUrl || userData.avatar,
       };
 
       try {
@@ -123,15 +124,6 @@ const EditProfileOrg = ({
       const file = await res.json();
       setImage(file.secure_url);
       setImageUrl(file.secure_url);
-
-      await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/organization-accounts/avatar/${currentUser.email}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ photoURL: file.secure_url }),
-        }
-      );
     } catch (err) {
       console.log(err);
     }

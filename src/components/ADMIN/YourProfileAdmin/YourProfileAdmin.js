@@ -14,6 +14,7 @@ import * as Yup from "yup";
 import { Formik } from "formik";
 //Auth Context
 import { useAuth } from "../../../contexts/AuthContext";
+import { useAdmin } from "../../../contexts/AdminContext";
 //CSS Modules
 import styles from "./YourProfileAdmin.module.css";
 
@@ -47,33 +48,22 @@ const YourProfileAdmin = () => {
     userVerified,
     sendEmailVerification,
   } = useAuth();
+  const { getCurrentAdmin } = useAdmin();
+
   //To retrieve the window width
   const { width } = useWindowDimensions();
+
+  const getUser = async () => {
+    setUserData(await getCurrentAdmin(currentUser.email));
+    setLoading(false);
+  };
 
   //USEEFFECTS
   //To retrieve user data
   useEffect(() => {
-    const getUser = async () => {
-      // const response = await fetch(
-      //   process.env.REACT_APP_BACKEND_URL +
-      //     "/admin-accounts/" +
-      //     currentUser.email,
-      //   {}
-      // );
-      // const jsonData = await response.json();
-      const jsonData = {
-        avatar:
-          "https://www.thesun.co.uk/wp-content/uploads/2020/08/NINTCHDBPICT000600110174.jpg",
-        id: "ccsgpadmin@gmail.com",
-        name: "Mr Admin",
-        email: "ccsgpadmin@gmail.com",
-        type: "Master",
-      };
-      setUserData(jsonData);
-      setLoading(false);
-    };
     getUser();
   }, [edit]);
+
   //For countdown for resend verification email
   useEffect(() => {
     if (startTimer && timer > 0) {

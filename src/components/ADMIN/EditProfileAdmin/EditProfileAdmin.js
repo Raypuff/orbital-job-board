@@ -8,6 +8,7 @@ import { ArrowLeft } from "react-bootstrap-icons";
 import { Loading } from "../../EmptyStates/EmptyStates";
 //Auth Context
 import { useAuth } from "../../../contexts/AuthContext";
+import { useAdmin } from "../../../contexts/AdminContext";
 //Inline form validation
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -31,6 +32,7 @@ const EditProfileAdmin = ({
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [successful, setSuccessful] = useState(false);
+  const [isSubmitting, setSubmitting] = useState(false);
   //For uploading images
   const [image, setImage] = useState();
   const [imageUrl, setImageUrl] = useState("");
@@ -38,36 +40,21 @@ const EditProfileAdmin = ({
 
   //CUSTOM HOOKS
   const { currentUser } = useAuth();
+  const { getCurrentAdmin } = useAdmin();
 
+  const getUser = async () => {
+    setUserData(await getCurrentAdmin(currentUser.email));
+  };
   //USEEFFECTS
   //Retrieving user data
   useEffect(() => {
-    const getUser = async () => {
-      //   const response = await fetch(
-      //     process.env.REACT_APP_BACKEND_URL +
-      //       "/organization-accounts/" +
-      //       currentUser.email,
-      //     {}
-      //   );
-      //   const jsonData = await response.json();
-      const jsonData = {
-        avatar:
-          "https://www.thesun.co.uk/wp-content/uploads/2020/08/NINTCHDBPICT000600110174.jpg",
-        id: "ccsgpadmin@gmail.com",
-        name: "Mr Admin",
-        email: "ccsgpadmin@gmail.com",
-        type: "Master",
-      };
-
-      setUserData(jsonData);
-      setUserLoading(false);
-    };
     getUser();
+    setUserLoading(false);
   }, []);
 
   //FUNCTIONS
   //Submitting edit profile details
-  const mySubmit = (values, { setSubmitting, resetForm }) => {
+  const mySubmit = (values, { resetForm }) => {
     setSubmitting(true);
     handleSubmit(values);
 
@@ -79,8 +66,7 @@ const EditProfileAdmin = ({
 
       //Creating new object to send to backend
       const newAccountInfo = {
-        avatar: imageUrl,
-
+        avatar: imageUrl || userData.avatar,
         name: values.name,
       };
 
@@ -88,7 +74,7 @@ const EditProfileAdmin = ({
         //Signify start of update process
         await fetch(
           process.env.REACT_APP_BACKEND_URL +
-            "/organization-accounts/" +
+            "/admin-accounts/" +
             currentUser.email,
           {
             method: "PUT",

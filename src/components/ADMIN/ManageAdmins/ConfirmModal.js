@@ -6,18 +6,30 @@ import { Modal, Button, Alert, Card } from "react-bootstrap";
 //CSS Modules
 import styles from "./ConfirmModal.module.css";
 
+import { useAdmin } from "../../../contexts/AdminContext";
+
 const ConfirmModal = ({ show, onHide, adminID, adminName, action }) => {
   const [success, setSuccess] = useState();
   const [error, setError] = useState();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const { changeAdminStatus } = useAdmin();
+
   const handleSubmit = async () => {
     setIsSubmitting(true);
     setSuccess("");
     setError("");
+    var status;
+    if (action === "promote") {
+      status = "Master";
+    } else if (action === "demote") {
+      status = "Regular";
+    }
+
     try {
-      //hey zech do stuff here
-      console.log(`i am performing ${action} on ${adminID}`);
+      if (status) {
+        await changeAdminStatus(adminID, status);
+      }
       setSuccess("Success!");
     } catch (error) {
       console.log(error);

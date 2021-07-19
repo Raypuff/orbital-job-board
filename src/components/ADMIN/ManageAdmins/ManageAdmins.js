@@ -19,6 +19,7 @@ import ConfirmModal from "./ConfirmModal";
 import { Loading } from "../../EmptyStates/EmptyStates";
 //Auth Context
 import { useAuth } from "../../../contexts/AuthContext";
+import { useAdmin } from "../../../contexts/AdminContext";
 //Inline Form Validation
 import * as Yup from "yup";
 import { Formik } from "formik";
@@ -46,53 +47,20 @@ const ManageAdmins = () => {
 
   //CUSTOM HOOKS
   //To retrieve the window width
-  const { currentUser } = useAuth();
+  const { currentUser, signup } = useAuth();
+  const { getAllAdmins, getCurrentAdmin, postNewAdmin, changeAdminStatus } =
+    useAdmin();
   const { width } = useWindowDimensions();
 
-  //API CALLS
-  const getUserData = async () => {
-    //hey zech do stuff here -> use currentUser details to fetch userData
-    const dummyUserData = {
-      email: "admin@gmail.com",
-      type: "Master",
-    };
-    setUserData(dummyUserData);
-    setUserLoading(false);
-  };
-  const getAdmins = async () => {
-    //hey zech do stuff here -> retrieve all admins
-    const dummyAdmins = [
-      {
-        id: "admin@gmail.com",
-        name: "Loh Jia Ming, Rayner",
-        email: "admin@gmail.com",
-        type: "Master",
-      },
-      {
-        id: "zech@gmail.com",
-        name: "Zechary Au Jun Wen",
-        email: "zech@gmail.com",
-        type: "Regular",
-      },
-      {
-        id: "test@gmail.com",
-        name: "",
-        email: "test@gmail.com",
-        type: "Regular",
-      },
-    ];
-    setAdmins(dummyAdmins);
-    setAdminsLoading(false);
+  const fetchAdminData = async () => {
+    setUserData(await getCurrentAdmin(currentUser.email));
+    setAdmins(await getAllAdmins());
   };
 
-  //USEEFFECTS
-  //Retrieving user data
   useEffect(() => {
-    getUserData();
-  }, []);
-  //Retrieving admin data
-  useEffect(() => {
-    getAdmins();
+    fetchAdminData();
+    setAdminsLoading(false);
+    setUserLoading(false);
   }, [showModal]);
 
   //FUNCTIONS
@@ -103,9 +71,13 @@ const ManageAdmins = () => {
     async function handleSubmit(values) {
       setSuccessNewAdmin("");
       setErrorNewAdmin("");
+      const email = values.email;
+      const password = values.password;
+      const type = values.type;
       try {
         //hey zech do stuff here -> Create new admin
-        console.log(`new admin: ${values}`);
+        await signup(email, password, "admin");
+        await postNewAdmin(email, type);
         setSuccessNewAdmin("Created new admin!");
         resetForm();
       } catch (err) {
