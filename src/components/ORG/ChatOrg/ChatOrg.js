@@ -6,6 +6,8 @@ import { Row, Col, Card, Form, Button, Spinner } from "react-bootstrap";
 import { ArrowLeft } from "react-bootstrap-icons";
 //Auth Context
 import { useAuth } from "../../../contexts/AuthContext";
+import { useOrg } from "../../../contexts/OrgContext";
+
 //React Chat Elements
 import { ChatList, MessageList } from "react-chat-elements";
 //Components
@@ -38,6 +40,7 @@ const ChatOrg = () => {
   //CUSTOM HOOKS
   //Current user details from auth context
   const { currentUser } = useAuth();
+  const { getOrgMessages, getOrgChats, postMessage } = useOrg();
   //Retrieve window dimensions
   const { width } = useWindowDimensions();
   //Refs for retrieving new message and scrolling to bottom
@@ -47,56 +50,20 @@ const ChatOrg = () => {
   //API CALL FUNCTIONS
   //Fetching chats
   const getChats = async () => {
-    const chatData = await fetch(
-      process.env.REACT_APP_BACKEND_URL +
-        "/chats/all-chats/organization/" +
-        currentUser.email
-    );
-    const retrievedChats = await chatData.json();
-
-    var processedChats = retrievedChats;
-    processedChats.forEach((chat) => {
-      chat.date = new Date(chat.date);
-    });
-    processedChats.forEach((chat) => {
-      if (currentUser.email === chat.fromID) {
-        chat.subtitle = `You: ${chat.subtitle}`;
-      }
-    });
-    processedChats.forEach((chat) => {
-      if (!chat.avatar) {
-        chat.avatar = noAvatar;
-      }
-    });
-    processedChats.forEach((chat) => {
-      if (!(chat.title && chat.title.length > 0)) {
-        chat.title = "<No name>";
-      }
-    });
+    const allChats = await getOrgChats(currentUser.email);
     //Repeatedly replace chats with new chats
     if (loadingChats) {
       setLoadingChats(false);
     }
-    setChats(processedChats);
+    setChats(allChats);
     setChatUpdater(!chatUpdater);
   };
   //Fetching messages
   const getMessages = async () => {
-    const messagesData = await fetch(
-      process.env.REACT_APP_BACKEND_URL + "/chats/messages/" + currentChat
+    const processedMessages = await getOrgMessages(
+      currentChat,
+      currentUser.email
     );
-    const messages = await messagesData.json();
-    var processedMessages = [...messages];
-    processedMessages.forEach((msg) => {
-      msg.date = new Date(msg.date);
-    });
-    processedMessages.forEach((msg) => {
-      if (currentUser.email === msg.fromID) {
-        msg.position = "right";
-      } else {
-        msg.position = "left";
-      }
-    });
     //Repeatedly replace messages and scroll down
     if (
       !currentMessages[currentChat] ||
@@ -160,14 +127,7 @@ const ChatOrg = () => {
     });
 
     try {
-      await fetch(
-        process.env.REACT_APP_BACKEND_URL + "/chats/" + currentChatID,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(backendMessage),
-        }
-      );
+      await postMessage(currentChatID, backendMessage);
     } catch (err) {
       console.error(err);
     }

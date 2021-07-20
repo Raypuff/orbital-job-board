@@ -57,7 +57,7 @@ const JobDetails = ({ id }) => {
   const history = useHistory();
   const { currentUser, userType, userVerified } = useAuth();
   const { getJobDetails, getOrgPublic } = useJob();
-  const { getAppForJob } = useStu();
+  const { getAppForJob, postChat, checkExists } = useStu();
 
   async function getPageData() {
     const job = await getJobDetails(id);
@@ -88,32 +88,25 @@ const JobDetails = ({ id }) => {
 
   //FUNCTION TO CREATE NEW CHAT
   const createChats = async () => {
-    setLoadingChatButton(true);
-    const body = {
-      id: uniqid(),
-      stuAvatar: "",
-      orgAvatar: "",
-      alt: "avatar",
-      stuID: currentUser.email,
-      orgID: job.orgID,
-    };
-    await fetch(`${process.env.REACT_APP_BACKEND_URL}/chats`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
+    try {
+      setLoadingChatButton(true);
+      const body = {
+        id: uniqid(),
+        stuAvatar: "",
+        orgAvatar: "",
+        alt: "avatar",
+        stuID: currentUser.email,
+        orgID: job.orgID,
+      };
+      await postChat(body);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   //FUNCTION TO CHECK IF CHAT ALREADY EXISTS
   const checkIfExists = async () => {
-    const alreadyExistsData = await fetch(
-      process.env.REACT_APP_BACKEND_URL +
-        "/chats/already-exists/" +
-        currentUser.email +
-        "&" +
-        job.orgID
-    );
-    const alreadyExists = await alreadyExistsData.json();
+    const alreadyExists = await checkExists(currentUser.email, job.orgID);
     if (!alreadyExists) {
       setButtonMakesNewChat(true);
     }

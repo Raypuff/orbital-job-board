@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useAuth } from "./AuthContext";
+import noAvatar from "../assets/emptyStates/noAvatar.png";
 
 const OrgContext = React.createContext();
 
@@ -156,6 +157,84 @@ export function OrgProvider({ children }) {
     }
   }
 
+  async function getOrgChats(id) {
+    try {
+      const orgChatData = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/chats/all-chats/organization/${id}`,
+        {
+          headers: { authorization: `Bearer ${token}` },
+        }
+      );
+      const orgChats = await orgChatData.json();
+      var processedChats = orgChats;
+      processedChats.forEach((chat) => {
+        chat.date = new Date(chat.date);
+      });
+      processedChats.forEach((chat) => {
+        if (id === chat.fromID) {
+          chat.subtitle = `You: ${chat.subtitle}`;
+        }
+      });
+      processedChats.forEach((chat) => {
+        if (!chat.avatar) {
+          chat.avatar = noAvatar;
+        }
+      });
+      processedChats.forEach((chat) => {
+        if (!(chat.title && chat.title.length > 0)) {
+          chat.title = "<No name>";
+        }
+      });
+      return processedChats;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function getOrgMessages(currentChat, myId) {
+    try {
+      const messagesData = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/chats/messages/${currentChat}`,
+        {
+          headers: { authorization: `Bearer ${token}` },
+        }
+      );
+      const messages = await messagesData.json();
+      var processedMessages = [...messages];
+      processedMessages.forEach((msg) => {
+        msg.date = new Date(msg.date);
+      });
+      processedMessages.forEach((msg) => {
+        if (myId === msg.fromID) {
+          msg.position = "right";
+        } else {
+          msg.position = "left";
+        }
+      });
+      return processedMessages;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function postMessage(currentChatID, backendMessage) {
+    try {
+      await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/chats/${currentChatID}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(backendMessage),
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   const value = {
     getOrgInfo,
     updateOrgAccount,
@@ -165,6 +244,9 @@ export function OrgProvider({ children }) {
     setJobAsComplete,
     acceptRejectApplication,
     editAJob,
+    getOrgChats,
+    getOrgMessages,
+    postMessage,
   };
 
   return <OrgContext.Provider value={value}>{children}</OrgContext.Provider>;

@@ -6,6 +6,7 @@ import { Row, Col, Card, Form, Button, Spinner } from "react-bootstrap";
 import { ArrowLeft } from "react-bootstrap-icons";
 //Auth Contexts
 import { useAuth } from "../../../contexts/AuthContext";
+import { useStu } from "../../../contexts/StuContext";
 //React Chat Elements
 import { ChatList, MessageList } from "react-chat-elements";
 //Components
@@ -39,6 +40,7 @@ const ChatStu = () => {
   //CUSTOM HOOKS
   //Current user details from auth context
   const { currentUser } = useAuth();
+  const { getStuChats, getStuMessages, postMessage } = useStu();
   //Retrieve window dimensions
   const { width } = useWindowDimensions();
   //Refs for retrieving new message and scrolling to bottom
@@ -49,33 +51,11 @@ const ChatStu = () => {
   //Fetching Chats
 
   const getChats = async () => {
-    const chatData = await fetch(
-      `${process.env.REACT_APP_BACKEND_URL}/chats/all-chats/student/${currentUser.email}`
-    );
-    const chats = await chatData.json();
-    var processedChats = chats;
-    processedChats.forEach((chat) => {
-      chat.date = new Date(chat.date);
-    });
-    processedChats.forEach((chat) => {
-      if (currentUser.email === chat.fromID) {
-        chat.subtitle = `You: ${chat.subtitle}`;
-      }
-    });
-    processedChats.forEach((chat) => {
-      if (!chat.avatar) {
-        chat.avatar = noAvatar;
-      }
-    });
-    processedChats.forEach((chat) => {
-      if (!(chat.title && chat.title.length > 0)) {
-        chat.title = "<No name>";
-      }
-    });
+    const allChats = await getStuChats(currentUser.email);
     if (loadingChats) {
       setLoadingChats(false);
     }
-    setChats(processedChats);
+    setChats(allChats);
     setChatUpdater(!chatUpdater);
   };
 
@@ -88,21 +68,10 @@ const ChatStu = () => {
   };
   //Fetching Messages
   const getMessages = async () => {
-    const messagesData = await fetch(
-      process.env.REACT_APP_BACKEND_URL + "/chats/messages/" + currentChat
+    const processedMessages = await getStuMessages(
+      currentChat,
+      currentUser.email
     );
-    const messages = await messagesData.json();
-    var processedMessages = [...messages];
-    processedMessages.forEach((msg) => {
-      msg.date = new Date(msg.date);
-    });
-    processedMessages.forEach((msg) => {
-      if (currentUser.email === msg.fromID) {
-        msg.position = "right";
-      } else {
-        msg.position = "left";
-      }
-    });
     //if the currentChat doesn't exist or there are new updates, update current messages
     if (
       !currentMessages[currentChat] ||
@@ -157,14 +126,7 @@ const ChatStu = () => {
     });
 
     try {
-      await fetch(
-        process.env.REACT_APP_BACKEND_URL + "/chats/" + currentChatID,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(backendMessage),
-        }
-      );
+      await postMessage(currentChatID, backendMessage);
     } catch (err) {
       console.error(err);
     }

@@ -162,6 +162,107 @@ export function StuProvider({ children }) {
     }
   }
 
+  async function getStuChats(id) {
+    try {
+      const stuChatData = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/chats/all-chats/student/${id}`,
+        { headers: { authorization: `Bearer ${token}` } }
+      );
+      const stuChats = await stuChatData.json();
+      var processedStuChat = stuChats;
+      processedStuChat.forEach((chat) => {
+        chat.date = new Date(chat.date);
+      });
+      processedStuChat.forEach((chat) => {
+        if (id === chat.fromID) {
+          chat.subtitle = `You: ${chat.subtitle}`;
+        }
+        processedStuChat.forEach((chat) => {
+          if (!(chat.title && chat.title.length > 0)) {
+            chat.title = "<No name>";
+          }
+        });
+      });
+      return processedStuChat;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function getStuMessages(currentChat, myId) {
+    try {
+      const messagesData = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/chats/messages/${currentChat}`,
+        {
+          headers: { authorization: `Bearer ${token}` },
+        }
+      );
+      const messages = await messagesData.json();
+      var processedMessages = [...messages];
+      processedMessages.forEach((msg) => {
+        msg.date = new Date(msg.date);
+      });
+      processedMessages.forEach((msg) => {
+        if (myId === msg.fromID) {
+          msg.position = "right";
+        } else {
+          msg.position = "left";
+        }
+      });
+      return processedMessages;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function postChat(body) {
+    try {
+      await fetch(`${process.env.REACT_APP_BACKEND_URL}/chats`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(body),
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function checkExists(stuId, orgId) {
+    try {
+      const alreadyExistsData = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/chats/already-exists/${stuId}&${orgId}`,
+        {
+          headers: { authorization: `Bearer ${token}` },
+        }
+      );
+      const alreadyExists = await alreadyExistsData.json();
+      return alreadyExists;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function postMessage(currentChatID, backendMessage) {
+    try {
+      await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/chats/${currentChatID}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(backendMessage),
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   const value = {
     getStudent,
     getSubscriptions,
@@ -169,6 +270,11 @@ export function StuProvider({ children }) {
     updateStudentAccount,
     applyForJob,
     getAppForJob,
+    getStuChats,
+    getStuMessages,
+    postChat,
+    checkExists,
+    postMessage,
   };
 
   return <StuContext.Provider value={value}>{children}</StuContext.Provider>;
