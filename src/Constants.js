@@ -1,5 +1,6 @@
 //Beneficiary and SkillTags for PostAJob, Filters, Subscriptions, etc.
-//Do ensure that there are no spaces in the item as it would break the job board filter
+//Do ensure that there are no spaces for each tag
+//(Try not to delete tags as jobs that have deleted tags will no longer be visible on the job board)
 export const BeneficiaryTags = [
   "Animals",
   "Children",
@@ -27,6 +28,7 @@ export const SkillTags = [
   "Others",
 ];
 
+//To store the details of CCSGP
 export const CCSGP = {
   block: "Computing 2",
   street: "13 Computing Drive",
@@ -41,7 +43,7 @@ export const CCSGP = {
   nusWebsite: "https://www.comp.nus.edu.sg/",
 };
 
-//Number of jobs per page
+//Number of jobs per page on the job board
 export const jobsPerPage = 3;
 
 //For React Select
@@ -53,6 +55,7 @@ export const SelectSkillTags = SkillTags.map((skill) => {
   return { value: skill, label: skill };
 });
 
+//Terms and conditions
 export const TermsAndConditions = () => (
   <>
     <li>Agreement To Terms</li>

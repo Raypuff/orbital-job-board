@@ -75,7 +75,7 @@ const SignedInStuNavbar = () => {
 
   //PAGINATION SYSTEM
   const [activePage, setActivePage] = useState(1);
-  const numberOfPages = 4;
+  const numberOfPages = 5;
   let pages = [
     <Pagination.Prev
       key={-1}
@@ -381,6 +381,12 @@ const SignedInStuNavbar = () => {
                 page where you can look through all the finer details of the
                 job.
               </p>
+              <p>
+                If you have any questions for the organizations, simply click on
+                the "Chat now" button! It will bring you to your{" "}
+                <Link to="/chat-student">Chats</Link> where you can ask
+                organizations any questions that you have!
+              </p>
             </>
           ) : activePage === 3 ? (
             <>
@@ -422,6 +428,26 @@ const SignedInStuNavbar = () => {
                 changes to any of your applications. Additionally, you can check
                 out your notifications for any updates on your applications as
                 well.
+              </p>
+            </>
+          ) : activePage === 5 ? (
+            <>
+              <h4>Step 5: Subscribe to email notifications</h4>
+              <p>
+                If you don't see any volunteer jobs on the job board that you
+                are interested in, don't worry!
+              </p>
+              <img
+                className={styles.image}
+                src={stu1}
+                alt="man sitting on bench using laptop"
+              />
+              <p>
+                You can proceed to{" "}
+                <Link to="/profile-student">Your Profile</Link> where you can
+                manage your email subscriptions. Here, you can customize your
+                preferences such that you are notified when there are new jobs
+                that you may be interested in!
               </p>
               <Button
                 variant="primary"
