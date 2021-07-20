@@ -11,6 +11,7 @@ import styles from "./ApplicantsModalCard.module.css";
 
 import { useNotif } from "../../../contexts/NotifContext";
 import { useOrg } from "../../../contexts/OrgContext";
+import { useEmail } from "../../../contexts/EmailContext";
 
 //Unique ID
 var uniqid = require("uniqid");
@@ -32,6 +33,7 @@ const ApplicantsModalCard = ({
 }) => {
   const { acceptRejectApplication } = useOrg();
   const { sendNotif } = useNotif();
+  const { sendEmail } = useEmail();
 
   //FUNCTIONS
   //Accept or reject an applicant
@@ -51,11 +53,8 @@ const ApplicantsModalCard = ({
           html: html,
         },
       };
-      await fetch(process.env.REACT_APP_BACKEND_URL + "/email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(msg),
-      });
+      await sendEmail(msg);
+
       //SEND NEW NOTIFS
       const newNotif = {
         newNotif: {
