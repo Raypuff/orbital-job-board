@@ -237,6 +237,7 @@ const JobBoard = () => {
                   BeneficiaryTags={BeneficiaryTags}
                   SkillTags={SkillTags}
                   setFilterState={setFilterState}
+                  currentLocation={{ lat: myLat, lng: myLng }}
                 />
               )}
             </Formik>

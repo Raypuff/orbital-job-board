@@ -15,6 +15,7 @@ const JobBoardFilter = ({
   BeneficiaryTags,
   SkillTags,
   setFilterState,
+  currentLocation,
 }) => {
   //USESTATES
   //To determine if the chevron is open or closed
@@ -70,6 +71,7 @@ const JobBoardFilter = ({
                   checked={values.sort === "nearestDistance"}
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  disabled={!(currentLocation.lat && currentLocation.lng)}
                 />
               </Form.Group>
               <Dropdown.Divider />
