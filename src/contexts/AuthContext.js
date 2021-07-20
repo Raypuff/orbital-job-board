@@ -14,16 +14,30 @@ export function AuthProvider({ children }) {
   const [userVerified, setUserVerified] = useState(false);
   const [loading, setLoading] = useState(true);
   const [userType, setUserType] = useState();
+  const [token, setToken] = useState();
 
-  function signup(email, password, accountType) {
-    const ref = store.collection("accounts");
-    const accountObject = { type: accountType };
-    ref
-      .doc(email)
-      .set(accountObject)
-      .catch((err) => {
-        console.error(err);
-      });
+  async function signup(email, password, accountType) {
+    try {
+      const ref = store.collection("accounts");
+      const accountObject = { type: accountType };
+      ref
+        .doc(email)
+        .set(accountObject)
+        .catch((err) => {
+          console.error(err);
+        });
+
+      await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/firebase/create-${accountType}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: email }),
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
     return auth.createUserWithEmailAndPassword(email, password);
   }
 
@@ -91,11 +105,19 @@ export function AuthProvider({ children }) {
     });
   }
 
+  async function test(token) {
+    const yeet = await fetch(`http://localhost:5000/test`, {
+      headers: { authorization: `Bearer ${token}` },
+    });
+    console.log(await yeet.json());
+  }
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user !== null) {
         getUserType(user.email);
         setUserVerified(user.emailVerified);
+        user.getIdToken().then((token) => setToken(token));
       }
       setCurrentUser(user);
       setLoading(false);
@@ -108,6 +130,8 @@ export function AuthProvider({ children }) {
     currentUser,
     userType,
     userVerified,
+    token,
+    test,
     login,
     signup,
     logout,

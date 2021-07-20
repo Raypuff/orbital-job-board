@@ -14,6 +14,8 @@ import { Link } from "react-router-dom";
 //CSS Modules
 import styles from "./YourApplicationsCard.module.css";
 
+import { useJob } from "../../../contexts/JobContext";
+
 const YourApplicationsCard = ({
   key,
   id,
@@ -28,18 +30,18 @@ const YourApplicationsCard = ({
   const [job, setJob] = useState(null);
   const [jobLoading, setJobLoading] = useState(true);
 
+  const { getJobDetails } = useJob();
+
+  async function getPageData() {
+    const jobData = await getJobDetails(jobID);
+    setJob(jobData);
+    setJobLoading(false);
+  }
+
   //USEEFFECTS
   //Retrieving job details
   useEffect(() => {
-    const getJob = async () => {
-      const response = await fetch(
-        process.env.REACT_APP_BACKEND_URL + "/jobs/" + jobID
-      );
-      const jsonData = await response.json();
-      setJob(jsonData);
-      setJobLoading(false);
-    };
-    getJob();
+    getPageData();
   }, [job]);
 
   //LOADING

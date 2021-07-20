@@ -47,6 +47,7 @@ const ChatStu = () => {
 
   //API CALL FUNCTIONS
   //Fetching Chats
+
   const getChats = async () => {
     const chatData = await fetch(
       `${process.env.REACT_APP_BACKEND_URL}/chats/all-chats/student/${currentUser.email}`
