@@ -11,7 +11,6 @@ import { Loading, Empty, EmptyFilter } from "../../EmptyStates/EmptyStates";
 import { Formik } from "formik";
 //Contexts
 import { useAuth } from "../../../contexts/AuthContext";
-import { useJob } from "../../../contexts/JobContext";
 import { useOrg } from "../../../contexts/OrgContext";
 //CSS Modules
 import styles from "./YourJobs.module.css";

@@ -11,7 +11,7 @@ import { Loading, Empty, EmptyFilter } from "../../EmptyStates/EmptyStates";
 import { Formik } from "formik";
 //Contexts
 import { useAuth } from "../../../contexts/AuthContext";
-import { useJob } from "../../../contexts/JobContext";
+import { useStu } from "../../../contexts/StuContext";
 //CSS Modules
 import styles from "./YourApplications.module.css";
 
@@ -21,20 +21,31 @@ const YourApplications = () => {
   const [apps, setApps] = useState([]);
   //State of the filter
   const [filterState, setFilterState] = useState({});
+  const [appLoading, setAppLoading] = useState(true);
 
   //CUSTOM HOOKS
   //Current user data
   const { currentUser } = useAuth();
   //Import functions from job context to make API Calls to fetch jobs
-  const { getYourApps, jobLoading } = useJob();
+  const { getYourApps } = useStu();
+
+  async function getPageData() {
+    try {
+      const yourApps = await getYourApps(currentUser.email);
+      setApps(yourApps);
+      setAppLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   //USEEFFECTS
   useEffect(() => {
-    getYourApps(setApps, currentUser);
+    getPageData();
   }, []);
 
   //LOADING
-  if (jobLoading) {
+  if (appLoading) {
     return <Loading>Loading your applications...</Loading>;
   }
   //NO JOBS

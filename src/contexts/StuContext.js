@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { BeneficiaryTags, SkillTags } from "../Constants";
-import { auth } from "../firebase";
 import { useAuth } from "./AuthContext";
+import noAvatar from "../assets/emptyStates/noAvatar.png";
 
 const StuContext = React.createContext();
 
@@ -169,21 +169,26 @@ export function StuProvider({ children }) {
         { headers: { authorization: `Bearer ${token}` } }
       );
       const stuChats = await stuChatData.json();
-      var processedStuChat = stuChats;
-      processedStuChat.forEach((chat) => {
+      var processedChats = stuChats;
+      processedChats.forEach((chat) => {
         chat.date = new Date(chat.date);
       });
-      processedStuChat.forEach((chat) => {
+      processedChats.forEach((chat) => {
         if (id === chat.fromID) {
           chat.subtitle = `You: ${chat.subtitle}`;
         }
-        processedStuChat.forEach((chat) => {
-          if (!(chat.title && chat.title.length > 0)) {
-            chat.title = "<No name>";
-          }
-        });
       });
-      return processedStuChat;
+      processedChats.forEach((chat) => {
+        if (!chat.avatar) {
+          chat.avatar = noAvatar;
+        }
+      });
+      processedChats.forEach((chat) => {
+        if (!(chat.title && chat.title.length > 0)) {
+          chat.title = "<No name>";
+        }
+      });
+      return processedChats;
     } catch (err) {
       console.log(err);
     }
@@ -263,11 +268,25 @@ export function StuProvider({ children }) {
     }
   }
 
+  async function getYourApps(id) {
+    try {
+      const appData = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/job-applications/student/${id}`,
+        {
+          headers: { authorization: `Bearer ${token}` },
+        }
+      );
+      const apps = await appData.json();
+      return apps;
+    } catch (err) {}
+  }
+
   const value = {
     getStudent,
     getSubscriptions,
     updateSubscriptions,
     updateStudentAccount,
+    getYourApps,
     applyForJob,
     getAppForJob,
     getStuChats,
