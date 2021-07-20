@@ -137,7 +137,7 @@ export const JobDetailsAdminAppModal = ({
   pocEmail,
   applicants,
 }) => {
-  const { updateJobStatus } = useAdmin();
+  const { updateJobStatus, alertSubscribers } = useAdmin();
   const { sendNotif } = useNotif();
 
   const handleAccept = async (jobId, orgEmail, title) => {
@@ -162,26 +162,6 @@ export const JobDetailsAdminAppModal = ({
     }
   };
 
-  async function alertSubscribers() {
-    const body = {
-      tags: beneficiaries.concat(skills),
-      subject: `[Volunteer CCSGP] New job posting: ${title}`,
-      text: `Please check your account for a new job posting that you have subscribed to`,
-      html: `Please check your account for a new job posting that you have subscribed to`,
-    };
-    try {
-      await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/subscriptions/alert-subscribers`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
-        }
-      );
-    } catch (err) {
-      console.log(err);
-    }
-  }
   return (
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>
@@ -193,7 +173,7 @@ export const JobDetailsAdminAppModal = ({
           <Button
             onClick={async (event) => {
               await handleAccept(id, orgEmail, title);
-              alertSubscribers();
+              alertSubscribers(beneficiaries, skills, title);
             }}
             variant="success"
           >
