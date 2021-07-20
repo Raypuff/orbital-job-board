@@ -7,8 +7,6 @@ export function useEmail() {
 }
 
 export function EmailProvider({ children }) {
-  const [emailLoading, setEmailLoading] = useState(false);
-
   async function sendEmail(to, subject, text, html) {
     const msg = {
       msg: {
