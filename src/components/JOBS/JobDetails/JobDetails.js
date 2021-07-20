@@ -20,6 +20,8 @@ import {
 import { Loading, Empty } from "../../EmptyStates/EmptyStates";
 //Contexts
 import { useAuth } from "../../../contexts/AuthContext";
+import { useJob } from "../../../contexts/JobContext";
+import { useOrg } from "../../../contexts/OrgContext";
 //React Router
 import { Link, useHistory } from "react-router-dom";
 //Images
@@ -54,57 +56,35 @@ const JobDetails = ({ id }) => {
   //CUSTOM HOOKS
   const history = useHistory();
   const { currentUser, userType, userVerified } = useAuth();
+  const { getJobDetails, getAppsByJob } = useJob();
+  const { getOrgInfo } = useOrg();
 
-  //USEEFFECTS
-  //Retrieving my location
-  const getLocation = async () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        setMyLng(position.coords.longitude);
-        setMyLat(position.coords.latitude);
-      });
-    } else {
-      setMyLng(false);
-      setMyLat(false);
+  async function getPageData() {
+    const job = await getJobDetails(id);
+    const applications = await getAppsByJob(id);
+    setJob(job);
+    const org = await getOrgInfo(job.orgID);
+    setOrg(org);
+    setImageSrc(job.imageUrl);
+    setApplications(await applications);
+    setOrgLoading(false);
+    if (job.platform === "Physical" && !job.multiLocation) {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          setMyLng(position.coords.longitude);
+          setMyLat(position.coords.latitude);
+        });
+      } else {
+        setMyLng(false);
+        setMyLat(false);
+      }
     }
-  };
-  useEffect(() => {
-    getLocation();
-  }, []);
+  }
   //Retrieving organization data
   useEffect(() => {
-    const getData = async () => {
-      const response = await fetch(
-        process.env.REACT_APP_BACKEND_URL + "/jobs/" + id
-      );
-      const jsonData = await response.json();
-      const response2 = await fetch(
-        process.env.REACT_APP_BACKEND_URL +
-          "/organization-accounts/" +
-          jsonData.orgID
-      );
-      const jsonData2 = await response2.json();
-      setJob(jsonData);
-      setOrg(jsonData2);
-      setOrgLoading(false);
-      setImageSrc(jsonData.imageUrl);
-    };
-    getData();
+    getPageData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showApplyModal]);
-  //Retrieving applications
-  useEffect(() => {
-    const getApplications = async () => {
-      const response = await fetch(
-        process.env.REACT_APP_BACKEND_URL + "/job-applications/job/" + id
-      );
-
-      const jsonData = await response.json();
-      setApplications(jsonData);
-    };
-    getApplications();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   //FUNCTION TO CREATE NEW CHAT
   const createChats = async () => {
@@ -219,11 +199,6 @@ const JobDetails = ({ id }) => {
   const orgType = org.type;
   const orgName = org.name;
   const orgUen = org.uen;
-
-  //RETRIEVE LOCATION
-  if (platform === "Physical" && !multiLocation) {
-    getLocation();
-  }
 
   //CREATING DISPLAYSTATES
 

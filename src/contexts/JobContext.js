@@ -49,6 +49,18 @@ export function JobProvider({ children }) {
     setJobLoading(false);
   }
 
+  async function getJobDetails(id) {
+    try {
+      const jobData = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/jobs/${id}`
+      );
+      const job = await jobData.json();
+      return job;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   /**
    * Used in YourJobs.js component
    * @param {useState function to setJobs array} setJobs
@@ -141,13 +153,32 @@ export function JobProvider({ children }) {
     }
   }
 
+  /**
+   *
+   * @param {String representing the id of the job} jobId
+   * @returns {Object storing job information in job}
+   */
+  async function getAppsByJob(jobId) {
+    try {
+      const appData = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/job-applications/job/${jobId}`
+      );
+      const appByJob = await appData.json();
+      return appByJob;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   const value = {
     getAllJobs,
     getAllApprovedJobs,
     PostAJob,
     getYourJobs,
+    getJobDetails,
     getAllApps,
     getYourApps,
+    getAppsByJob,
     jobLoading,
     appLoading,
   };

@@ -28,6 +28,8 @@ import { CSVLink } from "react-csv";
 //CSS Modules
 import styles from "./YourJobsCard.module.css";
 
+import { useJob } from "../../../contexts/JobContext";
+
 const YourJobsCard = ({
   key,
   id,
@@ -75,17 +77,17 @@ const YourJobsCard = ({
   const pendingRef = useRef();
   const rejectedRef = useRef();
 
+  const { getAppsByJob } = useJob();
+
+  async function getPageData() {
+    const appData = getAppsByJob(id);
+    setApplications(appData);
+  }
+
   //USEEFFECTS
   //Fetching applications
   useEffect(() => {
-    const getApplications = async () => {
-      const response = await fetch(
-        process.env.REACT_APP_BACKEND_URL + "/job-applications/job/" + id
-      );
-      const jsonData = await response.json();
-      setApplications(jsonData);
-    };
-    getApplications();
+    getPageData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showApplicantsModal]);
 

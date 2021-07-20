@@ -14,6 +14,7 @@ import * as Yup from "yup";
 import { Formik } from "formik";
 //Auth Context
 import { useAuth } from "../../../contexts/AuthContext";
+import { useOrg } from "../../../contexts/OrgContext";
 //CSS Modules
 import styles from "./YourProfileOrg.module.css";
 
@@ -47,24 +48,20 @@ const YourProfileOrg = () => {
     userVerified,
     sendEmailVerification,
   } = useAuth();
+  const { getOrgInfo } = useOrg();
   //To retrieve the window width
   const { width } = useWindowDimensions();
+
+  async function getPageData() {
+    const orgData = await getOrgInfo(currentUser.email);
+    setUserData(orgData);
+    setLoading(false);
+  }
 
   //USEEFFECTS
   //To retrieve user data
   useEffect(() => {
-    const getUser = async () => {
-      const response = await fetch(
-        process.env.REACT_APP_BACKEND_URL +
-          "/organization-accounts/" +
-          currentUser.email,
-        {}
-      );
-      const jsonData = await response.json();
-      setUserData(jsonData);
-      setLoading(false);
-    };
-    getUser();
+    getPageData();
   }, [edit]);
   //For countdown for resend verification email
   useEffect(() => {

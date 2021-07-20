@@ -45,6 +45,7 @@ const ChatStu = () => {
 
   //API CALL FUNCTIONS
   //Fetching Chats
+
   const getChats = async () => {
     const chatData = await fetch(
       `${process.env.REACT_APP_BACKEND_URL}/chats/all-chats/student/${currentUser.email}`
@@ -54,11 +55,6 @@ const ChatStu = () => {
     processedChats.forEach((chat) => {
       chat.date = new Date(chat.date);
     });
-    /*
-    processedChats.forEach((chat) => {
-      chat.avatar = chat.orgAvatar;
-    });
-    */
     processedChats.forEach((chat) => {
       if (currentUser.email === chat.fromID) {
         chat.subtitle = `You: ${chat.subtitle}`;

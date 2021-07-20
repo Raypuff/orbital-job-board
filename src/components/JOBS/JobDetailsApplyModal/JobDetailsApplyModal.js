@@ -122,7 +122,6 @@ export const JobDetailsApplyModal = ({
         jobID: id,
       };
       try {
-        console.log(newApp);
         await fetch(process.env.REACT_APP_BACKEND_URL + "/job-applications", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
