@@ -10,6 +10,8 @@ import { useAuth } from "../../../contexts/AuthContext";
 import { ChatList, MessageList } from "react-chat-elements";
 //Components
 import { Loading, Empty, SystemMessage } from "../../EmptyStates/EmptyStates";
+//Images
+import noAvatar from "../../../assets/emptyStates/noAvatar.png";
 //CSS Modules
 import styles from "./ChatStu.module.css";
 //Unique ID
@@ -61,6 +63,11 @@ const ChatStu = () => {
       }
     });
     processedChats.forEach((chat) => {
+      if (!chat.avatar) {
+        chat.avatar = noAvatar;
+      }
+    });
+    processedChats.forEach((chat) => {
       if (!(chat.title && chat.title.length > 0)) {
         chat.title = "<No name>";
       }
@@ -96,12 +103,7 @@ const ChatStu = () => {
         msg.position = "left";
       }
     });
-    console.log(
-      `1: ${
-        currentMessages[currentChat] && currentMessages[currentChat].length
-      }`
-    );
-    console.log(`2: ${processedMessages.length}`);
+    //if the currentChat doesn't exist or there are new updates, update current messages
     if (
       !currentMessages[currentChat] ||
       (currentMessages[currentChat] &&

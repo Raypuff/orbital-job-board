@@ -450,6 +450,11 @@ const SignedInOrgNavbar = () => {
                 volunteer job, you can click "Accept", if they are not a good
                 fit, you can click "Reject"
               </p>
+              <p>
+                Meanwhile, you can check your{" "}
+                <Link to="/chat-organization">Chats</Link> to answer any queries
+                that potential volunteers might have for you!
+              </p>
             </>
           ) : activePage === 5 ? (
             <>

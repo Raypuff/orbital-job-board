@@ -10,6 +10,8 @@ import { useAuth } from "../../../contexts/AuthContext";
 import { ChatList, MessageList } from "react-chat-elements";
 //Components
 import { Loading, Empty, SystemMessage } from "../../EmptyStates/EmptyStates";
+//Images
+import noAvatar from "../../../assets/emptyStates/noAvatar.png";
 //CSS Modules
 import styles from "./ChatOrg.module.css";
 //Unique ID
@@ -59,6 +61,11 @@ const ChatOrg = () => {
     processedChats.forEach((chat) => {
       if (currentUser.email === chat.fromID) {
         chat.subtitle = `You: ${chat.subtitle}`;
+      }
+    });
+    processedChats.forEach((chat) => {
+      if (!chat.avatar) {
+        chat.avatar = noAvatar;
       }
     });
     processedChats.forEach((chat) => {
