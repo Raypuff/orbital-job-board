@@ -48,8 +48,7 @@ const ManageAdmins = () => {
   //CUSTOM HOOKS
   //To retrieve the window width
   const { currentUser, signup } = useAuth();
-  const { getAllAdmins, getCurrentAdmin, postNewAdmin, changeAdminStatus } =
-    useAdmin();
+  const { getAllAdmins, getCurrentAdmin, postNewAdmin } = useAdmin();
   const { width } = useWindowDimensions();
 
   const fetchAdminData = async () => {
@@ -75,9 +74,7 @@ const ManageAdmins = () => {
       const password = values.password;
       const type = values.type;
       try {
-        //hey zech do stuff here -> Create new admin
-        await signup(email, password, "admin");
-        await postNewAdmin(email, type);
+        await postNewAdmin(email, password, type);
         setSuccessNewAdmin("Created new admin!");
         resetForm();
       } catch (err) {

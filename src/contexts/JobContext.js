@@ -29,6 +29,18 @@ export function JobProvider({ children }) {
     setJobLoading(false);
   }
 
+  async function getOrgPublic(id) {
+    try {
+      const orgDataRes = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/organization-accounts/public/${id}`
+      );
+      const orgData = await orgDataRes.json();
+      return orgData;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   /**
    * Used in JobBoard.js component
    * @param {useState function} setJobs
@@ -172,6 +184,7 @@ export function JobProvider({ children }) {
 
   const value = {
     getAllJobs,
+    getOrgPublic,
     getAllApprovedJobs,
     PostAJob,
     getYourJobs,

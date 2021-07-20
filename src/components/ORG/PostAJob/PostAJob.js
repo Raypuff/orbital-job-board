@@ -19,7 +19,7 @@ import { TermsAndConditions } from "../../../Constants";
 //Contexts
 import { useAuth } from "../../../contexts/AuthContext";
 import { useDist } from "../../../contexts/DistContext";
-import { useJob } from "../../../contexts/JobContext";
+import { useOrg } from "../../../contexts/OrgContext";
 //Inline Form Validation
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -52,34 +52,28 @@ const PostAJob = () => {
   //Finding currentUser that is logged in
   const { currentUser } = useAuth();
   const { getGeocode } = useDist();
-  const { PostAJob } = useJob();
+  const { PostAJob, getOrgInfo } = useOrg();
 
+  async function getPageData() {
+    const orgData = await getOrgInfo(currentUser.email);
+    setUserData(orgData);
+    const { type, name, uen, pocName, pocNo, pocEmail } = orgData;
+    if (
+      (type === "NUS Organization" ||
+        (type === "Non-NUS Organization" && uen)) &&
+      name
+    ) {
+      setCanRetrieveOrgDetails(true);
+    }
+    if (pocName && pocNo && pocEmail) {
+      setCanRetrievePocDetails(true);
+    }
+    setLoadingOrgDetails(false);
+  }
   //USEEFFECTS
   //Retrieve user from database
   useEffect(() => {
-    const getUser = async () => {
-      const response = await fetch(
-        process.env.REACT_APP_BACKEND_URL +
-          "/organization-accounts/" +
-          currentUser.email,
-        {}
-      );
-      const jsonData = await response.json();
-      setUserData(jsonData);
-      const { type, name, uen, pocName, pocNo, pocEmail } = jsonData;
-      if (
-        (type === "NUS Organization" ||
-          (type === "Non-NUS Organization" && uen)) &&
-        name
-      ) {
-        setCanRetrieveOrgDetails(true);
-      }
-      if (pocName && pocNo && pocEmail) {
-        setCanRetrievePocDetails(true);
-      }
-      setLoadingOrgDetails(false);
-    };
-    getUser();
+    getPageData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

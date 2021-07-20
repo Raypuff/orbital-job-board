@@ -8,6 +8,8 @@ import { Link } from "react-router-dom";
 //Auth contexts
 import { useAuth } from "../../../contexts/AuthContext";
 import { useEmail } from "../../../contexts/EmailContext";
+import { useStu } from "../../../contexts/StuContext";
+import { useNotif } from "../../../contexts/NotifContext";
 //Form validation
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -61,28 +63,26 @@ export const JobDetailsApplyModal = ({
   //CUSTOM HOOKS
   const { currentUser, userType, userVerified } = useAuth();
   const { sendEmail } = useEmail();
+  const { getStudent, applyForJob } = useStu();
+  const { sendNotif } = useNotif();
+
+  async function getData() {
+    try {
+      const stuData = await getStudent();
+      setStudent(stuData);
+      const { name, dob, email, contactNo, course, year } = stuData;
+      if (name && dob && email && contactNo && course && year) {
+        setCanRetrieve(true);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   //USEEFFECTS
   //Retrieving student details
   useEffect(() => {
-    const getStu = async () => {
-      try {
-        const response = await fetch(
-          process.env.REACT_APP_BACKEND_URL +
-            "/student-accounts/" +
-            currentUser.email
-        );
-        const jsonData = await response.json();
-        setStudent(jsonData);
-        const { name, dob, email, contactNo, course, year } = jsonData;
-        if (name && dob && email && contactNo && course && year) {
-          setCanRetrieve(true);
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    getStu();
+    getData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -111,39 +111,9 @@ export const JobDetailsApplyModal = ({
         stuYear: values.retrieveDetails ? student.year : values.stuYear,
         stuAddInfo: values.stuAddInfo,
       };
-
-      //Creating object to update applicants in jobs
-      const updateApplicants = {
-        student_id: currentUser.email,
-      };
-
-      //Creating object to update jobs_applied in student-accounts;
-      const updateApplied = {
-        jobID: id,
-      };
       try {
-        await fetch(process.env.REACT_APP_BACKEND_URL + "/job-applications", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(newApp),
-        });
+        await applyForJob(id, currentUser.email, newApp);
 
-        await fetch(process.env.REACT_APP_BACKEND_URL + "/jobs/apply/" + id, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(updateApplicants),
-        });
-
-        await fetch(
-          process.env.REACT_APP_BACKEND_URL +
-            "/student-accounts/apply-job/" +
-            currentUser.email,
-          {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(updateApplied),
-          }
-        );
         //Sending email
         const text = `Hello ${orgName}! There is a new application for your job ${title}. Please click on the link below and log in to view the new job application! volunteer-ccsgp-vercel.app`;
         const html = `Hello ${orgName}!<br>There is a new application for your job ${title}. <br>Please click on the link below and log in to view the new job application! <a href="volunteer-ccsgp-vercel.app">volunteer-ccsgp-vercel.app</a>`;
@@ -162,11 +132,7 @@ export const JobDetailsApplyModal = ({
           },
         };
 
-        await fetch(`${process.env.REACT_APP_BACKEND_URL}/notifications`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(newNotif),
-        });
+        await sendNotif(newNotif);
 
         setMessage("Application successful");
         setSuccessful(true);

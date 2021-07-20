@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { Button, Card } from "react-bootstrap";
 //Contexts
 import { useJob } from "../../../contexts/JobContext";
+import { useAdmin } from "../../../contexts/AdminContext";
 //CSS Modules
 import styles from "./Statistics.module.css";
 //CSV Download
@@ -27,43 +28,32 @@ const Statistics = () => {
 
   //CUSTOM HOOKS
   //API calls for retrieving jobs and applications
-  const { getAllJobs, getAllApps } = useJob();
+  const { getAllJobs } = useJob();
+  const { getAllStudents, getAllOrganizations, getAllApps } = useAdmin();
+
+  async function getPageData() {
+    const allStudents = await getAllStudents();
+    setStus(allStudents);
+    setStusLoading(false);
+    const allOrgs = await getAllOrganizations();
+    setOrgs(allOrgs);
+    setOrgsLoading(false);
+    const allApps = await getAllApps();
+    setApps(allApps);
+    setAppsLoading(false);
+  }
 
   //USEEFFECTS
   //API Call for retrieving jobs and applications
   useEffect(() => {
     getAllJobs(setJobs);
     setJobLoading(false);
-    getAllApps(setApps);
-    setAppsLoading(false);
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  //API Call for retrieving students
+  //API Call for retrieving page data
   useEffect(() => {
-    const getStus = async () => {
-      const response = await fetch(
-        process.env.REACT_APP_BACKEND_URL + "/student-accounts"
-      );
-      const jsonData = await response.json();
-      setStus(jsonData);
-      setStusLoading(false);
-    };
-    getStus();
+    getPageData();
   }, []);
-  //API Call for retrieving organizations
-  useEffect(() => {
-    const getOrgs = async () => {
-      const response = await fetch(
-        process.env.REACT_APP_BACKEND_URL + "/organization-accounts"
-      );
-      const jsonData = await response.json();
-      setOrgs(jsonData);
-      setOrgsLoading(false);
-    };
-    getOrgs();
-  }, []);
-
   return (
     <div className={styles.container}>
       <Card>

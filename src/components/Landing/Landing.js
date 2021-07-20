@@ -16,22 +16,11 @@ import { useEffect } from "react";
 const Landing = () => {
   //CUSTOM HOOKS
   //Retrieve the user details
-  const { currentUser, userType, test } = useAuth();
+  const { currentUser, userType } = useAuth();
 
   //Don't show
   function showPostAJobButton() {
     return !(currentUser !== null && userType !== "organization");
-  }
-
-  if (currentUser) {
-    currentUser.getIdToken().then(async (token) => {
-      console.log(token);
-      const test = await fetch(`http://localhost:5000/test`, {
-        headers: { authorization: `Bearer ${token}` },
-      });
-      const testJson = await test.json();
-      console.log(testJson);
-    });
   }
 
   return (

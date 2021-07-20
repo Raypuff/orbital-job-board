@@ -8,6 +8,10 @@ import {
 } from "react-bootstrap-icons";
 //CSS Modules
 import styles from "./ApplicantsModalCard.module.css";
+
+import { useNotif } from "../../../contexts/NotifContext";
+import { useOrg } from "../../../contexts/OrgContext";
+
 //Unique ID
 var uniqid = require("uniqid");
 
@@ -26,19 +30,14 @@ const ApplicantsModalCard = ({
   title,
   setChanged,
 }) => {
+  const { acceptRejectApplication } = useOrg();
+  const { sendNotif } = useNotif();
+
   //FUNCTIONS
   //Accept or reject an applicant
   const handleAcceptReject = async (choice) => {
-    const body = { status: choice };
     try {
-      await fetch(
-        process.env.REACT_APP_BACKEND_URL + "/job-applications/status/" + id,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
-        }
-      );
+      await acceptRejectApplication(id, choice);
       setChanged(true);
       //SEND UPDATE EMAILS
       const text = `Hello ${name}! There has been an update to your volunteer application. Please click on the link below and log in to view the updates to your application! volunteer-ccsgp-vercel.app`;
@@ -69,11 +68,7 @@ const ApplicantsModalCard = ({
         },
       };
 
-      await fetch(`${process.env.REACT_APP_BACKEND_URL}/notifications`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newNotif),
-      });
+      await sendNotif(newNotif);
     } catch (err) {
       console.error(err);
     }

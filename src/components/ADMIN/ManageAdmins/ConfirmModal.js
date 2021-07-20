@@ -13,7 +13,7 @@ const ConfirmModal = ({ show, onHide, adminID, adminName, action }) => {
   const [error, setError] = useState();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { changeAdminStatus } = useAdmin();
+  const { changeAdminStatus, deleteAdmin } = useAdmin();
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
@@ -27,8 +27,11 @@ const ConfirmModal = ({ show, onHide, adminID, adminName, action }) => {
     }
 
     try {
-      if (status) {
+      if (status !== "remove") {
         await changeAdminStatus(adminID, status);
+      } else if (status === "remove") {
+        console.log("Deleting admin");
+        await deleteAdmin(adminID);
       }
       setSuccess("Success!");
     } catch (error) {

@@ -29,6 +29,7 @@ import { CSVLink } from "react-csv";
 import styles from "./YourJobsCard.module.css";
 
 import { useJob } from "../../../contexts/JobContext";
+import { useOrg } from "../../../contexts/OrgContext";
 
 const YourJobsCard = ({
   key,
@@ -77,10 +78,10 @@ const YourJobsCard = ({
   const pendingRef = useRef();
   const rejectedRef = useRef();
 
-  const { getAppsByJob } = useJob();
+  const { getAppsOfJob, setJobAsComplete } = useOrg();
 
   async function getPageData() {
-    const appData = getAppsByJob(id);
+    const appData = getAppsOfJob(id);
     setApplications(appData);
   }
 
@@ -134,14 +135,7 @@ const YourJobsCard = ({
   //Mark a job as complete
   const handleComplete = async () => {
     try {
-      await fetch(
-        process.env.REACT_APP_BACKEND_URL + "/jobs/status-complete/" + id,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({}),
-        }
-      );
+      await setJobAsComplete(id);
     } catch (err) {
       console.error(err);
     }

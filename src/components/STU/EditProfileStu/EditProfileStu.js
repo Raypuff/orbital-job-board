@@ -25,7 +25,7 @@ const EditProfileStu = ({
 }) => {
   //CUSTOM HOOKS
   const { currentUser } = useAuth();
-  const { updateStudentAccount } = useStu();
+  const { updateStudentAccount, getStudent } = useStu();
   const { uploadImage } = useImage();
 
   //USESTATES
@@ -44,20 +44,15 @@ const EditProfileStu = ({
   const [image, setImage] = useState();
   const [imageLoading, setImageLoading] = useState(false);
 
+  async function getData() {
+    const stu = await getStudent(currentUser.email);
+    setUserData(stu);
+    setUserLoading(false);
+  }
+
   //USEEFFECTS
   useEffect(() => {
-    const getUser = async () => {
-      const response = await fetch(
-        process.env.REACT_APP_BACKEND_URL +
-          "/student-accounts/" +
-          currentUser.email
-      );
-      const jsonData = await response.json();
-      setUserData(jsonData);
-      setUserLoading(false);
-    };
-
-    getUser();
+    getData();
   }, []);
 
   //FUNCTIONS

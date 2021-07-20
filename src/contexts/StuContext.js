@@ -10,10 +10,13 @@ export function useStu() {
 }
 
 export function StuProvider({ children }) {
+  const { token } = useAuth();
+
   async function getStudent(email) {
     try {
       const studentData = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/student-accounts/${email}`
+        `${process.env.REACT_APP_BACKEND_URL}/student-accounts/${email}`,
+        { headers: { authorization: `Bearer ${token}` } }
       );
       const student = await studentData.json();
       return student;
@@ -25,7 +28,10 @@ export function StuProvider({ children }) {
   async function getSubscriptions(email) {
     try {
       const subscriptionData = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/subscriptions/${email}`
+        `${process.env.REACT_APP_BACKEND_URL}/student-accounts/subscriptions/${email}`,
+        {
+          headers: { authorization: `Bearer ${token}` },
+        }
       );
 
       const subscriptionsObject = await subscriptionData.json();
@@ -64,10 +70,13 @@ export function StuProvider({ children }) {
     };
     try {
       await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/subscriptions/update-subscriptions/${email}`,
+        `${process.env.REACT_APP_BACKEND_URL}/student-accounts/update-subscriptions/${email}`,
         {
           method: "PUT",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
+          },
           body: JSON.stringify(body),
         }
       );
@@ -82,10 +91,72 @@ export function StuProvider({ children }) {
         `${process.env.REACT_APP_BACKEND_URL}/student-accounts/${email}`,
         {
           method: "PUT",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
+          },
           body: JSON.stringify(updated),
         }
       );
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function applyForJob(jobId, email, newApp) {
+    const updateApplicants = {
+      student_id: email,
+    };
+    const updateApplied = {
+      jobID: jobId,
+    };
+    try {
+      await fetch(process.env.REACT_APP_BACKEND_URL + "/job-applications", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer: ${token}`,
+        },
+        body: JSON.stringify(newApp),
+      });
+
+      await fetch(process.env.REACT_APP_BACKEND_URL + "/jobs/apply/" + jobId, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer: ${token}`,
+        },
+        body: JSON.stringify(updateApplicants),
+      });
+
+      await fetch(
+        process.env.REACT_APP_BACKEND_URL +
+          "/student-accounts/apply-job/" +
+          email,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(updateApplied),
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function getAppForJob(jobId, email) {
+    try {
+      const myAppData = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/job-applications/job/${jobId}/student/${email}`,
+        {
+          headers: { authorization: `Bearer ${token}` },
+        }
+      );
+      const myApp = await myAppData.json();
+      return myApp;
     } catch (err) {
       console.log(err);
     }
@@ -96,6 +167,8 @@ export function StuProvider({ children }) {
     getSubscriptions,
     updateSubscriptions,
     updateStudentAccount,
+    applyForJob,
+    getAppForJob,
   };
 
   return <StuContext.Provider value={value}>{children}</StuContext.Provider>;

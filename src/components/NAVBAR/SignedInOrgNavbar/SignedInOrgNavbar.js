@@ -32,6 +32,7 @@ import stu3 from "../../../assets/gettingStarted/stu3.png";
 import stu4 from "../../../assets/gettingStarted/stu4.png";
 //Auth Context
 import { useAuth } from "../../../contexts/AuthContext";
+import { useNotif } from "../../../contexts/NotifContext";
 //ReactTime for Notifications
 import ReactTimeAgo from "react-time-ago";
 //CSS Modules
@@ -52,7 +53,8 @@ const SignedInOrgNavbar = () => {
 
   //CUSTOM HOOKS
   //Retrieve account details and signing out with auth context
-  const { currentUser, logout } = useAuth();
+  const { currentUser, logout, token } = useAuth();
+  const { dismissNotif, dismissAllNotifs } = useNotif();
   //History to push to landing page after signing out
   const history = useHistory();
   //Show icon labels if in mobile view
@@ -66,7 +68,10 @@ const SignedInOrgNavbar = () => {
         const notifData = await fetch(
           process.env.REACT_APP_BACKEND_URL +
             "/notifications/" +
-            currentUser.email
+            currentUser.email,
+          {
+            headers: { authorization: `Bearer ${token}` },
+          }
         );
         const notifs = await notifData.json();
         setNotifications(notifs);
@@ -117,36 +122,6 @@ const SignedInOrgNavbar = () => {
     } catch {
       setError("Failed to log out");
       console.log(error);
-    }
-  }
-  //Dismissing all notifications
-  async function dismissAllNotifs() {
-    try {
-      await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/notifications/dismissAll/${currentUser.email}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: null,
-        }
-      );
-    } catch (err) {
-      console.log(err);
-    }
-  }
-  //Dismissing a specific notification
-  async function dismissNotif(notifId) {
-    try {
-      await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/notifications/dismiss/${notifId}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: null,
-        }
-      );
-    } catch (err) {
-      console.log(err);
     }
   }
 
@@ -223,7 +198,7 @@ const SignedInOrgNavbar = () => {
               <NavDropdown.Header
                 className={styles.clearNotifs}
                 onClick={() => {
-                  dismissAllNotifs();
+                  dismissAllNotifs(currentUser.email);
                   setNotifications([]);
                 }}
               >

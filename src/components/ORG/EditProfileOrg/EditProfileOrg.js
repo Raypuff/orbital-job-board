@@ -8,6 +8,7 @@ import { ArrowLeft } from "react-bootstrap-icons";
 import { Loading } from "../../EmptyStates/EmptyStates";
 //Auth Context
 import { useAuth } from "../../../contexts/AuthContext";
+import { useOrg } from "../../../contexts/OrgContext";
 //Inline form validation
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -22,6 +23,7 @@ const EditProfileOrg = ({
 }) => {
   //CUSTOM HOOKS
   const { currentUser } = useAuth();
+  const { getOrgInfo, updateOrgAccount } = useOrg();
 
   //USESTATES
   //Before submitting, left button says cancel; After submitting, it says cancel
@@ -39,21 +41,15 @@ const EditProfileOrg = ({
   const [imageUrl, setImageUrl] = useState("");
   const [imageLoading, setImageLoading] = useState(false);
 
+  async function getPageData() {
+    const orgData = await getOrgInfo(currentUser.email);
+    setUserData(orgData);
+    setUserLoading(false);
+  }
   //USEEFFECTS
   //Retrieving user data
   useEffect(() => {
-    const getUser = async () => {
-      const response = await fetch(
-        process.env.REACT_APP_BACKEND_URL +
-          "/organization-accounts/" +
-          currentUser.email,
-        {}
-      );
-      const jsonData = await response.json();
-      setUserData(jsonData);
-      setUserLoading(false);
-    };
-    getUser();
+    getPageData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -82,16 +78,7 @@ const EditProfileOrg = ({
 
       try {
         //Signify start of update process
-        await fetch(
-          process.env.REACT_APP_BACKEND_URL +
-            "/organization-accounts/" +
-            currentUser.email,
-          {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(newAccountInfo),
-          }
-        );
+        await updateOrgAccount(currentUser.email, newAccountInfo);
 
         //Set success usestate to true
         setSuccessful(true);

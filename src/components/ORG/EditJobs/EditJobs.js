@@ -8,6 +8,8 @@ import { PencilSquare } from "react-bootstrap-icons";
 import { Link, useHistory } from "react-router-dom";
 //Auth Context
 import { useAuth } from "../../../contexts/AuthContext";
+import { useJob } from "../../../contexts/JobContext";
+import { useOrg } from "../../../contexts/OrgContext";
 //Components
 import EditJobsModal from "./EditJobsModal";
 import ConfirmModal from "./ConfirmModal";
@@ -35,22 +37,21 @@ const EditJobs = ({ id }) => {
   //CUSTOM HOOKS
   //Retrieves the current user details
   const { currentUser } = useAuth();
+  const { getJobDetails } = useJob();
   //Pushing to previous page
   const history = useHistory();
+
+  async function getPageData() {
+    const job = await getJobDetails(id);
+    setJob(job);
+    setImageSrc(job.imageUrl);
+    setLoading(false);
+  }
 
   //USEEFFECTS
   //Fetching job data
   useEffect(() => {
-    const getData = async () => {
-      const response = await fetch(
-        process.env.REACT_APP_BACKEND_URL + "/jobs/" + id
-      );
-      const jsonData = await response.json();
-      setJob(jsonData);
-      setImageSrc(jsonData.imageUrl);
-      setLoading(false);
-    };
-    getData();
+    getPageData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

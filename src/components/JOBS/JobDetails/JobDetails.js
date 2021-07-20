@@ -21,7 +21,7 @@ import { Loading, Empty } from "../../EmptyStates/EmptyStates";
 //Contexts
 import { useAuth } from "../../../contexts/AuthContext";
 import { useJob } from "../../../contexts/JobContext";
-import { useOrg } from "../../../contexts/OrgContext";
+import { useStu } from "../../../contexts/StuContext";
 //React Router
 import { Link, useHistory } from "react-router-dom";
 //Images
@@ -41,7 +41,7 @@ const JobDetails = ({ id }) => {
   //The jobs, orgs and applications retireved
   const [job, setJob] = useState();
   const [org, setOrg] = useState();
-  const [applications, setApplications] = useState();
+  const [myApp, setMyApp] = useState();
   //If org is still loading
   const [orgLoading, setOrgLoading] = useState(true);
   //Default Image Source
@@ -56,17 +56,17 @@ const JobDetails = ({ id }) => {
   //CUSTOM HOOKS
   const history = useHistory();
   const { currentUser, userType, userVerified } = useAuth();
-  const { getJobDetails, getAppsByJob } = useJob();
-  const { getOrgInfo } = useOrg();
+  const { getJobDetails, getOrgPublic } = useJob();
+  const { getAppForJob } = useStu();
 
   async function getPageData() {
     const job = await getJobDetails(id);
-    const applications = await getAppsByJob(id);
+    const app = await getAppForJob(id, currentUser.email);
     setJob(job);
-    const org = await getOrgInfo(job.orgID);
+    const org = await getOrgPublic(job.orgID);
     setOrg(org);
     setImageSrc(job.imageUrl);
-    setApplications(await applications);
+    setMyApp(await app);
     setOrgLoading(false);
     if (job.platform === "Physical" && !job.multiLocation) {
       if (navigator.geolocation) {
@@ -95,7 +95,7 @@ const JobDetails = ({ id }) => {
       orgAvatar: "",
       alt: "avatar",
       stuID: currentUser.email,
-      orgID: org.id,
+      orgID: job.orgID,
     };
     await fetch(`${process.env.REACT_APP_BACKEND_URL}/chats`, {
       method: "POST",
@@ -111,7 +111,7 @@ const JobDetails = ({ id }) => {
         "/chats/already-exists/" +
         currentUser.email +
         "&" +
-        orgID
+        job.orgID
     );
     const alreadyExists = await alreadyExistsData.json();
     if (!alreadyExists) {
@@ -251,27 +251,18 @@ const JobDetails = ({ id }) => {
         displayState = 1;
       }
     } else if (status === "TakenDown") {
-      const myApp = applications.filter(
-        (app) => app.stuID === currentUser.email
-      );
       if (myApp && myApp[0].status === "Accepted") {
         displayState = 11;
       } else {
         displayState = 9;
       }
     } else if (status === "Completed") {
-      const myApp = applications.filter(
-        (app) => app.stuID === currentUser.email
-      );
       if (myApp && myApp[0].status === "Accepted") {
         displayState = 12;
       } else {
         displayState = 9;
       }
     } else if (status === "Pending") {
-      const myApp = applications.filter(
-        (app) => app.stuID === currentUser.email
-      );
       if (myApp && myApp[0].status === "Accepted") {
         displayState = 17;
       } else {

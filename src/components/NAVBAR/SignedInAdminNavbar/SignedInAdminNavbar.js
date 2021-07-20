@@ -24,6 +24,7 @@ import {
 import { NavLink, useHistory } from "react-router-dom";
 //Auth context
 import { useAuth } from "../../../contexts/AuthContext";
+import { useNotif } from "../../../contexts/NotifContext";
 //ReactTime for Notifications
 import ReactTimeAgo from "react-time-ago";
 //CSS Modules
@@ -40,7 +41,9 @@ const SignedInAdminNavbar = () => {
 
   //CUSTOM HOOKS
   //Log out import from auth context
-  const { currentUser, logout } = useAuth();
+  const { currentUser, logout, token } = useAuth();
+  const { dismissNotif, dismissAllNotifs } = useNotif();
+
   //History to push to landing page after signing out
   const history = useHistory();
   //Width to show icon labels in mobile
@@ -54,7 +57,8 @@ const SignedInAdminNavbar = () => {
         const notifData = await fetch(
           process.env.REACT_APP_BACKEND_URL +
             "/notifications/" +
-            currentUser.email
+            currentUser.email,
+          { headers: { authorization: `Bearer ${token}` } }
         );
         const notifs = await notifData.json();
         setNotifications(notifs);
@@ -76,36 +80,6 @@ const SignedInAdminNavbar = () => {
     } catch {
       setError("Failed to log out");
       console.log(error);
-    }
-  }
-  //Dismissing all notifications
-  async function dismissAllNotifs() {
-    try {
-      await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/notifications/dismissAll/${currentUser.email}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: null,
-        }
-      );
-    } catch (err) {
-      console.log(err);
-    }
-  }
-  //Dismissing a specific notification
-  async function dismissNotif(notifId) {
-    try {
-      await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/notifications/dismiss/${notifId}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: null,
-        }
-      );
-    } catch (err) {
-      console.log(err);
     }
   }
 
@@ -169,7 +143,7 @@ const SignedInAdminNavbar = () => {
               <NavDropdown.Header
                 className={styles.clearNotifs}
                 onClick={() => {
-                  dismissAllNotifs();
+                  dismissAllNotifs(currentUser.email);
                   setNotifications([]);
                 }}
               >

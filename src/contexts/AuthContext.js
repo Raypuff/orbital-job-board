@@ -117,7 +117,7 @@ export function AuthProvider({ children }) {
       if (user !== null) {
         getUserType(user.email);
         setUserVerified(user.emailVerified);
-        user.getIdToken().then((token) => setToken(token));
+        user.getIdToken().then((newToken) => setToken(newToken));
       }
       setCurrentUser(user);
       setLoading(false);
