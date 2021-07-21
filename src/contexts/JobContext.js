@@ -8,26 +8,6 @@ export function useJob() {
 
 export function JobProvider({ children }) {
   const [jobLoading, setJobLoading] = useState(false);
-  const [appLoading, setAppLoading] = useState(false);
-
-  /**
-   * Used in AllJobs.js component
-   * @param {useState function} setJobs
-   * @returns {null}
-   */
-  async function getAllJobs(setJobs) {
-    setJobLoading(true);
-    try {
-      const response = await fetch(
-        process.env.REACT_APP_BACKEND_URL + "/jobs/"
-      );
-      const jsonData = await response.json();
-      setJobs(jsonData);
-    } catch (err) {
-      console.error(err);
-    }
-    setJobLoading(false);
-  }
 
   async function getOrgPublic(id) {
     try {
@@ -74,12 +54,10 @@ export function JobProvider({ children }) {
   }
 
   const value = {
-    getAllJobs,
     getOrgPublic,
     getAllApprovedJobs,
     getJobDetails,
     jobLoading,
-    appLoading,
   };
 
   return <JobContext.Provider value={value}>{children}</JobContext.Provider>;
