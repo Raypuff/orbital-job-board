@@ -44,7 +44,7 @@ export const CCSGP = {
 };
 
 //Number of jobs per page on the job board
-export const jobsPerPage = 3;
+export const jobsPerPage = 6;
 
 //For React Select
 export const SelectBeneficiaryTags = BeneficiaryTags.map((beneficiary) => {

@@ -357,6 +357,7 @@ const PostAJob = () => {
                   <Accordion.Collapse eventKey="1">
                     <div className={styles.accordionBox}>
                       {/* About the job */}
+                      <h4 className={styles.jobHeaderFirst}>About</h4>
                       <Form.Group controlId="formTitle">
                         <Form.Label>Title of volunteer work</Form.Label>
                         <Form.Control
@@ -454,6 +455,7 @@ const PostAJob = () => {
                         </Form.Control.Feedback>
                       </Form.Group>
                       {/* Platform and Location */}
+                      <h4 className={styles.jobHeader}>Location</h4>
                       <Form.Group controlId="formPlatform">
                         <Form.Label>Platform of volunteer work</Form.Label>
                         <Form.Control
@@ -554,6 +556,7 @@ const PostAJob = () => {
                         </Row>
                       </div>
                       {/* Date and Time */}
+                      <h4 className={styles.jobHeader}>Commitment period</h4>
                       <Form.Group controlId="formType">
                         <Form.Label>
                           Type of volunteer commitment level
@@ -773,8 +776,8 @@ const PostAJob = () => {
                         touched={touched}
                         errors={errors}
                       />
-
                       {/* Remaining details */}
+                      <h4 className={styles.jobHeader}>Additional details</h4>
                       <Form.Group controlId="formAddInfo">
                         <Form.Label>
                           Additional information

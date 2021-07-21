@@ -38,3 +38,14 @@
   max-width: 75%;
   max-height: 50vh;
 }
+
+.jobHeaderFirst {
+  font-size: 1rem;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.jobHeader {
+  composes: jobHeaderFirst;
+  margin-top: 2rem;
+}
