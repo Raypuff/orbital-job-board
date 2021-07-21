@@ -151,6 +151,18 @@ const ManageAdmins = () => {
                           <div className={styles.adminCol}>
                             {admins
                               .filter((admin) => admin.type === "Master")
+                              //Place your own name at the top
+                              .sort((admin1, admin2) => {
+                                let x;
+                                let y;
+                                userData.email === admin1.id
+                                  ? (x = 0)
+                                  : (x = 1);
+                                userData.email === admin2.id
+                                  ? (y = 0)
+                                  : (y = 1);
+                                return x - y;
+                              })
                               .map((admin) => {
                                 return (
                                   <div
@@ -219,6 +231,18 @@ const ManageAdmins = () => {
                           <div className={styles.adminCol}>
                             {admins
                               .filter((admin) => admin.type === "Regular")
+                              //Place your own name at the top
+                              .sort((admin1, admin2) => {
+                                let x;
+                                let y;
+                                userData.email === admin1.id
+                                  ? (x = 0)
+                                  : (x = 1);
+                                userData.email === admin2.id
+                                  ? (y = 0)
+                                  : (y = 1);
+                                return x - y;
+                              })
                               .map((admin) => {
                                 return (
                                   <div
