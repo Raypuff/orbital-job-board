@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 //Bootstrap
 import { Button, Card } from "react-bootstrap";
 //Contexts
-import { useJob } from "../../../contexts/JobContext";
 import { useAdmin } from "../../../contexts/AdminContext";
 //CSS Modules
 import styles from "./Statistics.module.css";
@@ -28,8 +27,8 @@ const Statistics = () => {
 
   //CUSTOM HOOKS
   //API calls for retrieving jobs and applications
-  const { getAllJobs } = useJob();
-  const { getAllStudents, getAllOrganizations, getAllApps } = useAdmin();
+  const { getAllStudents, getAllOrganizations, getAllApps, getAllJobs } =
+    useAdmin();
 
   async function getPageData() {
     const allStudents = await getAllStudents();
@@ -41,15 +40,11 @@ const Statistics = () => {
     const allApps = await getAllApps();
     setApps(allApps);
     setAppsLoading(false);
+    const allJobs = await getAllJobs();
+    setJobs(allJobs);
+    setJobLoading(false);
   }
 
-  //USEEFFECTS
-  //API Call for retrieving jobs and applications
-  useEffect(() => {
-    getAllJobs(setJobs);
-    setJobLoading(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
   //API Call for retrieving page data
   useEffect(() => {
     getPageData();

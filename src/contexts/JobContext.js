@@ -51,7 +51,7 @@ export function JobProvider({ children }) {
     setJobLoading(true);
     try {
       const response = await fetch(
-        process.env.REACT_APP_BACKEND_URL + "/jobs/"
+        process.env.REACT_APP_BACKEND_URL + "/jobs/approved"
       );
       const jsonData = await response.json();
       setJobs(jsonData.filter((job) => job.status === "Approved"));

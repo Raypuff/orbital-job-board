@@ -226,6 +226,26 @@ export function AdminProvider({ children }) {
     }
   }
 
+  /**
+   * Used in AllJobs.js component
+   * @param {useState function} setJobs
+   * @returns {null}
+   */
+  async function getAllJobs() {
+    try {
+      const response = await fetch(
+        process.env.REACT_APP_BACKEND_URL + "/jobs/",
+        {
+          headers: { authorization: `Bearer ${token}` },
+        }
+      );
+      const jsonData = await response.json();
+      return jsonData;
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   const value = {
     getCurrentAdmin,
     getAllAdmins,
@@ -238,6 +258,7 @@ export function AdminProvider({ children }) {
     getAllApps,
     updateJobStatus,
     alertSubscribers,
+    getAllJobs,
   };
 
   return (
