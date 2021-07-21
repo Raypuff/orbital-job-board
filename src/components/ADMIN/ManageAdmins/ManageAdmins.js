@@ -135,6 +135,11 @@ const ManageAdmins = () => {
                   {/* All Admins */}
                   <Tab.Pane eventKey="first">
                     <>
+                      <Alert variant="primary">
+                        Master admins have all the rights that regular admins
+                        have and also the permissions to modify existing admins'
+                        rights and add new admins
+                      </Alert>
                       <Card bg="light" text="dark">
                         <Card.Header as="h5" className={styles.cardHeader}>
                           {mobileActiveView && width < 576 && (
@@ -217,6 +222,11 @@ const ManageAdmins = () => {
                           </div>
                         </Card.Body>
                       </Card>
+                      <Card.Text />
+                      <Alert variant="primary">
+                        Regular admins have the rights to approve jobs, reject
+                        jobs, take down jobs and export platform statistics{" "}
+                      </Alert>
                       <Card className={styles.cardTop}>
                         <Card.Header as="h5" className={styles.cardHeader}>
                           {mobileActiveView && width < 576 && (
