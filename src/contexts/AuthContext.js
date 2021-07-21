@@ -27,6 +27,7 @@ export function AuthProvider({ children }) {
           console.error(err);
         });
 
+      await auth.createUserWithEmailAndPassword(email, password);
       await fetch(
         `${process.env.REACT_APP_BACKEND_URL}/firebase/create-${accountType}`,
         {
@@ -38,7 +39,7 @@ export function AuthProvider({ children }) {
     } catch (err) {
       console.log(err);
     }
-    return auth.createUserWithEmailAndPassword(email, password);
+    return;
   }
 
   async function correctDomain(email, type) {
@@ -105,13 +106,6 @@ export function AuthProvider({ children }) {
     });
   }
 
-  async function test(token) {
-    const yeet = await fetch(`http://localhost:5000/test`, {
-      headers: { authorization: `Bearer ${token}` },
-    });
-    console.log(await yeet.json());
-  }
-
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user !== null) {
@@ -131,7 +125,6 @@ export function AuthProvider({ children }) {
     userType,
     userVerified,
     token,
-    test,
     login,
     signup,
     logout,
