@@ -489,7 +489,10 @@ const JobDetails = ({ id }) => {
                       }
                     >
                       <div className={styles.lineWrapper}>
-                        <h7 className={styles.aboutHeader}>Postal code: </h7>
+                        <h7 className={styles.aboutHeader}>
+                          Postal code:
+                          <br />
+                        </h7>
                         <h7>{`S(${postalCode}) `}</h7>
                         <h7>
                           {platform === "Physical" &&
