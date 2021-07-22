@@ -195,31 +195,35 @@ const SignedInStuNavbar = () => {
               >
                 Clear all notifications
               </NavDropdown.Header>
-              {notifications.map((notif) => {
-                return (
-                  <Toast
-                    key={notif.id}
-                    style={{
-                      minWidth: "20rem",
-                      marginBottom: "0.25rem",
-                    }}
-                    onClose={() => {
-                      dismissNotif(notif.id);
-                    }}
-                  >
-                    <Toast.Header>
-                      <strong className="mr-auto">{notif.header}</strong>
-                      <small>
-                        <ReactTimeAgo
-                          date={new Date(notif.dateTime)}
-                          locale="en-GB"
-                        />
-                      </small>
-                    </Toast.Header>
-                    <Toast.Body>{notif.message}</Toast.Body>
-                  </Toast>
-                );
-              })}
+              {notifications
+                .sort((notif1, notif2) => {
+                  return new Date(notif2.dateTime) - new Date(notif1.dateTime);
+                })
+                .map((notif) => {
+                  return (
+                    <Toast
+                      key={notif.id}
+                      style={{
+                        minWidth: "20rem",
+                        marginBottom: "0.25rem",
+                      }}
+                      onClose={() => {
+                        dismissNotif(notif.id);
+                      }}
+                    >
+                      <Toast.Header>
+                        <strong className="mr-auto">{notif.header}</strong>
+                        <small>
+                          <ReactTimeAgo
+                            date={new Date(notif.dateTime)}
+                            locale="en-GB"
+                          />
+                        </small>
+                      </Toast.Header>
+                      <Toast.Body>{notif.message}</Toast.Body>
+                    </Toast>
+                  );
+                })}
             </>
           ) : (
             <NavDropdown.Header className={styles.notifHeader}>

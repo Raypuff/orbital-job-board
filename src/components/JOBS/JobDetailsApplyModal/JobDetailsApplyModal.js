@@ -68,7 +68,7 @@ export const JobDetailsApplyModal = ({
 
   async function getData() {
     try {
-      const stuData = await getStudent();
+      const stuData = await getStudent(currentUser.email);
       setStudent(stuData);
       const { name, dob, email, contactNo, course, year } = stuData;
       if (name && dob && email && contactNo && course && year) {
@@ -83,7 +83,6 @@ export const JobDetailsApplyModal = ({
   //Retrieving student details
   useEffect(() => {
     getData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //FUNCTION TO SUBMIT APPLICATION
