@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { useAuth } from "./AuthContext";
 import { store } from "../firebase";
 
@@ -32,7 +32,7 @@ export function AdminProvider({ children }) {
 
       const ref = store.collection("accounts");
       const accountObject = { type: "admin" };
-      ref
+      await ref
         .doc(email)
         .set(accountObject)
         .catch((err) => {
