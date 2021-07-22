@@ -54,6 +54,14 @@
   margin: 0 0 1rem;
 }
 
+.sectionHeader {
+  font-weight: bold;
+}
+
+.aboutHeader {
+  text-decoration: underline;
+}
+
 .display {
   flex-direction: nowrap;
 }

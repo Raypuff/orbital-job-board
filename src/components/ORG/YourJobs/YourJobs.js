@@ -30,14 +30,12 @@ const YourJobs = () => {
   async function getPageData() {
     const jobs = await getYourJobs(currentUser.email);
     setJobs(jobs);
-    console.log(jobs);
     setJobLoading(false);
   }
 
   //USEEFFECTS
   useEffect(() => {
     getPageData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //LOADING

@@ -191,13 +191,16 @@ const EditJobs = ({ id }) => {
                     <EditButton mode="closingDate" />
                   </div>
                   <hr />
-                  <h5>About</h5>
+                  <h5 className={styles.sectionHeader}>About</h5>
                   <div className={styles.lineWrapper}>
                     <div className={styles.checkboxContainer}>
-                      Beneficiaries:
-                      <EditButton mode="beneficiaries" />
-                      <br />{" "}
+                      <h7 className={styles.aboutHeader}>
+                        Beneficiaries:
+                        <EditButton mode="beneficiaries" />
+                        <br />{" "}
+                      </h7>
                     </div>
+
                     {beneficiaries.map((beneficiary, index) => {
                       if (index + 1 !== beneficiaries.length) {
                         return <h7 key={index}>{`${beneficiary}, `}</h7>;

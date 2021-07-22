@@ -28,7 +28,6 @@ const AllJobs = () => {
       const jobData = await getAllJobs();
       setJobs(jobData);
       setJobLoading(false);
-      setJobs();
     } catch (err) {
       console.log(err);
     }
@@ -37,7 +36,6 @@ const AllJobs = () => {
   //USEEFFECTS
   useEffect(() => {
     getPageData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //FILTERING JOBS
