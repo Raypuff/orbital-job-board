@@ -28,7 +28,6 @@ import { CSVLink } from "react-csv";
 //CSS Modules
 import styles from "./YourJobsCard.module.css";
 
-import { useJob } from "../../../contexts/JobContext";
 import { useOrg } from "../../../contexts/OrgContext";
 
 const YourJobsCard = ({
