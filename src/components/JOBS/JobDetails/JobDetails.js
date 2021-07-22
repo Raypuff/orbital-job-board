@@ -204,7 +204,7 @@ const JobDetails = ({ id }) => {
   //16: Haven't apply; Show: Apply button, Chat now button
   //1: Applied & Job Approved; Show: Disabled Apply button, Chat now button
   //11: Applied & Accepted & Job Taken down; Show: Disabled apply button, Alert that job is taken down, Chat now button
-  //12: Applied & Accepted & Job Completd; Show: Disabled apply button, Alert that job is completed
+  //12: Applied & Accepted & Job Completed; Show: Disabled apply button, Alert that job is completed
   //17: Applied & Accepted & Job Pending; Show: Disabled apply button, Alert that job is pending, Chat now button
 
   // ORGANIZATIONS

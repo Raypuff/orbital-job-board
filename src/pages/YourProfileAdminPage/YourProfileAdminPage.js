@@ -11,7 +11,7 @@ const YourProfileAdminPage = () => {
     } else {
       return (
         <Empty
-          action={[
+          actions={[
             {
               tip: "To view your admin profile details, please",
               button: "Sign in as Administrator",
