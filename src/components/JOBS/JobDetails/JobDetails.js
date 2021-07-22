@@ -64,7 +64,7 @@ const JobDetails = ({ id }) => {
     setJob(job);
     if (currentUser) {
       const app = await getAppForJob(id, currentUser.email);
-      setMyApp(await app);
+      setMyApp(app);
     }
     const org = await getOrgPublic(job.orgID);
     setOrg(org);
@@ -246,19 +246,19 @@ const JobDetails = ({ id }) => {
         displayState = 1;
       }
     } else if (status === "TakenDown") {
-      if (myApp && myApp[0].status === "Accepted") {
+      if (myApp && myApp.status === "Accepted") {
         displayState = 11;
       } else {
         displayState = 9;
       }
     } else if (status === "Completed") {
-      if (myApp && myApp[0].status === "Accepted") {
+      if (myApp && myApp.status === "Accepted") {
         displayState = 12;
       } else {
         displayState = 9;
       }
     } else if (status === "Pending") {
-      if (myApp && myApp[0].status === "Accepted") {
+      if (myApp && myApp.status === "Accepted") {
         displayState = 17;
       } else {
         displayState = 9;

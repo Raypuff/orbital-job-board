@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { BeneficiaryTags, SkillTags } from "../Constants";
 import { useAuth } from "./AuthContext";
 import noAvatar from "../assets/emptyStates/noAvatar.png";
@@ -110,16 +110,20 @@ export function StuProvider({ children }) {
     const updateApplied = {
       jobID: jobId,
     };
+
+    const sendApp = { newApp: newApp };
+
     try {
-      await fetch(process.env.REACT_APP_BACKEND_URL + "/job-applications", {
+      await fetch(`${process.env.REACT_APP_BACKEND_URL}/job-applications`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          authorization: `Bearer: ${token}`,
+          authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(newApp),
+        body: JSON.stringify(sendApp),
       });
 
+      /*
       await fetch(process.env.REACT_APP_BACKEND_URL + "/jobs/apply/" + jobId, {
         method: "PUT",
         headers: {
@@ -142,6 +146,7 @@ export function StuProvider({ children }) {
           body: JSON.stringify(updateApplied),
         }
       );
+      */
     } catch (err) {
       console.log(err);
     }
@@ -150,15 +155,16 @@ export function StuProvider({ children }) {
   async function getAppForJob(jobId, email) {
     try {
       const myAppData = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/job-applications/job/${jobId}/student/${email}`,
+        `${process.env.REACT_APP_BACKEND_URL}/job-applications/${jobId}&${email}`,
         {
           headers: { authorization: `Bearer ${token}` },
         }
       );
       const myApp = await myAppData.json();
+      console.log(myApp);
       return myApp;
-    } catch (err) {
-      console.log(err);
+    } catch (e) {
+      console.log(e);
     }
   }
 
