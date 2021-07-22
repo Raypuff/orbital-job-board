@@ -566,12 +566,36 @@ const YourProfileStu = () => {
                             handleBlur,
                             handleSubmit,
                             isSubmitting,
+                            setFieldValue,
                           }) => (
                             <Form onSubmit={handleSubmit}>
                               {setSubscriptions(values)}
                               <div className={styles.subHeader}>
                                 Beneficiaries
                               </div>
+                              <Button
+                                size="sm"
+                                className="mr-2"
+                                onClick={() =>
+                                  BeneficiaryTags.forEach((beneficiary) => {
+                                    setFieldValue(beneficiary, true);
+                                  })
+                                }
+                              >
+                                Select all
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="outline-primary"
+                                onClick={() =>
+                                  BeneficiaryTags.forEach((beneficiary) => {
+                                    setFieldValue(beneficiary, false);
+                                  })
+                                }
+                              >
+                                Clear all
+                              </Button>
+                              <Card.Text />
                               <div className={styles.subBody}>
                                 {BeneficiaryTags.map((beneficiary) => {
                                   return (
@@ -593,6 +617,29 @@ const YourProfileStu = () => {
                                 })}
                               </div>
                               <div className={styles.subHeader}>Skills</div>
+                              <Button
+                                size="sm"
+                                className="mr-2"
+                                onClick={() =>
+                                  SkillTags.forEach((skill) => {
+                                    setFieldValue(skill, true);
+                                  })
+                                }
+                              >
+                                Select all
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="outline-primary"
+                                onClick={() =>
+                                  SkillTags.forEach((skill) => {
+                                    setFieldValue(skill, false);
+                                  })
+                                }
+                              >
+                                Clear all
+                              </Button>
+                              <Card.Text />
                               <div className={styles.subBody}>
                                 {SkillTags.map((skill) => {
                                   return (
