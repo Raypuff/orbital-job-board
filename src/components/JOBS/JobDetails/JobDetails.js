@@ -2,7 +2,7 @@
 //React Hooks
 import { useEffect, useState } from "react";
 //Bootstrap
-import { Row, Col, Alert, Button } from "react-bootstrap";
+import { Row, Col, Alert } from "react-bootstrap";
 //Components
 import {
   JobDetailsApplyModal,
@@ -61,12 +61,14 @@ const JobDetails = ({ id }) => {
 
   async function getPageData() {
     const job = await getJobDetails(id);
-    const app = await getAppForJob(id, currentUser.email);
     setJob(job);
+    if (currentUser) {
+      const app = await getAppForJob(id, currentUser.email);
+      setMyApp(await app);
+    }
     const org = await getOrgPublic(job.orgID);
     setOrg(org);
     setImageSrc(job.imageUrl);
-    setMyApp(await app);
     setOrgLoading(false);
     if (job.platform === "Physical" && !job.multiLocation) {
       if (navigator.geolocation) {
@@ -195,17 +197,17 @@ const JobDetails = ({ id }) => {
 
   //CREATING DISPLAYSTATES
 
-  //SIGNED OUT
+  // SIGNED OUT
   //0: Show: Apply button
 
-  //STUDENTS
+  // STUDENTS
   //16: Haven't apply; Show: Apply button, Chat now button
   //1: Applied & Job Approved; Show: Disabled Apply button, Chat now button
   //11: Applied & Accepted & Job Taken down; Show: Disabled apply button, Alert that job is taken down, Chat now button
   //12: Applied & Accepted & Job Completd; Show: Disabled apply button, Alert that job is completed
   //17: Applied & Accepted & Job Pending; Show: Disabled apply button, Alert that job is pending, Chat now button
 
-  //ORGANIZATIONS
+  // ORGANIZATIONS
   //2: Not their job & Job Approved; Show: No button;
   //3: Their job & Job Pending; Show: Alert that job is still pending, Edit job button
   //4: Their job & Job Approved; Show: Alert that job is visible, Edit job button
@@ -213,14 +215,14 @@ const JobDetails = ({ id }) => {
   //10: Their job & Job Completed; Show: Alert that job is completed
   //14: Their job & Job TakenDown; Show:  Alert that job is taken down with removal reason, Edit job button
 
-  //ADMINS
+  // ADMINS
   //6: Job Pending; Show: Reject button and  Approve button
   //7: Job Approved; Show: Alert that the job is approved + Takedown button
   //8: Job Rejected; Show: Alert that the job is rejected with removal reason
   //13: Job Completed; Show: Alert that the job is completed
   //15: Job TakenDown; Show: Alert that job is taken down with removal reason
 
-  //NOT AVAILABLE
+  // NOT AVAILABLE
   //9: Everything else will display an unavailable state
 
   var displayState;
