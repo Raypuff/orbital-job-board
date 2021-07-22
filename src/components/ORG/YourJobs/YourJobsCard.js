@@ -81,7 +81,7 @@ const YourJobsCard = ({
   const { getAppsOfJob, setJobAsComplete } = useOrg();
 
   async function getPageData() {
-    const appData = getAppsOfJob(id);
+    const appData = await getAppsOfJob(id);
     setApplications(appData);
   }
 
