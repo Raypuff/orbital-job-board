@@ -194,11 +194,8 @@ const EditJobs = ({ id }) => {
                   <h5 className={styles.sectionHeader}>About</h5>
                   <div className={styles.lineWrapper}>
                     <div className={styles.checkboxContainer}>
-                      <h7 className={styles.aboutHeader}>
-                        Beneficiaries:
-                        <EditButton mode="beneficiaries" />
-                        <br />{" "}
-                      </h7>
+                      <h7 className={styles.aboutHeader}>Beneficiaries:</h7>
+                      <EditButton mode="beneficiaries" />
                     </div>
 
                     {beneficiaries.map((beneficiary, index) => {
@@ -211,9 +208,8 @@ const EditJobs = ({ id }) => {
                   </div>
                   <div className={styles.lineWrapper}>
                     <div className={styles.checkboxContainer}>
-                      Skills:
+                      <h7 className={styles.aboutHeader}>Skills:</h7>
                       <EditButton mode="skills" />
-                      <br />{" "}
                     </div>
                     {skills.map((skill, index) => {
                       if (index + 1 !== skills.length) {
@@ -224,22 +220,26 @@ const EditJobs = ({ id }) => {
                     })}
                   </div>
                   <div className={styles.editImageContainer}>
-                    Purpose:
+                    <h7 className={styles.aboutHeader}>Purpose:</h7>
                     <EditButton mode="purpose" />
-                    <br />{" "}
                   </div>
                   <h7>{purpose}</h7>
                 </div>
                 <div className={styles.detailContainer}>
-                  <h5 className={styles.checkboxContainer}>
-                    Location
+                  <div className={styles.checkboxContainer}>
+                    <h5 className={styles.sectionHeader}>Location</h5>
                     <EditButton mode="location" />
-                  </h5>
-                  <h7>Platform: </h7>
-                  <h7>
-                    {platform}
-                    <br />
-                  </h7>
+                  </div>
+                  <div className={styles.lineWrapper}>
+                    <h7 className={styles.aboutHeader}>
+                      Platform:
+                      <br />{" "}
+                    </h7>
+                    <h7>
+                      {platform}
+                      <br />
+                    </h7>
+                  </div>
                   <div
                     className={
                       platform === "Physical"
@@ -247,12 +247,19 @@ const EditJobs = ({ id }) => {
                         : styles.displayNone
                     }
                   >
-                    <h7>Location: </h7>
-                    <h7>
-                      {platform !== "Physical" || multiLocation === true
-                        ? "Multiple locations"
-                        : location}
-                    </h7>
+                    <div className={styles.lineWrapper}>
+                      <h7 className={styles.aboutHeader}>
+                        Location:
+                        <br />
+                      </h7>
+
+                      <h7>
+                        {platform !== "Physical" || multiLocation === true
+                          ? "Multiple locations"
+                          : location}
+                      </h7>
+                    </div>
+
                     <div
                       className={
                         multiLocation === true
@@ -260,40 +267,57 @@ const EditJobs = ({ id }) => {
                           : styles.display
                       }
                     >
-                      <h7>Postal code: </h7>
+                      <h7 className={styles.aboutHeader}>
+                        Postal code:
+                        <br />
+                      </h7>
+
                       <h7>{`S(${postalCode}) `}</h7>
                     </div>
                   </div>
                 </div>
                 <div className={styles.detailContainer}>
                   <h5 className={styles.checkboxContainer}>
-                    Commitment period
+                    <h5 className={styles.sectionHeader}>Commitment period</h5>
                     <EditButton mode="commitment" />
                   </h5>
-                  <h7>Commitment type: </h7>
-                  <h7>
-                    {type}
-                    <br />
-                  </h7>
+                  <div className={styles.lineWrapper}>
+                    <h7 className={styles.aboutHeader}>
+                      Commitment type:
+                      <br />
+                    </h7>
+                    <h7>
+                      {type}
+                      <br />
+                    </h7>
+                  </div>
                   <div
                     className={
                       type === "Long term" ? styles.display : styles.displayNone
                     }
                   >
-                    <h7>Dates: </h7>
-                    <h7>
-                      {type === "Long term"
-                        ? !flexiDate
-                          ? `${new Date(
-                              longStartDate
-                            ).toDateString()} - ${new Date(
-                              longEndDate
-                            ).toDateString()}`
-                          : "Flexible start and end date"
-                        : ""}
+                    <div className={styles.lineWrapper}>
+                      <h7 className={styles.aboutHeader}>
+                        Dates:
+                        <br />
+                      </h7>
+                      <h7>
+                        {type === "Long term"
+                          ? !flexiDate
+                            ? `${new Date(
+                                longStartDate
+                              ).toDateString()} - ${new Date(
+                                longEndDate
+                              ).toDateString()}`
+                            : "Flexible start and end date"
+                          : ""}
+                        <br />
+                      </h7>
+                    </div>
+                    <h7 className={styles.aboutHeader}>
+                      Required hours:
                       <br />
                     </h7>
-                    <h7>Required hours: </h7>
                     <h7>
                       {flexiHours === false
                         ? longHours
@@ -307,7 +331,7 @@ const EditJobs = ({ id }) => {
                     }
                   >
                     <div className={styles.shiftWrapper}>
-                      <h7>{`Shifts:${" "}`}</h7>
+                      <h7 className={styles.aboutHeader}>{`Shifts:${" "}`}</h7>
                       <span>
                         {type === "Ad hoc" ? (
                           !flexiShifts ? (
@@ -339,10 +363,12 @@ const EditJobs = ({ id }) => {
                   </div>
                 </div>
                 <div>
-                  <h5 className={styles.checkboxContainer}>
-                    Additional information
+                  <div className={styles.checkboxContainer}>
+                    <h5 className={styles.sectionHeader}>
+                      Additional information
+                    </h5>
                     <EditButton mode="addInfo" />
-                  </h5>
+                  </div>
                   <h7>{addInfo}</h7>
                 </div>
               </div>
