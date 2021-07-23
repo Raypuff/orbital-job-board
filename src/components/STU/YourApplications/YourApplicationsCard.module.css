@@ -1,100 +1,107 @@
 .container {
-	height: auto;
-	margin: 0 1rem 0.5rem;
+  height: auto;
+  margin: 0 1rem 0.5rem;
 }
 
 .contentContainer {
-	height: 100%;
-	padding: 0.5em 0 0.5em 1em;
+  height: 100%;
+  padding: 0.5em 0 0.5em 1em;
 }
 
 .topRowContainer {
-	display: flex;
+  display: flex;
 }
 
 .titleContainer {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: baseline;
-	flex-direction: column;
-	/* gap: 1em; */
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  flex-direction: column;
+  /* gap: 1em; */
 }
 
 .title {
-	/* white-space: nowrap; */
-	margin-right: 1em;
+  /* white-space: nowrap; */
+  margin-right: 1em;
 }
 
 .dotsContainer {
-	padding-top: 0.5em;
-	margin-left: auto;
+  padding-top: 0.5em;
+  margin-left: auto;
 }
 
 .dots {
-	font-size: 1.5em;
-	color: black;
-	margin: 0.5em 0.5em 0 0;
+  font-size: 1.5em;
+  color: black;
+  margin: 0.5em 0.5em 0 0;
 }
 
 .displayNone {
-	display: none;
+  display: none;
 }
 
 .status {
-	/* white-space: nowrap; */
-	display: flex;
-	gap: 0.25em;
-	align-items: baseline;
+  /* white-space: nowrap; */
+  display: flex;
+  gap: 0.25em;
+  align-items: baseline;
 }
 
 .pending {
-	composes: status;
-	color: orange;
+  composes: status;
+  color: orange;
 }
 
 .rejected {
-	composes: status;
-	color: red;
+  composes: status;
+  color: red;
 }
 
 .accepted {
-	composes: status;
-	color: green;
+  composes: status;
+  color: green;
 }
 
 .icons {
-	font-size: 0.9em;
+  font-size: 0.9em;
 }
 
 .applicantsContainer {
-	height: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .applicants {
-	margin: auto 0 0 auto;
-	padding: 0 1em 0.5em 0;
+  margin: auto 0 0 auto;
+  padding: 0 1em 0.5em 0;
 }
 
 .dotsContainerMobile {
-	display: none;
+  display: none;
 }
 
 @media screen and (max-width: 992px) {
-	.dotsContainer {
-		display: none;
-	}
-	.dotsContainerMobile {
-		margin-left: auto;
-		display: initial;
-	}
+  .dotsContainer {
+    display: none;
+  }
+  .dotsContainerMobile {
+    margin-left: auto;
+    display: initial;
+  }
 }
 
 @media screen and (max-width: 768px) {
-	.titleContainer {
-		flex-direction: column;
-		gap: 0em;
-	}
+  .titleContainer {
+    flex-direction: column;
+    gap: 0em;
+  }
+}
+
+.modalBody {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
 }

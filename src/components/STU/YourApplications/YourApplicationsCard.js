@@ -2,7 +2,15 @@
 //React Hooks
 import { forwardRef, useEffect, useState } from "react";
 //Bootstrap
-import { Row, Col, Card, Dropdown, Spinner } from "react-bootstrap";
+import {
+  Modal,
+  Button,
+  Row,
+  Col,
+  Card,
+  Dropdown,
+  Spinner,
+} from "react-bootstrap";
 import {
   ThreeDotsVertical,
   HourglassSplit,
@@ -13,7 +21,7 @@ import {
 import { Link } from "react-router-dom";
 //CSS Modules
 import styles from "./YourApplicationsCard.module.css";
-
+//Contexts
 import { useJob } from "../../../contexts/JobContext";
 
 const YourApplicationsCard = ({
@@ -29,6 +37,8 @@ const YourApplicationsCard = ({
   //Job status and whether it is still loading
   const [job, setJob] = useState(null);
   const [jobLoading, setJobLoading] = useState(true);
+  const [showDeletionConfirmation, setShowDeletionConfirmation] =
+    useState(false);
 
   const { getJobDetails } = useJob();
 
@@ -97,7 +107,10 @@ const YourApplicationsCard = ({
                     </div>
                   </div>
                   <div className={styles.dotsContainerMobile}>
-                    <TripleDot jobID={jobID} />
+                    <TripleDot
+                      jobID={jobID}
+                      setShowDeletionConfirmation={setShowDeletionConfirmation}
+                    />
                   </div>
                 </div>
 
@@ -128,13 +141,38 @@ const YourApplicationsCard = ({
             <Col lg={4}>
               <div className={styles.applicantsContainer}>
                 <div className={styles.dotsContainer}>
-                  <TripleDot jobID={jobID} />
+                  <TripleDot
+                    jobID={jobID}
+                    setShowDeletionConfirmation={setShowDeletionConfirmation}
+                  />
                 </div>
               </div>
             </Col>
           </Row>
         </Card>
       </div>
+      <Modal
+        show={showDeletionConfirmation}
+        onHide={() => {
+          setShowDeletionConfirmation(false);
+        }}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>You are about to delete your application</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className={styles.modalBody}>
+          Are you sure you want to do this? You cannot undo this action.
+          <Button
+            variant="danger"
+            onClick={() => {
+              console.log("delete here zech");
+            }}
+          >
+            Delete application
+          </Button>
+        </Modal.Body>
+      </Modal>
     </>
   );
 };
@@ -155,13 +193,20 @@ const CustomDropdown = forwardRef(({ children, onClick }, ref) => (
   </a>
 ));
 
-const TripleDot = ({ jobID }) => {
+const TripleDot = ({ jobID, setShowDeletionConfirmation }) => {
   return (
     <Dropdown>
       <Dropdown.Toggle as={CustomDropdown}></Dropdown.Toggle>
       <Dropdown.Menu align="right">
         <Dropdown.Item as={Link} to={`/jobs/${jobID}`} target="blank">
           View listing
+        </Dropdown.Item>
+        <Dropdown.Item
+          onClick={() => {
+            setShowDeletionConfirmation(true);
+          }}
+        >
+          Delete application
         </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
