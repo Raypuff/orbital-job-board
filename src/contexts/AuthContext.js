@@ -37,7 +37,7 @@ export function AuthProvider({ children }) {
         }
       );
     } catch (err) {
-      console.log(err);
+      throw err;
     }
     return;
   }
