@@ -127,8 +127,6 @@ const JobDetails = ({ id }) => {
             onClick={async (event) => {
               await handleChatNow(event);
               history.push("/chat-student");
-              // history.replace("/chat-student");
-              //window.location.reload(false);
             }}
           >
             Chat now
@@ -185,6 +183,8 @@ const JobDetails = ({ id }) => {
     pocEmail,
     datePosted,
     removalReason,
+    removalPerson,
+    removalDate,
     applicants,
     lat,
     lng,
@@ -340,6 +340,10 @@ const JobDetails = ({ id }) => {
               Your job has been rejected and is not publicly visible
               <hr />
               Reason for rejection: {removalReason}
+              <br />
+              Rejected by: {removalPerson}
+              <br />
+              Rejected on: {new Date(removalDate).toDateString()}
             </Alert>
           ) : displayState === 7 ? (
             <Alert variant="success">
@@ -350,6 +354,10 @@ const JobDetails = ({ id }) => {
               This job has been rejected and is not publicly visible
               <hr />
               Reason for rejection: {removalReason}
+              <br />
+              Rejected by: {removalPerson}
+              <br />
+              Rejected on: {new Date(removalDate).toDateString()}
             </Alert>
           ) : displayState === 10 ? (
             <Alert variant="primary">
@@ -373,12 +381,20 @@ const JobDetails = ({ id }) => {
               Your job has been taken down and is not publicly visible.
               <hr />
               Reason for takedown: {removalReason}
+              <br />
+              Taken down by: {removalPerson}
+              <br />
+              Taken down on: {new Date(removalDate).toDateString()}
             </Alert>
           ) : displayState === 15 ? (
             <Alert variant="danger">
               This job has been taken down and is not publicly visible.
               <hr />
               Reason for takedown: {removalReason}
+              <br />
+              Taken down by: {removalPerson}
+              <br />
+              Taken down on: {new Date(removalDate).toDateString()}
             </Alert>
           ) : displayState === 17 ? (
             <Alert variant="warning">

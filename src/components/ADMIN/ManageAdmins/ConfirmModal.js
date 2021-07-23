@@ -44,7 +44,11 @@ const ConfirmModal = ({ show, onHide, adminID, adminName, action }) => {
   return (
     <Modal
       show={show}
-      onHide={onHide}
+      onHide={() => {
+        onHide();
+        setSuccess("");
+        setError("");
+      }}
       size="md"
       aria-labelledby="contained-modal-title-vcenter"
       centered

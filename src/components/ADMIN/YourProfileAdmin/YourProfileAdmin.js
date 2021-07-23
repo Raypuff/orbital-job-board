@@ -35,9 +35,9 @@ const YourProfileAdmin = () => {
   const [showOldPw, setShowOldPw] = useState(false);
   const [showNewPw, setShowNewPw] = useState(false);
   const [showCfmPw, setShowCfmPw] = useState(false);
-  //Timer for resending verification email
-  const [startTimer, setStartTimer] = useState(false);
-  const [timer, setTimer] = useState(60);
+  //Timer for resending verification email (Removed for now as admins do not need to verify email to use rights)
+  // const [startTimer, setStartTimer] = useState(false);
+  // const [timer, setTimer] = useState(60);
 
   //CUSTOM HOOKS
   //Retrieve functions for user data
@@ -64,16 +64,16 @@ const YourProfileAdmin = () => {
     getUser();
   }, [edit]);
 
-  //For countdown for resend verification email
-  useEffect(() => {
-    if (startTimer && timer > 0) {
-      console.log(timer);
-      setTimeout(() => setTimer(timer - 1), 1000);
-    } else if (timer === 0) {
-      setTimer(60);
-      setStartTimer(false);
-    }
-  }, [timer]);
+  //For countdown for resend verification email (Removed for now as admins do not need to verify email to use rights)
+  // useEffect(() => {
+  //   if (startTimer && timer > 0) {
+  //     console.log(timer);
+  //     setTimeout(() => setTimer(timer - 1), 1000);
+  //   } else if (timer === 0) {
+  //     setTimer(60);
+  //     setStartTimer(false);
+  //   }
+  // }, [timer]);
 
   //FUNCTIONS
   //Turn on edit mode
@@ -105,13 +105,13 @@ const YourProfileAdmin = () => {
       console.log(errorPassword);
     }
   };
-  //Resend verification email
-  const resendVerification = () => {
-    setStartTimer(true);
-    sendEmailVerification();
-    console.log("sent");
-    setTimer(timer - 1);
-  };
+  //Resend verification email (Removed for now as admins do not need to verify email to use rights)
+  // const resendVerification = () => {
+  //   setStartTimer(true);
+  //   sendEmailVerification();
+  //   console.log("sent");
+  //   setTimer(timer - 1);
+  // };
 
   //LOADING
   if (loading) {
@@ -238,7 +238,8 @@ const YourProfileAdmin = () => {
                             {userData.type}
                           </span>
                           <br />
-                          Verification status:{" "}
+                          {/* (Removed for now as admins do not need to verify email to use rights) */}
+                          {/* Verification status:{" "}
                           <span style={{ fontWeight: 600 }}>
                             {userVerified ? "Verified" : "Unverified"}
                           </span>
@@ -265,7 +266,7 @@ const YourProfileAdmin = () => {
                               You can resend another verification email after{" "}
                               {timer} seconds.
                             </div>
-                          )}
+                          )} */}
                         </Card.Body>
                       </Card>
                     </>
