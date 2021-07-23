@@ -23,6 +23,7 @@ import { Link } from "react-router-dom";
 import styles from "./YourApplicationsCard.module.css";
 //Contexts
 import { useJob } from "../../../contexts/JobContext";
+import { useStu } from "../../../contexts/StuContext";
 
 const YourApplicationsCard = ({
   key,
@@ -41,6 +42,7 @@ const YourApplicationsCard = ({
     useState(false);
 
   const { getJobDetails } = useJob();
+  const { deleteApps } = useStu();
 
   async function getPageData() {
     const jobData = await getJobDetails(jobID);
@@ -165,8 +167,9 @@ const YourApplicationsCard = ({
           Are you sure you want to do this? You cannot undo this action.
           <Button
             variant="danger"
-            onClick={() => {
-              console.log("delete here zech");
+            onClick={async () => {
+              await deleteApps(id);
+              window.location.reload(false);
             }}
           >
             Delete application

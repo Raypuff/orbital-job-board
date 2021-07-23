@@ -289,7 +289,24 @@ export function StuProvider({ children }) {
       );
       const apps = await appData.json();
       return apps;
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function deleteApps(appID) {
+    try {
+      await fetch(`http://localhost:5000/job-applications`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ id: appID }),
+      });
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   const value = {
@@ -305,6 +322,7 @@ export function StuProvider({ children }) {
     postChat,
     checkExists,
     postMessage,
+    deleteApps,
   };
 
   return <StuContext.Provider value={value}>{children}</StuContext.Provider>;
