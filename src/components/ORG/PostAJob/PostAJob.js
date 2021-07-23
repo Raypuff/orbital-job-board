@@ -205,7 +205,6 @@ const PostAJob = () => {
 
   return (
     <div className={styles.formContainer}>
-      {console.log("hey team!")}
       <Formik
         enableReinitialize
         initialValues={{
@@ -1013,6 +1012,20 @@ const PostAJob = () => {
                 disabled={!canRetrieveOrgDetails || isSubmitting || message}
                 variant="primary"
                 type="submit"
+                onClick={() => {
+                  console.log(errors);
+                  console.log(Object.keys(errors));
+                  var errorMessages =
+                    "You are unable to submit the form as the following fields have errors: ";
+                  if (errors) {
+                    for (const field in errors) {
+                      errorMessages = errorMessages.concat(
+                        `${fieldDict[field]}, `
+                      );
+                    }
+                  }
+                  setError(errorMessages.slice(0, -2));
+                }}
               >
                 Post job
               </Button>
@@ -1361,3 +1374,60 @@ const validationSchema = Yup.object().shape({
       "Terms and Conditions of Use must be accepted to post a Job"
     ),
 });
+
+const fieldDict = {
+  title: "Title",
+  beneficiaries: "Beneficiaries",
+  skills: "Skills",
+  purpose: "Purpose",
+  platform: "Platform",
+  multiLocation: "Multiple locations",
+  location: "Location",
+  postalCode: "Postal code",
+  type: "Commitment type",
+  flexiDate: "Flexible dates",
+  longStartDate: "Long term start date",
+  longEndDate: "Long term end date",
+  flexiHours: "Flexible hours",
+  longHours: "Long term hours",
+  flexiShifts: "Flexible shifts",
+  shiftNumber: "Number of shifts",
+  shift1Date: "Shift 1 date",
+  shift1Start: "Shift 1 start time",
+  shift1End: "Shift 1 end time",
+  shift2Date: "Shift 2 date",
+  shift2Start: "Shift 2 start time",
+  shift2End: "Shift 2 end time",
+  shift3Date: "Shift 3 date",
+  shift3Start: "Shift 3 start time",
+  shift3End: "Shift 3 end time",
+  shift4Date: "Shift 4 date",
+  shift4Start: "Shift 4 start time",
+  shift4End: "Shift 4 end time",
+  shift5Date: "Shift 5 date",
+  shift5Start: "Shift 5 start time",
+  shift5End: "Shift 5 end time",
+  shift6Date: "Shift 6 date",
+  shift6Start: "Shift 6 start time",
+  shift6End: "Shift 6 end time",
+  shift7Date: "Shift 7 date",
+  shift7Start: "Shift 7 start time",
+  shift7End: "Shift 7 end time",
+  shift8Date: "Shift 8 date",
+  shift8Start: "Shift 8 start time",
+  shift8End: "Shift 8 end time",
+  shift9Date: "Shift 9 date",
+  shift9Start: "Shift 9 start time",
+  shift9End: "Shift 9 end time",
+  shift10Date: "Shift 10 date",
+  shift10Start: "Shift 10 start time",
+  shift10End: "Shift 10 end time",
+  addInfo: "Additional information",
+  closingDate: "Applications closing date",
+  noClosingDate: "No closing date",
+  pocName: "Contact person name",
+  pocNo: "Contact person number",
+  pocEmail: "Contact person email",
+  retrievePoc: "Retrieve contact person from profile",
+  terms: "Terms and conditions",
+};
