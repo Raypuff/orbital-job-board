@@ -200,7 +200,7 @@ const ManageAdmins = () => {
                                           >
                                             Demote
                                           </Button>
-                                          <Button
+                                          {/* <Button
                                             variant="danger"
                                             className={styles.button}
                                             onClick={() => {
@@ -213,7 +213,7 @@ const ManageAdmins = () => {
                                             }}
                                           >
                                             Remove as admin
-                                          </Button>
+                                          </Button> */}
                                         </div>
                                       )}
                                   </div>
@@ -282,7 +282,7 @@ const ManageAdmins = () => {
                                           >
                                             Promote
                                           </Button>
-                                          <Button
+                                          {/* <Button
                                             variant="danger"
                                             className={styles.button}
                                             onClick={() => {
@@ -295,7 +295,7 @@ const ManageAdmins = () => {
                                             }}
                                           >
                                             Remove as admin
-                                          </Button>
+                                          </Button> */}
                                         </div>
                                       )}
                                   </div>
