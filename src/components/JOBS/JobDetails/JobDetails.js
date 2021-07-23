@@ -89,13 +89,11 @@ const JobDetails = ({ id }) => {
   }, [showApplyModal]);
 
   //FUNCTION TO CREATE NEW CHAT
-  const createChats = async () => {
+  async function handleChatNow(event) {
     try {
       setLoadingChatButton(true);
       const body = {
         id: uniqid(),
-        stuAvatar: "",
-        orgAvatar: "",
         alt: "avatar",
         stuID: currentUser.email,
         orgID: job.orgID,
@@ -104,7 +102,7 @@ const JobDetails = ({ id }) => {
     } catch (err) {
       console.log(err);
     }
-  };
+  }
 
   //FUNCTION TO CHECK IF CHAT ALREADY EXISTS
   const checkIfExists = async () => {
@@ -126,8 +124,8 @@ const JobDetails = ({ id }) => {
         return (
           <div
             className={styles.button}
-            onClick={async () => {
-              await createChats();
+            onClick={(event) => {
+              handleChatNow(event);
               history.push("/chat-student");
               // history.replace("/chat-student");
               window.location.reload(false);

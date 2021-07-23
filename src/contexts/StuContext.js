@@ -228,14 +228,19 @@ export function StuProvider({ children }) {
 
   async function postChat(body) {
     try {
-      await fetch(`${process.env.REACT_APP_BACKEND_URL}/chats`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(body),
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/chats`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(body),
+        }
+      );
+      console.log("Posted");
+      return response;
     } catch (err) {
       console.log(err);
     }
