@@ -127,8 +127,6 @@ const JobDetails = ({ id }) => {
             onClick={async (event) => {
               await handleChatNow(event);
               history.push("/chat-student");
-              // history.replace("/chat-student");
-              //window.location.reload(false);
             }}
           >
             Chat now
