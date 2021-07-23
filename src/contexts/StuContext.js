@@ -296,7 +296,7 @@ export function StuProvider({ children }) {
 
   async function deleteApps(appID) {
     try {
-      await fetch(`http://localhost:5000/job-applications`, {
+      await fetch(`${process.env.REACT_APP_BACKEND_URL}/job-applications`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
