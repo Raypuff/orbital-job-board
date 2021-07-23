@@ -128,6 +128,7 @@ const ApplicantsModal = ({
                 course={application.stuCourse}
                 yearOfStudy={application.stuYearOfStudy}
                 title={title}
+                changed={changed}
                 setChanged={setChanged}
               />
             );

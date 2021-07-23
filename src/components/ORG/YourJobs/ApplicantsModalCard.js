@@ -1,4 +1,6 @@
 //IMPORTS
+//React Hooks
+import { useState } from "react";
 //Boostrap
 import { Card, Button, Col, Row } from "react-bootstrap";
 import {
@@ -29,8 +31,10 @@ const ApplicantsModalCard = ({
   course,
   yearOfStudy,
   title,
+  changed,
   setChanged,
 }) => {
+  const [submitted, setSubmitted] = useState(false);
   const { acceptRejectApplication } = useOrg();
   const { sendNotif } = useNotif();
   const { sendEmail } = useEmail();
@@ -38,9 +42,10 @@ const ApplicantsModalCard = ({
   //FUNCTIONS
   //Accept or reject an applicant
   const handleAcceptReject = async (choice) => {
+    setSubmitted(true);
     try {
       await acceptRejectApplication(id, choice);
-      setChanged(true);
+      setChanged(!changed);
       //SEND UPDATE EMAILS
       const text = `Hello ${name}! There has been an update to your volunteer application. Please click on the link below and log in to view the updates to your application! volunteer-ccsgp-vercel.app`;
       const html = `Hello ${name}!<br>There has been an update to your volunteer application. <br>Please click on the link below and log in to view the updates to your application! <a href="volunteer-ccsgp-vercel.app">volunteer-ccsgp-vercel.app</a>`;
@@ -70,6 +75,8 @@ const ApplicantsModalCard = ({
       await sendNotif(newNotif);
     } catch (err) {
       console.error(err);
+    } finally {
+      setSubmitted(false);
     }
   };
 
@@ -128,6 +135,7 @@ const ApplicantsModalCard = ({
                     variant="danger"
                     onClick={(event) => handleAcceptReject(event.target.value)}
                     value="Rejected"
+                    disabled={submitted}
                   >
                     Reject
                   </Button>
@@ -136,6 +144,7 @@ const ApplicantsModalCard = ({
                     onClick={(event) => handleAcceptReject(event.target.value)}
                     value="Accepted"
                     className={styles.acceptButton}
+                    disabled={submitted}
                   >
                     Accept
                   </Button>
