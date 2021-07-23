@@ -124,11 +124,11 @@ const JobDetails = ({ id }) => {
         return (
           <div
             className={styles.button}
-            onClick={(event) => {
-              handleChatNow(event);
+            onClick={async (event) => {
+              await handleChatNow(event);
               history.push("/chat-student");
               // history.replace("/chat-student");
-              window.location.reload(false);
+              //window.location.reload(false);
             }}
           >
             Chat now
