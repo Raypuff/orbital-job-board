@@ -98,25 +98,22 @@ export function AuthProvider({ children }) {
     });
   }
 
+  function getUserType(email) {
+    const ref = store.collection("accounts").doc(email);
+    setLoading(true);
+    ref.onSnapshot((docSnapshot) => {
+      setUserType(docSnapshot.data().type);
+    });
+  }
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
+        getUserType(user.email);
         setUserVerified(user.emailVerified);
         user
           .getIdToken()
           .then((newToken) => setToken(newToken))
-          .catch((error) => console.log(error));
-        user
-          .getIdTokenResult()
-          .then((rules) => {
-            if (rules.claims.admin) {
-              setUserType("admin");
-            } else if (rules.claims.organization) {
-              setUserType("organization");
-            } else if (rules.claims.student) {
-              setUserType("student");
-            }
-          })
           .catch((error) => console.log(error));
       }
       setCurrentUser(user);
