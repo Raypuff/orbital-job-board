@@ -168,7 +168,7 @@ const YourApplicationsCard = ({
           <Button
             variant="danger"
             onClick={async () => {
-              await deleteApps(id, stuID);
+              await deleteApps(id, stuID, job.id);
               window.location.reload(false);
             }}
           >
