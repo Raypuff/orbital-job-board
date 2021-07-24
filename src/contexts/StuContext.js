@@ -294,7 +294,7 @@ export function StuProvider({ children }) {
     }
   }
 
-  async function deleteApps(appID) {
+  async function deleteApps(appID, stuID) {
     try {
       await fetch(`${process.env.REACT_APP_BACKEND_URL}/job-applications`, {
         method: "DELETE",
@@ -302,7 +302,7 @@ export function StuProvider({ children }) {
           "Content-Type": "application/json",
           authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ id: appID }),
+        body: JSON.stringify({ id: appID, stuID: stuID }),
       });
     } catch (err) {
       console.log(err);
