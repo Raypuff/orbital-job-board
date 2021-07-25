@@ -40,7 +40,7 @@ const SignInOrgForm = () => {
         "organization"
       );
       history.push("/");
-      window.location.reload(false);
+      // window.location.reload(false);
     } catch (err) {
       if (err.code === "auth/wrong-password") {
         setError("Incorrect password");

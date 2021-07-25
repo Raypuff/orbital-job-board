@@ -80,3 +80,7 @@
   display: flex;
   align-items: center;
 }
+
+.miniText {
+  font-weight: 500;
+}

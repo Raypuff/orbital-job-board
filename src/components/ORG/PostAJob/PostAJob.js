@@ -27,6 +27,8 @@ import * as Yup from "yup";
 import { SelectBeneficiaryTags, SelectSkillTags } from "../../../Constants";
 //React Select
 import Select from "react-select";
+//Image
+import noImage from "../../../assets/emptyStates/noImage.png";
 //CSS Modules
 import styles from "./PostAJob.module.css";
 //Unique ID
@@ -117,14 +119,6 @@ const PostAJob = () => {
         lat = result[0];
         lng = result[1];
       }
-      if (values.skills.length === 0) {
-        setError("Please select at least one beneficiary before submitting");
-        return;
-      }
-      if (values.skills.length === 0) {
-        setError("Please select at least one skill before submitting");
-        return;
-      }
 
       const jobID = uniqid();
       //Creating new job
@@ -181,7 +175,7 @@ const PostAJob = () => {
           values.shift10End
         ),
         addInfo: values.addInfo,
-        imageUrl: imageUrl,
+        imageUrl: image ? imageUrl : noImage,
         closingDate: values.closingDate,
         noClosingDate: values.noClosingDate,
         pocName: values.retrievePoc ? userData.pocName : values.pocName,
@@ -323,22 +317,24 @@ const PostAJob = () => {
                           disabled
                         />
                       </Form.Group>
-                      <Form.Group controlId="formOrgUen">
-                        <Form.Label>
-                          Organization UEN, Charity registration number or
-                          Society registration number
-                          <Form.Text className="text-muted">
-                            Only applicable for Non-NUS Organizations. If you
-                            are a Non-NUS Organization without a UEN, please
-                            indicate NA.
-                          </Form.Text>
-                        </Form.Label>
-                        <Form.Control
-                          required
-                          placeholder={userData !== null ? userData.uen : ""}
-                          disabled
-                        />
-                      </Form.Group>
+                      {userData && userData.type === "Non-NUS Organization" && (
+                        <Form.Group controlId="formOrgUen">
+                          <Form.Label>
+                            Organization UEN, Charity registration number or
+                            Society registration number
+                            <Form.Text className="text-muted">
+                              Only applicable for Non-NUS Organizations. If you
+                              are a Non-NUS Organization without a UEN, please
+                              indicate NA.
+                            </Form.Text>
+                          </Form.Label>
+                          <Form.Control
+                            required
+                            placeholder={userData !== null ? userData.uen : ""}
+                            disabled
+                          />
+                        </Form.Group>
+                      )}
                       <Form.Group controlId="formOrgEmail">
                         <Form.Label>Email address of Organization</Form.Label>
                         <Form.Control
@@ -1023,8 +1019,11 @@ const PostAJob = () => {
                         `${fieldDict[field]}, `
                       );
                     }
+                    if (!image) {
+                      errorMessages = errorMessages.concat("image, ");
+                    }
+                    setError(errorMessages.slice(0, -2));
                   }
-                  setError(errorMessages.slice(0, -2));
                 }}
               >
                 Post job

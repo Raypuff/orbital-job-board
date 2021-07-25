@@ -42,7 +42,7 @@ const SignInAdminForm = () => {
 
       await login(emailRef.current.value, passwordRef.current.value, "admin");
       history.push("/");
-      window.location.reload(false);
+      // window.location.reload(false);
     } catch (err) {
       if (err.code === "auth/wrong-password") {
         setError("Incorrect password");

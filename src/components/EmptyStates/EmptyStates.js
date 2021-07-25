@@ -55,7 +55,8 @@ export const Empty = ({ title, actions }) => {
 };
 
 //Empty states for no items when filtered
-export const EmptyFilter = () => {
+export const EmptyFilter = (props) => {
+  const { currentUser, userType } = useAuth();
   return (
     <div className={styles.filterContainer}>
       <div className={styles.filterWrapper}>
@@ -68,6 +69,15 @@ export const EmptyFilter = () => {
           Hmm... There are no jobs with the filters you selected. Perhaps try a
           different filter?
         </div>
+        {props.jobBoard && currentUser && userType === "student" && (
+          <>
+            <br />
+            <div className={styles.filterTitle}>
+              If you would like to subscribe to be updated about new jobs,
+              proceed to <Link to="/profile-student">your profile</Link>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

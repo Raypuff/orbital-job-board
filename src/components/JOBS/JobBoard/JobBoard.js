@@ -287,7 +287,7 @@ const JobBoard = () => {
               </div>
             </>
           ) : (
-            <EmptyFilter />
+            <EmptyFilter jobBoard={true} />
           )}
         </Col>
       </Row>
