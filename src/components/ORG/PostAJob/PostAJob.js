@@ -492,7 +492,11 @@ const PostAJob = () => {
                                   values.platform === "Virtual"
                                 }
                                 name="location"
-                                value={values.location}
+                                value={
+                                  values.multiLocation
+                                    ? "Multiple locations"
+                                    : values.location
+                                }
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 isValid={touched.location && !errors.location}
@@ -527,7 +531,11 @@ const PostAJob = () => {
                               <Form.Control
                                 type="text"
                                 name="postalCode"
-                                value={values.postalCode}
+                                value={
+                                  values.multiLocation
+                                    ? "NA"
+                                    : values.postalCode
+                                }
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 readOnly={
@@ -674,7 +682,7 @@ const PostAJob = () => {
                             readOnly={
                               values.type !== "Long term" || values.flexiHours
                             }
-                            value={values.longHours}
+                            value={values.flexiHours ? "NA" : values.longHours}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             isValid={touched.longHours && !errors.longHours}
@@ -906,9 +914,9 @@ const PostAJob = () => {
                           name="pocName"
                           type="text"
                           readOnly={values.retrievePoc}
-                          placeholder={
-                            userData !== null ? userData.pocName : ""
-                          }
+                          // placeholder={
+                          //   userData !== null ? userData.pocName : ""
+                          // }
                           value={
                             values.retrievePoc
                               ? userData.pocName
@@ -929,7 +937,7 @@ const PostAJob = () => {
                           name="pocNo"
                           type="text"
                           readOnly={values.retrievePoc}
-                          placeholder={userData !== null ? userData.pocNo : ""}
+                          // placeholder={userData !== null ? userData.pocNo : ""}
                           value={
                             values.retrievePoc ? userData.pocNo : values.pocNo
                           }
@@ -948,9 +956,9 @@ const PostAJob = () => {
                           name="pocEmail"
                           type="email"
                           readOnly={values.retrievePoc}
-                          placeholder={
-                            userData !== null ? userData.pocEmail : ""
-                          }
+                          // placeholder={
+                          //   userData !== null ? userData.pocEmail : ""
+                          // }
                           value={
                             values.retrievePoc
                               ? userData.pocEmail

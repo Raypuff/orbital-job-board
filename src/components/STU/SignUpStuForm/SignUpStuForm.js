@@ -14,7 +14,7 @@ import * as Yup from "yup";
 //CSS Modules
 import styles from "./SignUpStuForm.module.css";
 
-const SignUpStuForm = () => {
+const SignUpStuForm = ({ setLoading }) => {
   //USESTATES
   //For error or successful message upon signing up
   const [error, setError] = useState("");
@@ -39,6 +39,7 @@ const SignUpStuForm = () => {
       //Reset states of messages
       setMessage("");
       setError("");
+      setLoading(true);
 
       //Check if passwords match and email is nus student email
       if (!values.email.includes("@u.nus.edu")) {
@@ -48,6 +49,8 @@ const SignUpStuForm = () => {
       try {
         //Firebase side methods
         await signup(values.email, values.password, "student");
+        history.push("/sign-up-success");
+        setMessage("Sign up successful");
         await sendEmailVerification();
 
         //Send account to backend
@@ -60,11 +63,9 @@ const SignUpStuForm = () => {
           body: JSON.stringify(body),
         });
 
-        setMessage("Sign up successful");
-        history.push("/sign-up-success");
-
         resetForm();
         setSubmitting(false);
+        setLoading(false);
       } catch (err) {
         if (err.code === "auth/email-already-in-use") {
           setError("This email address is already in use");
