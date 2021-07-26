@@ -348,7 +348,7 @@ const ManageAdmins = () => {
                               handleSubmit,
                               isSubmitting,
                             }) => (
-                              <Form onSubmit={handleSubmit}>
+                              <Form onSubmit={handleSubmit} autocomplete="off">
                                 <Form.Group>
                                   <Form.Label>Email address</Form.Label>
                                   <Form.Control
@@ -359,6 +359,7 @@ const ManageAdmins = () => {
                                     onBlur={handleBlur}
                                     isValid={touched.email && !errors.email}
                                     isInvalid={touched.email && errors.email}
+                                    autocomplete="off"
                                   />
 
                                   <Form.Control.Feedback type="invalid">
@@ -491,7 +492,7 @@ function useWindowDimensions() {
 const validationSchema = Yup.object().shape({
   email: Yup.string()
     .email("Please enter a valid email address")
-    .required("Please the new admin's email"),
+    .required("Please enter the new admin's email"),
   password: Yup.string()
     .required("Please enter the new admin's password")
     .matches(

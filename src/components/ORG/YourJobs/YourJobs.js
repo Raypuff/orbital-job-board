@@ -47,7 +47,7 @@ const YourJobs = () => {
     return (
       <Empty
         title={"You do not have any jobs available for viewing..."}
-        action={[
+        actions={[
           {
             tip: "Ready to recruit volunteers for your CIP?",
             button: "Post A Job",

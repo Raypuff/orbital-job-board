@@ -242,7 +242,8 @@ const EditProfileOrg = ({
                       Organization UEN, Charity registration number or Society
                       registration number
                       <Form.Text className="text-muted">
-                        Only applicable for Non-NUS Organizations
+                        Only applicable for Non-NUS Organizations. If you are a
+                        Non-NUS Organization without a UEN, please indicate NA.
                       </Form.Text>
                     </Form.Label>
 
@@ -341,11 +342,16 @@ const EditProfileOrg = ({
                   <Alert variant="primary">Updating your profile...</Alert>
                 ) : successful ? (
                   <Alert variant="success">{message}</Alert>
-                ) : (
+                ) : userData !== null &&
+                  userData.type &&
+                  userData.name &&
+                  userData.pocName &&
+                  userData.pocNo &&
+                  userData.pocEmail ? (
                   <Alert variant="warning">
                     You can leave the fields you do not want to edit as blank
                   </Alert>
-                )}
+                ) : null}
               </Form>
             )}
           </Formik>

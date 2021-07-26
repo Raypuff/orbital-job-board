@@ -421,21 +421,21 @@ const YourJobsCard = ({
               a CSV spreadsheet
             </div>
             <div className="d-flex flex-column align-items-center">
-              <Form.Group controlId="formAccepted">
+              <Form.Group controlId="formAcceptedApplicants">
                 <Form.Check
                   type="checkbox"
                   ref={acceptedRef}
                   label="Accepted applicants"
                 />
               </Form.Group>
-              <Form.Group controlId="formPending">
+              <Form.Group controlId="formPendingApplicants">
                 <Form.Check
                   type="checkbox"
                   ref={pendingRef}
                   label="Pending applicants"
                 />
               </Form.Group>
-              <Form.Group controlId="formRejected">
+              <Form.Group controlId="formRejectedApplicants">
                 <Form.Check
                   type="checkbox"
                   ref={rejectedRef}
