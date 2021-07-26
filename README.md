@@ -14,12 +14,14 @@ The **CCSGP Volunteer Job Board** has the primary purpose of connecting _interes
 
 [Our website](https://volunteer-ccsgp.vercel.app/ "Website")
 
-[Our README](https://docs.google.com/document/d/1-JTRWsFIVnO0BK5OKgsEr3NiS6TUSAD4hJJN1hi_wL0/edit?usp=sharing "README")
+[Our demo video](https://drive.google.com/file/d/1lFXqkfTa-VEhsLqRGsNpg7txY-Bfysp7/view?usp=sharing "Demo Video")
 
-[Our GitHub Repo](https://github.com/Raypuff/orbital-job-board "GitHub Repo")
+[Our README](https://docs.google.com/document/d/1-JTRWsFIVnO0BK5OKgsEr3NiS6TUSAD4hJJN1hi_wL0/edit?usp=sharing "README")
 
 [Our poster](https://drive.google.com/file/d/1OY2V5KOZbYLrmH5k9nX0SPF2NDzTEh7J/view?usp=sharing "Poster")
 
-[Our demo video](https://drive.google.com/file/d/1lFXqkfTa-VEhsLqRGsNpg7txY-Bfysp7/view?usp=sharing "Demo Video")
-
 [Our project logbook](https://docs.google.com/spreadsheets/d/15YUOvUomPBpEPPMeFYQ80FsrtvbC4EdSJpPAbqB9MB0/edit?usp=sharing "Project Logbook")
+
+[Our Front-End GitHub Repo](https://github.com/Raypuff/orbital-job-board "Front-End GitHub Repo")
+
+[Our Back-End GitHub Repo](https://github.com/zechajw/orbital-job-board-backend "Back-End GitHub Repo")
