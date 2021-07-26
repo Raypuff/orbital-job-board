@@ -75,7 +75,7 @@ const ManageAdmins = () => {
       const type = values.type;
       try {
         await postNewAdmin(email, password, type);
-        setSuccessNewAdmin("Created new admin!");
+        setSuccessNewAdmin("New admin successfully created!");
         //resetForm();
       } catch (err) {
         console.log(err);
