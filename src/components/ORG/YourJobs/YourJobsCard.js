@@ -395,7 +395,7 @@ const YourJobsCard = ({
         </Modal.Header>
         <Modal.Body>
           You are about to mark {title} as complete. Your job will no longer be
-          publicly available on the job board. You will not be able to undo this
+          publicly visible on the job board. You will not be able to undo this
           action. Are you sure you want to perform this action?
         </Modal.Body>
         <Modal.Footer className="justify-content-center">
