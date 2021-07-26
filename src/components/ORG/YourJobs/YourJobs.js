@@ -176,7 +176,7 @@ const YourJobs = () => {
             ))
           ) : (
             <div className={styles.emptyState}>
-              <EmptyFilter />
+              <EmptyFilter>jobs</EmptyFilter>
             </div>
           )}
         </Col>

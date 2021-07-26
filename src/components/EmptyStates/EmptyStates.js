@@ -66,8 +66,8 @@ export const EmptyFilter = (props) => {
           className={styles.filterImage}
         />
         <div className={styles.filterTitle}>
-          Hmm... There are no jobs with the filters you selected. Perhaps try a
-          different filter?
+          Hmm... There are no {props.children} with the filters you selected.
+          Perhaps try a different filter?
         </div>
         {props.jobBoard && currentUser && userType === "student" && (
           <>

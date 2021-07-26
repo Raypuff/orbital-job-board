@@ -129,7 +129,7 @@ const YourApplications = () => {
             ))
           ) : (
             <div className={styles.emptyState}>
-              <EmptyFilter />
+              <EmptyFilter>applications</EmptyFilter>
             </div>
           )}
         </Col>
