@@ -18,6 +18,10 @@ export function AuthProvider({ children }) {
 
   async function signup(email, password, accountType) {
     try {
+      //creating account on firebase
+      await auth.createUserWithEmailAndPassword(email, password);
+
+      //changing user role for frontend
       const ref = store.collection("accounts");
       const accountObject = { type: accountType };
       await ref
@@ -27,7 +31,7 @@ export function AuthProvider({ children }) {
           console.error(err);
         });
 
-      await auth.createUserWithEmailAndPassword(email, password);
+      //changing user role in backend
       await fetch(
         `${process.env.REACT_APP_BACKEND_URL}/firebase/create-${accountType}`,
         {
