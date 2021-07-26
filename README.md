@@ -14,7 +14,7 @@ The **CCSGP Volunteer Job Board** has the primary purpose of connecting _interes
 
 [Our website](https://volunteer-ccsgp.vercel.app/ "Website")
 
-[Our README](https://docs.google.com/document/d/1m20DIpgzoGW5FOjrnZCQWuanFH46TEVOVyVdQ0cAhhU/edit?usp=sharing "README")
+[Our README](https://docs.google.com/document/d/1-JTRWsFIVnO0BK5OKgsEr3NiS6TUSAD4hJJN1hi_wL0/edit?usp=sharing "README")
 
 [Our GitHub Repo](https://github.com/Raypuff/orbital-job-board "GitHub Repo")
 
