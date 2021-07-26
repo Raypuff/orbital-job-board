@@ -494,7 +494,7 @@ const PostAJob = () => {
                                 name="location"
                                 value={
                                   values.multiLocation
-                                    ? "Multiple locations"
+                                    ? "Multiple locations - If checked, pleaes indicate the details of the locations under additional information"
                                     : values.location
                                 }
                                 onChange={handleChange}
