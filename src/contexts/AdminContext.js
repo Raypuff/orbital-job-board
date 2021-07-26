@@ -13,7 +13,7 @@ export function AdminProvider({ children }) {
 
   async function postNewAdmin(email, password, type) {
     try {
-      await fetch(
+      const backendAdminCreateReq = await fetch(
         `${process.env.REACT_APP_BACKEND_URL}/firebase/create-admin`,
         {
           method: "POST",
@@ -30,6 +30,10 @@ export function AdminProvider({ children }) {
         }
       );
 
+      if (backendAdminCreateReq.status === 400) {
+        throw new Error("account-already-exists");
+      }
+
       const ref = store.collection("accounts");
       const accountObject = { type: "admin" };
       await ref
@@ -38,9 +42,9 @@ export function AdminProvider({ children }) {
         .catch((err) => {
           console.error(err);
         });
-      window.location.reload(false);
+      //window.location.reload(false);
     } catch (err) {
-      console.log(err);
+      throw err;
     }
   }
 
