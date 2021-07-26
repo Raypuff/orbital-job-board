@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { useAuth } from "./AuthContext";
 
 const EmailContext = React.createContext();
@@ -10,24 +10,16 @@ export function useEmail() {
 export function EmailProvider({ children }) {
   const { token } = useAuth();
 
-  async function sendEmail(orgEmail, subject, text, html) {
-    const msg = {
-      to: orgEmail,
-      from: "volunteerccsgp@gmail.com",
-      text: text,
-      html: html,
-      subject: subject,
-      isMultiple: false,
-    };
-
+  async function sendEmail(msg) {
+    const message = { msg: msg };
     try {
-      await fetch(`http://localhost:5000/email`, {
+      await fetch(`${process.env.REACT_APP_BACKEND_URL}/email`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(msg),
+        body: JSON.stringify(message),
       });
     } catch (err) {
       console.error(err);
