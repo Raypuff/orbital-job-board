@@ -175,7 +175,6 @@ const EditProfileStu = ({
                     accept="image/*"
                   />
                 </Form.Group>
-
                 <Form.Group controlId="formName">
                   <Form.Label>Name as in NRIC</Form.Label>{" "}
                   <Form.Control
@@ -287,20 +286,23 @@ const EditProfileStu = ({
                     </Button>
                   </div>
                 </div>
-
                 <Card.Text />
-
                 {error ? (
                   <Alert variant="danger">{error}</Alert>
                 ) : isSubmitting ? (
                   <Alert variant="primary">Updating your profile...</Alert>
                 ) : successful ? (
                   <Alert variant="success">{message}</Alert>
-                ) : (
+                ) : userData !== null &&
+                  userData.name &&
+                  userData.dob &&
+                  userData.contactNo &&
+                  userData.course &&
+                  userData.year ? (
                   <Alert variant="warning">
                     You can leave the fields you do not want to edit as blank
                   </Alert>
-                )}
+                ) : null}
               </Form>
             )}
           </Formik>
