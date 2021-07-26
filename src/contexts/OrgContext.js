@@ -67,7 +67,7 @@ export function OrgProvider({ children }) {
   async function PostAJob(newJob, currentUser) {
     const body = { newJob };
     try {
-      await fetch(process.env.REACT_APP_BACKEND_URL + "/jobs", {
+      await fetch(`${process.env.REACT_APP_BACKEND_URL}/jobs`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
