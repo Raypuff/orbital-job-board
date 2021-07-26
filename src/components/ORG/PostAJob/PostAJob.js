@@ -20,6 +20,7 @@ import { TermsAndConditions } from "../../../Constants";
 import { useAuth } from "../../../contexts/AuthContext";
 import { useDist } from "../../../contexts/DistContext";
 import { useOrg } from "../../../contexts/OrgContext";
+import { useNotif } from "../../../contexts/NotifContext";
 //Inline Form Validation
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -55,6 +56,7 @@ const PostAJob = () => {
   const { currentUser } = useAuth();
   const { getGeocode } = useDist();
   const { PostAJob, getOrgInfo } = useOrg();
+  const { sendNotif } = useNotif();
 
   async function getPageData() {
     const orgData = await getOrgInfo(currentUser.email);
@@ -185,8 +187,20 @@ const PostAJob = () => {
         lng: lng,
       };
 
+      const newNotif = {
+        newNotif: {
+          id: uniqid(),
+          receiverID: "admin",
+          header: "New job has been posted",
+          message: `A new job has been posted by ${newJob.orgID}, visit the All Jobs page for more details.`,
+          dateTime: new Date().toUTCString(),
+          dismissed: false,
+        },
+      };
+
       try {
         await PostAJob(newJob, currentUser);
+        await sendNotif(newNotif);
 
         setMessage("Job posting successful");
         resetForm();

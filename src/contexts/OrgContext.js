@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { useAuth } from "./AuthContext";
+
 import noAvatar from "../assets/emptyStates/noAvatar.png";
 
 const OrgContext = React.createContext();

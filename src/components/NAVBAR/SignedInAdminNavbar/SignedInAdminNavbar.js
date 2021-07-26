@@ -55,9 +55,7 @@ const SignedInAdminNavbar = () => {
     const getNotifications = async () => {
       try {
         const notifData = await fetch(
-          process.env.REACT_APP_BACKEND_URL +
-            "/notifications/" +
-            currentUser.email,
+          process.env.REACT_APP_BACKEND_URL + "/notifications/admin",
           { headers: { authorization: `Bearer ${token}` } }
         );
         const notifs = await notifData.json();

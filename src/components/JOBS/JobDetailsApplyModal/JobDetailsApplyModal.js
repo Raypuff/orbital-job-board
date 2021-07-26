@@ -118,7 +118,17 @@ export const JobDetailsApplyModal = ({
         const html = `Hello ${orgName}!<br>There is a new application for your job ${title}. <br>Please click on the link below and log in to view the new job application! <a href="volunteer-ccsgp-vercel.app">volunteer-ccsgp-vercel.app</a>`;
         const subject = `[Volunteer CCSGP] New application for your job ${title}`;
 
-        await sendEmail(orgEmail, subject, text, html);
+        const msg = {
+          msg: {
+            to: orgEmail,
+            from: "volunteerccsgp@gmail.com",
+            subject: subject,
+            text: text,
+            html: html,
+          },
+        };
+
+        await sendEmail(msg);
 
         //Sending notification
         const newNotif = {
