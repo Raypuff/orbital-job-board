@@ -48,6 +48,8 @@ const SignUpStuForm = () => {
       try {
         //Firebase side methods
         await signup(values.email, values.password, "student");
+        history.push("/sign-up-success");
+        setMessage("Sign up successful");
         await sendEmailVerification();
 
         //Send account to backend
@@ -59,9 +61,6 @@ const SignUpStuForm = () => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),
         });
-
-        setMessage("Sign up successful");
-        history.push("/sign-up-success");
 
         resetForm();
         setSubmitting(false);

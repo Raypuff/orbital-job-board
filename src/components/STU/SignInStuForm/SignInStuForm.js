@@ -37,7 +37,7 @@ const SignInStuForm = () => {
       setLoading(true);
       await login(emailRef.current.value, passwordRef.current.value, "student");
       history.push("/");
-      window.location.reload(false);
+      // window.location.reload(false);
     } catch (err) {
       if (err.code === "auth/wrong-password") {
         setError("Incorrect password");

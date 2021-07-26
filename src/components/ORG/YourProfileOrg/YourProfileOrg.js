@@ -309,7 +309,19 @@ const YourProfileOrg = () => {
                         <Card.Body>
                           Verification status:{" "}
                           <span style={{ fontWeight: 600 }}>
-                            {userVerified ? "Verified" : "Unverified"}
+                            {userVerified ? (
+                              "Verified"
+                            ) : (
+                              <span>
+                                Unverified
+                                <br />
+                                <span className={styles.miniText}>
+                                  (If you have already clicked the link in your
+                                  inbox and you are still seeing this, please
+                                  refresh the page)
+                                </span>
+                              </span>
+                            )}
                           </span>
                           {!startTimer && !userVerified && (
                             <div

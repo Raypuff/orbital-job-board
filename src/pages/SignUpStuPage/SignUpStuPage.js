@@ -1,20 +1,26 @@
 import SignUpStuForm from "../../components/STU/SignUpStuForm";
-import { SignedIn } from "../../components/EmptyStates/EmptyStates";
-import { useAuth } from "../../contexts/AuthContext";
+// import { SignedIn } from "../../components/EmptyStates/EmptyStates";
+// import { useAuth } from "../../contexts/AuthContext";
 
 const SignUpStuPage = () => {
-	const { currentUser } = useAuth();
+  //REMOVED PAGE RESTRICTION AS IT WAS CAUSING BUGGY FLICKERING SCREENS
+  // const { currentUser } = useAuth();
 
-	function isSignedIn() {
-		if (currentUser) {
-			return (
-				<SignedIn>To sign up as an NUS student, please sign out first</SignedIn>
-			);
-		} else {
-			return <SignUpStuForm />;
-		}
-	}
+  // function isSignedIn() {
+  //   if (currentUser) {
+  //     return (
+  //       <SignedIn>To sign up as an NUS student, please sign out first</SignedIn>
+  //     );
+  //   } else {
+  //     return <SignUpStuForm />;
+  //   }
+  // }
 
-	return <>{isSignedIn()}</>;
+  // return <>{isSignedIn()}</>;
+  return (
+    <>
+      <SignUpStuForm />
+    </>
+  );
 };
 export default SignUpStuPage;

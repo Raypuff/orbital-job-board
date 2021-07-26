@@ -1,8 +1,8 @@
 //IMPORTS
 //React Hooks
-import { useRef } from "react";
+import { useRef, useState } from "react";
 //Bootstrap
-import { Modal, Button, Form } from "react-bootstrap";
+import { Modal, Button, Form, Alert, Card } from "react-bootstrap";
 //CSS Modules
 import styles from "./JobDetailsAdminModal.module.css";
 //Contexts
@@ -44,9 +44,14 @@ export const JobDetailsAdminRejModal = ({
 }) => {
   const { updateJobStatus } = useAdmin();
   const { sendNotif } = useNotif();
+  const [error, setError] = useState();
 
   const handleReject = async (jobId, reason, orgEmail, title) => {
     try {
+      if (!reason) {
+        // eslint-disable-next-line no-throw-literal
+        throw "Please enter a rejection reason";
+      }
       await updateJobStatus(jobId, "Rejected", reason);
 
       const newNotif = {
@@ -64,7 +69,7 @@ export const JobDetailsAdminRejModal = ({
 
       window.location.reload(false);
     } catch (err) {
-      console.error(err);
+      setError(err);
     }
   };
 
@@ -90,6 +95,8 @@ export const JobDetailsAdminRejModal = ({
             </Button>
           </div>
         </Form>
+        <Card.Text />
+        {error && <Alert variant="danger">{error}</Alert>}
       </Modal.Body>
     </Modal>
   );
@@ -230,9 +237,15 @@ export const JobDetailsAdminTDModal = ({
   const tdReasonRef = useRef();
   const { updateJobStatus } = useAdmin();
   const { sendNotif } = useNotif();
+  const [error, setError] = useState();
 
   const handleTakedown = async (jobId, reason, orgEmail, title) => {
     try {
+      if (!reason) {
+        // eslint-disable-next-line no-throw-literal
+        throw "Please enter a take down reason";
+      }
+
       await updateJobStatus(jobId, "TakenDown", reason);
 
       const newNotif = {
@@ -250,7 +263,7 @@ export const JobDetailsAdminTDModal = ({
 
       window.location.reload(false);
     } catch (err) {
-      console.error(err);
+      setError(err);
     }
   };
 
@@ -280,6 +293,8 @@ export const JobDetailsAdminTDModal = ({
             </Button>
           </div>
         </Form>
+        <Card.Text />
+        {error && <Alert variant="danger">{error}</Alert>}
       </Modal.Body>
     </Modal>
   );

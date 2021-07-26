@@ -74,6 +74,11 @@ const JobBoardFilter = ({
                   disabled={!(currentLocation.lat && currentLocation.lng)}
                 />
               </Form.Group>
+              {!(currentLocation.lat && currentLocation.lng) && (
+                <Form.Text className="text-muted">
+                  Please enable your browser's location to sort by distance
+                </Form.Text>
+              )}
               <Dropdown.Divider />
               {/* FILTER BY */}
               <Card.Title>
