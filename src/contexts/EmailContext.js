@@ -10,9 +10,18 @@ export function useEmail() {
 export function EmailProvider({ children }) {
   const { token } = useAuth();
 
-  async function sendEmail(msg) {
+  async function sendEmail(orgEmail, subject, text, html) {
+    const msg = {
+      to: orgEmail,
+      from: "volunteerccsgp@gmail.com",
+      text: text,
+      html: html,
+      subject: subject,
+      isMultiple: false,
+    };
+
     try {
-      await fetch(`${process.env.REACT_APP_BACKEND_URL}/email`, {
+      await fetch(`http://localhost:5000/email`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

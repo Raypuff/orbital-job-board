@@ -41,13 +41,7 @@ const YourProfileAdmin = () => {
 
   //CUSTOM HOOKS
   //Retrieve functions for user data
-  const {
-    currentUser,
-    changePassword,
-    reauthenticate,
-    userVerified,
-    sendEmailVerification,
-  } = useAuth();
+  const { currentUser, changePassword, reauthenticate } = useAuth();
   const { getCurrentAdmin } = useAdmin();
 
   //To retrieve the window width

@@ -47,7 +47,7 @@ const ManageAdmins = () => {
 
   //CUSTOM HOOKS
   //To retrieve the window width
-  const { currentUser, signup } = useAuth();
+  const { currentUser } = useAuth();
   const { getAllAdmins, getCurrentAdmin, postNewAdmin } = useAdmin();
   const { width } = useWindowDimensions();
 
@@ -76,10 +76,14 @@ const ManageAdmins = () => {
       try {
         await postNewAdmin(email, password, type);
         setSuccessNewAdmin("Created new admin!");
-        resetForm();
+        //resetForm();
       } catch (err) {
-        setErrorNewAdmin(err);
         console.log(err);
+        if (err.message === "account-already-exists") {
+          setErrorNewAdmin("The account already exists");
+        } else {
+          setErrorNewAdmin("Unable to create admin due to internal error.");
+        }
       }
       setSubmitting(false);
     }
