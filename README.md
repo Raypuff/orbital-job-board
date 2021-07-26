@@ -14,7 +14,7 @@ The **CCSGP Volunteer Job Board** has the primary purpose of connecting _interes
 
 [Our website](https://volunteer-ccsgp.vercel.app/ "Website")
 
-[Our demo video](https://drive.google.com/file/d/1lFXqkfTa-VEhsLqRGsNpg7txY-Bfysp7/view?usp=sharing "Demo Video")
+[Our demo video](https://www.youtube.com/watch?v=totQ6bFNy1E "Demo Video")
 
 [Our README](https://docs.google.com/document/d/1-JTRWsFIVnO0BK5OKgsEr3NiS6TUSAD4hJJN1hi_wL0/edit?usp=sharing "README")
 
