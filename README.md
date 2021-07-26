@@ -2,7 +2,7 @@
 
 ## Who are we?
 
-We are Loh Jia Ming, Rayner and Zechary Au Jun Wen and we are Year 1 Computer Science Students from the National University of Singapore (NUS). This project was developed for CP2106 (Orbital) 2021 by Team NUSGrabYourOwnFood at the Artemis level under the guidance of our advisor Suther David Samuel and our mentor Mr Ng Chee Chiu.
+We are Loh Jia Ming, Rayner and Zechary Au Jun Wen and we are upcoming Year 2 Computer Science (as of AY21/22) Students from the National University of  Singapore (NUS). This project was developed for CP2106 (Orbital) 2021 by Team NUSGrabYourOwnFood at the Artemis level under the guidance of our advisor Suther David Samuel and our mentor Mr Ng Chee Chiu from Websparks.
 
 ## Purpose and Background
 
@@ -18,8 +18,8 @@ The **CCSGP Volunteer Job Board** has the primary purpose of connecting _interes
 
 [Our GitHub Repo](https://github.com/Raypuff/orbital-job-board "GitHub Repo")
 
-[Our poster](https://drive.google.com/file/d/1TPyXxwsLaa20xWyueFvEdBsuDtuiEiYD/view?usp=sharing "Poster")
+[Our poster](https://drive.google.com/file/d/1OY2V5KOZbYLrmH5k9nX0SPF2NDzTEh7J/view?usp=sharing "Poster")
 
-[Our demo video](https://drive.google.com/file/d/1wM98RdXvmkD02870w5RXmsQB4KKNg5fL/view?usp=sharing "Demo Video")
+[Our demo video](https://drive.google.com/file/d/1lFXqkfTa-VEhsLqRGsNpg7txY-Bfysp7/view?usp=sharing "Demo Video")
 
-[Our project logbook](https://docs.google.com/spreadsheets/d/1X5Y5DPHidcmo-n7oRYCjatd-8q9jj0PiarQFV2yiLik/edit?usp=sharing "Project Logbook")
+[Our project logbook](https://docs.google.com/spreadsheets/d/15YUOvUomPBpEPPMeFYQ80FsrtvbC4EdSJpPAbqB9MB0/edit?usp=sharing "Project Logbook")
