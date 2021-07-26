@@ -14,7 +14,7 @@ import * as Yup from "yup";
 //CSS Modules
 import styles from "./SignUpStuForm.module.css";
 
-const SignUpStuForm = ({ setLoading }) => {
+const SignUpStuForm = () => {
   //USESTATES
   //For error or successful message upon signing up
   const [error, setError] = useState("");
@@ -39,7 +39,6 @@ const SignUpStuForm = ({ setLoading }) => {
       //Reset states of messages
       setMessage("");
       setError("");
-      setLoading(true);
 
       //Check if passwords match and email is nus student email
       if (!values.email.includes("@u.nus.edu")) {
@@ -65,7 +64,6 @@ const SignUpStuForm = ({ setLoading }) => {
 
         resetForm();
         setSubmitting(false);
-        setLoading(false);
       } catch (err) {
         if (err.code === "auth/email-already-in-use") {
           setError("This email address is already in use");

@@ -14,7 +14,7 @@ import { Link, useHistory } from "react-router-dom";
 //CSS Modules
 import styles from "./SignUpOrgForm.module.css";
 
-const SignUpOrgForm = ({ setLoading }) => {
+const SignUpOrgForm = () => {
   //USESTATES
   //Initializing useStates for signup
   const [error, setError] = useState("");
@@ -38,7 +38,6 @@ const SignUpOrgForm = ({ setLoading }) => {
       //Resetting signup states
       setMessage("");
       setError("");
-      setLoading(true);
 
       try {
         //Firebase side methods
@@ -63,7 +62,6 @@ const SignUpOrgForm = ({ setLoading }) => {
         //Set message to signify signup is successful
         resetForm();
         setSubmitting(false);
-        setLoading(false);
       } catch (err) {
         if (err.code === "auth/email-already-in-use") {
           setError("This email address is already in use");
