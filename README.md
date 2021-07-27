@@ -22,6 +22,4 @@ The **CCSGP Volunteer Job Board** has the primary purpose of connecting _interes
 
 [Our project logbook](https://docs.google.com/spreadsheets/d/15YUOvUomPBpEPPMeFYQ80FsrtvbC4EdSJpPAbqB9MB0/edit?usp=sharing "Project Logbook")
 
-[Our Front-End GitHub Repo](https://github.com/Raypuff/orbital-job-board "Front-End GitHub Repo")
-
-[Our Back-End GitHub Repo](https://github.com/zechajw/orbital-job-board-backend "Back-End GitHub Repo")
+[Our GitHub Repo](https://github.com/Raypuff/orbital-job-board "Front-End GitHub Repo")
