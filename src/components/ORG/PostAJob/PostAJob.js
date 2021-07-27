@@ -508,7 +508,7 @@ const PostAJob = () => {
                                 name="location"
                                 value={
                                   values.multiLocation
-                                    ? "Multiple locations - If checked, pleaes indicate the details of the locations under additional information"
+                                    ? "Multiple locations"
                                     : values.location
                                 }
                                 onChange={handleChange}
@@ -523,7 +523,11 @@ const PostAJob = () => {
                                 <Form.Group controlId="formMultiLocation">
                                   <Form.Check
                                     name="multiLocation"
-                                    label="Multiple locations"
+                                    label={
+                                      values.multiLocation
+                                        ? `Multiple locations - Please indicate the details of the locations under additional information`
+                                        : `Multiple locations`
+                                    }
                                     disabled={values.platform === "Virtual"}
                                     checked={
                                       values.platform === "Virtual"
